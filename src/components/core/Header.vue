@@ -137,7 +137,7 @@ const currentLocale = ref(locale.value)
 const currentCurrency = ref('USD')
 const {isDark, toggleDark} = useDarkMode()
 
-const navItems = [
+const navItems: any = [
   // {path: '/hoteles', key: 'hotels'},
   // {path: '/tours', key: 'tours'},
   // {path: '/ofertas', key: 'offers'},

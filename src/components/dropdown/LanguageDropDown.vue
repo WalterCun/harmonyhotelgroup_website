@@ -16,7 +16,7 @@
         <button
             v-for="(lang, code) in props.languages"
             :key="code"
-            @click="handleSelectLanguage(code)"
+            @click="handleSelectLanguage(String(code))"
             class="w-full flex items-center gap-3 px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700"
             :class="{ 'bg-gray-50 dark:bg-gray-700': currentLocale === code }"
         >
