@@ -53,7 +53,7 @@
           <ul class="space-y-3">
             <li class="flex items-center gap-2">
               <Phone class="w-4 h-4 text-gold-600"/>
-              <span>+1 (555) 123-4567</span>
+              <span>+593 999 063 851</span>
             </li>
             <li class="flex items-center gap-2">
               <Mail class="w-4 h-4 text-gold-600"/>
@@ -72,7 +72,7 @@
       <!-- Bottom Bar -->
       <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
         <p class="text-sm text-gray-500">
-          © {{ new Date().getFullYear() }} Harmony Hotel Group. {{ $t('footer.rights') }}
+          © {{ new Date().getFullYear() }} Harmony Hotel Group S.A.S. {{ $t('footer.rights') }}
         </p>
         <div class="flex gap-4 mt-4 md:mt-0">
           <a v-for="legal in legalLinks"
