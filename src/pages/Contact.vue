@@ -111,7 +111,7 @@
 
           <!-- Contact Information -->
           <div class="space-y-8">
-            <CarouselBase :objs="locations"></CarouselBase>
+            <CardsHotelCarousel :objs="locations"></CardsHotelCarousel>
 
             <!-- Social Media -->
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
@@ -138,6 +138,7 @@
 import {ref} from 'vue'
 import CarouselBase from "../components/carousels/CarouselBase.vue";
 import {hhg_socials} from "../constans/social_network.ts";
+import CardsHotelCarousel from "../components/carousels/CardsHotelCarousel.vue";
 
 const form = ref({
   name: '',
