@@ -1,5 +1,7 @@
 <template>
-  <div class="pt-20 min-h-screen bg-white dark:bg-gray-900">
+
+
+<div class="pt-20 min-h-screen bg-white dark:bg-gray-900">
     <!-- Hero Section -->
     <section class="relative h-[40vh] bg-cover bg-center"
              :style="{
@@ -90,13 +92,14 @@
 <script setup lang="ts">
 import {ref, computed} from 'vue'
 import {MapPin, Star, Check} from 'lucide-vue-next'
+import {useRoute} from "vue-router";
 
 const selectedDestination = ref('all')
 const selectedType = ref('all')
 
+//
 const destinations = ['Cancún', 'Los Cabos', 'Ciudad de México', 'Riviera Maya']
 const hotelTypes = ['Resort', 'Urbano', 'Boutique']
-
 const hotels = [
   {
     id: 1,
@@ -165,6 +168,10 @@ const hotels = [
     amenities: ['Todo incluido', 'Spa', 'Deportes acuáticos', 'Shows nocturnos', 'Kids Club', 'Gimnasio']
   }
 ]
+//
+
+const data = useRoute();
+console.log(data.query);
 
 const filteredHotels = computed(() => {
   return hotels.filter(hotel => {
