@@ -8,11 +8,11 @@ const messages = {
             tours: 'Tours',
             offers: 'Ofertas',
             contact: 'Contacto',
-            book: 'Reservar Ahora'
+            book: 'Reservar'
         },
         hero: {
-            title: 'Descubre el Lujo',
-            subtitle: 'Experimenta el confort y la elegancia sin igual en nuestros destinos de clase mundial'
+            title: 'Descubre algo nuevo',
+            subtitle: 'Experimenta el confort y la elegancia sin igual en nuestros destinos'
         },
         search: {
             checkIn: 'Llegada',
@@ -37,17 +37,32 @@ const messages = {
                 desc: 'Mantente conectado con acceso gratuito a internet de alta velocidad'
             },
             dining: {
-                title: 'Gastronomía de Lujo',
-                desc: 'Experimenta la excelencia culinaria en nuestros restaurantes gourmet'
+                title: 'Gastronomía',
+                desc: 'Experimenta la excelencia culinaria en nuestros restaurantes propios y afiliados'
             },
             location: {
                 title: 'Ubicaciones Premium',
-                desc: 'Situados en los destinos más codiciados del mundo'
+                desc: 'Situados en los destinos más codiciados del Ecuador'
             },
             spa: {
-                title: 'Spa de Lujo',
-                desc: 'Rejuvenece cuerpo y mente en nuestros spas de clase mundial'
+                title: 'Tours',
+                desc: 'Aventurate a conocer nuevos lugares y experiencias en nuestra variedad de tours privados y compartidos'
+            },
+            promotions: {
+                title: 'Promociones',
+                desc: 'Descubre nuestras promociones y descuentos con nuestras locales aliados'
             }
+        },
+        features: {
+            title: 'Nuestros Hoteles',
+            subtitle: 'Descubre nuestras propiedades más exclusivas en destinos de ensueño',
+            view: 'Ver Detalles',
+            viewAll: 'Ver Todos los Hoteles',
+        },
+        destinations: {
+            title: 'Destinos Cercanos',
+            subtitle: 'Explora lugares increíbles cerca de nuestros hoteles',
+            viewAll: 'Explorar Tours Disponibles',
         },
         footer: {
             about: 'Harmony Hotel Group ofrece experiencias únicas de hospitalidad de lujo en los destinos más exclusivos del mundo.',
@@ -69,7 +84,7 @@ const messages = {
             },
             contact: {
                 title: 'Contacto',
-                address: 'Av. Principal 123, Ciudad de México'
+                address: 'Av. Gran Colombia y Huayna Capac, Cuenca, Ecuador'
             },
             rights: 'Todos los derechos reservados.',
             legal: {
