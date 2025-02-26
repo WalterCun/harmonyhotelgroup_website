@@ -100,7 +100,7 @@
 import {defineProps, defineEmits} from 'vue'
 import DropDownBase from '../base/DropDownBase.vue'
 import {Coins, ChevronDown} from 'lucide-vue-next'
-import type {Currencies} from '../interfaces/CurrencyInterface.ts'
+import type {Currencies} from '../../interfaces/CurrencyInterface.ts'
 
 const props = defineProps<{
   currencies: Currencies;
