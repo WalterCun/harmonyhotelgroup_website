@@ -34,7 +34,7 @@
 import {defineProps, defineEmits} from 'vue'
 import DropDownBase from '../base/DropDownBase.vue'
 import {Globe2, ChevronDown} from 'lucide-vue-next'
-import {Languages} from '../interfaces/LanguagesInterface.ts'
+import {Languages} from '../../interfaces/LanguagesInterface.ts'
 
 const props = defineProps<{
   languages: Languages;
