@@ -1,0 +1,96 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Icon } from 'astro-icon/components';
+
+// Get translations based on current locale
+const { currentLocale } = Astro;
+const translations = await import(`../i18n/${currentLocale || 'es'}.json`);
+
+// Featured hotels data
+const hotels = [
+  {
+    id: 1,
+    name: 'Harmony Resort & Spa Cancún',
+    location: 'Cancún, México',
+    image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+    description: 'Disfruta de nuestro lujoso resort frente al mar Caribe con spa de clase mundial y restaurantes gourmet.'
+  },
+  {
+    id: 2,
+    name: 'Harmony Urban Hotel CDMX',
+    location: 'Ciudad de México, México',
+    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+    description: 'Ubicado en el corazón de la ciudad, nuestro hotel urbano combina elegancia moderna con la rica cultura mexicana.'
+  },
+  {
+    id: 3,
+    name: 'Harmony Beach Club Los Cabos',
+    location: 'Los Cabos, México',
+    image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+    description: 'Experimenta el lujo frente al mar con vistas impresionantes al océano Pacífico y acceso exclusivo a la playa.'
+  },
+  {
+    id: 4,
+    name: 'Harmony Mountain Retreat Valle de Bravo',
+    location: 'Valle de Bravo, México',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+    description: 'Escápate a nuestro retiro de montaña con vistas panorámicas al lago y actividades al aire libre.'
+  },
+  {
+    id: 5,
+    name: 'Harmony Colonial Mérida',
+    location: 'Mérida, México',
+    image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+    description: 'Hospédate en nuestro hotel boutique en una mansión colonial restaurada en el centro histórico de Mérida.'
+  },
+  {
+    id: 6,
+    name: 'Harmony Jungle Lodge Palenque',
+    location: 'Palenque, México',
+    image: 'https://images.unsplash.com/photo-1586375300773-8384e3e4916f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+    description: 'Sumérgete en la naturaleza en nuestro exclusivo lodge rodeado de exuberante selva tropical y ruinas mayas.'
+  }
+];
+---
+
+<Layout title={translations.nav.hotels}>
+  <div class="pt-24 pb-16 bg-gray-50 dark:bg-gray-800">
+    <div class="container mx-auto px-4">
+      <h1 class="text-4xl font-serif text-center mb-8 dark:text-white">{translations.nav.hotels}</h1>
+      
+      <!-- Hotels Grid -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {hotels.map(hotel => (
+          <div class="bg-white dark:bg-gray-900 rounded-lg overflow-hidden shadow-lg">
+            <div class="relative h-64 overflow-hidden">
+              <img 
+                src={hotel.image} 
+                alt={hotel.name}
+                class="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+              />
+            </div>
+            <div class="p-6">
+              <h2 class="text-xl font-serif font-semibold mb-2 dark:text-white">{hotel.name}</h2>
+              <div class="flex items-center gap-1 text-gray-600 dark:text-gray-400 mb-4">
+                <Icon name="lucide:map-pin" class="w-4 h-4 text-gold-600" />
+                <span class="text-sm">{hotel.location}</span>
+              </div>
+              <p class="text-gray-600 dark:text-gray-400 mb-6 text-sm">{hotel.description}</p>
+              <div class="flex justify-between items-center">
+                <a 
+                  href={`/hoteles/${hotel.id}`}
+                  class="inline-block bg-gold-600 text-white px-4 py-2 rounded-md hover:bg-gold-700 transition-colors"
+                >
+                  Ver Detalles
+                </a>
+                <button class="text-gold-600 hover:text-gold-700 transition-colors">
+                  <Icon name="lucide:heart" class="w-6 h-6" />
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</Layout>

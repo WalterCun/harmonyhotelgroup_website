@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "Harmony Grand Hotel Cuenca",
+    "location": "Centro Histórico, Cuenca",
+    "description": "Nuestro hotel insignia ubicado en el corazón del centro histórico de Cuenca. Disfrute de habitaciones elegantes, restaurante gourmet y vistas panorámicas de la ciudad.",
+    "features": ["Piscina", "Spa", "Restaurante", "Bar", "Gimnasio", "Wi-Fi gratis"],
+    "price": 120,
+    "rating": 4.8,
+    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2Fcuencasightseeingtours%2F%3Flocale%3Des_LA&psig=AOvVaw2lHtK58xQwAl721tiTEyUx&ust=1745007751576000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNC55Mny34wDFQAAAAAdAAAAABAE"
+  },
+  {
+    "id": 2,
+    "name": "Harmony Boutique Hotel",
+    "location": "Barrio San Sebastián, Cuenca",
+    "description": "Un acogedor hotel boutique con encanto colonial y modernas comodidades. Ideal para viajeros que buscan una experiencia auténtica en un ambiente íntimo.",
+    "features": ["Desayuno incluido", "Terraza", "Jardín", "Wi-Fi gratis", "Servicio de habitaciones"],
+    "price": 85,
+    "rating": 4.6,
+    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2Fcuencasightseeingtours%2F%3Flocale%3Des_LA&psig=AOvVaw2lHtK58xQwAl721tiTEyUx&ust=1745007751576000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNC55Mny34wDFQAAAAAdAAAAABAE"
+  },
+  {
+    "id": 3,
+    "name": "Harmony Riverside Resort",
+    "location": "Orillas del Río Tomebamba, Cuenca",
+    "description": "Ubicado junto al pintoresco río Tomebamba, este resort ofrece una experiencia tranquila con amplios jardines y vistas al agua.",
+    "features": ["Piscina exterior", "Jardines", "Restaurante", "Spa", "Actividades al aire libre", "Wi-Fi gratis"],
+    "price": 150,
+    "rating": 4.9,
+    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2Fcuencasightseeingtours%2F%3Flocale%3Des_LA&psig=AOvVaw2lHtK58xQwAl721tiTEyUx&ust=1745007751576000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNC55Mny34wDFQAAAAAdAAAAABAE"
+  },
+  {
+    "id": 4,
+    "name": "Harmony Business Hotel",
+    "location": "Zona Financiera, Cuenca",
+    "description": "Diseñado para viajeros de negocios, con salas de conferencias, servicios ejecutivos y ubicación conveniente cerca del distrito financiero.",
+    "features": ["Centro de negocios", "Salas de conferencias", "Restaurante", "Gimnasio", "Transporte al aeropuerto", "Wi-Fi de alta velocidad"],
+    "price": 110,
+    "rating": 4.5,
+    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2Fcuencasightseeingtours%2F%3Flocale%3Des_LA&psig=AOvVaw2lHtK58xQwAl721tiTEyUx&ust=1745007751576000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNC55Mny34wDFQAAAAAdAAAAABAE"
+  }
+]

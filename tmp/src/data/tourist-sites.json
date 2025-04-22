@@ -1,0 +1,106 @@
+[
+  {
+    "id": 1,
+    "name": "Catedral de la Inmaculada Concepción",
+    "type": "Iglesia",
+    "location": "Centro Histórico, Cuenca",
+    "description": "También conocida como la Catedral Nueva, es el símbolo más emblemático de Cuenca. Sus cúpulas azules dominan el horizonte de la ciudad y su arquitectura mezcla estilos románico y gótico.",
+    "distance": "0.5 km desde Harmony Grand Hotel",
+    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2Fcuencasightseeingtours%2F%3Flocale%3Des_LA&psig=AOvVaw2lHtK58xQwAl721tiTEyUx&ust=1745007751576000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNC55Mny34wDFQAAAAAdAAAAABAE",
+    "coordinates": {
+      "lat": -2.8969,
+      "lng": -79.0048
+    }
+  },
+  {
+    "id": 2,
+    "name": "Plaza Abdón Calderón",
+    "type": "Plaza",
+    "location": "Centro Histórico, Cuenca",
+    "description": "Plaza principal de Cuenca, rodeada de edificios históricos y la Catedral Nueva. Es un punto de encuentro popular tanto para locales como para turistas.",
+    "distance": "0.3 km desde Harmony Grand Hotel",
+    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2Fcuencasightseeingtours%2F%3Flocale%3Des_LA&psig=AOvVaw2lHtK58xQwAl721tiTEyUx&ust=1745007751576000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNC55Mny34wDFQAAAAAdAAAAABAE",
+    "coordinates": {
+      "lat": -2.8972,
+      "lng": -79.0045
+    }
+  },
+  {
+    "id": 3,
+    "name": "Museo del Sombrero de Paja Toquilla",
+    "type": "Museo",
+    "location": "Calle Larga, Cuenca",
+    "description": "Dedicado a la historia y fabricación del auténtico sombrero de Panamá, que en realidad es originario de Ecuador. Puede observar el proceso de fabricación y comprar sombreros de alta calidad.",
+    "distance": "0.8 km desde Harmony Boutique Hotel",
+    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2Fcuencasightseeingtours%2F%3Flocale%3Des_LA&psig=AOvVaw2lHtK58xQwAl721tiTEyUx&ust=1745007751576000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNC55Mny34wDFQAAAAAdAAAAABAE",
+    "coordinates": {
+      "lat": -2.9018,
+      "lng": -79.0045
+    }
+  },
+  {
+    "id": 4,
+    "name": "Río Tomebamba",
+    "type": "Atracción Natural",
+    "location": "Atraviesa la ciudad de Cuenca",
+    "description": "Uno de los cuatro ríos que cruzan Cuenca, el Tomebamba divide la ciudad antigua de la nueva. Sus orillas son perfectas para pasear y disfrutar de la naturaleza en pleno centro urbano.",
+    "distance": "0.1 km desde Harmony Riverside Resort",
+    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2Fcuencasightseeingtours%2F%3Flocale%3Des_LA&psig=AOvVaw2lHtK58xQwAl721tiTEyUx&ust=1745007751576000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNC55Mny34wDFQAAAAAdAAAAABAE",
+    "coordinates": {
+      "lat": -2.9030,
+      "lng": -79.0100
+    }
+  },
+  {
+    "id": 5,
+    "name": "Parque Nacional Cajas",
+    "type": "Parque Nacional",
+    "location": "30 km al oeste de Cuenca",
+    "description": "Impresionante área natural con más de 200 lagunas glaciares, páramos andinos y bosques nublados. Ideal para senderismo, observación de aves y fotografía de naturaleza.",
+    "distance": "45 minutos en auto desde cualquier hotel",
+    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2Fcuencasightseeingtours%2F%3Flocale%3Des_LA&psig=AOvVaw2lHtK58xQwAl721tiTEyUx&ust=1745007751576000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNC55Mny34wDFQAAAAAdAAAAABAE",
+    "coordinates": {
+      "lat": -2.8422,
+      "lng": -79.2422
+    }
+  },
+  {
+    "id": 6,
+    "name": "Museo Pumapungo",
+    "type": "Museo y Ruinas Arqueológicas",
+    "location": "Calle Larga, Cuenca",
+    "description": "Complejo que incluye un museo etnográfico y las ruinas arqueológicas de Pumapungo, un importante sitio inca. El museo alberga una impresionante colección de arte y artefactos culturales.",
+    "distance": "1.2 km desde Harmony Grand Hotel",
+    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2Fcuencasightseeingtours%2F%3Flocale%3Des_LA&psig=AOvVaw2lHtK58xQwAl721tiTEyUx&ust=1745007751576000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNC55Mny34wDFQAAAAAdAAAAABAE",
+    "coordinates": {
+      "lat": -2.9082,
+      "lng": -78.9973
+    }
+  },
+  {
+    "id": 7,
+    "name": "Mirador de Turi",
+    "type": "Mirador",
+    "location": "Colina de Turi, Cuenca",
+    "description": "Ofrece vistas panorámicas espectaculares de toda la ciudad de Cuenca. Es especialmente hermoso al atardecer cuando las luces de la ciudad comienzan a brillar.",
+    "distance": "4 km desde el centro de la ciudad",
+    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2Fcuencasightseeingtours%2F%3Flocale%3Des_LA&psig=AOvVaw2lHtK58xQwAl721tiTEyUx&ust=1745007751576000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNC55Mny34wDFQAAAAAdAAAAABAE",
+    "coordinates": {
+      "lat": -2.9232,
+      "lng": -79.0149
+    }
+  },
+  {
+    "id": 8,
+    "name": "Mercado 10 de Agosto",
+    "type": "Mercado",
+    "location": "Centro de Cuenca",
+    "description": "Mercado tradicional donde puede experimentar la auténtica cultura local, probar frutas exóticas y platos típicos, y comprar artesanías y productos frescos.",
+    "distance": "0.7 km desde Harmony Grand Hotel",
+    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2Fcuencasightseeingtours%2F%3Flocale%3Des_LA&psig=AOvVaw2lHtK58xQwAl721tiTEyUx&ust=1745007751576000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNC55Mny34wDFQAAAAAdAAAAABAE",
+    "coordinates": {
+      "lat": -2.8992,
+      "lng": -79.0042
+    }
+  }
+]

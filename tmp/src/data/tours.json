@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "name": "Tour del Centro Histórico",
+    "duration": "3 horas",
+    "description": "Recorra las calles empedradas del centro histórico de Cuenca, declarado Patrimonio Cultural de la Humanidad por la UNESCO. Visite iglesias coloniales, plazas históricas y mercados tradicionales.",
+    "highlights": ["Catedral de la Inmaculada Concepción", "Plaza Abdón Calderón", "Mercado 10 de Agosto", "Museo del Sombrero"],
+    "price": 25,
+    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2Fcuencasightseeingtours%2F%3Flocale%3Des_LA&psig=AOvVaw2lHtK58xQwAl721tiTEyUx&ust=1745007751576000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNC55Mny34wDFQAAAAAdAAAAABAE"
+  },
+  {
+    "id": 2,
+    "name": "Excursión al Parque Nacional Cajas",
+    "duration": "8 horas",
+    "description": "Aventúrese en el impresionante Parque Nacional Cajas, con sus más de 200 lagunas glaciares, páramos andinos y bosques nublados. Ideal para amantes de la naturaleza y el senderismo.",
+    "highlights": ["Laguna Toreadora", "Senderos ecológicos", "Observación de aves", "Flora y fauna endémica"],
+    "price": 65,
+    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2Fcuencasightseeingtours%2F%3Flocale%3Des_LA&psig=AOvVaw2lHtK58xQwAl721tiTEyUx&ust=1745007751576000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNC55Mny34wDFQAAAAAdAAAAABAE"
+  },
+  {
+    "id": 3,
+    "name": "Ruta Artesanal de Cuenca",
+    "duration": "4 horas",
+    "description": "Conozca a los artesanos locales y sus técnicas tradicionales. Visite talleres de cerámica, joyería en filigrana, textiles y sombreros de paja toquilla (Panama Hats).",
+    "highlights": ["Taller de sombreros de paja toquilla", "Cerámica de Convención del 45", "Filigrana en plata", "Compras de artesanías"],
+    "price": 30,
+    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2Fcuencasightseeingtours%2F%3Flocale%3Des_LA&psig=AOvVaw2lHtK58xQwAl721tiTEyUx&ust=1745007751576000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNC55Mny34wDFQAAAAAdAAAAABAE"
+  },
+  {
+    "id": 4,
+    "name": "Tour Gastronómico",
+    "duration": "5 horas",
+    "description": "Deguste la rica gastronomía cuencana y aprenda sobre sus tradiciones culinarias. Incluye visitas a mercados locales, restaurantes tradicionales y una clase de cocina.",
+    "highlights": ["Degustación de platos típicos", "Visita al Mercado 10 de Agosto", "Clase de cocina ecuatoriana", "Cata de bebidas tradicionales"],
+    "price": 45,
+    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2Fcuencasightseeingtours%2F%3Flocale%3Des_LA&psig=AOvVaw2lHtK58xQwAl721tiTEyUx&ust=1745007751576000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNC55Mny34wDFQAAAAAdAAAAABAE"
+  },
+  {
+    "id": 5,
+    "name": "Ingapirca y Gualaceo",
+    "duration": "10 horas",
+    "description": "Visite las ruinas arqueológicas de Ingapirca, el sitio inca más importante de Ecuador, y luego explore el pintoresco pueblo de Gualaceo, conocido por sus textiles y orfebrería.",
+    "highlights": ["Ruinas de Ingapirca", "Mercado de Gualaceo", "Artesanías locales", "Gastronomía típica"],
+    "price": 75,
+    "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2Fcuencasightseeingtours%2F%3Flocale%3Des_LA&psig=AOvVaw2lHtK58xQwAl721tiTEyUx&ust=1745007751576000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNC55Mny34wDFQAAAAAdAAAAABAE"
+  }
+]
