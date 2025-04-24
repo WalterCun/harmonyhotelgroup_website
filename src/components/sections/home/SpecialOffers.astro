@@ -1,0 +1,86 @@
+---
+const offers = [
+  {
+    id: 1,
+    title: "Summer Escape Package",
+    description: "Enjoy 25% off your stay, complimentary breakfast, and a welcome amenity.",
+    discount: "25%",
+    validity: "May 15 - Sep 30",
+    tags: ["Limited Time", "Popular"],
+    image: "https://images.pexels.com/photos/2373201/pexels-photo-2373201.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+  },
+  {
+    id: 2,
+    title: "Weekend Retreat",
+    description: "Book a two-night weekend stay and receive a free spa treatment or dining credit.",
+    discount: "Free Spa",
+    validity: "All Year",
+    tags: ["Weekends"],
+    image: "https://images.pexels.com/photos/1743165/pexels-photo-1743165.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+  },
+  {
+    id: 3,
+    title: "Extended Stay Offer",
+    description: "Stay 5 nights or more and save 30% on your entire booking.",
+    discount: "30%",
+    validity: "All Year",
+    tags: ["Long Stay"],
+    image: "https://images.pexels.com/photos/2029698/pexels-photo-2029698.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+  }
+];
+---
+
+<section class="section bg-white dark:bg-neutral-900">
+  <div class="container">
+    <div class="text-center mb-12">
+      <h2 class="mb-4">Special Offers</h2>
+      <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
+        Take advantage of our exclusive promotions and enjoy extra benefits with your stay.
+      </p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {offers.map(offer => (
+        <div class="card group hover:shadow-xl transition-all duration-300">
+          <div class="relative">
+            <img 
+              src={offer.image} 
+              alt={offer.title} 
+              class="w-full h-48 object-cover"
+            />
+            <div class="absolute top-4 left-4 bg-primary-500 text-white py-1 px-3 rounded-full text-sm font-bold">
+              {offer.discount} OFF
+            </div>
+          </div>
+          <div class="p-6">
+            <div class="flex flex-wrap gap-2 mb-3">
+              {offer.tags.map(tag => (
+                <span class="text-xs font-semibold bg-secondary-100 dark:bg-secondary-900 text-secondary-800 dark:text-secondary-200 py-1 px-2 rounded-full">
+                  {tag}
+                </span>
+              ))}
+            </div>
+            <h3 class="text-xl font-semibold mb-2">{offer.title}</h3>
+            <p class="text-neutral-600 dark:text-neutral-400 mb-4">
+              {offer.description}
+            </p>
+            <div class="flex justify-between items-center">
+              <p class="text-sm">
+                <span class="font-medium">Valid until:</span> {offer.validity}
+              </p>
+              <a href={`/offers/${offer.id}`} class="text-primary-500 font-medium hover:text-primary-600 transition-colors">
+                View Details &rarr;
+              </a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+    
+    <div class="text-center mt-12">
+      <a href="/offers" class="btn btn-outline">
+        View All Offers
+      </a>
+    </div>
+  </div>
+</section>
