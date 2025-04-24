@@ -1,0 +1,92 @@
+<!-- -&#45;&#45;-->
+<!--// HeroSection.astro - Hero section with changing background images-->
+<!--import ReservationForm from './ReservationForm.astro';-->
+<!-- -&#45;&#45;-->
+
+<!--<section class="relative min-h-screen flex items-center justify-center overflow-hidden" x-data="heroSlideshow">-->
+<!--    &lt;!&ndash; Background images &ndash;&gt;-->
+<!--    <template x-for="(image, index) in images" :key="index">-->
+<!--        <div-->
+<!--                class="absolute inset-0 w-full h-full bg-cover bg-center transition-opacity duration-1000 ease-in-out"-->
+<!--                :style="`background-image: url('${image}')`"-->
+<!--                :class="{ 'opacity-100': currentImageIndex === index, 'opacity-0': currentImageIndex !== index }"-->
+<!--        ></div>-->
+<!--    </template>-->
+
+<!--    &lt;!&ndash; IFrame de Youtube &ndash;&gt;-->
+<!--    <div id="video-yt" class="absolute inset-0" :style=".video-yt {position: relative;overflow: hidden;width: 100%;padding-top: 56.25%;} .video-yt iframe {position: absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;height: 100%;}">-->
+<!--        <iframe-->
+<!--                width="100%" height="100%"-->
+<!--                src="https://www.youtube.com/embed/hX9wclY8TDk?si=u4Y3VV0VejHBNUj9&autoplay=1&mute=1&controls=0&loop=1"-->
+<!--                title="Cuenca" frameborder="0" allowfullscreen="allowfullscreen"></iframe>-->
+<!--                &lt;!&ndash;allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"&ndash;&gt;-->
+<!--                &lt;!&ndash;referrerpolicy="strict-origin-when-cross-origin" &ndash;&gt;-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Overlay &ndash;&gt;-->
+<!--    <div class="absolute inset-0 bg-black bg-opacity-50"></div>-->
+
+<!--    &lt;!&ndash; Content &ndash;&gt;-->
+<!--    <div class=" z-10 container mx-auto px-4 py-16">-->
+<!--        <div class="text-center mb-12">-->
+<!--            <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white mb-4 animate-fade-in">-->
+<!--                Harmony Hotel Group-->
+<!--            </h1>-->
+<!--            <p class="text-xl md:text-2xl text-white font-light max-w-3xl mx-auto animate-slide-up">-->
+<!--                Descubre la magia de Cuenca con nuestras exclusivas propiedades-->
+<!--            </p>-->
+<!--        </div>-->
+
+<!--        <ReservationForm/>-->
+<!--    </div>-->
+<!--</section>-->
+
+<!--<script>-->
+<!--    // This script ensures Alpine.js works correctly with Astro's partial hydration-->
+<!--    document.addEventListener('astro:page-load', () => {-->
+<!--        if (window.Alpine) {-->
+<!--            window.Alpine.initTree(document.body);-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
+
+---
+---
+
+<section class="relative h-[85vh] min-h-[600px] overflow-hidden">
+    <!-- Hero Background -->
+    <div class="absolute inset-0 z-0">
+        <img
+                src="https://images.pexels.com/photos/338504/pexels-photo-338504.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                alt="Hotel view"
+                class="w-full h-full object-cover"
+                fetchpriority="high"
+        />
+        <div class="absolute inset-0 bg-neutral-900/50"></div>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="container relative z-10 flex h-full items-center">
+        <div class="max-w-2xl text-white slide-up">
+            <h1 class="mb-6">Experience Luxury in Every Stay</h1>
+            <p class="text-xl mb-8">
+                Discover unparalleled comfort and impeccable service at our handpicked hotels and resorts around the world.
+            </p>
+            <div class="flex flex-wrap gap-4">
+                <a href="/hotels" class="btn btn-primary">
+                    View Our Hotels
+                </a>
+                <a href="/offers" class="btn bg-white text-neutral-900 hover:bg-neutral-100">
+                    Special Offers
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 5.25l-7.5 7.5-7.5-7.5m15 6l-7.5 7.5-7.5-7.5" />
+        </svg>
+    </div>
+</section>
