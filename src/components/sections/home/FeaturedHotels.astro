@@ -1,65 +1,152 @@
----
-// FeaturedHotels.astro - Featured hotels section for homepage
-import { Image } from 'astro:assets';
-import { getFeaturedHotels } from '@utils/api';
+<!-- -&#45;&#45;-->
+<!--// FeaturedHotels.astro - Featured hotels section for homepage-->
+<!--import { Image } from 'astro:assets';-->
+<!--import { getFeaturedHotels } from '@utils/api';-->
 
-// Fetch featured hotels from API
-const featuredHotels = await getFeaturedHotels(3);
+<!--// Fetch featured hotels from API-->
+<!--const featuredHotels = await getFeaturedHotels(3);-->
+<!-- -&#45;&#45;-->
+
+<!--<section class="py-16 bg-white dark:bg-harmony-black-800">-->
+<!--  <div class="container mx-auto px-4">-->
+<!--    <div class="text-center mb-12">-->
+<!--      <h2 class="text-3xl md:text-4xl font-serif font-bold text-harmony-black-800 dark:text-white mb-4">-->
+<!--        Nuestros Hoteles-->
+<!--      </h2>-->
+<!--      <p class="text-lg text-harmony-black-600 dark:text-harmony-white-600 max-w-3xl mx-auto">-->
+<!--        Descubra nuestra colección de hoteles exclusivos en Cuenca, cada uno con su propio carácter y encanto único.-->
+<!--      </p>-->
+<!--    </div>-->
+
+<!--    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">-->
+<!--      {featuredHotels.map(hotel => (-->
+<!--        <div class="bg-white dark:bg-harmony-black-700 rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105">-->
+<!--          <div class="h-64 overflow-hidden">-->
+<!--            <img -->
+<!--              src={hotel.image.replace('/src', '')} -->
+<!--              alt={hotel.name}-->
+<!--              class="w-full h-full object-cover"-->
+<!--            />-->
+<!--          </div>-->
+<!--          <div class="p-6">-->
+<!--            <h3 class="text-xl font-serif font-semibold text-harmony-black-800 dark:text-white mb-2">{hotel.name}</h3>-->
+<!--            <p class="text-harmony-black-600 dark:text-harmony-white-600 mb-4 flex items-center">-->
+<!--              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 text-harmony-gold-500" viewBox="0 0 20 20" fill="currentColor">-->
+<!--                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />-->
+<!--              </svg>-->
+<!--              {hotel.location}-->
+<!--            </p>-->
+<!--            <p class="text-harmony-black-700 dark:text-harmony-white-700 mb-4 line-clamp-3">{hotel.description}</p>-->
+<!--            <div class="flex justify-between items-center">-->
+<!--              <span class="text-harmony-gold-600 font-bold">${hotel.price} USD / noche</span>-->
+<!--              <a -->
+<!--                href={`/hoteles#hotel-${hotel.id}`}-->
+<!--                class="inline-flex items-center px-4 py-2 bg-harmony-black-700 text-white rounded hover:bg-harmony-black-800 transition-colors"-->
+<!--              >-->
+<!--                Ver detalles-->
+<!--              </a>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      ))}-->
+<!--    </div>-->
+
+<!--    <div class="text-center mt-12">-->
+<!--      <a -->
+<!--        href="/hoteles" -->
+<!--        class="inline-flex items-center px-6 py-3 bg-harmony-gold-600 text-white rounded-md hover:bg-harmony-gold-700 transition-colors"-->
+<!--      >-->
+<!--        <span>Mostrar más</span>-->
+<!--        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">-->
+<!--          <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />-->
+<!--        </svg>-->
+<!--      </a>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</section>-->
+
+---
+const featuredHotels = [
+{
+    id: 1,
+    name: "Harmony Grand Plaza",
+    location: "New York, USA",
+    price: 350,
+    currency: "USD",
+    rating: 4.8,
+    image: "https://images.pexels.com/photos/2034335/pexels-photo-2034335.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+    },
+{
+    id: 2,
+    name: "Harmony Beachfront Resort",
+    location: "Bali, Indonesia",
+    price: 280,
+    currency: "USD",
+    rating: 4.9,
+    image: "https://images.pexels.com/photos/261102/pexels-photo-261102.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+    },
+{
+    id: 3,
+    name: "Harmony Mountain Lodge",
+    location: "Swiss Alps, Switzerland",
+    price: 420,
+    currency: "USD",
+    rating: 4.7,
+    image: "https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+    }
+];
 ---
 
-<section class="py-16 bg-white dark:bg-harmony-black-800">
-  <div class="container mx-auto px-4">
+<section class="section bg-white dark:bg-neutral-900">
+  <div class="container">
     <div class="text-center mb-12">
-      <h2 class="text-3xl md:text-4xl font-serif font-bold text-harmony-black-800 dark:text-white mb-4">
-        Nuestros Hoteles
-      </h2>
-      <p class="text-lg text-harmony-black-600 dark:text-harmony-white-600 max-w-3xl mx-auto">
-        Descubra nuestra colección de hoteles exclusivos en Cuenca, cada uno con su propio carácter y encanto único.
+      <h2 class="mb-4">Featured Hotels</h2>
+      <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
+        Discover our most popular properties, known for their exceptional service, stunning locations, and world-class amenities.
       </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {featuredHotels.map(hotel => (
-        <div class="bg-white dark:bg-harmony-black-700 rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105">
-          <div class="h-64 overflow-hidden">
-            <img 
-              src={hotel.image.replace('/src', '')} 
-              alt={hotel.name}
-              class="w-full h-full object-cover"
-            />
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-serif font-semibold text-harmony-black-800 dark:text-white mb-2">{hotel.name}</h3>
-            <p class="text-harmony-black-600 dark:text-harmony-white-600 mb-4 flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 text-harmony-gold-500" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
-              </svg>
-              {hotel.location}
-            </p>
-            <p class="text-harmony-black-700 dark:text-harmony-white-700 mb-4 line-clamp-3">{hotel.description}</p>
-            <div class="flex justify-between items-center">
-              <span class="text-harmony-gold-600 font-bold">${hotel.price} USD / noche</span>
-              <a 
-                href={`/hoteles#hotel-${hotel.id}`}
-                class="inline-flex items-center px-4 py-2 bg-harmony-black-700 text-white rounded hover:bg-harmony-black-800 transition-colors"
-              >
-                Ver detalles
-              </a>
+          <div class="card group hover:scale-[1.02] transition-transform duration-300 ease-out">
+            <div class="relative h-64 overflow-hidden">
+              <img
+                  src={hotel.image}
+                  alt={hotel.name}
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div class="absolute top-4 right-4 bg-white dark:bg-neutral-800 rounded-full py-1 px-3 text-sm font-semibold text-primary-500">
+                {hotel.rating}/5
+              </div>
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-semibold mb-2">{hotel.name}</h3>
+              <p class="text-neutral-600 dark:text-neutral-400 mb-4">
+              <span class="inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 mr-1">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                {hotel.location}
+              </span>
+              </p>
+              <div class="flex justify-between items-center">
+                <div>
+                  <span class="text-xl font-bold">${hotel.price}</span>
+                  <span class="text-neutral-600 dark:text-neutral-400"> / night</span>
+                </div>
+                <a href={`/hotels/${hotel.id}`} class="btn btn-primary py-2 px-4">
+                  View Details
+                </a>
+              </div>
             </div>
           </div>
-        </div>
       ))}
     </div>
 
     <div class="text-center mt-12">
-      <a 
-        href="/hoteles" 
-        class="inline-flex items-center px-6 py-3 bg-harmony-gold-600 text-white rounded-md hover:bg-harmony-gold-700 transition-colors"
-      >
-        <span>Mostrar más</span>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-        </svg>
+      <a href="/hotels" class="btn btn-outline">
+        View All Hotels
       </a>
     </div>
   </div>
