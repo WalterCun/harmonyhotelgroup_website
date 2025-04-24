@@ -1,153 +1,93 @@
 ---
-import { getRelativeLocaleUrl } from 'astro:i18n';
-import { Icon } from 'astro-icon/components';
+import SocialLinks from './SocialLinks.astro';
 
-// Social media links
-const socials = [
-  { name: 'Facebook', icon: 'lucide:facebook', url: 'https://facebook.com' },
-  { name: 'Instagram', icon: 'lucide:instagram', url: 'https://instagram.com' },
-  { name: 'Twitter', icon: 'lucide:twitter', url: 'https://twitter.com' },
-  { name: 'YouTube', icon: 'lucide:youtube', url: 'https://youtube.com' }
-];
-
-// Quick links
 const quickLinks = [
-  { key: 'home', path: '/' },
-  { key: 'hotels', path: '/hoteles' },
-  { key: 'tours', path: '/tours' },
-  { key: 'offers', path: '/ofertas' },
-  { key: 'contact', path: '/contacto' }
+  { label: "About Us", href: "/about" },
+  { label: "Hotels", href: "/hotels" },
+  { label: "Destinations", href: "/destinations" },
+  { label: "Offers", href: "/offers" },
+  { label: "Blog", href: "/blog" },
+  { label: "Contact", href: "/contact" },
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms of Service", href: "/terms" },
 ];
 
-// FAQs
 const faqs = [
-  'booking',
-  'cancellation',
-  'payment',
-  'checkin',
-  'services'
+  { label: "Booking Process", href: "/faq#booking" },
+  { label: "Cancellation Policy", href: "/faq#cancellation" },
+  { label: "Loyalty Program", href: "/faq#loyalty" },
+  { label: "Payment Methods", href: "/faq#payment" },
+  { label: "COVID-19 Measures", href: "/faq#covid" },
 ];
-
-// Legal links
-const legalLinks = [
-  'privacy',
-  'terms',
-  'cookies'
-];
-
-// Get translations based on current locale
-const { currentLocale } = Astro;
-const translations = await import(`../i18n/${currentLocale || 'es'}.json`);
 ---
 
-<footer class="bg-gray-900 text-gray-300">
-  <div class="container mx-auto px-4 py-12">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-      <!-- About -->
+<footer class="bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 border-t border-neutral-200 dark:border-neutral-800">
+  <div class="container">
+    <!-- Main Footer Content -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 py-12">
+      <!-- Company Info -->
       <div>
-        <h3 class="text-2xl font-serif text-white mb-4">
-          <span class="text-gold-600">Harmony</span>Hotel Group
-        </h3>
-        <p class="text-sm leading-relaxed mb-4">
-          {translations.footer.about}
-        </p>
-        <div class="flex space-x-4">
-          {socials.map(social => (
-            <a 
-              href={social.url}
-              aria-label={social.name}
-              class="hover:text-gold-600 transition-colors"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Icon name={social.icon} class="w-5 h-5" />
-            </a>
-          ))}
-        </div>
+        <h3 class="text-xl font-semibold font-serif text-neutral-800 dark:text-neutral-100 mb-4">Harmony Hotel Group</h3>
+        <p class="mb-4">Experience luxury and comfort at our premium hotels and resorts worldwide. Discover unforgettable stays with exceptional service.</p>
+        <SocialLinks />
       </div>
 
       <!-- Quick Links -->
       <div>
-        <h4 class="text-lg font-semibold text-white mb-4">{translations.footer.quickLinks}</h4>
+        <h3 class="text-xl font-semibold font-serif text-neutral-800 dark:text-neutral-100 mb-4">Quick Links</h3>
         <ul class="space-y-2">
           {quickLinks.map(link => (
-            <li>
-              <a 
-                href={getRelativeLocaleUrl(currentLocale || 'es', link.path)} 
-                class="hover:text-gold-600 transition-colors"
-              >
-                {translations.footer.links[link.key]}
-              </a>
-            </li>
+              <li>
+                <a
+                    href={link.href}
+                    class="hover:text-primary-500 dark:hover:text-primary-400 transition-colors duration-200"
+                >
+                  {link.label}
+                </a>
+              </li>
           ))}
         </ul>
       </div>
 
-      <!-- FAQ -->
+      <!-- FAQs -->
       <div>
-        <h4 class="text-lg font-semibold text-white mb-4">{translations.footer.faq.title}</h4>
+        <h3 class="text-xl font-semibold font-serif text-neutral-800 dark:text-neutral-100 mb-4">FAQs</h3>
         <ul class="space-y-2">
           {faqs.map(faq => (
-            <li class="text-sm">
-              <a 
-                href={getRelativeLocaleUrl(currentLocale || 'es', '/faq')} 
-                class="hover:text-gold-600 transition-colors"
-              >
-                {translations.footer.faq[faq]}
-              </a>
-            </li>
+              <li>
+                <a
+                    href={faq.href}
+                    class="hover:text-primary-500 dark:hover:text-primary-400 transition-colors duration-200"
+                >
+                  {faq.label}
+                </a>
+              </li>
           ))}
         </ul>
       </div>
 
-      <!-- Contact -->
+      <!-- Contact Form -->
       <div>
-        <h4 class="text-lg font-semibold text-white mb-4">{translations.footer.contact.title}</h4>
-        <ul class="space-y-3">
-          <li class="flex items-center gap-2">
-            <Icon name="lucide:phone" class="w-4 h-4 text-gold-600" />
-            <span>+1 (555) 123-4567</span>
-          </li>
-          <li class="flex items-center gap-2">
-            <Icon name="lucide:mail" class="w-4 h-4 text-gold-600" />
-            <a href="mailto:info@harmonyhotelgroup.com" class="hover:text-gold-600 transition-colors">
-              info@harmonyhotelgroup.com
-            </a>
-          </li>
-          <li class="flex items-center gap-2">
-            <Icon name="lucide:map-pin" class="w-4 h-4 text-gold-600" />
-            <span>{translations.footer.contact.address}</span>
-          </li>
-        </ul>
+        <h3 class="text-xl font-semibold font-serif text-neutral-800 dark:text-neutral-100 mb-4">Contact Us</h3>
+        <form class="space-y-3">
+          <div>
+            <label>
+              <input type="email" placeholder="Email Address" class="input" required />
+            </label>
+          </div>
+          <div>
+            <label>
+              <textarea placeholder="Your Message" rows="3" class="input"></textarea>
+            </label>
+          </div>
+          <button type="submit" class="btn btn-primary">Send Message</button>
+        </form>
       </div>
     </div>
 
     <!-- Bottom Bar -->
-    <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-      <p class="text-sm text-gray-500">
-        © {new Date().getFullYear()} Harmony Hotel Group. {translations.footer.rights}
-      </p>
-      <div class="flex gap-4 mt-4 md:mt-0">
-        {legalLinks.map(legal => (
-          <a 
-            href="#" 
-            class="text-sm text-gray-500 hover:text-gold-600 transition-colors"
-          >
-            {translations.footer.legal[legal]}
-          </a>
-        ))}
-      </div>
+    <div class="py-4 border-t border-neutral-200 dark:border-neutral-800 text-sm text-center">
+      <p>&copy; {new Date().getFullYear()} Harmony Hotel Group. All rights reserved.</p>
     </div>
   </div>
 </footer>
-
-<style>
-  /* Add any component-specific styles here */
-  .text-gold-600 {
-    color: #d4af37;
-  }
-  
-  .hover\:text-gold-600:hover {
-    color: #d4af37;
-  }
-</style>
