@@ -1,13 +1,23 @@
 ---
+// Define interfaces para las props
+interface DropdownOption {
+    label: string | number;
+    iconPath: string;
+}
+
 interface Props {
     title: string;
-    options: Array<string>;
-    images: Array<string>
+    options: DropdownOption[];
+    iconWidth?: number | string;
+    iconHeight?: number | string;
 }
+
 
 const {
     title,
-    options
+    options,
+    iconWidth = 50,
+    iconHeight = 25
 } = Astro.props;
 ---
 
@@ -21,17 +31,16 @@ const {
         </button>
 
         <div class="dropdown-menu">
-            {options.map((item) => {
-                return <div class="dropdown-item">
-                            <!--<svg class="item-icon" viewBox="0 0 24 24" width="18" height="18">-->
-                            <!--    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="currentColor"/>-->
-                            <!--</svg>-->
-                            <span>{item}</span>
+            {options.map(async (option) => {
+                return (
+                        <div class="dropdown-item">
+                            <img src={option.iconPath} alt=`Imagen de Selector ${option.label}` width={iconWidth} height={iconHeight}/>
+                            <span>{option.label}</span>
                         </div>
+                )
             })}
         </div>
     </div>
-
 </div>
 
 
@@ -227,6 +236,19 @@ const {
             top: 100%;
         }
     }
+
+    .flag-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 24px; /* Para mantener consistencia en el espaciado */
+    }
+
+    .flag-icon {
+        border-radius: 2px; /* Opcional: para dar un borde redondeado a las banderas */
+        object-fit: contain;
+    }
+
 
 </style>
 
