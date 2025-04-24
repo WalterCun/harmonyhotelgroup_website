@@ -1,21 +1,18 @@
 ---
-// import Logo from '../components/svg/Logo.astro';
 import Layout from '../layouts/Layout.astro';
-import DropDownBase from '../components/ui/dropdown/DropDownBase.astro';
-import ECU from '../components/svg/flags/ECU.astro'
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Hero from '../components/sections/home/Hero.astro';
+import FeaturedHotels from '../components/sections/home/FeaturedHotels.astro';
+import PopularDestinations from '../components/sections/home/PopularDestinations.astro';
+import SpecialOffers from '../components/sections/home/SpecialOffers.astro';
+import Testimonials from '../components/sections/home/Testimonials.astro';
+import Newsletter from '../components/sections/home/Newsletter.astro';
 ---
 
 <Layout>
-    <DropDownBase
-            title="Test"
-            iconHeight="25"
-            iconWidth="50"
-            options={[
-                {"label": "ECUADOR", "iconName": 'ECU'},
-                {"label": "ESTADOS UNIDOS", "iconName": 'USA'},
-                {"label": "REINO UNIDO", "iconName": 'GBR'}
-            ]}
-    />
+    <Hero />
+    <FeaturedHotels />
+    <PopularDestinations />
+    <SpecialOffers />
+    <Testimonials />
+    <Newsletter />
 </Layout>
