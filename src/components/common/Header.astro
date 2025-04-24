@@ -1,237 +1,48 @@
 ---
-import { getRelativeLocaleUrl } from 'astro:i18n';
-// import { Icon } from 'astro-icon/components';
-
-import { Icon } from 'astro-icon/components';
-
-// Navigation items
-const navItems = [
-  { path: getRelativeLocaleUrl(Astro.currentLocale || 'es', '/hoteles'), key: 'hotels' },
-  { path: getRelativeLocaleUrl(Astro.currentLocale || 'es', '/tours'), key: 'tours' },
-  { path: getRelativeLocaleUrl(Astro.currentLocale || 'es', '/ofertas'), key: 'offers' },
-  { path: getRelativeLocaleUrl(Astro.currentLocale || 'es', '/contacto'), key: 'contact' }
-];
-
-// Languages
-const languages = {
-  es: { name: 'Español', flag: 'https://flagcdn.com/w40/es.png' },
-  en: { name: 'English', flag: 'https://flagcdn.com/w40/gb.png' }
-};
-
-// Currencies
-const currencies = {
-  USD: { name: 'US Dollar', symbol: 'USD' },
-  EUR: { name: 'Euro', symbol: 'EUR' },
-  MXN: { name: 'Peso Mexicano', symbol: 'MXN' }
-};
-
-// Get translations based on current locale
-const { currentLocale } = Astro;
-const translations = await import(`../i18n/${currentLocale || 'es'}.json`);
+import BookingForm from '../forms/BookingForm.astro';
+import LanguageSwitcher from '../ui/dropdown/LanguageDropDown.astro';
+import CurrencySwitcher from '../ui/dropdown/CurrencyDropDown.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import Navigation from './Navigation.astro';
+import Logo from '../svg/Logo.astro';
 ---
 
-<header class="fixed w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-sm z-50">
-  <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-    <!-- Logo and name (text hidden on mobile) -->
-    <a href={getRelativeLocaleUrl(currentLocale || 'es', '/')} class="text-2xl font-serif text-gray-800 dark:text-white flex items-center gap-2">
-      <img src="/logo.svg" alt="Harmony Hotel Group" class="block md:hidden w-8 h-8" />
-      <span class="hidden md:block">
-        <span class="text-gold-600">Harmony</span>Hotel Group
-      </span>
-    </a>
-
-    <!-- Navigation and header options for large screens -->
-    <div class="hidden md:flex items-center gap-8">
-      <nav class="flex items-center gap-8">
-        {navItems.map(item => (
-          <a 
-            href={item.path}
-            class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-          >
-            {translations.nav[item.key]}
-          </a>
-        ))}
-      </nav>
-      <div class="flex items-center gap-4">
-        <!-- Language Selector -->
-        <div class="relative" id="language-dropdown">
-          <button class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-            <img src={languages[currentLocale || 'es'].flag} alt={languages[currentLocale || 'es'].name} class="w-5 h-5 rounded-full" />
-            <span class="text-sm text-gray-600 dark:text-gray-300">{languages[currentLocale || 'es'].name}</span>
-          </button>
-          <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg hidden" id="language-menu">
-            {Object.entries(languages).map(([code, lang]) => (
-              <a 
-                href={`/${code}${Astro.url.pathname.replace(/^\/[a-z]{2}\//, '/')}`} 
-                class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-              >
-                <div class="flex items-center gap-2">
-                  <img src={lang.flag} alt={lang.name} class="w-5 h-5 rounded-full" />
-                  <span>{lang.name}</span>
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-        
-        <!-- Dark Mode Toggle -->
-        <button id="dark-mode-toggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-          <Icon name="lucide:sun" class="w-5 h-5 text-gray-600 dark:text-gray-300 dark:block hidden" />
-          <Icon name="lucide:moon" class="w-5 h-5 text-gray-600 dark:text-gray-300 dark:hidden block" />
-        </button>
-        
-        <!-- Booking Button -->
-        <a href={getRelativeLocaleUrl(currentLocale || 'es', '/reservar')} class="bg-gold-600 text-white px-6 py-2 rounded-full hover:bg-gold-700 transition-colors">
-          {translations.nav.book}
+<header class="w-full bg-white dark:bg-neutral-900 shadow-sm sticky top-0 z-50 transition-colors duration-300">
+  <div class="container">
+    <!-- Top utility bar -->
+    <div class="flex justify-end items-center py-2 border-b border-neutral-200 dark:border-neutral-800 text-sm">
+      <div class="flex items-center space-x-4">
+        <LanguageSwitcher />
+        <CurrencySwitcher />
+        <ThemeToggle />
+        <a href="/login" class="text-neutral-700 dark:text-neutral-300 hover:text-primary-500 dark:hover:text-primary-400">
+          Login
         </a>
       </div>
     </div>
 
-    <!-- Hamburger Menu Button: Visible on mobile -->
-    <button id="mobile-menu-button" class="block md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-      <Icon name="lucide:menu" class="w-6 h-6 text-gray-600 dark:text-gray-300" />
-    </button>
+    <!-- Main navigation -->
+    <div class="main-navigation flex justify-between items-center py-4">
+      <Logo block md:hidden/>
+      <!--<div class="hidden md:block text-xl font-bold text-primary-600 dark:text-primary-400">-->
+      <!--  HARMONY HOTEL GROUP-->
+      <!--</div>-->
+
+      <Navigation />
+    </div>
   </div>
 
-  <!-- Mobile menu: hidden by default -->
-  <div id="mobile-menu" class="md:hidden hidden">
-    <div class="bg-white dark:bg-gray-900 p-4 shadow-md">
-      <div class="flex justify-end">
-        <button id="close-mobile-menu" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-          <Icon name="lucide:x" class="w-6 h-6 text-gray-600 dark:text-gray-300" />
-        </button>
-      </div>
-      <!-- Mobile navigation -->
-      <nav class="mt-4 space-y-4">
-        {navItems.map(item => (
-          <a 
-            href={item.path}
-            class="block text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-          >
-            {translations.nav[item.key]}
-          </a>
-        ))}
-      </nav>
-      <!-- Additional options in mobile menu -->
-      <div class="mt-4 space-y-4">
-        <!-- Mobile Language Selector -->
-        <div>
-          <p class="text-gray-700 dark:text-gray-300 font-medium mb-2">Language</p>
-          <div class="flex flex-wrap gap-2">
-            {Object.entries(languages).map(([code, lang]) => (
-              <a 
-                href={`/${code}${Astro.url.pathname.replace(/^\/[a-z]{2}\//, '/')}`}
-                class="flex items-center gap-2 px-3 py-1 rounded-md border border-gray-200 dark:border-gray-700"
-              >
-                <img src={lang.flag} alt={lang.name} class="w-5 h-5 rounded-full" />
-                <span class="text-sm">{lang.name}</span>
-              </a>
-            ))}
-          </div>
-        </div>
-        
-        <!-- Mobile Dark Mode Toggle -->
-        <div>
-          <button id="mobile-dark-mode-toggle" class="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
-            <span class="text-sm text-gray-700 dark:text-gray-300">Dark Mode</span>
-            <Icon name="lucide:sun" class="w-5 h-5 text-gray-600 dark:text-gray-300 dark:block hidden" />
-            <Icon name="lucide:moon" class="w-5 h-5 text-gray-600 dark:text-gray-300 dark:hidden block" />
-          </button>
-        </div>
-        
-        <!-- Mobile Booking Button -->
-        <div>
-          <a href={getRelativeLocaleUrl(currentLocale || 'es', '/reservar')} class="block bg-gold-600 text-white text-center px-6 py-2 rounded-full hover:bg-gold-700 transition-colors">
-            {translations.nav.book}
-          </a>
-        </div>
-      </div>
+
+  <div class="bg-primary-500/10 dark:bg-primary-500/5 py-4 border-t border-b border-neutral-200 dark:border-neutral-800">
+    <div class="container">
+      <BookingForm />
     </div>
   </div>
 </header>
 
-<script>
-  // Handle dark mode toggle
-  function setupDarkMode() {
-    const darkModeToggles = document.querySelectorAll('#dark-mode-toggle, #mobile-dark-mode-toggle');
-    
-    darkModeToggles.forEach(toggle => {
-      toggle.addEventListener('click', () => {
-        document.documentElement.classList.toggle('dark');
-        localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-      });
-    });
-    
-    // Set initial theme based on localStorage or system preference
-    if (localStorage.getItem('theme') === 'dark' || 
-        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }
-  
-  // Handle mobile menu
-  function setupMobileMenu() {
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const closeMenuButton = document.getElementById('close-mobile-menu');
-    const mobileMenu = document.getElementById('mobile-menu');
-    
-    if (mobileMenuButton && mobileMenu && closeMenuButton) {
-      mobileMenuButton.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-      });
-      
-      closeMenuButton.addEventListener('click', () => {
-        mobileMenu.classList.add('hidden');
-      });
-    }
-  }
-  
-  // Handle language dropdown
-  function setupLanguageDropdown() {
-    const languageDropdown = document.getElementById('language-dropdown');
-    const languageMenu = document.getElementById('language-menu');
-    
-    if (languageDropdown && languageMenu) {
-      languageDropdown.addEventListener('click', (e) => {
-        e.stopPropagation();
-        languageMenu.classList.toggle('hidden');
-      });
-      
-      document.addEventListener('click', () => {
-        languageMenu.classList.add('hidden');
-      });
-    }
-  }
-  
-  // Initialize all interactive elements
-  document.addEventListener('DOMContentLoaded', () => {
-    setupDarkMode();
-    setupMobileMenu();
-    setupLanguageDropdown();
-  });
-</script>
-
 <style>
-  /* Add any component-specific styles here */
-  .text-gold-600 {
-    color: #d4af37;
-  }
-  
-  .bg-gold-600 {
-    background-color: #d4af37;
-  }
-  
-  .bg-gold-700 {
-    background-color: #b8941f;
-  }
-  
-  .hover\:bg-gold-700:hover {
-    background-color: #b8941f;
-  }
-  
-  .border-gold-600 {
-    border-color: #d4af37;
+  .main-navigation :global(svg) {
+    width: 120px;
+    height: auto;
   }
 </style>
