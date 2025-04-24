@@ -1,0 +1,71 @@
+---
+const languages = [
+    {code: 'en', label: 'English'},
+    {code: 'es', label: 'Español'}
+];
+---
+
+<div class="relative">
+    <button id="language-toggle"
+            class="flex items-center text-neutral-700 dark:text-neutral-300 hover:text-primary-500 dark:hover:text-primary-400">
+        <span id="current-language">English</span>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 ml-1">
+            <path fill-rule="evenodd"
+                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                  clip-rule="evenodd"/>
+        </svg>
+    </button>
+
+    <div id="language-dropdown"
+         class="absolute top-full right-0 mt-2 w-40 bg-white dark:bg-neutral-800 shadow-lg rounded-md py-1 z-10 hidden">
+        {languages.map(lang => (
+                <button
+                        data-lang-code={lang.code}
+                        class="w-full text-left px-4 py-2 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700"
+                >
+                    {lang.label}
+                </button>
+        ))}
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const languageToggle = document.getElementById('language-toggle');
+        const languageDropdown = document.getElementById('language-dropdown');
+        const currentLanguage = document.getElementById('current-language');
+        const languageButtons = document.querySelectorAll('[data-lang-code]');
+
+        // Toggle dropdown
+        languageToggle?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            languageDropdown?.classList.toggle('hidden');
+        });
+
+        // Handle language selection
+        languageButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const langCode = button.getAttribute('data-lang-code');
+                const langLabel = button.textContent?.trim();
+
+                // Update display
+                if (currentLanguage && langLabel) {
+                    currentLanguage.textContent = langLabel;
+                }
+
+                // Update URL with language code
+                // In a real implementation, this would redirect to the localized version
+                // const newPath = `/${langCode}${window.location.pathname.replace(/^\/[a-z]{2}/, '')}`;
+                // window.location.href = newPath;
+
+                // Close dropdown
+                languageDropdown?.classList.add('hidden');
+            });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            languageDropdown?.classList.add('hidden');
+        });
+    });
+</script>
