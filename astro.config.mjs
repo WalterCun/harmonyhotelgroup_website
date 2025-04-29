@@ -1,18 +1,25 @@
-import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
+import {defineConfig} from 'astro/config';
 import react from '@astrojs/react';
+import tailwind from '@astrojs/tailwind';
+import icon from 'astro-icon';
 
 // https://astro.build/config
 export default defineConfig({
-    integrations: [
-        tailwind(),
-        react()
-    ],
-    i18n: {
-        defaultLocale: 'es',
-        locales: ['en', 'es'],
-        routing: {
-            prefixDefaultLocale: false
+    // i18n: {
+    //     locales: ["es", "en"],
+    //     defaultLocale: "es",
+    //
+    // },
+    prefetch: true,
+    integrations: [tailwind(), react(), icon({
+            iconSets: [
+                {
+                    name: 'lucide',
+                    svg: {
+                        dir: 'node_modules/lucide-static/icons',
+                    },
+                },
+            ],
         }
-    }
+    )],
 });
