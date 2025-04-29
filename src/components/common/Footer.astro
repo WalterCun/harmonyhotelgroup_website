@@ -1,15 +1,24 @@
 ---
 import SocialLinks from './SocialLinks.astro';
+import {defaultLanguage, trans} from "../../utils/translations";
+
+interface Props {
+  lang: string;
+}
+
+const {
+  lang
+} = Astro.props;
 
 const quickLinks = [
-  { label: "About Us", href: "/about" },
-  { label: "Hotels", href: "/hotels" },
-  { label: "Destinations", href: "/destinations" },
-  { label: "Offers", href: "/offers" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/contact" },
-  { label: "Privacy Policy", href: "/privacy" },
-  { label: "Terms of Service", href: "/terms" },
+  { label: trans(lang, "navigation.url.about-us"), href: "/about" },
+  {label: trans(lang, "navigation.url.hotel"), href: "/hotels"},
+  {label: trans(lang, "navigation.url.destinations"), href: "/destinations"},
+  {label: trans(lang, "navigation.url.offers"), href: "/offers"},
+  {label: trans(lang, "navigation.url.blog"), href: "/blog"},
+  {label: trans(lang, "navigation.url.contact"), href: "/contact"},
+  { label: trans(lang,"navigation.url.privacy-policy"), href: "/privacy" },
+  { label: trans(lang,"navigation.url.terms-of-service"), href: "/terms" },
 ];
 
 const faqs = [
@@ -19,6 +28,7 @@ const faqs = [
   { label: "Payment Methods", href: "/faq#payment" },
   { label: "COVID-19 Measures", href: "/faq#covid" },
 ];
+
 ---
 
 <footer class="bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 border-t border-neutral-200 dark:border-neutral-800">
@@ -27,8 +37,8 @@ const faqs = [
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 py-12">
       <!-- Company Info -->
       <div>
-        <h3 class="text-xl font-semibold font-serif text-neutral-800 dark:text-neutral-100 mb-4">Harmony Hotel Group</h3>
-        <p class="mb-4">Experience luxury and comfort at our premium hotels and resorts worldwide. Discover unforgettable stays with exceptional service.</p>
+        <h3 class="text-xl font-semibold font-serif text-neutral-800 dark:text-neutral-100 mb-4">{trans(lang, "footer.title")}</h3>
+        <p class="mb-4">{trans(lang, "footer.subtitle")}</p>
         <SocialLinks />
       </div>
 

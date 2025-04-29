@@ -1,39 +1,56 @@
 ---
-const languages = [
-    {code: 'en', label: 'English'},
-    {code: 'es', label: 'Español'}
-];
+import {Image} from 'astro:assets';
+import {defaultLanguage, languages} from "../../../utils/translations";
+
+const lang = Astro.currentLocale as string;
+const langSeleted = languages.find(language => language.code === lang) || languages[0];
 ---
 
 <div class="relative">
-    <button id="language-toggle"
-            class="flex items-center text-neutral-700 dark:text-neutral-300 hover:text-primary-500 dark:hover:text-primary-400">
-        <span id="current-language">English</span>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 ml-1">
-            <path fill-rule="evenodd"
-                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                  clip-rule="evenodd"/>
+    <button id="language-toggle" aria-label="Cambiar idioma" aria-haspopup="true" aria-expanded="false"
+            class="flex items-center gap-2 px-3 py-1.5 rounded-md text-neutral-700 dark:text-neutral-300 hover:text-primary-500 dark:hover:text-primary-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors">
+        {langSeleted.flag && (
+                <Image src={langSeleted.flag} alt="" width="20" height="20" class="flex-shrink-0 object-cover"/>)}
+        <span id="current-language" class="text-sm font-medium">
+        {langSeleted.name || 'Idioma'}
+    </span>
+        <svg
+                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 flex-shrink-0"
+                aria-hidden="true">
+            <path
+                    fill-rule="evenodd"
+                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                    clip-rule="evenodd"
+            />
         </svg>
     </button>
 
     <div id="language-dropdown"
-         class="absolute top-full right-0 mt-2 w-40 bg-white dark:bg-neutral-800 shadow-lg rounded-md py-1 z-10 hidden">
+         class="absolute top-full right-0 mt-0 w-auto bg-white dark:bg-neutral-800 shadow-lg rounded-md py-1 z-10 hidden">
         {languages.map(lang => (
-                <button
-                        data-lang-code={lang.code}
-                        class="w-full text-left px-4 py-2 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700"
-                >
-                    {lang.label}
-                </button>
+                <div class="flex items-center">
+                    <a href={lang.code === defaultLanguage.code ? '/' : lang.code} data-lang-code={lang.code === defaultLanguage.code ? '/' : lang.code}
+                            class="flex items-center w-full text-left px-4 py-2 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700">
+                        <div class="flex-shrink-0">
+                            <Image src={lang.flag} alt="" width="20"></Image>
+                        </div>
+                        <span class="ml-2">{lang.name}</span>
+                    </a>
+
+                </div>
+
         ))}
     </div>
 </div>
-
 <script>
+    // import {defaultLanguage, languages, setLanguage} from "../../../utils/translations";
+
+    import {setLanguage} from "../../../utils/translations";
+
     document.addEventListener('DOMContentLoaded', () => {
         const languageToggle = document.getElementById('language-toggle');
         const languageDropdown = document.getElementById('language-dropdown');
-        const currentLanguage = document.getElementById('current-language');
+        const currentLanguageElement = document.getElementById('current-language');
         const languageButtons = document.querySelectorAll('[data-lang-code]');
 
         // Toggle dropdown
@@ -44,22 +61,22 @@ const languages = [
 
         // Handle language selection
         languageButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const langCode = button.getAttribute('data-lang-code');
-                const langLabel = button.textContent?.trim();
+            button.addEventListener('click', async () => {
+                const langCode:any = button.getAttribute('data-lang-code');
+                setLanguage(langCode);
+                // // Buscar el objeto Language correspondiente al código de idioma
+                // const selectedLanguage = languages.find(lang => lang.code === langCode);
+                // if (selectedLanguage) {
+                //     // Actualizar el texto mostrado
+                //     if (currentLanguageElement) {
+                //         currentLanguageElement.textContent = selectedLanguage.name || selectedLanguage.code;
+                //     }
+                //     // Cerrar dropdown
+                //     languageDropdown?.classList.add('hidden');
+                    // Guardar el idioma en LocalStore
 
-                // Update display
-                if (currentLanguage && langLabel) {
-                    currentLanguage.textContent = langLabel;
-                }
 
-                // Update URL with language code
-                // In a real implementation, this would redirect to the localized version
-                // const newPath = `/${langCode}${window.location.pathname.replace(/^\/[a-z]{2}/, '')}`;
-                // window.location.href = newPath;
-
-                // Close dropdown
-                languageDropdown?.classList.add('hidden');
+                // }
             });
         });
 

@@ -1,16 +1,22 @@
 ---
-import { bookingFormState } from '../../stores/bookingStore';
+import {trans} from "../../utils/translations";
+import {bookingFormState} from '../../stores/bookingStore';
+import {range} from "../../utils/tools";
+import {maxAdults, maxChildren} from "../../constants";
 
 const showBookingForm = ['/', '/hotels/[id]'].includes(Astro.url.pathname) ||
     Astro.url.pathname.startsWith('/hotels/');
 
 if (!showBookingForm) return null;
+
+const lang = Astro.currentLocale;
 ---
 
 <form class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 items-end booking-form">
     <!-- Date Selection -->
     <div class="md:col-span-1">
-        <label for="check-in" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">Check-in</label>
+        <label for="check-in"
+               class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">{trans(lang, 'components.forms.reservation.check-in')}</label>
         <input
                 type="date"
                 id="check-in"
@@ -20,7 +26,8 @@ if (!showBookingForm) return null;
     </div>
 
     <div class="md:col-span-1">
-        <label for="check-out" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">Check-out</label>
+        <label for="check-out"
+               class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">{trans(lang, 'components.forms.reservation.check-out')}</label>
         <input
                 type="date"
                 id="check-out"
@@ -33,39 +40,50 @@ if (!showBookingForm) return null;
     <div class="md:col-span-1">
         <label for="adults" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">Adults</label>
         <select id="adults" class="select">
-            <option value="1">1 Adult</option>
-            <option value="2" selected>2 Adults</option>
-            <option value="3">3 Adults</option>
-            <option value="4">4 Adults</option>
-            <option value="5">5+ Adults</option>
+            {
+                range(1, maxAdults).map((i, index, array) => {
+                    const isLast = index === array.length - 1;
+                    return (
+                            <option value={i} selected={i === 2}>
+                                {i}{isLast ? "+ " : " "}{i >= 2 ? trans(lang, "components.forms.reservation.adult", {"s": "s"}) : trans(lang || "es", "components.forms.adult", {"s": ""})}
+                            </option>
+                    );
+                })
+            }
         </select>
     </div>
 
     <div class="md:col-span-1">
-        <label for="children" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">Children</label>
+        <label for="children"
+               class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">Children</label>
         <select id="children" class="select">
-            <option value="0" selected>No Children</option>
-            <option value="1">1 Child</option>
-            <option value="2">2 Children</option>
-            <option value="3">3 Children</option>
-            <option value="4">4+ Children</option>
+            {
+                range(0, maxChildren-1).map((i, index, array) => {
+                    return (
+                            <option value={i} selected={i === 0}>
+                                {i} {i == 1  ? trans(lang || "es", "components.forms.reservation.child", {"s": ""}) : trans(lang, "components.forms.reservation.child", {"s": "s"}) }
+                            </option>
+                    );
+                })
+            }
         </select>
     </div>
 
     <!-- Child Ages -->
-    <div id="child-ages-container" class="hidden md:col-span-3 lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-2">
+    <div id="child-ages-container"
+         class="hidden md:col-span-3 lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-2">
         <!-- Child age inputs will be dynamically added here -->
     </div>
 
     <!-- Amenities -->
     <div class="md:col-span-1 lg:col-span-1 flex items-center space-x-4">
         <div class="flex items-center">
-            <input type="checkbox" id="breakfast" class="checkbox" />
+            <input type="checkbox" id="breakfast" class="checkbox"/>
             <label for="breakfast" class="ml-2 block text-sm text-neutral-700 dark:text-neutral-300">Breakfast</label>
         </div>
 
         <div class="flex items-center">
-            <input type="checkbox" id="parking" class="checkbox" />
+            <input type="checkbox" id="parking" class="checkbox"/>
             <label for="parking" class="ml-2 block text-sm text-neutral-700 dark:text-neutral-300">Parking</label>
         </div>
     </div>
@@ -79,7 +97,7 @@ if (!showBookingForm) return null;
 </form>
 
 <script>
-    import { bookingFormState } from '../../stores/bookingStore';
+    import {bookingFormState} from '../../stores/bookingStore';
 
     document.addEventListener('DOMContentLoaded', () => {
         const form = document.querySelector('.booking-form');
