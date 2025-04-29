@@ -1,0 +1,51 @@
+{
+  "components": {
+    "common": {
+      "header": {
+        "0": null
+      },
+      "navigation": {
+        "url": {
+          "hotel": "Hoteles",
+          "destinations": "Destinos",
+          "offers": "Ofertas",
+          "blog": "Blog",
+          "contact": "Contacto",
+          "about-us": "Sobre Nosotros",
+          "privacy-policy": "Politicas de Privacidad",
+          "terms-of-service": "Terminos de Servicio"
+        }
+      }
+    },
+    "forms": {
+      "reservation": {
+        "check-in": "Ingreso",
+        "check-out": "Salida",
+        "adult": "Adulto{{s}}",
+        "child": "Niño{{s}}"
+      }
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Experiencia nueva cada dia",
+      "subtitle": "Descubra un confort incomparable y un servicio impecable en nuestros selectos hoteles y resorts de todo el mundo. del mundo.",
+      "buttons": {
+        "view-hotels": "Ver nuestros Hoteles",
+        "view-offers": "Ofertas Especiales"
+      }
+    }
+  },
+  "layouts": {
+    "layout": {
+      "meta": {
+        "title": "Harmony Hotel Group",
+        "description": "Experimente el lujo y el confort con Harmony Hotel Group. Reserve su estancia perfecta en nuestros hoteles de todo el Ecuador."
+      }
+    }
+  },
+  "footer": {
+    "title": "Harmony Hotel Group",
+    "subtitle": "Experience luxury and comfort at our premium hotels and resorts worldwide. Discover unforgettable stays with exceptional service."
+  }
+}
