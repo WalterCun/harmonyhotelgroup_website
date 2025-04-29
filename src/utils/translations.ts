@@ -1,122 +1,73 @@
-// translations.ts - Simple translation system for the site
+import es from "../locales/es.json";
+import en from "../locales/en.json";
 
-interface NavTranslations {
-  hotels: string;
-  tours: string;
-  touristSites: string;
-  contact: string;
+interface Language {
+    code: string;
+    name: string;
+    flag: ImageMetadata;
+    status: boolean;
 }
 
-interface FooterTranslations {
-  companyInfo: string;
-  contact: string;
-  quickLinks: string;
-  copyright: string;
-}
+// ---------------------------------------------------------------------------------------------------
 
-interface CommonTranslations {
-  readMore: string;
-  showMore: string;
-  bookNow: string;
-  contactUs: string;
-}
-
-interface LanguageTranslations {
-  nav: NavTranslations;
-  footer: FooterTranslations;
-  common: CommonTranslations;
-}
-
-interface Translations {
-  [key: string]: LanguageTranslations;
-}
-
-// Define translations for different languages
-const translations: Translations = {
-  es: {
-    // Navigation
-    nav: {
-      hotels: "Hoteles",
-      tours: "Tours",
-      touristSites: "Lugares Turísticos",
-      contact: "Contacto"
-    },
-    // Footer
-    footer: {
-      companyInfo: "Ofreciendo experiencias de hospedaje excepcionales en Cuenca, Ecuador.",
-      contact: "Contacto",
-      quickLinks: "Enlaces Rápidos",
-      copyright: "Todos los derechos reservados."
-    },
-    // Common
-    common: {
-      readMore: "Leer más",
-      showMore: "Mostrar más",
-      bookNow: "Reservar Ahora",
-      contactUs: "Contáctenos"
-    }
-  },
-  en: {
-    // Navigation
-    nav: {
-      hotels: "Hotels",
-      tours: "Tours",
-      touristSites: "Tourist Sites",
-      contact: "Contact"
-    },
-    // Footer
-    footer: {
-      companyInfo: "Offering exceptional accommodation experiences in Cuenca, Ecuador.",
-      contact: "Contact",
-      quickLinks: "Quick Links",
-      copyright: "All rights reserved."
-    },
-    // Common
-    common: {
-      readMore: "Read more",
-      showMore: "Show more",
-      bookNow: "Book Now",
-      contactUs: "Contact Us"
-    }
-  }
+type TranslationObject = Record<string, any>;
+// Mapa de idiomas soportados
+export const TranslationData: Record<string, TranslationObject> = {
+    en,
+    es
 };
 
-/**
- * Get a translation for a given key and language
- * @param {string} key - The translation key in dot notation (e.g., "nav.hotels")
- * @param {string} lang - The language code (e.g., "es", "en")
- * @returns {string} - The translated text or the key if no translation is found
- */
-export function getTranslation(key: string, lang: string = "es"): string {
-  // Default to Spanish if the language is not supported
-  if (!translations[lang]) {
-    lang = "es";
-  }
+// ---------------------------------------------------------------------------------------------------
 
-  // Split the key into parts (e.g., "nav.hotels" -> ["nav", "hotels"])
-  const parts = key.split(".");
+import flag_en from '../assets/img/flags/en.svg';
+const flag_en_usa = flag_en;
 
-  // Navigate through the translations object to find the requested translation
-  let result: any = translations[lang];
-  for (const part of parts) {
-    if (result && result[part] !== undefined) {
-      result = result[part];
-    } else {
-      // Return the key if the translation is not found
-      return key;
+import flag_es_ecu from '../assets/img/flags/es-ecu.svg';
+
+import flag_es from '../assets/img/flags/es.svg';
+const flag_es_esp = flag_es;
+
+/*
+Codigos de paises con 3 letras
+https://laendercode.net/es/3-letter-list.html
+
+Descargar SVG desde Wikipedia "Wikipedia [Pais] Flag SVG"
+*/
+const languagesList: Language[] = [
+    {code: 'es', name: "Español", status: true, flag: flag_es},
+    {code: 'en', name: "English", status: true, flag: flag_en},
+    {code: 'es-ecu', name: "Español Ecuador", status: false, flag: flag_es_ecu},
+    {code: 'en-usa', name: "English USA", status: false, flag: flag_en_usa},
+    {code: 'es-esp', name: "Español España", status: false, flag: flag_es_esp},
+]
+
+export const languages = languagesList.filter(lang => lang.status);
+export const defaultLanguage = languages[0];
+
+// ---------------------------------------------------------------------------------------------------
+
+export const trans = (lang: string, key: string, defaultValue: string = key): string => {
+    // Obtener el objeto de traducción para el idioma especificado
+    const translations = TranslationData[lang];
+
+    // Si el idioma no existe, devolver el valor por defecto
+    if (!translations) {
+        console.warn(`Idioma no soportado: ${lang}`);
+        return defaultValue;
     }
-  }
 
-  return result as string;
-}
+    try {
+        // Dividir la clave y reducir para navegar por el objeto de traducción
+        const keys = key.split('.');
+        const result = keys.reduce((obj, k) =>
+                obj && typeof obj === 'object' && k in obj ? obj[k] : null,
+            translations as any
+        );
 
-/**
- * Get the current language from localStorage or default to Spanish
- * @returns {string} - The current language code
- */
-export function getCurrentLanguage(): string {
-  if (typeof localStorage !== "undefined") {
-    return localStorage.getItem("language") || "es";
-  }
-  return "es";
-}
+        // Devolver el resultado o el valor por defecto si no se encuentra
+        return result !== null ? String(result) : defaultValue;
+    } catch (error) {
+        console.warn(`Error al obtener la traducción para: ${key}`, error);
+        return defaultValue;
+    }
+};
