@@ -1,48 +1,118 @@
 ---
-import BookingForm from '../forms/BookingForm.astro';
+// import BookingForm from '../forms/BookingForm.astro';
 import LanguageSwitcher from '../ui/dropdown/LanguageDropDown.astro';
 import CurrencySwitcher from '../ui/dropdown/CurrencyDropDown.astro';
 import ThemeToggle from './ThemeToggle.astro';
 import Navigation from './Navigation.astro';
 import Logo from '../svg/Logo.astro';
+// import {languages} from "../../utils/translations";
+// import ReservationForm from "../forms/ReservationForm.astro";
+
+// console.log(Astro.preferredLocaleList)
+// console.log(Object.keys(languages))
+
+interface Props {
+    lang: string;
+}
+
+const {
+    lang
+} = Astro.props;
 ---
 
 <header class="w-full bg-white dark:bg-neutral-900 shadow-sm sticky top-0 z-50 transition-colors duration-300">
-  <div class="container">
-    <!-- Top utility bar -->
-    <div class="flex justify-end items-center py-2 border-b border-neutral-200 dark:border-neutral-800 text-sm">
-      <div class="flex items-center space-x-4">
-        <LanguageSwitcher />
-        <CurrencySwitcher />
-        <ThemeToggle />
-        <a href="/login" class="text-neutral-700 dark:text-neutral-300 hover:text-primary-500 dark:hover:text-primary-400">
-          Login
-        </a>
-      </div>
-    </div>
-
-    <!-- Main navigation -->
-    <div class="main-navigation flex justify-between items-center py-4">
-      <Logo block md:hidden/>
-      <!--<div class="hidden md:block text-xl font-bold text-primary-600 dark:text-primary-400">-->
-      <!--  HARMONY HOTEL GROUP-->
-      <!--</div>-->
-
-      <Navigation />
-    </div>
-  </div>
-
-
-  <div class="bg-primary-500/10 dark:bg-primary-500/5 py-4 border-t border-b border-neutral-200 dark:border-neutral-800">
     <div class="container">
-      <BookingForm />
+        <!-- Top utility bar -->
+        <div class="flex justify-between items-center py-2 border-b border-neutral-200 dark:border-neutral-800 text-sm">
+            <!-- Main navigation -->
+            <div class="main-navigation flex justify-between items-center py-4">
+                <!-- Logo visible solo en móvil -->
+                <div class="block md:hidden">
+                    <Logo/>
+                </div>
+                <!--Logo visible en escritorio-->
+                <div class="brand-logo hidden md:flex flex-col items-center">
+                    <h2 class="text-primary-500 font-serif font-bold">Harmony</h2>
+                    <h5 class="text-neutral-800 dark:text-neutral-200 font-serif font-medium">Hotel Group</h5>
+                </div>
+
+
+            </div>
+
+            <Navigation/>
+
+            <div class="flex items-center space-x-4">
+                <LanguageSwitcher lang={lang}/>
+                <CurrencySwitcher/>
+                <ThemeToggle/>
+                <!--<a href="/login"-->
+                <!--   class="text-neutral-700 dark:text-neutral-300 hover:text-primary-500 dark:hover:text-primary-400">-->
+                <!--    Login </a>-->
+            </div>
+        </div>
+
+        <!-- Main navigation -->
+        <!--<div class="main-navigation flex justify-between items-center py-4">-->
+        <!--    <Logo block md:hidden/>-->
+        <!--    &lt;!&ndash;<div class="hidden md:block text-xl font-bold text-primary-600 dark:text-primary-400">&ndash;&gt;-->
+        <!--    &lt;!&ndash;  HARMONY HOTEL GROUP&ndash;&gt;-->
+        <!--    &lt;!&ndash;</div>&ndash;&gt;-->
+
+        <!--    <Navigation/>-->
+
+        <!--</div>-->
     </div>
-  </div>
+
+
+    <!--<div class="bg-primary-500/10 dark:bg-primary-500/5 py-4 border-t border-b border-neutral-200 dark:border-neutral-800">-->
+    <!--    <div class="container">-->
+    <!--    </div>-->
+    <!--    <BookingForm/>-->
+    <!--    <ReservationForm/>-->
+    <!--</div>-->
 </header>
 
 <style>
-  .main-navigation :global(svg) {
-    width: 120px;
-    height: auto;
-  }
+    .main-navigation :global(svg) {
+        width: 120px;
+        height: auto;
+    }
+
+    .animated-text {
+        font-size: 1.5rem;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(
+                90deg,
+                rgba(212, 175, 55, 1) 0%,
+                rgba(255, 215, 0, 1) 25%,
+                rgba(212, 175, 55, 1) 50%,
+                rgba(255, 215, 0, 1) 75%,
+                rgba(212, 175, 55, 1) 100%
+        );
+        background-size: 200% auto;
+        background-clip: text;
+        -webkit-background-clip: text;
+        animation: gradient 3s linear infinite;
+    }
+
+    .animated-text span.text-primary-500 {
+        position: relative;
+        z-index: 1;
+    }
+
+    @keyframes gradient {
+        0% {
+            background-position: 0% center;
+        }
+        100% {
+            background-position: 200% center;
+        }
+    }
+
+    /* Modo oscuro */
+    :global(.dark) .animated-text span.text-neutral-800 {
+        color: rgba(248, 249, 250, 1);
+    }
 </style>
+
