@@ -49,14 +49,21 @@ export const defaultLanguage = {code: 'es', name: "Español", status: true, flag
 
 // ---------------------------------------------------------------------------------------------------
 
-export const trans = (lang: string = defaultLanguage.code, key: string): string => {
+/**
+ * Función de traducción que soporta reemplazo de parámetros
+ * @param lang Código del idioma
+ * @param key Clave de la traducción
+ * @param params Objeto con parámetros a reemplazar en la cadena de texto
+ * @returns La cadena traducida con los parámetros reemplazados
+ */
+export const trans = (lang: string = defaultLanguage.code, key: string, params?: Record<string, any>): string => {
     // Obtener el objeto de traducción para el idioma especificado
     const translations = TranslationData[lang];
 
     // Si el idioma no existe, devolver el valor por defecto
     if (!translations) {
         console.warn(`Idioma no soportado: ${lang}`);
-        return trans(defaultLanguage.code, key);
+        return trans(defaultLanguage.code, key, params);
     }
 
     try {
@@ -67,12 +74,28 @@ export const trans = (lang: string = defaultLanguage.code, key: string): string 
             translations as any
         );
 
-        // Devolver el resultado o el valor por defecto si no se encuentra
-        return result !== null ? String(result) : "No translation found for: " + key + "";
-        // return result !== null ? String(result) : trans(defaultLanguage.code, key);
+        // Si no se encuentra la traducción, intentar con el idioma por defecto
+        if (result === null) {
+            return "No translation found for: " + key + "";
+            // return trans(defaultLanguage.code, key, params);
+        }
+
+        // Convertir a string
+        let translation = String(result);
+
+        // Reemplazar parámetros si se proporcionaron
+        if (params && typeof params === 'object') {
+            // Reemplazar cada parámetro en el formato {{nombreParametro}}
+            Object.entries(params).forEach(([paramName, paramValue]) => {
+                const regex = new RegExp(`\\{\\{\\s*${paramName}\\s*\\}\\}`, 'g');
+                translation = translation.replace(regex, String(paramValue));
+            });
+        }
+
+        return translation;
     } catch (error) {
         console.warn(`Error al obtener la traducción para: ${key}`, error);
-        return trans(defaultLanguage.code, key);
+        return trans(defaultLanguage.code, key, params);
     }
 };
 

@@ -61,11 +61,11 @@ async function getFallbackData(endpoint: string): Promise<any> {
 
   try {
     if (endpoint.includes('/hotels')) {
-      fallbackData = await import('../data/hotels.json');
+      // fallbackData = await import('../data/hotels.json');
     } else if (endpoint.includes('/tours')) {
-      fallbackData = await import('../data/tours.json');
+      // fallbackData = await import('../data/tours.json');
     } else if (endpoint.includes('/tourist-sites')) {
-      fallbackData = await import('../data/tourist-sites.json');
+      // fallbackData = await import('../data/tourist-sites.json');
     } else {
       fallbackData = [];
     }
