@@ -4,23 +4,17 @@ import Footer from '../components/common/Footer.astro';
 import '../styles/global.css';
 import {trans} from "../utils/translations";
 
-interface Props {
-    lang: string;
-}
-
-const {
-    lang
-} = Astro.props;
+const lang = Astro.currentLocale;
 ---
 
-<html lang="es">
+<html lang={lang}>
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
     <meta name="generator" content={Astro.generator}/>
-    <meta name="description" content={trans(lang,"layout.meta.description")}/>
-    <title>{trans(lang,"layout.meta.title")}</title>
+    <meta name="description" content={trans(lang,"layouts.layout.meta.description")}/>
+    <title>{trans(lang,"layouts.layout.meta.title")}</title>
 
     <!-- Preconnect to font services -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
