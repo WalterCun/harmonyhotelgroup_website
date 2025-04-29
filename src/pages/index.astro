@@ -6,10 +6,12 @@ import PopularDestinations from '../components/sections/home/PopularDestinations
 import SpecialOffers from '../components/sections/home/SpecialOffers.astro';
 import Testimonials from '../components/sections/home/Testimonials.astro';
 import Newsletter from '../components/sections/home/Newsletter.astro';
+
+// return Astro.redirect('/es/');
 ---
 
-<Layout>
-    <Hero />
+<Layout lang="es">
+    <Hero lang="es"/>
     <FeaturedHotels />
     <PopularDestinations />
     <SpecialOffers />
