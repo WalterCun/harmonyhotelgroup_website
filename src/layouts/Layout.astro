@@ -2,65 +2,65 @@
 import Header from '../components/common/Header.astro';
 import Footer from '../components/common/Footer.astro';
 import '../styles/global.css';
+import {trans} from "../utils/translations";
 
 interface Props {
-	title?: string;
-	description?: string;
+    lang: string;
 }
 
 const {
-	title = "Harmony Hotel Group - Luxury Accommodations Worldwide",
-	description = "Experience luxury and comfort with Harmony Hotel Group. Book your perfect stay at our premium hotels and resorts worldwide."
+    lang
 } = Astro.props;
 ---
 
-<!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-	<meta name="generator" content={Astro.generator} />
-	<meta name="description" content={description} />
-	<title>{title}</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+    <meta name="generator" content={Astro.generator}/>
+    <meta name="description" content={trans(lang,"layout.meta.description")}/>
+    <title>{trans(lang,"layout.meta.title")}</title>
 
-	<!-- Preconnect to font services -->
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Preconnect to font services -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+          rel="stylesheet">
 
-	<!-- Script to handle theme -->
-	<script is:inline>
-		const theme = localStorage.getItem('theme') || 'light';
-		document.documentElement.classList.add(theme);
-	</script>
+    <!-- Script to handle theme -->
+    <script is:inline>
+        const theme = localStorage.getItem('theme') || 'light';
+        document.documentElement.classList.add(theme);
+    </script>
+
 </head>
 <body class="min-h-screen flex flex-col bg-neutral-50 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-100 transition-colors duration-300">
-<Header />
+<Header/>
 <main class="flex-grow">
-	<slot />
+    <slot/>
 </main>
-<Footer />
+<Footer/>
 
 <!-- Script to handle theme toggle -->
 <script>
-	document.addEventListener('DOMContentLoaded', () => {
-		const themeToggle = document.getElementById('theme-toggle');
-		if (themeToggle) {
-			themeToggle.addEventListener('click', () => {
-				const isDark = document.documentElement.classList.contains('dark');
-				if (isDark) {
-					document.documentElement.classList.remove('dark');
-					document.documentElement.classList.add('light');
-					localStorage.setItem('theme', 'light');
-				} else {
-					document.documentElement.classList.remove('light');
-					document.documentElement.classList.add('dark');
-					localStorage.setItem('theme', 'dark');
-				}
-			});
-		}
-	});
+    document.addEventListener('DOMContentLoaded', () => {
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                const isDark = document.documentElement.classList.contains('dark');
+                if (isDark) {
+                    document.documentElement.classList.remove('dark');
+                    document.documentElement.classList.add('light');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.documentElement.classList.remove('light');
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+        }
+    });
 </script>
 </body>
 </html>
