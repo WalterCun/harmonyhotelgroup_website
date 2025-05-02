@@ -1,8 +1,13 @@
 ---
 import {Image} from 'astro:assets';
-import {defaultLanguage, languages} from "../../../utils/translations";
+import {defaultLanguage, languages, structUrl} from "../../../utils/translations";
 
-const lang = Astro.currentLocale as string;
+interface Props {
+    lang: string
+}
+
+const {lang} = Astro.props;
+
 const langSeleted = languages.find(language => language.code === lang) || languages[0];
 ---
 
@@ -29,22 +34,19 @@ const langSeleted = languages.find(language => language.code === lang) || langua
          class="absolute top-full right-0 mt-0 w-auto bg-white dark:bg-neutral-800 shadow-lg rounded-md py-1 z-10 hidden">
         {languages.map(lang => (
                 <div class="flex items-center">
-                    <a href={lang.code === defaultLanguage.code ? '/' : lang.code} data-lang-code={lang.code === defaultLanguage.code ? '/' : lang.code}
+                    <!-- <a href={lang.code === defaultLanguage.code ? '/' : lang.code} data-lang-code={lang.code === defaultLanguage.code ? '/' : lang.code} </a>-->
+                    <a href={structUrl(Astro.url,lang.code)} data-lang-code={lang.code}
                             class="flex items-center w-full text-left px-4 py-2 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700">
                         <div class="flex-shrink-0">
                             <Image src={lang.flag} alt="" width="20"></Image>
                         </div>
                         <span class="ml-2">{lang.name}</span>
                     </a>
-
                 </div>
-
         ))}
     </div>
 </div>
 <script>
-    // import {defaultLanguage, languages, setLanguage} from "../../../utils/translations";
-
     import {setLanguage} from "../../../utils/translations";
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -64,19 +66,6 @@ const langSeleted = languages.find(language => language.code === lang) || langua
             button.addEventListener('click', async () => {
                 const langCode:any = button.getAttribute('data-lang-code');
                 setLanguage(langCode);
-                // // Buscar el objeto Language correspondiente al código de idioma
-                // const selectedLanguage = languages.find(lang => lang.code === langCode);
-                // if (selectedLanguage) {
-                //     // Actualizar el texto mostrado
-                //     if (currentLanguageElement) {
-                //         currentLanguageElement.textContent = selectedLanguage.name || selectedLanguage.code;
-                //     }
-                //     // Cerrar dropdown
-                //     languageDropdown?.classList.add('hidden');
-                    // Guardar el idioma en LocalStore
-
-
-                // }
             });
         });
 

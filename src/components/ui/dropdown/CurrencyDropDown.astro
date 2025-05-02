@@ -3,6 +3,11 @@ const currencies = [
     { code: 'USD', symbol: '$', label: 'USD' },
     { code: 'EUR', symbol: '€', label: 'EUR' }
 ];
+interface Props {
+    lang: string
+}
+
+const {lang} = Astro.props;
 ---
 
 <div class="relative">
