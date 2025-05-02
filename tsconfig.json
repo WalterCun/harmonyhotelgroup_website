@@ -1,10 +1,27 @@
 {
   "extends": "astro/tsconfigs/strict",
-  "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"],
+  "include": [
+    ".astro/types.d.ts",
+    "**/*",
+    "src/**/*",
+    "astro.config.mjs",
+    "tailwind.config.mjs"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".vercel",
+    ".vscode"
+  ],
   "compilerOptions": {
+    "baseUrl": ".",
     "paths": {
-      "@locales": ["locales/*"]
+      "~/*": [
+        "src/*"
+      ],
+      "@api": [
+        "src/utils/*"
+      ]
     }
   }
 }
