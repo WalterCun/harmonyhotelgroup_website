@@ -28,6 +28,11 @@ const offers = [
     image: "https://images.pexels.com/photos/2029698/pexels-photo-2029698.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
   }
 ];
+interface Props {
+  lang: string
+}
+
+const {lang} = Astro.props;
 ---
 
 <section class="section bg-white dark:bg-neutral-900">

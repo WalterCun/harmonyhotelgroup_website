@@ -4,6 +4,12 @@ import { getFeaturedTours } from '@utils/api';
 
 // Fetch featured tours from API
 const featuredTours = await getFeaturedTours(3);
+
+interface Props {
+  lang: string
+}
+
+const {lang} = Astro.props;
 ---
 
 <section class="py-16 bg-harmony-white-200 dark:bg-harmony-black-800">

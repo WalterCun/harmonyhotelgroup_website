@@ -33,6 +33,11 @@ const destinations = [
         image: "https://images.pexels.com/photos/466685/pexels-photo-466685.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
     }
 ];
+interface Props {
+    lang: string
+}
+
+const {lang} = Astro.props;
 ---
 
 <section class="section bg-neutral-50 dark:bg-neutral-800">
