@@ -1,18 +1,20 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Hero from '../components/sections/home/Hero.astro';
-import FeaturedHotels from '../components/sections/home/FeaturedHotels.astro';
-import PopularDestinations from '../components/sections/home/PopularDestinations.astro';
-import SpecialOffers from '../components/sections/home/SpecialOffers.astro';
-import Testimonials from '../components/sections/home/Testimonials.astro';
-import Newsletter from '../components/sections/home/Newsletter.astro';
+import Layout from '~/layouts/Layout.astro';
+import Hero from '~/components/sections/home/Hero.astro';
+import FeaturedHotels from '~/components/sections/home/FeaturedHotels.astro';
+import PopularDestinations from '~/components/sections/home/PopularDestinations.astro';
+import SpecialOffers from '~/components/sections/home/SpecialOffers.astro';
+import Testimonials from '~/components/sections/home/Testimonials.astro';
+import Newsletter from '~/components/sections/home/Newsletter.astro';
+
+const lang = "es";
 ---
 
-<Layout>
-    <Hero/>
-    <FeaturedHotels/>
-    <PopularDestinations/>
-    <SpecialOffers/>
-    <Testimonials/>
-    <Newsletter/>
+<Layout lang={lang}>
+    <Hero lang={lang}/>
+    <FeaturedHotels lang={lang}/>
+    <PopularDestinations lang={lang}/>
+    <SpecialOffers lang={lang}/>
+    <Testimonials lang={lang}/>
+    <Newsletter lang={lang}/>
 </Layout>

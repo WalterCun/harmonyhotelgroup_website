@@ -1,5 +1,5 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '~/layouts/Layout.astro';
 
 const offices = [
   {
@@ -24,6 +24,12 @@ const offices = [
     hours: "Monday - Friday: 9:00 AM - 6:00 PM CST"
   }
 ];
+
+interface Props {
+  lang: string
+}
+
+const {lang} = Astro.props;
 ---
 
 <Layout title="Contact Us | Harmony Hotel Group">

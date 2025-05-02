@@ -1,5 +1,5 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '~/layouts/Layout.astro';
 
 const destinations = [
   {
@@ -67,6 +67,12 @@ const destinations = [
     image: "https://images.pexels.com/photos/1483053/pexels-photo-1483053.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
   }
 ];
+
+interface Props {
+  lang: string
+}
+
+const {lang} = Astro.props;
 ---
 
 <Layout title="Destinations | Harmony Hotel Group">
