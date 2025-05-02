@@ -1,4 +1,4 @@
-// Crear un rango del 1 al 5
+// Funcion para crear un array de numeros
 export function range(start:number, end:number) {
     const result = [];
     for (let i = start; i <= end; i++) {

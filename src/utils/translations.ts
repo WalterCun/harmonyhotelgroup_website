@@ -1,6 +1,19 @@
-import {atom} from "nanostores";
 import es from "../i18n/es.json";
 import en from "../i18n/en.json";
+import fr from "../i18n/fr.json";
+// ---------------------------------------------------------------------------------------------------
+import flag_en from '../assets/img/flags/en.svg';
+
+const flag_en_usa = flag_en;
+
+import flag_es_ecu from '../assets/img/flags/es-ecu.svg';
+import flag_fr from '../assets/img/flags/fr.svg';
+
+import flag_es from '../assets/img/flags/es.svg';
+
+const flag_es_esp = flag_es;
+
+// ---------------------------------------------------------------------------------------------------
 
 interface Language {
     code: string;
@@ -11,24 +24,7 @@ interface Language {
 
 // ---------------------------------------------------------------------------------------------------
 
-type TranslationObject = Record<string, any>;
-// Mapa de idiomas soportados
-export const TranslationData: Record<string, TranslationObject> = {
-    en,
-    es
-};
 
-// ---------------------------------------------------------------------------------------------------
-
-import flag_en from '../assets/img/flags/en.svg';
-
-const flag_en_usa = flag_en;
-
-import flag_es_ecu from '../assets/img/flags/es-ecu.svg';
-
-import flag_es from '../assets/img/flags/es.svg';
-
-const flag_es_esp = flag_es;
 
 /*
 Codigos de paises con 3 letras
@@ -36,13 +32,23 @@ https://laendercode.net/es/3-letter-list.html
 
 Descargar SVG desde Wikipedia "Wikipedia [Pais] Flag SVG"
 */
+
 const languagesList: Language[] = [
     {code: 'es', name: "Español", status: true, flag: flag_es},
     {code: 'en', name: "English", status: true, flag: flag_en},
+    {code: 'fr', name: "Français", status: true, flag: flag_fr},
     {code: 'es-ecu', name: "Español Ecuador", status: false, flag: flag_es_ecu},
     {code: 'en-usa', name: "English USA", status: false, flag: flag_en_usa},
     {code: 'es-esp', name: "Español España", status: false, flag: flag_es_esp},
 ]
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+type TranslationObject = Record<string, any>;
+// Mapa de idiomas soportados
+export const TranslationData: Record<string, TranslationObject> = {
+    en,
+    es,
+    fr
+};
 
 export const languages = languagesList.filter(lang => lang.status);
 export const defaultLanguage = {code: 'es', name: "Español", status: true, flag: flag_es};
@@ -50,13 +56,59 @@ export const defaultLanguage = {code: 'es', name: "Español", status: true, flag
 // ---------------------------------------------------------------------------------------------------
 
 /**
- * Función de traducción que soporta reemplazo de parámetros
- * @param lang Código del idioma
- * @param key Clave de la traducción
- * @param params Objeto con parámetros a reemplazar en la cadena de texto
- * @returns La cadena traducida con los parámetros reemplazados
+ * Construye una URL con el idioma especificado manteniendo la misma ruta
+ * @param url URL actual
+ * @param langCode Código del idioma al que se desea cambiar
+ * @returns Nueva URL con el idioma especificado
  */
-export const trans = (lang: string = defaultLanguage.code, key: string, params?: Record<string, any>): string => {
+export const structUrl = (url: URL, langCode?: string): string => {
+    // Si no se proporciona un código de idioma, solo devolvemos información de la URL
+    if (!langCode) {
+        return url.href;
+    }
+
+    // Obtenemos el pathname actual
+    const pathname = url.pathname;
+
+    // Regex para busca /en/, /es/, /fr/ al inicio del pathname
+    const mainLanguageCodes = Object.keys(languages);
+    const langPattern = mainLanguageCodes.join('|');
+    const langPrefixRegex = new RegExp(`^\\/(${langPattern})\\/`);
+
+    // const langPrefixRegex = /^\/(en|es|fr)\//;
+
+    let newPathname = '';
+
+    // Si es el idioma por defecto (español) y no queremos prefijo
+    if (langCode === defaultLanguage.code) {
+        // Si ya tiene un prefijo de idioma, lo eliminamos
+        if (langPrefixRegex.test(pathname)) {
+            newPathname = pathname.replace(langPrefixRegex, '/');
+        } else {
+            // Mantener la ruta actual si ya no tiene prefijo
+            newPathname = pathname;
+        }
+    } else {
+        // Para otros idiomas, queremos añadir el prefijo
+        if (langPrefixRegex.test(pathname)) {
+            // Ya tiene un prefijo de idioma, lo reemplazamos
+            newPathname = pathname.replace(langPrefixRegex, `/${langCode}/`);
+        } else {
+            // No tiene prefijo, añadimos el nuevo
+            newPathname = `/${langCode}${pathname}`;
+        }
+    }
+
+    // Aseguramos que no haya doble slash
+    newPathname = newPathname.replace(/\/\//g, '/');
+
+    // Retornamos la URL completa con el nuevo pathname
+    return `${url.origin}${newPathname}`;
+};
+
+
+// biome-ignore lint/style/useDefaultParameterLast: <explanation>
+export const trans = (lang: string = defaultLanguage.code, key: string, params?: Record<string, object>): string => {
     // Obtener el objeto de traducción para el idioma especificado
     const translations = TranslationData[lang];
 
@@ -71,12 +123,12 @@ export const trans = (lang: string = defaultLanguage.code, key: string, params?:
         const keys = key.split('.');
         const result = keys.reduce((obj, k) =>
                 obj && typeof obj === 'object' && k in obj ? obj[k] : null,
-            translations as any
+            translations as TranslationObject
         );
 
         // Si no se encuentra la traducción, intentar con el idioma por defecto
         if (result === null) {
-            return "No translation found for: " + key + "";
+            return `No translation found for: ${key}`;
             // return trans(defaultLanguage.code, key, params);
         }
 
@@ -86,6 +138,7 @@ export const trans = (lang: string = defaultLanguage.code, key: string, params?:
         // Reemplazar parámetros si se proporcionaron
         if (params && typeof params === 'object') {
             // Reemplazar cada parámetro en el formato {{nombreParametro}}
+            // biome-ignore lint/complexity/noForEach: <explanation>
             Object.entries(params).forEach(([paramName, paramValue]) => {
                 const regex = new RegExp(`\\{\\{\\s*${paramName}\\s*\\}\\}`, 'g');
                 translation = translation.replace(regex, String(paramValue));
@@ -152,42 +205,42 @@ export function setLanguage(langCode: string): void {
 }
 
 // Función para obtener el idioma actual
-export function getCurrentLanguage(): string {
-    // Si estamos en el navegador y la variable global no tiene un valor válido, intentar obtener de localStorage
-    if (typeof window !== 'undefined' && window.localStorage &&
-        (!currentLanguage || !languages.some(lang => lang.code === currentLanguage))) {
-        try {
-            const savedLanguage = localStorage.getItem('language');
-
-            // Si hay un idioma válido en localStorage, actualizar la variable global
-            if (savedLanguage && languages.some(lang => lang.code === savedLanguage)) {
-                currentLanguage = savedLanguage;
-                return savedLanguage;
-            }
-        } catch (error) {
-            console.error('Error leyendo idioma de localStorage:', error);
-        }
-    }
-
-    return currentLanguage || defaultLanguage.code;
-}
+// export function getCurrentLanguage(): string {
+//     // Si estamos en el navegador y la variable global no tiene un valor válido, intentar obtener de localStorage
+//     if (typeof window !== 'undefined' && window.localStorage &&
+//         (!currentLanguage || !languages.some(lang => lang.code === currentLanguage))) {
+//         try {
+//             const savedLanguage = localStorage.getItem('language');
+//
+//             // Si hay un idioma válido en localStorage, actualizar la variable global
+//             if (savedLanguage && languages.some(lang => lang.code === savedLanguage)) {
+//                 currentLanguage = savedLanguage;
+//                 return savedLanguage;
+//             }
+//         } catch (error) {
+//             console.error('Error leyendo idioma de localStorage:', error);
+//         }
+//     }
+//
+//     return currentLanguage || defaultLanguage.code;
+// }
 
 // Función para sincronizar el idioma actual con localStorage
-export function syncLanguageWithStorage(): void {
-    if (typeof window !== 'undefined' && window.localStorage) {
-        try {
-            // Obtener el idioma actual de localStorage
-            const savedLanguage = localStorage.getItem('language');
-
-            // Si hay un idioma válido en localStorage, actualizar la variable global
-            if (savedLanguage && languages.some(lang => lang.code === savedLanguage)) {
-                currentLanguage = savedLanguage;
-            } else {
-                // Si no hay un idioma válido en localStorage, guardar el idioma actual
-                localStorage.setItem('language', getCurrentLanguage());
-            }
-        } catch (error) {
-            console.error('Error sincronizando idioma con localStorage:', error);
-        }
-    }
-}
+// export function syncLanguageWithStorage(): void {
+//     if (typeof window !== 'undefined' && window.localStorage) {
+//         try {
+//             // Obtener el idioma actual de localStorage
+//             const savedLanguage = localStorage.getItem('language');
+//
+//             // Si hay un idioma válido en localStorage, actualizar la variable global
+//             if (savedLanguage && languages.some(lang => lang.code === savedLanguage)) {
+//                 currentLanguage = savedLanguage;
+//             } else {
+//                 // Si no hay un idioma válido en localStorage, guardar el idioma actual
+//                 localStorage.setItem('language', getCurrentLanguage());
+//             }
+//         } catch (error) {
+//             console.error('Error sincronizando idioma con localStorage:', error);
+//         }
+//     }
+// }
