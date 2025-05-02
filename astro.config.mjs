@@ -1,19 +1,20 @@
 import {defineConfig} from 'astro/config';
-// import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 import icon from 'astro-icon';
 
+import vercel from '@astrojs/vercel';
+
 // https://astro.build/config
 export default defineConfig({
+    site: 'https://www.harmonyhotelgroup.com',
     i18n: {
-        locales: ['es', 'en'],
+        locales: ['es', 'en','fr'],
         defaultLocale: 'es',
         routing: {
             prefixDefaultLocale: false,
             // redirectToDefaultLocale: true,
         }
     },
-    prefetch: true,
     integrations: [tailwind(), icon({
             iconSets: [
                 {
@@ -25,4 +26,7 @@ export default defineConfig({
             ],
         }
     )],
+
+    adapter: vercel(),
+    output: "server",
 });
