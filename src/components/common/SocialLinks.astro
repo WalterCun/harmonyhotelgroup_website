@@ -1,7 +1,8 @@
 ---
-import {facebookUrl, twitterUrl, instagramUrl, linkedinUrl, youtubeUrl, tiktokUrl} from "../../constants";
-import {Facebook, Instagram, Linkedin, Twitter, Youtube, Tiktok} from "lucide-astro";
-
+import {facebookUrl, twitterUrl, instagramUrl, linkedinUrl, youtubeUrl, tiktokUrl, whatsappUrl} from "../../constants";
+import {Facebook, Instagram, Linkedin, Twitter, Youtube} from "lucide-astro";
+import Tiktok from '../svg/logos/Tiktok.astro'
+import Whatsapp from '../svg/logos/Whatsapp.astro'
 interface SocialLink {
     platform: string;
     url?: string | null;
@@ -14,11 +15,15 @@ const socialLinks: SocialLink[] = [
     {platform: 'instagram', url: instagramUrl, icon: 'instagram'},
     {platform: 'linkedin', url: linkedinUrl, icon: 'linkedin'},
     {platform: 'youtube', url: youtubeUrl, icon: 'youtube'},
-    {platform: 'tiktok', url: tiktokUrl, icon: 'tiktok'}
+    {platform: 'tiktok', url: tiktokUrl, icon: 'tiktok'},
+    {platform: 'whatsapp', url: whatsappUrl, icon: 'whatsapp'}
 ];
+
+// Filtrar solo los enlaces que tienen una URL válida
+const validSocialLinks = socialLinks.filter(link => link.url);
 ---
 <div class="flex space-x-4">
-    {socialLinks.map(link => (
+    {validSocialLinks.map(link => (
             <a
                     href={link.url}
                     target="_blank"
@@ -38,7 +43,9 @@ const socialLinks: SocialLink[] = [
                                         <Instagram></Instagram> :
                                     link.icon === 'tiktok' ?
                                             <Tiktok></Tiktok> :
-                                        null
+                                        link.icon === 'whatsapp' ?
+                                                <Whatsapp></Whatsapp> :
+                                            null
                 }
             </a>
     ))}

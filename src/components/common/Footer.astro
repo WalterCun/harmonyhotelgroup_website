@@ -1,103 +1,97 @@
 ---
 import SocialLinks from './SocialLinks.astro';
-import {defaultLanguage, trans} from "../../utils/translations";
+import {trans} from "../../utils/translations";
 
-interface Props {
-  lang: string;
-}
-
-const {
-  lang
-} = Astro.props;
+const lang = Astro.currentLocale;
 
 const quickLinks = [
-  { label: trans(lang, "navigation.url.about-us"), href: "/about" },
-  {label: trans(lang, "navigation.url.hotel"), href: "/hotels"},
-  {label: trans(lang, "navigation.url.destinations"), href: "/destinations"},
-  {label: trans(lang, "navigation.url.offers"), href: "/offers"},
-  {label: trans(lang, "navigation.url.blog"), href: "/blog"},
-  {label: trans(lang, "navigation.url.contact"), href: "/contact"},
-  { label: trans(lang,"navigation.url.privacy-policy"), href: "/privacy" },
-  { label: trans(lang,"navigation.url.terms-of-service"), href: "/terms" },
+    {label: trans(lang, "components.common.navigation.url.about-us"), href: "/about"},
+    {label: trans(lang, "components.common.navigation.url.hotel"), href: "/hotels"},
+    {label: trans(lang, "components.common.navigation.url.destinations"), href: "/destinations"},
+    {label: trans(lang, "components.common.navigation.url.offers"), href: "/offers"},
+    {label: trans(lang, "components.common.navigation.url.blog"), href: "/blog"},
+    {label: trans(lang, "components.common.navigation.url.contact"), href: "/contact"},
+    {label: trans(lang, "components.common.navigation.url.privacy-policy"), href: "/privacy"},
+    {label: trans(lang, "components.common.navigation.url.terms-of-service"), href: "/terms"},
 ];
 
 const faqs = [
-  { label: "Booking Process", href: "/faq#booking" },
-  { label: "Cancellation Policy", href: "/faq#cancellation" },
-  { label: "Loyalty Program", href: "/faq#loyalty" },
-  { label: "Payment Methods", href: "/faq#payment" },
-  { label: "COVID-19 Measures", href: "/faq#covid" },
+    {label: trans(lang, "components.common.navigation.url.faq-booking"), href: "/faq#booking"},
+    {label: trans(lang, "components.common.navigation.url.faq-cancellation-policy"), href: "/faq#cancellation"},
+    {label: trans(lang, "components.common.navigation.url.faq-loyalty-program"), href: "/faq#loyalty"},
+    {label: trans(lang, "components.common.navigation.url.faq-payment-methods"), href: "/faq#payment"},
 ];
-
 ---
 
 <footer class="bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 border-t border-neutral-200 dark:border-neutral-800">
-  <div class="container">
-    <!-- Main Footer Content -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 py-12">
-      <!-- Company Info -->
-      <div>
-        <h3 class="text-xl font-semibold font-serif text-neutral-800 dark:text-neutral-100 mb-4">{trans(lang, "footer.title")}</h3>
-        <p class="mb-4">{trans(lang, "footer.subtitle")}</p>
-        <SocialLinks />
-      </div>
+    <div class="container">
+        <!-- Main Footer Content -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 py-12">
+            <!-- Company Info -->
+            <div>
+                <h3 class="text-xl font-semibold font-serif text-neutral-800 dark:text-neutral-100 mb-4">{trans(lang, "components.common.footer.title")}</h3>
+                <p class="mb-4">{trans(lang, "components.common.footer.subtitle")}</p>
+                <SocialLinks/>
+            </div>
 
-      <!-- Quick Links -->
-      <div>
-        <h3 class="text-xl font-semibold font-serif text-neutral-800 dark:text-neutral-100 mb-4">Quick Links</h3>
-        <ul class="space-y-2">
-          {quickLinks.map(link => (
-              <li>
-                <a
-                    href={link.href}
-                    class="hover:text-primary-500 dark:hover:text-primary-400 transition-colors duration-200"
-                >
-                  {link.label}
-                </a>
-              </li>
-          ))}
-        </ul>
-      </div>
+            <!-- Quick Links -->
+            <div>
+                <h3 class="text-xl font-semibold font-serif text-neutral-800 dark:text-neutral-100 mb-4">
+                    {trans(lang, "components.common.footer.quick-links")}
+                </h3>
+                <ul class="space-y-2">
+                    {quickLinks.map(link => (
+                            <li>
+                                <a
+                                        href={link.href}
+                                        class="hover:text-primary-500 dark:hover:text-primary-400 transition-colors duration-200"
+                                >
+                                    {link.label}
+                                </a>
+                            </li>
+                    ))}
+                </ul>
+            </div>
 
-      <!-- FAQs -->
-      <div>
-        <h3 class="text-xl font-semibold font-serif text-neutral-800 dark:text-neutral-100 mb-4">FAQs</h3>
-        <ul class="space-y-2">
-          {faqs.map(faq => (
-              <li>
-                <a
-                    href={faq.href}
-                    class="hover:text-primary-500 dark:hover:text-primary-400 transition-colors duration-200"
-                >
-                  {faq.label}
-                </a>
-              </li>
-          ))}
-        </ul>
-      </div>
+            <!-- FAQs -->
+            <div>
+                <h3 class="text-xl font-semibold font-serif text-neutral-800 dark:text-neutral-100 mb-4">FAQs</h3>
+                <ul class="space-y-2">
+                    {faqs.map(faq => (
+                            <li>
+                                <a
+                                        href={faq.href}
+                                        class="hover:text-primary-500 dark:hover:text-primary-400 transition-colors duration-200"
+                                >
+                                    {faq.label}
+                                </a>
+                            </li>
+                    ))}
+                </ul>
+            </div>
 
-      <!-- Contact Form -->
-      <div>
-        <h3 class="text-xl font-semibold font-serif text-neutral-800 dark:text-neutral-100 mb-4">Contact Us</h3>
-        <form class="space-y-3">
-          <div>
-            <label>
-              <input type="email" placeholder="Email Address" class="input" required />
-            </label>
-          </div>
-          <div>
-            <label>
-              <textarea placeholder="Your Message" rows="3" class="input"></textarea>
-            </label>
-          </div>
-          <button type="submit" class="btn btn-primary">Send Message</button>
-        </form>
-      </div>
+            <!-- Contact Form -->
+            <div>
+                <h3 class="text-xl font-semibold font-serif text-neutral-800 dark:text-neutral-100 mb-4">Contact Us</h3>
+                <form class="space-y-3">
+                    <div>
+                        <label>
+                            <input type="email" placeholder="Email Address" class="input" required/>
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <textarea placeholder="Your Message" rows="3" class="input"></textarea>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="py-4 border-t border-neutral-200 dark:border-neutral-800 text-sm text-center">
+            <p>&copy; {new Date().getFullYear()} Harmony Hotel Group. All rights reserved.</p>
+        </div>
     </div>
-
-    <!-- Bottom Bar -->
-    <div class="py-4 border-t border-neutral-200 dark:border-neutral-800 text-sm text-center">
-      <p>&copy; {new Date().getFullYear()} Harmony Hotel Group. All rights reserved.</p>
-    </div>
-  </div>
 </footer>
