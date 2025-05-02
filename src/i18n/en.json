@@ -1,7 +1,60 @@
 {
-  "home": {
-    "hero": {
-      "main-title": "Experience in Every Stay"
+    "components": {
+        "common": {
+            "navigation": {
+                "url": {
+                    "hotel": "Hotels",
+                    "destinations": "Destinations",
+                    "offers": "Offers",
+                    "blog": "Blog",
+                    "contact": "Contact",
+                    "about-us": "About Us",
+                    "privacy-policy": "Privacy policies",
+                    "terms-of-service": "Service terms",
+                    "faq-booking": "Reservations",
+                    "faq-cancellation-policy": "Cancellation policies",
+                    "faq-loyalty-program": "Loyalty Programme",
+                    "faq-payment-methods": "Payment methods"
+                }
+            },
+            "footer": {
+                "title": "Harmony Hotel Group",
+                "subtitle": "Experience luxury and comfort in our premium hotels and resorts around the world. Discover unforgettable rooms with exceptional service.",
+                "quick-links": "Quick links"
+            }
+        },
+        "forms": {
+            "reservation": {
+                "check-in": "Date of entry",
+                "check-out": "Date of departure",
+                "adult": "Adult{{s}}",
+                "child": "Child{{s}}",
+                "breakfast": "Breakfast",
+                "parking": "Parking lot",
+                "contact": "Book",
+                "label-child": "Age of the child {{year}}",
+                "input-child": "{{year}} year",
+                "child-less-ages": "Less than {{year}} year",
+                "child-ages": "{{year}} year"
+            }
+        }
+    },
+    "home": {
+        "hero": {
+            "title": "New experience every day",
+            "subtitle": "Discover incomparable comfort and impeccable service in our select hotels and resorts around the world. of the world.",
+            "buttons": {
+                "view-hotels": "See our Hotels",
+                "view-offers": "Special offers"
+            }
+        }
+    },
+    "layouts": {
+        "layout": {
+            "meta": {
+                "title": "Harmony Hotel Group",
+                "description": "Experience luxury and comfort with Harmony Hotel Group. Book your perfect stay in our hotels throughout Ecuador."
+            }
+        }
     }
-  }
 }

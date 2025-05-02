@@ -1,9 +1,6 @@
 {
   "components": {
     "common": {
-      "header": {
-        "0": null
-      },
       "navigation": {
         "url": {
           "hotel": "Hoteles",
@@ -13,16 +10,32 @@
           "contact": "Contacto",
           "about-us": "Sobre Nosotros",
           "privacy-policy": "Politicas de Privacidad",
-          "terms-of-service": "Terminos de Servicio"
+          "terms-of-service": "Terminos de Servicio",
+          "faq-booking": "Reservas",
+          "faq-cancellation-policy": "Politicas de Cancelacion",
+          "faq-loyalty-program": "Programa de Lealtad",
+          "faq-payment-methods": "Metodos de Pago"
         }
+      },
+      "footer": {
+        "title": "Harmony Hotel Group",
+        "subtitle": "Experimente el lujo y el confort en nuestros hoteles y resorts premium de todo el mundo. Descubra estancias inolvidables con un servicio excepcional.",
+        "quick-links": "Enlaces Rapidos"
       }
     },
     "forms": {
       "reservation": {
-        "check-in": "Ingreso",
-        "check-out": "Salida",
+        "check-in": "Fecha de Ingreso",
+        "check-out": "Fecha de Salida",
         "adult": "Adulto{{s}}",
-        "child": "Niño{{s}}"
+        "child": "Niño{{s}}",
+        "breakfast": "Desayuno",
+        "parking": "Parqueadero",
+        "contact": "Reservar",
+        "label-child": "Edad del niño {{year}}",
+        "input-child": "{{year}} año{{s}}",
+        "child-less-ages": "Menos de {{year}} año",
+        "child-ages": "{{year}} año{{s}}"
       }
     }
   },
@@ -43,9 +56,5 @@
         "description": "Experimente el lujo y el confort con Harmony Hotel Group. Reserve su estancia perfecta en nuestros hoteles de todo el Ecuador."
       }
     }
-  },
-  "footer": {
-    "title": "Harmony Hotel Group",
-    "subtitle": "Experience luxury and comfort at our premium hotels and resorts worldwide. Discover unforgettable stays with exceptional service."
   }
 }
