@@ -1,5 +1,53 @@
 ---
 import {Calendar, Baby, Users, Search} from 'lucide-astro'
+import {range} from "../../utils/tools";
+import {maxAdults, maxChildren} from "../../constants";
+import {trans} from "../../utils/translations";
+const lang = Astro.currentLocale;
+
+if (Astro.request.method === "POST") {
+    try {
+        const data = await Astro.request.formData();
+
+
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error(error.message);
+        }
+    }
+}
+
+
+// export function updateChildAgesControls(container: HTMLDivElement, childCount: number, ages: number[]) {
+//     container.innerHTML = '';
+//
+//     if (childCount > 0) {
+//         container.classList.remove('hidden');
+//
+//         for (let i = 0; i < childCount; i++) {
+//             const label = document.createElement('label');
+//             label.className = "block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1"
+//             label.textContent = trans(lang, 'components.forms.reservation.child-age', {"i": i + 1});
+//
+//
+//             const select = document.createElement('select');
+//             select.className = 'select';
+//             // Agregar opciones de edad (0-17)
+//             for (let age = 0; age <= 17; age++) {
+//                 const option = document.createElement('option');
+//                 option.value = age.toString();
+//                 option.textContent = age.toString();
+//                 select.appendChild(option);
+//             }
+//             console.log(select);
+//             // Establecer la edad desde el estado si está disponible
+//             // if (ages[i] !== undefined) {
+//             //     select.value = ages[i].toString();
+//             // }
+//             container.appendChild(select);
+//         }
+//     }
+// }
 ---
 
 <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">-->
@@ -203,85 +251,188 @@ import {Calendar, Baby, Users, Search} from 'lucide-astro'
 <!--  </div>-->
 <!--</div>-->
 
-<div class="absolute bottom-12 left-1/2 -translate-x-1/2 w-full max-w-4xl">
-    <div class="mx-4 bg-white rounded-lg shadow-xl p-6">
+<form class="absolute bottom-12 left-1/2 -translate-x-1/2 w-full max-w-4xl booking-form">
+    <div class="flex flex-col space-y-4 mx-4 bg-white rounded-lg shadow-xl p-6">
         <div class="grid md:grid-cols-4 gap-4">
-            <div class="space-y-2">
-                <label class="text-sm text-gray-600 flex items-center gap-2" data-trans-key="search.checkIn">
+            <div class="md:col-span-1">
+                <label for="check-in" class="text-sm text-gray-600 flex items-center gap-2"
+                       data-trans-key="search.checkIn">
                     <Calendar class="w-4 h-4"/>
-                    <!--{trans('search.checkIn')}-->
+                    {trans(lang, 'components.forms.reservation.check-in')}
                 </label>
-                <label>
-                    <!--value={todayFormatted}-->
-                    <input
-                            type="date"
-                            value="1"
-                            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gold-500"
-                    />
-                </label>
+                <input
+                        type="date"
+                        id="check-in"
+                        class="input"
+                        min={new Date().toISOString().split('T')[0]}
+                />
             </div>
-            <div class="space-y-2">
-                <label class="text-sm text-gray-600 flex items-center gap-2">
+            <div class="md:col-span-1">
+                <label for="check-out" class="text-sm text-gray-600 flex items-center gap-2">
                     <Calendar class="w-4 h-4"/>
-                    <!--{trans('search.checkOut')}-->
+                    {trans(lang, 'components.forms.reservation.check-out')}
                 </label>
-                <label>
-                    <!--value={tomorrowFormatted}-->
-                    <input
-                            type="date"
-                            value="1"
-                            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gold-500"
-                    />
-                </label>
-
+                <input
+                        type="date"
+                        id="check-out"
+                        class="input"
+                        min={new Date().toISOString().split('T')[0]}
+                />
             </div>
-            <div class="space-y-2">
-                <label class="text-sm text-gray-600 flex items-center gap-2">
+            <div class="md:col-span-1">
+                <label for="adults" class="text-sm text-gray-600 flex items-center gap-2">
                     <Users class="w-4 h-4"/>
-                    <!--{trans('search.adults')}-->
+                    {trans(lang, 'components.forms.reservation.adult', {"s": "s"})}
                 </label>
-                <select
+                <select id="adults"
                         class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gold-500"
                 >
-                    <!--{[1, 2, 3, 4, 5, 6].map(n => (-->
-                    <!--        <option value={n} selected={n === 2}>-->
-                    <!--            {n} {n === 1 ? trans("search.adult") : trans("search.adults_plural")}-->
-                    <!--        </option>-->
-                    <!--))}-->
+                    {
+                        range(1, maxAdults).map((i, index, array) => {
+                            const isLast = index === array.length - 1;
+                            return (
+                                    <option value={i} selected={i === 2}>
+                                        {i}{isLast ? "+ " : " "}{i >= 2 ? trans(lang, "components.forms.reservation.adult", {"s": "s"}) : trans(lang, "components.forms.reservation.adult", {"s": ""})}
+                                    </option>
+                            );
+                        })
+                    }
                 </select>
             </div>
-            <div class="space-y-2">
-                <label class="text-sm text-gray-600 flex items-center gap-2">
+            <div class="md:col-span-1">
+                <label for="children" class="text-sm text-gray-600 flex items-center gap-2">
                     <Baby class="w-4 h-4"/>
-                    <!--{trans('search.children')}-->
+                    {trans(lang, 'components.forms.reservation.child', {"s": ""})}
                 </label>
-                <label for="children-count"></label>
-                <select
-                        id="children-count"
-                        class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gold-500"
-                >
-                    <!--<option value="0" selected>{trans("search.noChildren")}</option>-->
-                    <!--{[1, 2, 3, 4].map(n => (-->
-                    <!--        <option value={n}>-->
-                    <!--            {n} {n === 1 ? trans("search.child") : trans("search.children_plural")}-->
-                    <!--        </option>-->
-                    <!--))}-->
+                <select id="children" class="select">
+                    {
+                        range(0, maxChildren - 1).map((i, index, array) => {
+                            return (
+                                    <option value={i} selected={i === 0}>
+                                        {i} {i == 1 ? trans(lang || "es", "components.forms.reservation.child", {"s": ""}) : trans(lang, "components.forms.reservation.child", {"s": "s"})}
+                                    </option>
+                            );
+                        })
+                    }
                 </select>
             </div>
         </div>
-
-        <!-- Children Ages (hidden by default) -->
-        <div id="children-ages" class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4 hidden">
-            <!-- Will be populated by JavaScript -->
+        <!-- Child Ages -->
+        <div id="child-ages-container"
+             class="hidden md:col-span-3 lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-2">
+            <!-- Child age inputs will be dynamically added here -->
         </div>
 
-        <div class="mt-6">
-            <button
-                    class="w-full bg-gold-600 text-white h-12 rounded-md flex items-center justify-center gap-2 hover:bg-gold-700 transition-colors"
-            >
-                <Search class="w-5 h-5"/>
-                <!--{trans("search.search")}-->
+        <!-- Amenities -->
+        <div class="md:col-span-1 lg:col-span-1 flex items-center space-x-4">
+            <div class="flex items-center space-x-3">
+                <label for="breakfast"
+                       class="ml-2 block text-sm text-neutral-700 dark:text-neutral-300">{trans(lang, 'components.forms.reservation.breakfast')}</label>
+                <input type="checkbox" id="breakfast" class="checkbox"/>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <label for="parking"
+                       class="ml-2 block text-sm text-neutral-700 dark:text-neutral-300">{trans(lang, 'components.forms.reservation.parking')}</label>
+                <input type="checkbox" id="parking" class="checkbox"/>
+            </div>
+        </div>
+
+        <!-- Search Button -->
+        <div class="md:col-span-1 lg:col-span-1">
+            <button type="submit" class="btn btn-primary w-full">
+                {trans(lang, 'components.forms.reservation.contact')}
             </button>
         </div>
     </div>
-</div>
+</form>
+
+
+<script>
+    import {bookingFormState} from "../../stores/bookingStore";
+    import {trans} from "../../utils/translations";
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.querySelector('.booking-form');
+        if (!form) return;
+
+        const checkInInput = form.querySelector('#check-in') as HTMLInputElement;
+        const checkOutInput = form.querySelector('#check-out') as HTMLInputElement;
+        const adultsSelect = form.querySelector('#adults') as HTMLSelectElement;
+        const childrenSelect = form.querySelector('#children') as HTMLSelectElement;
+        const childAgesContainer = form.querySelector('#child-ages-container') as HTMLDivElement;
+        const breakfastCheckbox = form.querySelector('#breakfast') as HTMLInputElement;
+        const parkingCheckbox = form.querySelector('#parking') as HTMLInputElement;
+
+        // Verificar que todos los elementos existen
+        if (!checkInInput || !checkOutInput || !adultsSelect || !childrenSelect
+            || !childAgesContainer || !breakfastCheckbox || !parkingCheckbox) {
+            console.error('No se pudieron encontrar todos los elementos del formulario');
+            return;
+        }
+
+        const state = bookingFormState.get();
+
+
+        if (state.checkIn) checkInInput.value = state.checkIn;
+        if (state.checkOut) checkOutInput.value = state.checkOut;
+        adultsSelect.value = state.adults.toString();
+        childrenSelect.value = state.children.toString();
+        breakfastCheckbox.checked = state.breakfast;
+        parkingCheckbox.checked = state.parking;
+
+        // Update state on form changes
+        const updateState = () => {
+            bookingFormState.set({
+                checkIn: checkInInput.value,
+                checkOut: checkOutInput.value,
+                adults: parseInt(adultsSelect.value),
+                children: parseInt(childrenSelect.value),
+                childrenAges: Array.from(childAgesContainer.querySelectorAll('select')).map(select => parseInt((select as HTMLSelectElement).value)),
+                breakfast: breakfastCheckbox.checked,
+                parking: parkingCheckbox.checked
+            });
+        };
+
+        form.addEventListener('change', updateState);
+
+
+        childrenSelect?.addEventListener('change', () => {
+            if (!childAgesContainer) return;
+
+            const childCount = parseInt(childrenSelect.value);
+            console.warn(childCount);
+            const ages = state.childrenAges;
+
+            {
+                updateChildAgesControls(childAgesContainer, childCount, ages)
+            }
+        })
+
+        // Función para actualizar los controles de edades de niños
+        const updateChildAgesControls = (container: HTMLDivElement, count: number, existingAges: number[] = []) => {
+            container.innerHTML = '';
+            container.style.display = count > 0 ? 'grid' : 'none';
+
+            for (let i = 0; i < count; i++) {
+                const ageSelect = document.createElement('div');
+                ageSelect.innerHTML = `
+                    <label class="text-sm text-gray-600">
+                        ${trans(document.documentElement.lang, 'components.forms.reservation.label-child', {year: i + 1})} 
+                    </label>
+                    <select class="child-age-select w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gold-500" required>
+                        ${Array.from({length: 18}, (_, j) => j).map(age =>
+                    `<option value="${age}" ${existingAges[i] === age ? 'selected' : ''}>${trans(document.documentElement.lang, 'components.forms.reservation.input-child', {
+                        'year': age,
+                        "s": (age > 1 || age < 1 ? "s" : "")
+                    })}</option>`
+                ).join('')}
+                    </select>
+                `;
+                container.appendChild(ageSelect);
+            }
+        };
+    })
+
+</script>
