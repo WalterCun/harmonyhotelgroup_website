@@ -1,23 +1,21 @@
 ---
 import {Image} from 'astro:assets';
-import {defaultLanguage, languages, structUrl} from "../../../utils/translations";
+import {LANGUAGES, structUrl} from "~/utils/translations";
 
 interface Props {
     lang: string
 }
 
 const {lang} = Astro.props;
-
-const langSeleted = languages.find(language => language.code === lang) || languages[0];
 ---
 
 <div class="relative">
     <button id="language-toggle" aria-label="Cambiar idioma" aria-haspopup="true" aria-expanded="false"
             class="flex items-center gap-2 px-3 py-1.5 rounded-md text-neutral-700 dark:text-neutral-300 hover:text-primary-500 dark:hover:text-primary-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors">
-        {langSeleted.flag && (
-                <Image src={langSeleted.flag} alt="" width="20" height="20" class="flex-shrink-0 object-cover"/>)}
+        <!-- {langSeleted.flag && (
+                <Image src={langSeleted.flag} alt="" width="20" height="20" class="flex-shrink-0 object-cover"/>)}-->
         <span id="current-language" class="text-sm font-medium">
-        {langSeleted.name || 'Idioma'}
+        <!--{langSeleted.name || 'Idioma'} -->
     </span>
         <svg
                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 flex-shrink-0"
@@ -32,42 +30,86 @@ const langSeleted = languages.find(language => language.code === lang) || langua
 
     <div id="language-dropdown"
          class="absolute top-full right-0 mt-0 w-auto bg-white dark:bg-neutral-800 shadow-lg rounded-md py-1 z-10 hidden">
-        {languages.map(lang => (
-                <div class="flex items-center">
-                    <!-- <a href={lang.code === defaultLanguage.code ? '/' : lang.code} data-lang-code={lang.code === defaultLanguage.code ? '/' : lang.code} </a>-->
-                    <a href={structUrl(Astro.url,lang.code)} data-lang-code={lang.code}
-                            class="flex items-center w-full text-left px-4 py-2 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700">
-                        <div class="flex-shrink-0">
-                            <Image src={lang.flag} alt="" width="20"></Image>
-                        </div>
-                        <span class="ml-2">{lang.name}</span>
-                    </a>
-                </div>
-        ))}
+        {Object.entries(LANGUAGES).map(lang => {
+            const [code, value] = lang;
+            return <div class="flex items-center">
+                        <!--<a href={code === 'es' ? '/' : code} data-lang-code={code === 'es' ? '/' : code} </a>-->
+                        <a href={structUrl(Astro.url, code)} data-lang-code={code}
+                           class="flex items-center w-full text-left px-4 py-2 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700">
+                            <div class="flex-shrink-0">
+                                <Image src={value.flag} alt="" width="20"></Image>
+                            </div>
+                            <span class="ml-2">{value.name}</span>
+                        </a>
+                    </div>
+        })}
     </div>
 </div>
 <script>
-    import {setLanguage} from "../../../utils/translations";
+    import {setLanguage, LANGUAGES, structUrl} from "~/utils/translations";
 
     document.addEventListener('DOMContentLoaded', () => {
         const languageToggle = document.getElementById('language-toggle');
         const languageDropdown = document.getElementById('language-dropdown');
-        const currentLanguageElement = document.getElementById('current-language');
+        // const currentLanguageElement = document.getElementById('current-language');
         const languageButtons = document.querySelectorAll('[data-lang-code]');
+
+        // Obtener el idioma actual desde localStorage o usar el predeterminado
+        function getCurrentLanguageFromStorage() {
+            try {
+                return localStorage.getItem('language') || 'es';
+            } catch (error) {
+                console.error('Error al leer el idioma desde localStorage:', error);
+                return 'es';
+            }
+        }
+
+        // Resaltar el botón del idioma actual en el menú desplegable
+        function highlightCurrentLanguage() {
+            const currentLang = getCurrentLanguageFromStorage();
+
+            // Quitar resaltado de todos los botones
+            languageButtons.forEach(button => {
+                button.classList.remove('bg-neutral-100', 'dark:bg-neutral-700', 'font-medium');
+            });
+
+            // Añadir resaltado al botón del idioma actual
+            const currentButton = Array.from(languageButtons).find(
+                button => button.getAttribute('data-lang-code') === currentLang
+            );
+
+            if (currentButton) {
+                currentButton.classList.add('bg-neutral-100', 'dark:bg-neutral-700', 'font-medium');
+            }
+        }
+
+        // Ejecutar al cargar la página
+        highlightCurrentLanguage();
 
         // Toggle dropdown
         languageToggle?.addEventListener('click', (e) => {
             e.stopPropagation();
             languageDropdown?.classList.toggle('hidden');
+
+            // Actualizar resaltado cada vez que se abre el menú desplegable
+            if (!languageDropdown?.classList.contains('hidden')) {
+                highlightCurrentLanguage();
+            }
         });
 
         // Handle language selection
         languageButtons.forEach(button => {
             button.addEventListener('click', async () => {
-                const langCode:any = button.getAttribute('data-lang-code');
-                setLanguage(langCode);
+                const langCode = button.getAttribute('data-lang-code');
+                if (langCode) {
+                    setLanguage(langCode);
+
+                    // Actualizar resaltado después de seleccionar un nuevo idioma
+                    highlightCurrentLanguage();
+                }
             });
         });
+
 
         // Close dropdown when clicking outside
         document.addEventListener('click', () => {
