@@ -16,14 +16,12 @@ const flag_es_esp = flag_es;
 // ---------------------------------------------------------------------------------------------------
 
 interface Language {
-    code: string;
+
     name: string;
     flag: ImageMetadata;
-    status: boolean;
 }
 
 // ---------------------------------------------------------------------------------------------------
-
 
 
 /*
@@ -33,14 +31,10 @@ https://laendercode.net/es/3-letter-list.html
 Descargar SVG desde Wikipedia "Wikipedia [Pais] Flag SVG"
 */
 
-const languagesList: Language[] = [
-    {code: 'es', name: "Español", status: true, flag: flag_es},
-    {code: 'en', name: "English", status: true, flag: flag_en},
-    {code: 'fr', name: "Français", status: true, flag: flag_fr},
-    {code: 'es-ecu', name: "Español Ecuador", status: false, flag: flag_es_ecu},
-    {code: 'en-usa', name: "English USA", status: false, flag: flag_en_usa},
-    {code: 'es-esp', name: "Español España", status: false, flag: flag_es_esp},
-]
+export const LANGUAGES: Record<string, Language> = {
+    'es': {name: "Español", flag: flag_es},
+    'en': {name: "English", flag: flag_en}
+}
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 type TranslationObject = Record<string, any>;
 // Mapa de idiomas soportados
@@ -50,7 +44,6 @@ export const TranslationData: Record<string, TranslationObject> = {
     fr
 };
 
-export const languages = languagesList.filter(lang => lang.status);
 export const defaultLanguage = {code: 'es', name: "Español", status: true, flag: flag_es};
 
 // ---------------------------------------------------------------------------------------------------
@@ -71,7 +64,7 @@ export const structUrl = (url: URL, langCode?: string): string => {
     const pathname = url.pathname;
 
     // Regex para busca /en/, /es/, /fr/ al inicio del pathname
-    const mainLanguageCodes = Object.keys(languages);
+    const mainLanguageCodes = Object.keys(LANGUAGES);
     const langPattern = mainLanguageCodes.join('|');
     const langPrefixRegex = new RegExp(`^\\/(${langPattern})\\/`);
 
@@ -154,44 +147,12 @@ export const trans = (lang: string = defaultLanguage.code, key: string, params?:
 
 // ---------------------------------------------------------------------------------------------------
 
-// Variables y tipos
-let currentLanguage: string = getInitialLanguage();
-
-// Función para obtener el idioma inicial
-function getInitialLanguage(): string {
-    // Verificar si estamos en el navegador
-    if (typeof window !== 'undefined' && window.localStorage) {
-        try {
-            // Intentar obtener el idioma guardado en localStorage
-            const savedLanguage = localStorage.getItem('language');
-
-            // Verificar si el idioma guardado es válido
-            if (savedLanguage && languages.some(lang => lang.code === savedLanguage)) {
-                return savedLanguage;
-            }
-
-            // Intentar detectar el idioma del navegador
-            const browserLang = navigator.language.split('-')[0];
-            if (languages.some(lang => lang.code === browserLang)) {
-                // Guardar el idioma detectado en localStorage para futuras visitas
-                localStorage.setItem('language', browserLang);
-                return browserLang;
-            }
-        } catch (error) {
-            console.error('Error accediendo a localStorage:', error);
-        }
-    }
-
-    // Si no hay idioma guardado o no estamos en navegador, usar el idioma por defecto
-    return defaultLanguage.code;
-}
-
 // Función para cambiar el idioma
 export function setLanguage(langCode: string): void {
     // Verificar si el idioma es válido
-    if (languages.some(lang => lang.code === langCode)) {
+    if (LANGUAGES.some(lang => lang.code === langCode)) {
         // Actualizar la variable global
-        currentLanguage = langCode;
+        const currentLanguage = langCode;
 
         // Guardar en localStorage para persistencia
         if (typeof window !== 'undefined' && window.localStorage) {
@@ -203,44 +164,3 @@ export function setLanguage(langCode: string): void {
         }
     }
 }
-
-// Función para obtener el idioma actual
-// export function getCurrentLanguage(): string {
-//     // Si estamos en el navegador y la variable global no tiene un valor válido, intentar obtener de localStorage
-//     if (typeof window !== 'undefined' && window.localStorage &&
-//         (!currentLanguage || !languages.some(lang => lang.code === currentLanguage))) {
-//         try {
-//             const savedLanguage = localStorage.getItem('language');
-//
-//             // Si hay un idioma válido en localStorage, actualizar la variable global
-//             if (savedLanguage && languages.some(lang => lang.code === savedLanguage)) {
-//                 currentLanguage = savedLanguage;
-//                 return savedLanguage;
-//             }
-//         } catch (error) {
-//             console.error('Error leyendo idioma de localStorage:', error);
-//         }
-//     }
-//
-//     return currentLanguage || defaultLanguage.code;
-// }
-
-// Función para sincronizar el idioma actual con localStorage
-// export function syncLanguageWithStorage(): void {
-//     if (typeof window !== 'undefined' && window.localStorage) {
-//         try {
-//             // Obtener el idioma actual de localStorage
-//             const savedLanguage = localStorage.getItem('language');
-//
-//             // Si hay un idioma válido en localStorage, actualizar la variable global
-//             if (savedLanguage && languages.some(lang => lang.code === savedLanguage)) {
-//                 currentLanguage = savedLanguage;
-//             } else {
-//                 // Si no hay un idioma válido en localStorage, guardar el idioma actual
-//                 localStorage.setItem('language', getCurrentLanguage());
-//             }
-//         } catch (error) {
-//             console.error('Error sincronizando idioma con localStorage:', error);
-//         }
-//     }
-// }
