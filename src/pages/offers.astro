@@ -1,5 +1,6 @@
 ---
 import Layout from '~/layouts/Layout.astro';
+import {lang_es} from "~/constants";
 
 const offers = [
   {
@@ -75,15 +76,9 @@ const offers = [
     image: "https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
   }
 ];
-
-interface Props {
-  lang: string
-}
-
-const {lang} = Astro.props;
 ---
 
-<Layout title="Special Offers | Harmony Hotel Group">
+<Layout lang={lang_es} title="Special Offers | Harmony Hotel Group">
   <div class="bg-primary-500/10 dark:bg-neutral-800 py-16">
     <div class="container">
       <h1 class="text-center mb-6">Special Offers</h1>
