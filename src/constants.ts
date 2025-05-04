@@ -1,6 +1,13 @@
+export const lang_es = "es";
+export const lang_en = "en";
+
+// -------------------------------------------------------------------------------------------------------------------
+
 // Limite de generadores
 export const maxAdults: number = 10
 export const maxChildren: number = 9
+
+// -------------------------------------------------------------------------------------------------------------------
 
 // URL de Redes Sociales
 export const facebookUrl: string | null = 'https://www.facebook.com/hotelmajestic2cuenca/'
@@ -10,6 +17,8 @@ export const tiktokUrl: string | null = 'https://www.tiktok.com/@harmonyhotel'
 export const linkedinUrl: string | null = null
 export const youtubeUrl: string | null = null
 export const whatsappUrl: string | null = 'https://wa.me/593996146471'
+
+// -------------------------------------------------------------------------------------------------------------------
 
 // URL de contacto
 export const emailUrl: string = 'mailto:<gerencia@harmonyhotelgroup.com>'
