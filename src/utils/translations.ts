@@ -147,20 +147,27 @@ export const trans = (lang: string = defaultLanguage.code, key: string, params?:
 
 // ---------------------------------------------------------------------------------------------------
 
+export function currentLang (): string {
+    return localStorage.getItem('language') || defaultLanguage.code
+}
+
 // Función para cambiar el idioma
 export function setLanguage(langCode: string): void {
     // Verificar si el idioma es válido
-    if (LANGUAGES.some(lang => lang.code === langCode)) {
-        // Actualizar la variable global
-        const currentLanguage = langCode;
+    Object.entries(LANGUAGES).map(lang => {
+        const [code, value] = lang;
+        if (code === langCode) {
+            // Actualizar la variable global
+            // const currentLanguage = langCode;
 
-        // Guardar en localStorage para persistencia
-        if (typeof window !== 'undefined' && window.localStorage) {
-            try {
-                localStorage.setItem('language', langCode);
-            } catch (error) {
-                console.error('Error guardando idioma en localStorage:', error);
+            // Guardar en localStorage para persistencia
+            if (typeof window !== 'undefined' && window.localStorage) {
+                try {
+                    localStorage.setItem('language', langCode);
+                } catch (error) {
+                    console.error('Error guardando idioma en localStorage:', error);
+                }
             }
         }
-    }
+    })
 }
