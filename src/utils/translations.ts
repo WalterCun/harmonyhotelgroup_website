@@ -2,23 +2,14 @@ import es from "../i18n/es.json";
 import en from "../i18n/en.json";
 import fr from "../i18n/fr.json";
 // ---------------------------------------------------------------------------------------------------
-import flag_en from '../assets/img/flags/en.svg';
-
-const flag_en_usa = flag_en;
-
-import flag_es_ecu from '../assets/img/flags/es-ecu.svg';
-import flag_fr from '../assets/img/flags/fr.svg';
-
-import flag_es from '../assets/img/flags/es.svg';
-
-const flag_es_esp = flag_es;
+// import flag_en from '../assets/img/flags/en.svg';
+// import flag_es from '../assets/img/flags/es.svg';
 
 // ---------------------------------------------------------------------------------------------------
 
 interface Language {
-
     name: string;
-    flag: ImageMetadata;
+    flag: Promise<typeof import("*.svg")>
 }
 
 // ---------------------------------------------------------------------------------------------------
@@ -32,19 +23,19 @@ Descargar SVG desde Wikipedia "Wikipedia [Pais] Flag SVG"
 */
 
 export const LANGUAGES: Record<string, Language> = {
-    'es': {name: "Español", flag: flag_es},
-    'en': {name: "English", flag: flag_en}
+    'es': {name: "Español", flag: import('../assets/img/flags/es.svg')},
+    'en': {name: "English", flag: import('../assets/img/flags/en.svg')},
 }
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 type TranslationObject = Record<string, any>;
 // Mapa de idiomas soportados
 export const TranslationData: Record<string, TranslationObject> = {
-    en,
     es,
+    en,
     fr
 };
 
-export const defaultLanguage = {code: 'es', name: "Español", status: true, flag: flag_es};
+export const defaultLanguage = LANGUAGES.es;
 
 // ---------------------------------------------------------------------------------------------------
 
@@ -68,28 +59,15 @@ export const structUrl = (url: URL, langCode?: string): string => {
     const langPattern = mainLanguageCodes.join('|');
     const langPrefixRegex = new RegExp(`^\\/(${langPattern})\\/`);
 
-    // const langPrefixRegex = /^\/(en|es|fr)\//;
-
-    let newPathname = '';
+    let newPathname: string;
 
     // Si es el idioma por defecto (español) y no queremos prefijo
-    if (langCode === defaultLanguage.code) {
+    if (langCode === 'es') {
         // Si ya tiene un prefijo de idioma, lo eliminamos
-        if (langPrefixRegex.test(pathname)) {
-            newPathname = pathname.replace(langPrefixRegex, '/');
-        } else {
-            // Mantener la ruta actual si ya no tiene prefijo
-            newPathname = pathname;
-        }
+        newPathname = langPrefixRegex.test(pathname) ? pathname.replace(langPrefixRegex, '/') : pathname;
     } else {
         // Para otros idiomas, queremos añadir el prefijo
-        if (langPrefixRegex.test(pathname)) {
-            // Ya tiene un prefijo de idioma, lo reemplazamos
-            newPathname = pathname.replace(langPrefixRegex, `/${langCode}/`);
-        } else {
-            // No tiene prefijo, añadimos el nuevo
-            newPathname = `/${langCode}${pathname}`;
-        }
+        newPathname = langPrefixRegex.test(pathname) ? pathname.replace(langPrefixRegex, `/${langCode}/`) : pathname;
     }
 
     // Aseguramos que no haya doble slash
@@ -101,65 +79,107 @@ export const structUrl = (url: URL, langCode?: string): string => {
 
 
 // biome-ignore lint/style/useDefaultParameterLast: <explanation>
-export const trans = (lang: string = defaultLanguage.code, key: string, params?: Record<string, object>): string => {
+export const trans = (lang = "es", key: string, params?: Record<string, string | number>): string => {
+    const translationCache: Record<string, Record<string, string>> = {};
+    // Cachear las traducciones para evitar búsquedas repetidas
+    if (!translationCache[lang]) {
+        translationCache[lang] = {};
+    }
+
+    // Verificar si la traducción ya está en caché
+    const cacheKey = `${key}${params ? JSON.stringify(params) : ''}`;
+    if (translationCache[lang][cacheKey]) {
+        return translationCache[lang][cacheKey];
+    }
+
+
     // Obtener el objeto de traducción para el idioma especificado
-    const translations = TranslationData[lang];
+    const translations = TranslationData[lang]|| TranslationData.es;
 
     // Si el idioma no existe, devolver el valor por defecto
-    if (!translations) {
-        console.warn(`Idioma no soportado: ${lang}`);
-        return trans(defaultLanguage.code, key, params);
+    // if (!translations) {
+    //     console.warn(`Idioma no soportado: ${lang}`);
+    //     return trans(defaultLanguage.code, key, params);
+    // }
+
+    // try {
+    //     // Dividir la clave y reducir para navegar por el objeto de traducción
+    //     const keys = key.split('.');
+    //     const result = keys.reduce((obj, k) =>
+    //             obj && typeof obj === 'object' && k in obj ? obj[k] : null,
+    //         translations as TranslationObject
+    //     );
+    //
+    //     // Si no se encuentra la traducción, intentar con el idioma por defecto
+    //     if (result === null) {
+    //         return `No translation found for: ${key}`;
+    //         // return trans(defaultLanguage.code, key, params);
+    //     }
+    //
+    //     // Convertir a string
+    //     let translation = String(result);
+    //
+    //     // Reemplazar parámetros si se proporcionaron
+    //     if (params && typeof params === 'object') {
+    //         // Reemplazar cada parámetro en el formato {{nombreParametro}}
+    //         // biome-ignore lint/complexity/noForEach: <explanation>
+    //         Object.entries(params).forEach(([paramName, paramValue]) => {
+    //             const regex = new RegExp(`\\{\\{\\s*${paramName}\\s*\\}\\}`, 'g');
+    //             translation = translation.replace(regex, String(paramValue));
+    //         });
+    //     }
+    //
+    //     return translation;
+    // } catch (error) {
+    //     console.warn(`Error al obtener la traducción para: ${key}`, error);
+    //     return trans(defaultLanguage.code, key, params);
+    // }
+
+    // ------------------------------------------------------------------------------
+    // Usar un enfoque directo para acceder a traducciones anidadas
+    const keys = key.split('.');
+    let result = translations;
+
+    for (const k of keys) {
+        result = result[k];
     }
 
-    try {
-        // Dividir la clave y reducir para navegar por el objeto de traducción
-        const keys = key.split('.');
-        const result = keys.reduce((obj, k) =>
-                obj && typeof obj === 'object' && k in obj ? obj[k] : null,
-            translations as TranslationObject
-        );
-
-        // Si no se encuentra la traducción, intentar con el idioma por defecto
-        if (result === null) {
-            return `No translation found for: ${key}`;
-            // return trans(defaultLanguage.code, key, params);
-        }
-
-        // Convertir a string
-        let translation = String(result);
-
-        // Reemplazar parámetros si se proporcionaron
-        if (params && typeof params === 'object') {
-            // Reemplazar cada parámetro en el formato {{nombreParametro}}
-            // biome-ignore lint/complexity/noForEach: <explanation>
-            Object.entries(params).forEach(([paramName, paramValue]) => {
-                const regex = new RegExp(`\\{\\{\\s*${paramName}\\s*\\}\\}`, 'g');
-                translation = translation.replace(regex, String(paramValue));
-            });
-        }
-
-        return translation;
-    } catch (error) {
-        console.warn(`Error al obtener la traducción para: ${key}`, error);
-        return trans(defaultLanguage.code, key, params);
+    if (result === null || result === undefined) {
+        // En producción, usar directamente el idioma predeterminado sin recursión
+        return key; // Fallback simple
     }
+
+    let translation = String(result);
+
+    // Reemplazar parámetros de manera más eficiente
+    if (params) {
+        for (const [paramName, paramValue] of Object.entries(params)) {
+            translation = translation.replace(
+                new RegExp(`\\{\\{\\s*${paramName}\\s*\\}\\}`, 'g'),
+                String(paramValue)
+            );
+        }
+    }
+
+    // Guardar en caché
+    translationCache[lang][cacheKey] = translation;
+    return translation;
+
+
 };
 
 // ---------------------------------------------------------------------------------------------------
 
-export function currentLang (): string {
-    return localStorage.getItem('language') || defaultLanguage.code
+export function currentLang(): string {
+    return localStorage.getItem('language') || "es"
 }
 
 // Función para cambiar el idioma
 export function setLanguage(langCode: string): void {
     // Verificar si el idioma es válido
     Object.entries(LANGUAGES).map(lang => {
-        const [code, value] = lang;
+        const [code, _] = lang;
         if (code === langCode) {
-            // Actualizar la variable global
-            // const currentLanguage = langCode;
-
             // Guardar en localStorage para persistencia
             if (typeof window !== 'undefined' && window.localStorage) {
                 try {

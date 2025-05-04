@@ -309,9 +309,9 @@ const {lang} = Astro.props
                 </label>
                 <select id="children" class="select">
                     {
-                        range(0, maxChildren - 1).map((i, index, array) => {
+                        range(0, maxChildren - 1).map((i, index) => {
                             return (
-                                    <option value={i} selected={i === 0}>
+                                    <option id=`child-${index}` value={i} selected={i === 0}>
                                         {i} {i == 1 ? trans(lang || "es", "components.forms.reservation.child", {"s": ""}) : trans(lang, "components.forms.reservation.child", {"s": "s"})}
                                     </option>
                             );
@@ -351,91 +351,130 @@ const {lang} = Astro.props
 </form>
 
 
-<script>
-    import {bookingFormState} from "../../stores/bookingStore";
-    import {trans} from "../../utils/translations";
+<script define:vars={{ lang }}>
+    import { bookingFormState } from "../../stores/bookingStore";
+    import { trans } from "../../utils/translations";
 
+    // Crear templates de opciones para edades reutilizables
+    const createAgeOptions = (selectedAge = 0) => {
+        const options = [];
+        for (let age = 0; age <= 17; age++) {
+            options.push({
+                value: age,
+                selected: age === selectedAge,
+                label: trans(lang, 'components.forms.reservation.input-child', {
+                    'year': age,
+                    "s": (age > 1 || age < 1 ? "s" : "")
+                })
+            });
+        }
+        return options;
+    };
+
+    // Crear un elemento de edad de manera más segura
+    const createChildAgeElement = (index, selectedAge = 0) => {
+        const div = document.createElement('div');
+
+        const label = document.createElement('label');
+        label.className = "text-sm text-gray-600";
+        label.textContent = trans(lang, 'components.forms.reservation.label-child', {year: index + 1});
+
+        const select = document.createElement('select');
+        select.className = "child-age-select select";
+        select.required = true;
+
+        // Agregar opciones de manera más segura
+        const ageOptions = createAgeOptions(selectedAge);
+        ageOptions.forEach(opt => {
+            const option = document.createElement('option');
+            option.value = String(opt.value);
+            option.textContent = opt.label;
+            if (opt.selected) option.selected = true;
+            select.appendChild(option);
+        });
+
+        div.appendChild(label);
+        div.appendChild(select);
+
+        return div;
+    };
 
     document.addEventListener('DOMContentLoaded', () => {
         const form = document.querySelector('.booking-form');
         if (!form) return;
 
-        const checkInInput = form.querySelector('#check-in') as HTMLInputElement;
-        const checkOutInput = form.querySelector('#check-out') as HTMLInputElement;
-        const adultsSelect = form.querySelector('#adults') as HTMLSelectElement;
-        const childrenSelect = form.querySelector('#children') as HTMLSelectElement;
-        const childAgesContainer = form.querySelector('#child-ages-container') as HTMLDivElement;
-        const breakfastCheckbox = form.querySelector('#breakfast') as HTMLInputElement;
-        const parkingCheckbox = form.querySelector('#parking') as HTMLInputElement;
+        // Cachear referencias DOM
+        const elements = {
+            checkIn: form.querySelector('#check-in'),
+            checkOut: form.querySelector('#check-out'),
+            adults: form.querySelector('#adults'),
+            children: form.querySelector('#children'),
+            childAgesContainer: form.querySelector('#child-ages-container'),
+            breakfast: form.querySelector('#breakfast'),
+            parking: form.querySelector('#parking')
+        };
 
-        // Verificar que todos los elementos existen
-        if (!checkInInput || !checkOutInput || !adultsSelect || !childrenSelect
-            || !childAgesContainer || !breakfastCheckbox || !parkingCheckbox) {
-            console.error('No se pudieron encontrar todos los elementos del formulario');
+        // Validar que todos los elementos existen
+        if (!Object.values(elements).every(el => el)) {
+            console.error('No se encontraron todos los elementos del formulario');
             return;
         }
 
+        // Cargar estado inicial
         const state = bookingFormState.get();
 
+        // Inicializar valores del formulario desde el estado
+        if (state.checkIn) elements.checkIn.value = state.checkIn;
+        if (state.checkOut) elements.checkOut.value = state.checkOut;
+        elements.adults.value = state.adults.toString();
+        elements.children.value = state.children.toString();
+        elements.breakfast.checked = state.breakfast;
+        elements.parking.checked = state.parking;
 
-        if (state.checkIn) checkInInput.value = state.checkIn;
-        if (state.checkOut) checkOutInput.value = state.checkOut;
-        adultsSelect.value = state.adults.toString();
-        childrenSelect.value = state.children.toString();
-        breakfastCheckbox.checked = state.breakfast;
-        parkingCheckbox.checked = state.parking;
+        // Actualizar contenedor de edades de niños
+        const updateChildAgesUI = () => {
+            const container = elements.childAgesContainer;
+            const childCount = parseInt(elements.children.value, 10);
+            const ages = state.childrenAges || [];
 
-        // Update state on form changes
-        const updateState = () => {
-            bookingFormState.set({
-                checkIn: checkInInput.value,
-                checkOut: checkOutInput.value,
-                adults: parseInt(adultsSelect.value),
-                children: parseInt(childrenSelect.value),
-                childrenAges: Array.from(childAgesContainer.querySelectorAll('select')).map(select => parseInt((select as HTMLSelectElement).value)),
-                breakfast: breakfastCheckbox.checked,
-                parking: parkingCheckbox.checked
-            });
-        };
-
-        form.addEventListener('change', updateState);
-
-
-        childrenSelect?.addEventListener('change', () => {
-            if (!childAgesContainer) return;
-
-            const childCount = parseInt(childrenSelect.value);
-            console.warn(childCount);
-            const ages = state.childrenAges;
-
-            {
-                updateChildAgesControls(childAgesContainer, childCount, ages)
-            }
-        })
-
-        // Función para actualizar los controles de edades de niños
-        const updateChildAgesControls = (container: HTMLDivElement, count: number, existingAges: number[] = []) => {
+            // Limpiar y luego mostrar/ocultar según sea necesario
             container.innerHTML = '';
-            container.style.display = count > 0 ? 'grid' : 'none';
+            container.style.display = childCount > 0 ? 'grid' : 'none';
 
-            for (let i = 0; i < count; i++) {
-                const ageSelect = document.createElement('div');
-                ageSelect.innerHTML = `
-                    <label class="text-sm text-gray-600">
-                        ${trans(document.documentElement.lang, 'components.forms.reservation.label-child', {year: i + 1})} 
-                    </label>
-                    <select class="child-age-select w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gold-500" required>
-                        ${Array.from({length: 18}, (_, j) => j).map(age =>
-                    `<option value="${age}" ${existingAges[i] === age ? 'selected' : ''}>${trans(document.documentElement.lang, 'components.forms.reservation.input-child', {
-                        'year': age,
-                        "s": (age > 1 || age < 1 ? "s" : "")
-                    })}</option>`
-                ).join('')}
-                    </select>
-                `;
-                container.appendChild(ageSelect);
+            // Crear elementos de edad
+            for (let i = 0; i < childCount; i++) {
+                const childAge = ages[i] !== undefined ? ages[i] : 0;
+                const ageElement = createChildAgeElement(i, childAge);
+                container.appendChild(ageElement);
             }
         };
-    })
 
+        // Ejecutar inicialmente para configurar la interfaz
+        updateChildAgesUI();
+
+        // Actualizar estado en cambios del formulario usando delegación de eventos
+        form.addEventListener('change', (e) => {
+            const target = e.target;
+
+            // Manejar cambios específicos
+            if (target.id === 'children') {
+                updateChildAgesUI();
+            }
+
+            // Actualizar el estado global
+            const childAgeSelects = Array.from(
+                elements.childAgesContainer.querySelectorAll('.child-age-select')
+            );
+
+            bookingFormState.set({
+                checkIn: elements.checkIn.value,
+                checkOut: elements.checkOut.value,
+                adults: parseInt(elements.adults.value, 10),
+                children: parseInt(elements.children.value, 10),
+                childrenAges: childAgeSelects.map(select => parseInt(select.value, 10)),
+                breakfast: elements.breakfast.checked,
+                parking: elements.parking.checked
+            });
+        });
+    });
 </script>

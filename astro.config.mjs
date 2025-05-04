@@ -7,26 +7,31 @@ import vercel from '@astrojs/vercel';
 // https://astro.build/config
 export default defineConfig({
     site: 'https://www.harmonyhotelgroup.com',
+    build: {
+        partialBuild: true
+    },
     i18n: {
-        locales: ['es', 'en','fr'],
+        locales: ['es', 'en', 'fr'],
         defaultLocale: 'es',
         routing: {
             prefixDefaultLocale: false,
             redirectToDefaultLocale: true,
         }
     },
-    integrations: [tailwind(), icon({
-            iconSets: [
-                {
-                    name: 'lucide',
-                    svg: {
-                        dir: 'node_modules/lucide-static/icons',
+    integrations: [
+        tailwind(),
+        icon({
+                iconSets: [
+                    {
+                        name: 'lucide',
+                        svg: {
+                            dir: 'node_modules/lucide-static/icons',
+                        },
                     },
-                },
-            ],
-        }
-    )],
-
+                ],
+            }
+        ),
+    ],
     adapter: vercel(),
     output: "server",
 });

@@ -58,9 +58,9 @@ const lang = Astro.currentLocale;
                class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">Children</label>
         <select id="children" class="select">
             {
-                range(0, maxChildren-1).map((i, index, array) => {
+                range(0, maxChildren-1).map((i, index) => {
                     return (
-                            <option value={i} selected={i === 0}>
+                            <option id=`child-${index}` value={i} selected={i === 0}>
                                 {i} {i == 1  ? trans(lang || "es", "components.forms.reservation.child", {"s": ""}) : trans(lang, "components.forms.reservation.child", {"s": "s"}) }
                             </option>
                     );
