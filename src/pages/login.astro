@@ -1,13 +1,9 @@
 ---
 import Layout from '~/layouts/Layout.astro';
-interface Props {
-  lang: string
-}
-
-const {lang} = Astro.props;
+import {lang_es} from "~/constants";
 ---
 
-<Layout title="Login | Harmony Hotel Group">
+<Layout lang={lang_es} title="Login">
   <section class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
       <div class="text-center">
