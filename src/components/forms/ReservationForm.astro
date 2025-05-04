@@ -1,23 +1,26 @@
 ---
 import {Calendar, Baby, Users, Search} from 'lucide-astro'
-import {range} from "../../utils/tools";
-import {maxAdults, maxChildren} from "../../constants";
-import {trans} from "../../utils/translations";
-const lang = Astro.currentLocale;
+import {range} from "~/utils/tools";
+import {maxAdults, maxChildren} from "~/constants";
+import {trans} from "~/utils/translations";
 
-if (Astro.request.method === "POST") {
-    try {
-        const data = await Astro.request.formData();
-
-
-    } catch (error) {
-        if (error instanceof Error) {
-            console.error(error.message);
-        }
-    }
+interface Props {
+    lang: string
 }
 
+const {lang} = Astro.props
 
+// if (Astro.request.method === "POST") {
+//     try {
+//         const data = await Astro.request.formData();
+//
+//
+//     } catch (error) {
+//         if (error instanceof Error) {
+//             console.error(error.message);
+//         }
+//     }
+// }
 // export function updateChildAgesControls(container: HTMLDivElement, childCount: number, ages: number[]) {
 //     container.innerHTML = '';
 //
