@@ -69,7 +69,7 @@ export async function getStaticPaths() {
 interface Props {
     lang: string,
     hotel: {
-        id:  number,
+        id: number,
         name: string,
         location: string,
         description: string,
@@ -83,7 +83,7 @@ interface Props {
             string
         ],
         amenities: [
-            {name: string, icon: string}
+            { name: string, icon: string }
         ],
         rooms: [
             {
@@ -105,7 +105,7 @@ interface Props {
 const {lang, hotel} = Astro.props;
 ---
 
-<Layout title={`${hotel.name} | Harmony Hotel Group`}>
+<Layout lang={lang} title={`${hotel.name}`}>
     <!-- Hero Section -->
     <div class="relative h-[70vh]">
         <img
