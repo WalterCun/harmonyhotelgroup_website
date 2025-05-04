@@ -1,0 +1,12 @@
+---
+import {lang_en} from "~/constants";
+import Layout from "~/layouts/Layout.astro";
+interface Props {
+    error: unknown;
+}
+
+const { error } = Astro.props;
+---
+<Layout lang={lang_en} title="Error 500">
+    <div>{error instanceof Error ? error.message : "Error desconocido"}</div>
+</Layout>
