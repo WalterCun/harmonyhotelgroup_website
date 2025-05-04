@@ -1,9 +1,15 @@
 ---
 import LanguageSwitcher from '../ui/dropdown/LanguageDropDown.astro';
-import CurrencySwitcher from '../ui/dropdown/CurrencyDropDown.astro';
-import ThemeToggle from './ThemeToggle.astro';
-import Navigation from './Navigation.astro';
 import Hhg from '../svg/logos/Hhg.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import CurrencySwitcher from '../ui/dropdown/CurrencyDropDown.astro';
+import Navigation from './Navigation.astro';
+
+interface Props {
+    lang:string
+}
+
+const {lang} = Astro.props;
 ---
 <header class="w-full bg-white dark:bg-neutral-900 shadow-sm sticky top-0 z-50 transition-colors duration-300">
     <div class="container">
@@ -26,10 +32,10 @@ import Hhg from '../svg/logos/Hhg.astro';
                 </a>
             </div>
             <!--Menu y opciones de navegacion-->
-            <Navigation/>
+            <Navigation lang={lang}/>
             <div class="flex items-center space-x-4">
-                <LanguageSwitcher/>
-                <CurrencySwitcher/>
+                <LanguageSwitcher lang={lang}/>
+                <CurrencySwitcher lang={lang}/>
                 <ThemeToggle/>
                 <!--<a href="/login"-->
                 <!--   class="text-neutral-700 dark:text-neutral-300 hover:text-primary-500 dark:hover:text-primary-400">-->
