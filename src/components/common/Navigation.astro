@@ -1,8 +1,13 @@
 ---
-import {defaultLanguage, trans} from "../../utils/translations";
-import {getRelativeLocaleUrl} from "astro:i18n";
+import {trans} from "~/utils/translations";
+import Li from "~/components/partial/Li.astro";
+import {getRelativeLocaleUrl} from "astro/virtual-modules/i18n";
 
-const lang = Astro.currentLocale || defaultLanguage.code;
+interface Props {
+    lang: string
+}
+
+const {lang} = Astro.props;
 
 const navItems = [
     {label: trans(lang, "components.common.navigation.url.hotel"), href: "/hotels"},
@@ -10,18 +15,18 @@ const navItems = [
     {label: trans(lang, "components.common.navigation.url.offers"), href: "/offers"},
     {label: trans(lang, "components.common.navigation.url.blog"), href: "/blog"},
     {label: trans(lang, "components.common.navigation.url.contact"), href: "/contact"},
-];
+]
 ---
 
 <nav class="hidden md:block">
     <ul class="flex space-x-8">
         {navItems.map(item => (
-                <li>
-                    <a href={getRelativeLocaleUrl(lang, item.href)}
-                       class="text-neutral-700 dark:text-neutral-300 hover:text-primary-500 dark:hover:text-primary-400 font-medium transition-colors duration-200">
-                        {item.label}
-                    </a>
-                </li>
+            <li>
+                <a href={getRelativeLocaleUrl(lang, item.href)}
+                   class="text-neutral-700 dark:text-neutral-300 hover:text-primary-500 dark:hover:text-primary-400 font-medium transition-colors duration-200">
+                    {item.label}
+                </a>
+            </li>
         ))}
     </ul>
 </nav>
@@ -47,7 +52,7 @@ const navItems = [
         <ul class="flex flex-col space-y-6 text-center">
             {navItems.map(item => (
                     <li>
-                        <a href={getRelativeLocaleUrl(lang, item.href)}
+                        <a href={item.href}
                            class="text-xl font-medium text-neutral-800 dark:text-neutral-100 hover:text-primary-500 dark:hover:text-primary-400">
                             {item.label}
                         </a>
