@@ -1,6 +1,6 @@
 ---
 import {Image} from 'astro:assets';
-import {LANGUAGES, structUrl} from "~/utils/translations";
+import {LANGUAGES, structUrl, trans} from "~/utils/translations";
 
 interface Props {
     lang: string
@@ -16,7 +16,7 @@ const currentLanguage = LANGUAGES[lang] || LANGUAGES.es;
         {currentLanguage.flag && (
                 <Image src={currentLanguage.flag} alt="" width="20" height="20" class="flex-shrink-0 object-cover"/>)}
         <span id="current-language" class="text-sm font-medium">
-        {currentLanguage.name || 'Idioma'}
+        {currentLanguage.name || trans(lang, 'components.ui.dropdown.languagedropdown')}
     </span>
         <svg
                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 flex-shrink-0"
@@ -57,6 +57,7 @@ const currentLanguage = LANGUAGES[lang] || LANGUAGES.es;
         // Obtener el idioma actual desde localStorage o usar el predeterminado
         function getCurrentLanguageFromStorage() {
             try {
+                console.log('language', localStorage.getItem('language'));
                 return localStorage.getItem('language') || 'es';
             } catch (error) {
                 console.error('Error al leer el idioma desde localStorage:', error);

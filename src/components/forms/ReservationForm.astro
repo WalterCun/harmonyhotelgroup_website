@@ -351,8 +351,8 @@ const {lang} = Astro.props
 </form>
 
 
-<script define:vars={{ lang }}>
-    import { bookingFormState } from "../../stores/bookingStore";
+<script is:inline define:vars={{ lang }}>
+    // import { bookingFormState } from "../../stores/bookingStore";
     import { trans } from "../../utils/translations";
 
     // Crear templates de opciones para edades reutilizables

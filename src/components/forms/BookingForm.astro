@@ -1,6 +1,6 @@
 ---
 import {trans} from "../../utils/translations";
-import {bookingFormState} from '../../stores/bookingStore';
+// import {bookingFormState} from '../../stores/bookingStore';
 import {range} from "../../utils/tools";
 import {maxAdults, maxChildren} from "../../constants";
 
@@ -97,7 +97,7 @@ const lang = Astro.currentLocale;
 </form>
 
 <script>
-    import {bookingFormState} from '../../stores/bookingStore';
+    // import {bookingFormState} from '../../stores/bookingStore';
 
     document.addEventListener('DOMContentLoaded', () => {
         const form = document.querySelector('.booking-form');
@@ -112,28 +112,28 @@ const lang = Astro.currentLocale;
         const parkingCheckbox = form.querySelector('#parking') as HTMLInputElement;
 
         // Load initial state
-        const state = bookingFormState.get();
-        if (state.checkIn) checkInInput.value = state.checkIn;
-        if (state.checkOut) checkOutInput.value = state.checkOut;
-        adultsSelect.value = state.adults.toString();
-        childrenSelect.value = state.children.toString();
-        breakfastCheckbox.checked = state.breakfast;
-        parkingCheckbox.checked = state.parking;
+        // // const state = bookingFormState.get();
+        // if (state.checkIn) checkInInput.value = state.checkIn;
+        // if (state.checkOut) checkOutInput.value = state.checkOut;
+        // adultsSelect.value = state.adults.toString();
+        // childrenSelect.value = state.children.toString();
+        // breakfastCheckbox.checked = state.breakfast;
+        // parkingCheckbox.checked = state.parking;
 
         // Update state on form changes
-        const updateState = () => {
-            bookingFormState.set({
-                checkIn: checkInInput.value,
-                checkOut: checkOutInput.value,
-                adults: parseInt(adultsSelect.value),
-                children: parseInt(childrenSelect.value),
-                childrenAges: Array.from(childAgesContainer.querySelectorAll('select')).map(select => parseInt((select as HTMLSelectElement).value)),
-                breakfast: breakfastCheckbox.checked,
-                parking: parkingCheckbox.checked
-            });
-        };
+        // const updateState = () => {
+        //     bookingFormState.set({
+        //         checkIn: checkInInput.value,
+        //         checkOut: checkOutInput.value,
+        //         adults: parseInt(adultsSelect.value),
+        //         children: parseInt(childrenSelect.value),
+        //         childrenAges: Array.from(childAgesContainer.querySelectorAll('select')).map(select => parseInt((select as HTMLSelectElement).value)),
+        //         breakfast: breakfastCheckbox.checked,
+        //         parking: parkingCheckbox.checked
+        //     });
+        // };
 
-        form.addEventListener('change', updateState);
+        // form.addEventListener('change', updateState);
 
         // Handle child ages
         childrenSelect?.addEventListener('change', () => {
@@ -177,18 +177,18 @@ const lang = Astro.currentLocale;
                 }
 
                 // Set saved ages if available
-                const savedAges = bookingFormState.get().childrenAges;
-                const ageSelects = childAgesContainer.querySelectorAll('select');
-                savedAges.forEach((age, index) => {
-                    if (ageSelects[index]) {
-                        (ageSelects[index] as HTMLSelectElement).value = age.toString();
-                    }
-                });
+                // const savedAges = bookingFormState.get().childrenAges;
+                // const ageSelects = childAgesContainer.querySelectorAll('select');
+                // savedAges.forEach((age, index) => {
+                //     if (ageSelects[index]) {
+                //         (ageSelects[index] as HTMLSelectElement).value = age.toString();
+                //     }
+                // });
             } else {
                 childAgesContainer.classList.add('hidden');
             }
 
-            updateState();
+            // updateState();
         });
 
         // Set minimum check-out date
@@ -206,7 +206,7 @@ const lang = Astro.currentLocale;
 
                 if (checkOutInput.value && new Date(checkOutInput.value) <= new Date(checkInInput.value)) {
                     checkOutInput.value = `${year}-${month}-${day}`;
-                    updateState();
+                    // updateState();
                 }
             }
         });

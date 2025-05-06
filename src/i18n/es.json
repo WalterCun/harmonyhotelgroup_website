@@ -37,6 +37,11 @@
         "child-less-ages": "Menos de {{year}} año",
         "child-ages": "{{year}} año{{s}}"
       }
+    },
+    "ui": {
+      "dropdown": {
+        "languagedropdown": "Selecciona el Idioma"
+      }
     }
   },
   "home": {

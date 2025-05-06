@@ -1,9 +1,6 @@
-import es from "../i18n/es.json";
-import en from "../i18n/en.json";
-import fr from "../i18n/fr.json";
-// ---------------------------------------------------------------------------------------------------
-// import flag_en from '../assets/img/flags/en.svg';
-// import flag_es from '../assets/img/flags/es.svg';
+import en from "~/i18n/en.json";
+import es from "~/i18n/es.json";
+import fr from "~/i18n/fr.json";
 
 // ---------------------------------------------------------------------------------------------------
 
@@ -13,8 +10,6 @@ interface Language {
 }
 
 // ---------------------------------------------------------------------------------------------------
-
-
 /*
 Codigos de paises con 3 letras
 https://laendercode.net/es/3-letter-list.html
@@ -22,9 +17,11 @@ https://laendercode.net/es/3-letter-list.html
 Descargar SVG desde Wikipedia "Wikipedia [Pais] Flag SVG"
 */
 
+// TODO: Subsequently create an Image component to optimize image loading.
 export const LANGUAGES: Record<string, Language> = {
     'es': {name: "Español", flag: import('../assets/img/flags/es.svg')},
     'en': {name: "English", flag: import('../assets/img/flags/en.svg')},
+    'fr': {name: "Frances", flag: import('../assets/img/flags/fr.svg')},
 }
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 type TranslationObject = Record<string, any>;
@@ -35,7 +32,7 @@ export const TranslationData: Record<string, TranslationObject> = {
     fr
 };
 
-export const defaultLanguage = LANGUAGES.es;
+export const defaultLanguage = 'es';
 
 // ---------------------------------------------------------------------------------------------------
 
@@ -45,36 +42,55 @@ export const defaultLanguage = LANGUAGES.es;
  * @param langCode Código del idioma al que se desea cambiar
  * @returns Nueva URL con el idioma especificado
  */
-export const structUrl = (url: URL, langCode?: string): string => {
+export const structUrl = (url: URL, langCode?: keyof typeof LANGUAGES): string => {
     // Si no se proporciona un código de idioma, solo devolvemos información de la URL
     if (!langCode) {
         return url.href;
     }
 
     // Obtenemos el pathname actual
-    const pathname = url.pathname;
+    let pathname = url.pathname;
+
+    // Aseguramos que el pathname comience con '/'
+    if (!pathname.startsWith('/')) {
+        pathname = `/${pathname}`;
+    }
+
 
     // Regex para busca /en/, /es/, /fr/ al inicio del pathname
     const mainLanguageCodes = Object.keys(LANGUAGES);
+    // console.log('mainLanguageCodes',mainLanguageCodes)
     const langPattern = mainLanguageCodes.join('|');
+    // console.log('langPattern',langPattern)
     const langPrefixRegex = new RegExp(`^\\/(${langPattern})\\/`);
+    // console.log('langPrefixRegex',langPrefixRegex)
 
     let newPathname: string;
 
-    // Si es el idioma por defecto (español) y no queremos prefijo
-    if (langCode === 'es') {
+    // Si es el idioma por defecto (español)
+    if (langCode === defaultLanguage) {
         // Si ya tiene un prefijo de idioma, lo eliminamos
-        newPathname = langPrefixRegex.test(pathname) ? pathname.replace(langPrefixRegex, '/') : pathname;
+        newPathname = langPrefixRegex.test(pathname)
+            ? pathname.replace(langPrefixRegex, '/')
+            : pathname;
     } else {
         // Para otros idiomas, queremos añadir el prefijo
-        newPathname = langPrefixRegex.test(pathname) ? pathname.replace(langPrefixRegex, `/${langCode}/`) : pathname;
+        newPathname = langPrefixRegex.test(pathname)
+            ? pathname.replace(langPrefixRegex, `/${langCode}/`)
+            : `/${langCode}${pathname}`;
     }
 
     // Aseguramos que no haya doble slash
     newPathname = newPathname.replace(/\/\//g, '/');
 
+    // Si el pathname quedó vacío, aseguramos que sea al menos "/"
+    if (!newPathname) {
+        newPathname = '/';
+    }
+
     // Retornamos la URL completa con el nuevo pathname
     return `${url.origin}${newPathname}`;
+
 };
 
 
