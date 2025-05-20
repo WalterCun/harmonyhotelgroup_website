@@ -42,6 +42,30 @@
       "dropdown": {
         "languagedropdown": "Selecciona el Idioma"
       }
+    },
+    "sections":{
+      "home": {
+        "featured-hotels": {
+          "title": "Hoteles destacados",
+          "description": "Descubra nuestras propiedades más populares, conocidas por su servicio excepcional, sus impresionantes ubicaciones y sus servicios de primera clase.",
+          "night": "la noche",
+          "btn-details": "Mas Detalles",
+          "btn-all-hotels": "Ver todos los hoteles"
+        },
+        "popular-destination": {
+          "title": "Destinos Populares",
+          "subtitle": "Explore nuestros destinos más solicitados y encuentre su próxima aventura inolvidable.",
+          "no-text": "No hay texto",
+          "btn-all-destination": "Ver todos los destinos"
+        },
+        "special-offer": {
+          "title": "Ofertas Especiales",
+          "subtitle": "Aproveche nuestras promociones exclusivas y disfrute de ventajas adicionales con su estancia.",
+          "expired": "Valido hasta",
+          "btn-details": "Ver Detalles",
+          "no-text": "No hay texto"
+        }
+      }
     }
   },
   "home": {

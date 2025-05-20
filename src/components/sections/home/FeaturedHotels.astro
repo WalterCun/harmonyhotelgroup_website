@@ -1,91 +1,70 @@
 ---
-const featuredHotels = [
-{
-    id: 1,
-    name: "Harmony Grand Plaza",
-    location: "New York, USA",
-    price: 350,
-    currency: "USD",
-    rating: 4.8,
-    image: "https://images.pexels.com/photos/2034335/pexels-photo-2034335.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-    },
-{
-    id: 2,
-    name: "Harmony Beachfront Resort",
-    location: "Bali, Indonesia",
-    price: 280,
-    currency: "USD",
-    rating: 4.9,
-    image: "https://images.pexels.com/photos/261102/pexels-photo-261102.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-    },
-{
-    id: 3,
-    name: "Harmony Mountain Lodge",
-    location: "Swiss Alps, Switzerland",
-    price: 420,
-    currency: "USD",
-    rating: 4.7,
-    image: "https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-    }
-];
+import {trans} from "~/utils/translations";
+
+import {Api} from "~/utils/tina";
+import {imageUrl} from "../../../utils/tina";
+
+const api = new Api(true, 4);
+const hoteles = await api.hotels()
+
 interface Props {
     lang: string
-    }
-
+}
 const {lang} = Astro.props;
 ---
 
 <section class="section bg-white dark:bg-neutral-900">
-  <div class="container">
-    <div class="text-center mb-12">
-      <h2 class="mb-4">Featured Hotels</h2>
-      <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
-        Discover our most popular properties, known for their exceptional service, stunning locations, and world-class amenities.
-      </p>
-    </div>
+    <div class="container">
+        <div class="text-center mb-12">
+            <h2 class="mb-4">{trans(lang, "components.sections.home.featured-hotels.title")}</h2>
+            <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
+                {trans(lang, "components.sections.home.featured-hotels.description")}
+            </p>
+        </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {featuredHotels.map(hotel => (
-          <div class="card group hover:scale-[1.02] transition-transform duration-300 ease-out">
-            <div class="relative h-64 overflow-hidden">
-              <img
-                  src={hotel.image}
-                  alt={hotel.name}
-                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-              <div class="absolute top-4 right-4 bg-white dark:bg-neutral-800 rounded-full py-1 px-3 text-sm font-semibold text-primary-500">
-                {hotel.rating}/5
-              </div>
-            </div>
-            <div class="p-6">
-              <h3 class="text-xl font-semibold mb-2">{hotel.name}</h3>
-              <p class="text-neutral-600 dark:text-neutral-400 mb-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {hoteles.map(hotel => (
+                    <div class="card group hover:scale-[1.02] transition-transform duration-300 ease-out">
+                        <div class="relative h-64 overflow-hidden">
+                            {hotel.coverImage && (
+                                    <img src={imageUrl({url: hotel.coverImage, back: 0})} alt={hotel.name}
+                                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"/>
+                            )}
+                            <div class="absolute top-4 right-4 bg-white dark:bg-neutral-800 rounded-full py-1 px-3 text-sm font-semibold text-primary-500">
+                                5/5
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold mb-2">{hotel.name}</h3>
+                            <p class="text-neutral-600 dark:text-neutral-400 mb-4">
               <span class="inline-flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 mr-1">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                     class="w-4 h-4 mr-1">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
-                {hotel.location}
+                  {hotel.location}
               </span>
-              </p>
-              <div class="flex justify-between items-center">
-                <div>
-                  <span class="text-xl font-bold">${hotel.price}</span>
-                  <span class="text-neutral-600 dark:text-neutral-400"> / night</span>
-                </div>
-                <a href={`/hotels/${hotel.id}`} class="btn btn-primary py-2 px-4">
-                  View Details
-                </a>
-              </div>
-            </div>
-          </div>
-      ))}
+                            </p>
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <span class="text-xl font-bold">${hotel.roomPrice}</span>
+                                    <span class="text-neutral-600 dark:text-neutral-400"> / {trans(lang, "components.sections.home.featured-hotels.night")}</span>
+                                </div>
+                                <a href={`/hotels/${hotel.hotel_id}`} class="btn btn-primary py-2 px-4">
+                                    {trans(lang, "components.sections.home.featured-hotels.btn-details")}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+            ))}
+        </div>
+        <div class="text-center mt-12">
+            <a href="/hotels" class="btn btn-outline">
+                {trans(lang, "components.sections.home.featured-hotels.btn-all-hotels")}
+            </a>
+        </div>
     </div>
-
-    <div class="text-center mt-12">
-      <a href="/hotels" class="btn btn-outline">
-        View All Hotels
-      </a>
-    </div>
-  </div>
 </section>

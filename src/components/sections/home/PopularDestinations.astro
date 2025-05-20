@@ -1,84 +1,78 @@
 ---
-const destinations = [
-    {
-        id: 1,
-        name: "Paris",
-        country: "France",
-        description: "The city of light featuring iconic landmarks and world-class cuisine.",
-        hotels: 12,
-        image: "https://images.pexels.com/photos/532826/pexels-photo-532826.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-    },
-    {
-        id: 2,
-        name: "Tokyo",
-        country: "Japan",
-        description: "Ancient traditions blend with ultramodern technology in this dynamic city.",
-        hotels: 8,
-        image: "https://images.pexels.com/photos/2187662/pexels-photo-2187662.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-    },
-    {
-        id: 3,
-        name: "Santorini",
-        country: "Greece",
-        description: "Stunning white architecture against the backdrop of the blue Aegean Sea.",
-        hotels: 10,
-        image: "https://images.pexels.com/photos/1010657/pexels-photo-1010657.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-    },
-    {
-        id: 4,
-        name: "New York",
-        country: "USA",
-        description: "The Big Apple offers everything from Broadway shows to Central Park.",
-        hotels: 15,
-        image: "https://images.pexels.com/photos/466685/pexels-photo-466685.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-    }
-];
+import {Image} from 'astro:assets';
+import {trans} from "../../../utils/translations";
+
+
 interface Props {
     lang: string
 }
 
 const {lang} = Astro.props;
+
+
+import {Api} from "~/utils/tina";
+
+const api = new Api(true, 4);
+const destinations = await api.destinations()
 ---
 
 <section class="section bg-neutral-50 dark:bg-neutral-800">
     <div class="container">
         <div class="text-center mb-12">
-            <h2 class="mb-4">Popular Destinations</h2>
+            <h2 class="mb-4">{trans(lang, "components.sections.home.popular-destination.title")}</h2>
             <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
-                Explore our most sought-after destinations and find your next unforgettable adventure.
+                {trans(lang, "components.sections.home.popular-destination.subtitle")}
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!--<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">-->
+        <!--<div class="grid grid-cols-1 md:grid-cols-3 gap-8">-->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             {destinations.map(destination => (
-                    <a href={`/destinations/${destination.id}`} class="card group hover:shadow-xl transition-all duration-300">
-                        <div class="relative h-72 overflow-hidden">
-                            <img
-                                    src={destination.image}
-                                    alt={destination.name}
-                                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                            />
+                    <div class="card group hover:shadow-xl transition-all duration-300">
+                        <div class="relative">
+                            <!--class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"-->
+                            {destination.coverImage &&
+                                (
+                                        <Image
+                                                src={destination.coverImage}
+                                                alt={destination.name}
+                                                width="100"
+                                                height="100"
+                                                class="w-full h-48 object-cover"
+                                        />)}
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                             <div class="absolute bottom-0 left-0 p-6 text-white">
                                 <h3 class="text-xl font-semibold mb-1">{destination.name}</h3>
-                                <p class="text-sm">{destination.country}</p>
+                                <p class="text-sm">{destination.city}, {destination.country}</p>
                             </div>
                         </div>
-                        <div class="p-5">
-                            <p class="text-neutral-600 dark:text-neutral-400 mb-3 line-clamp-2">
-                                {destination.description}
+                        <div class="p-6">
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                {destination.tags?.map(item => (
+                                        <span class="text-xs font-semibold bg-secondary-100 dark:bg-secondary-900 text-secondary-800 dark:text-secondary-200 py-1 px-2 rounded-full">{item?.tag}</span>
+                                ))}
+                            </div>
+
+                            <!--<h3 class="text-xl font-semibold mb-2">{offer.title}</h3>-->
+                            <p class="text-neutral-600 dark:text-neutral-400 mb-4">
+                                {destination.description_destination?.find(item => item?.lang_destination === lang)?.content_destination ||
+                                    trans(lang, "components.sections.home.special-offer.no-text")}
                             </p>
-                            <p class="text-primary-500 font-medium">
-                                {destination.hotels} Hotels Available
-                            </p>
+                            <div class="flex flex-row justify-between">
+                                <div></div>
+                                <a href={`/destinations/${destination.destination_id}`}
+                                   class="text-primary-500 font-medium hover:text-primary-600 transition-colors">
+                                    {trans(lang, "components.sections.home.special-offer.btn-details")}
+                                </a>
+                            </div>
                         </div>
-                    </a>
+                    </div>
             ))}
         </div>
-
         <div class="text-center mt-12">
             <a href="/destinations" class="btn btn-outline">
-                View All Destinations
+                {trans(lang, "components.sections.home.popular-destination.btn-all-destination")}
             </a>
         </div>
     </div>

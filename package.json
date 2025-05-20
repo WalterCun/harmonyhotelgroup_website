@@ -4,7 +4,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "astro dev --host",
+    "dev": "tinacms dev -c \"astro dev --host\"",
+    "audit": "tinacms audit",
+    "tina-clean" :"tinacms audit --clean",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
@@ -25,11 +27,13 @@
     "nanostores": "^0.9.5",
     "swiper": "^11.2.6",
     "tailwindcss": "^3.4.17",
+    "tinacms": "^2.7.5",
     "typescript": "^5.8.3",
     "zod": "^3.24.3"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "@tinacms/cli": "^1.9.5",
     "@types/node": "^22.15.3",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.3"

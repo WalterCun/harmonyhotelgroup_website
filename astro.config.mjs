@@ -28,6 +28,12 @@ export default defineConfig({
                             dir: 'node_modules/lucide-static/icons',
                         },
                     },
+                    {
+                        name: 'astro',
+                        svg: {
+                            dir: 'src/icons',
+                        },
+                    },
                 ],
             }
         ),
