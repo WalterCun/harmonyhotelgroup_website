@@ -20,7 +20,8 @@ export default defineConfig({
     },
     integrations: [
         tailwind(),
-        icon({
+        icon(
+            {
                 iconSets: [
                     {
                         name: 'lucide',
@@ -38,6 +39,13 @@ export default defineConfig({
             }
         ),
     ],
-    adapter: vercel(),
+    adapter: vercel({
+        analytics: true,
+        includeFiles: [],
+        exclude: [],
+        packageOptions: {
+            packageManager: "pnpm"
+        }
+    }),
     output: "server",
 });
