@@ -17,13 +17,78 @@ export class Api {
 
     // ----------------------------------------------------------------------------------------------------------------
 
-    readonly hotels_json = [
-        'Hotel_Majestic2_by_HHG.md'
-    ];
+    // Métod para obtener los archivos .md y .json del directorio
+    private async getFiles(directory: string): Promise<string[]> {
+        try {
+            // Importamos el módulo fs con promesas para operaciones asíncronas de archivos
+            const fs = await import('node:fs/promises');
+            const path = await import('node:path');
+
+            // Leemos el contenido del directorio
+            const files = await fs.readdir(directory);
+
+            // Filtramos solo los archivos .md y .json
+            return files.filter(file =>
+                file.endsWith('.md')
+            );
+        } catch (error) {
+            console.error(`❌ Error leyendo el directorio ${directory}:`, error);
+            return [];
+        }
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    // Añadir propiedad para el directorio de los hoteles
+    private readonly hotelsDirectory: string = 'src/data/hotels'; // Ruta predeterminada
+
+    // readonly hotels_json = [
+    //     'Hotel_Majestic2_by_HHG.md'
+    // ];
+
+    // async hotels(): Promise<HotelsQuery["hotels"][]> {
+    //     try {
+    //         const hotelPromises = this.hotels_json.map(item =>
+    //             client.queries.hotels({relativePath: item})
+    //                 .then(result => result.data.hotels)
+    //                 .catch(err => {
+    //                     console.error(`❌ Error procesando ${item}:`, err);
+    //                     return null;
+    //                 })
+    //         );
+    //
+    //         const results = await Promise.all(hotelPromises);
+    //
+    //         // Filtrar nulos por errores de parseo
+    //         let hotels = results.filter((hotel): hotel is HotelsQuery["hotels"] => hotel !== null);
+    //
+    //         // Filtrar solo hoteles destacados si this.destacado es true
+    //         if (this.destacado) {
+    //             hotels = hotels.filter(hotel => hotel.highlight === true);
+    //         }
+    //
+    //         // Aplicar límite si es necesario
+    //         if (this.limit > 0) {
+    //             hotels = hotels.slice(0, this.limit);
+    //         }
+    //         return hotels;
+    //     } catch (error) {
+    //         console.error('❌ Error general leyendo JSONs:', error);
+    //         return [];
+    //     }
+    // }
 
     async hotels(): Promise<HotelsQuery["hotels"][]> {
         try {
-            const hotelPromises = this.hotels_json.map(item =>
+            // Obtenemos la lista de archivos dinámicamente
+            const hotelFiles = await this.getFiles(this.hotelsDirectory);
+
+            if (hotelFiles.length === 0) {
+                console.warn(`⚠️ No se encontraron archivos .md en ${this.hotelsDirectory}`);
+                return [];
+            }
+
+            const hotelPromises = hotelFiles.map(item =>
                 client.queries.hotels({relativePath: item})
                     .then(result => result.data.hotels)
                     .catch(err => {
@@ -46,29 +111,40 @@ export class Api {
             if (this.limit > 0) {
                 hotels = hotels.slice(0, this.limit);
             }
+
             return hotels;
         } catch (error) {
-            console.error('❌ Error general leyendo JSONs:', error);
+            console.error('❌ Error general obteniendo hoteles:', error);
             return [];
         }
     }
 
     // ----------------------------------------------------------------------------------------------------------------
 
-    readonly destinations_json = [
-        'Chorro_Giron.json'
-    ]
+    private readonly destinationsDirectory: string = 'src/data/destinations';
+
+    // readonly destinations_json = [
+    //     'Chorro_Giron.json'
+    // ]
 
     async destinations(): Promise<DestinationsQuery["destinations"][]> {
         try {
-            const destinationsPromises = this.destinations_json.map(item => {
-                return client.queries.destinations({relativePath: item})
+            // Obtenemos la lista de archivos dinámicamente
+            const destinationFiles = await this.getFiles(this.destinationsDirectory);
+
+            if (destinationFiles.length === 0) {
+                console.warn(`⚠️ No se encontraron archivos .md en ${this.hotelsDirectory}`);
+                return [];
+            }
+
+            const destinationsPromises = destinationFiles.map(item =>
+                client.queries.destinations({relativePath: item})
                     .then(result => result.data.destinations)
                     .catch(err => {
                         console.error(`❌ Error procesando ${item}:`, err);
                         return null;
-                    });
-            });
+                    })
+            );
 
             const results = await Promise.all(destinationsPromises);
 
@@ -77,7 +153,7 @@ export class Api {
 
             // Filtrar solo hoteles destacados si this.destacado es true
             if (this.destacado) {
-                destinations = destinations.filter(destination => destination.highlight === true);
+                destinations = destinations.filter(destinations => destinations.highlight === true);
             }
 
             // Aplicar límite si es necesario
@@ -87,20 +163,28 @@ export class Api {
 
             return destinations;
         } catch (error) {
-            console.error('❌ Error general leyendo JSONs:', error);
+            console.error('❌ Error general obteniendo hoteles:', error);
             return [];
         }
     }
 
     // ----------------------------------------------------------------------------------------------------------------
 
-    readonly offers_json = [
-        'Dia_Madre.json'
-    ]
+    // readonly offers_json = [
+    //     'Dia_Madre.json'
+    // ]
+    private readonly offersDirectory: string = 'src/data/offers';
 
     async offers(): Promise<OffersQuery["offers"][]> {
         try {
-            const offersPromises = this.offers_json.map(item => {
+            const offersFiles = await this.getFiles(this.offersDirectory);
+
+            if (offersFiles.length === 0) {
+                console.warn(`⚠️ No se encontraron archivos .md en ${this.offersDirectory}`);
+                return [];
+            }
+
+            const offersPromises = offersFiles.map(item => {
                 return client.queries.offers({relativePath: item})
                     .then(result => result.data.offers)
                     .catch(err => {
@@ -166,7 +250,7 @@ export class Api {
 
 }
 
-export function imageUrl({url, back = 0}: {url: string, back: number}) {
+export function imageUrl({url, back = 0}: { url: string, back: number }) {
     // Si ya tiene el prefijo correcto, devolverla tal cual
     if (url.startsWith('src/assets')) {
         return url;
