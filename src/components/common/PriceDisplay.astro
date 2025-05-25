@@ -1,0 +1,54 @@
+---
+interface Props {
+  amount: number;
+  baseCurrency?: string;
+  class?: string;
+}
+
+const { amount, baseCurrency = 'USD', class: className = '' } = Astro.props;
+---
+
+<span class={`price-display ${className}`} data-amount={amount} data-base-currency={baseCurrency}>
+  {/* Initial display will be replaced by JavaScript */}
+  {amount} {baseCurrency}
+</span>
+
+<script>
+  // Define types for the global window object
+  declare global {
+    interface Window {
+      currencyAPI?: {
+        getCurrency: () => string;
+        setCurrency: (currency: string) => void;
+        formatPrice: (amount: number, baseCurrency?: string) => string;
+      };
+      addCurrencyChangeListener?: (callback: (currency: string) => void) => void;
+    }
+  }
+
+  // Update all price displays when the DOM is loaded and when currency changes
+  function updatePriceDisplays() {
+    const priceElements = document.querySelectorAll('.price-display');
+
+    priceElements.forEach(element => {
+      const amount = parseFloat(element.getAttribute('data-amount') || '0');
+      const baseCurrency = element.getAttribute('data-base-currency') || 'USD';
+
+      if (window.currencyAPI) {
+        element.textContent = window.currencyAPI.formatPrice(amount, baseCurrency);
+      }
+    });
+  }
+
+  // Initialize when the DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    updatePriceDisplays();
+
+    // Listen for currency changes
+    if (window.addCurrencyChangeListener) {
+      window.addCurrencyChangeListener(() => {
+        updatePriceDisplays();
+      });
+    }
+  });
+</script>

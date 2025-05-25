@@ -1,0 +1,57 @@
+---
+import { CURRENCIES } from '@/lib/constants';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<div class={`currency-selector ${className}`}>
+  <select id="currency-selector" class="select">
+    {CURRENCIES.map(curr => (
+      <option value={curr.code}>{curr.code} ({curr.symbol})</option>
+    ))}
+  </select>
+</div>
+
+<script>
+  // Define types for the global window object
+  declare global {
+    interface Window {
+      currencyAPI?: {
+        getCurrency: () => string;
+        setCurrency: (currency: string) => void;
+        formatPrice: (amount: number, baseCurrency?: string) => string;
+      };
+      addCurrencyChangeListener?: (callback: (currency: string) => void) => void;
+    }
+  }
+
+  // Initialize the currency selector when the DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    const selector = document.getElementById('currency-selector');
+    if (!selector) return;
+
+    // Set initial value from the currency API
+    if (window.currencyAPI) {
+      selector.value = window.currencyAPI.getCurrency();
+    }
+
+    // Listen for changes to the selector
+    selector.addEventListener('change', (event) => {
+      const target = event.target as HTMLSelectElement;
+      if (window.currencyAPI) {
+        window.currencyAPI.setCurrency(target.value);
+      }
+    });
+
+    // Listen for currency changes from other sources
+    if (window.addCurrencyChangeListener) {
+      window.addCurrencyChangeListener((currency) => {
+        selector.value = currency;
+      });
+    }
+  });
+</script>
