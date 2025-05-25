@@ -420,7 +420,6 @@ var config_default = defineConfig({
         name: "offers",
         label: "Offers",
         path: "src/data/offers",
-        format: "json",
         fields: [
           {
             type: "number",
