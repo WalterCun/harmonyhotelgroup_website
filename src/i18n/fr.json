@@ -1,0 +1,60 @@
+{
+    "components": {
+        "common": {
+            "navigation": {
+                "url": {
+                    "hotel": "Hôtels",
+                    "destinations": "Destinations",
+                    "offers": "Offres",
+                    "blog": "Blog",
+                    "contact": "Personne à contacter",
+                    "about-us": "À propos de nous",
+                    "privacy-policy": "Politique de confidentialité",
+                    "terms-of-service": "Conditions de service",
+                    "faq-booking": "Réserves",
+                    "faq-cancellation-policy": "Conditions d'annulation",
+                    "faq-loyalty-program": "Programme de fidélité",
+                    "faq-payment-methods": "Modalités de paiement"
+                }
+            },
+            "footer": {
+                "title": "Groupe Harmony Hotel",
+                "subtitle": "Découvrez le luxe et le confort dans nos hôtels et stations balnéaires haut de gamme à travers le monde. Découvrez des chambres inoubliables avec un service exceptionnel.",
+                "quick-links": "Liens rapides"
+            }
+        },
+        "forms": {
+            "reservation": {
+                "check-in": "Date d'entrée",
+                "check-out": "Date de départ",
+                "adult": "Adulte {{s}}",
+                "child": "Enfant {{s}}",
+                "breakfast": "Petit déjeuner",
+                "parking": "Parking",
+                "contact": "Livre",
+                "label-child": "Âge de l'enfant {{année}}",
+                "input-child": "{{année}}",
+                "child-less-ages": "Moins de {année} année",
+                "child-ages": "{{année}}"
+            }
+        }
+    },
+    "home": {
+        "hero": {
+            "title": "Une nouvelle expérience tous les jours",
+            "subtitle": "Découvrez un confort incomparable et un service impeccable dans nos hôtels et resorts sélectionnés à travers le monde. du monde.",
+            "buttons": {
+                "view-hotels": "Voir nos hôtels",
+                "view-offers": "Offres spéciales"
+            }
+        }
+    },
+    "layouts": {
+        "layout": {
+            "meta": {
+                "title": "Groupe Harmony Hotel",
+                "description": "Découvrez le luxe et le confort avec Harmony Hotel Group. Réservez votre séjour parfait dans nos hôtels dans tout l'Équateur."
+            }
+        }
+    }
+}

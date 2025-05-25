@@ -1,0 +1,52 @@
+---
+import {facebookUrl, twitterUrl, instagramUrl, linkedinUrl, youtubeUrl, tiktokUrl, whatsappUrl} from "~/lib/constants";
+import {Facebook, Instagram, Linkedin, Twitter, Youtube} from "lucide-astro";
+import Tiktok from '../svg/logos/Tiktok.astro'
+import Whatsapp from '../svg/logos/Whatsapp.astro'
+interface SocialLink {
+    platform: string;
+    url?: string | null;
+    icon: string;
+}
+
+const socialLinks: SocialLink[] = [
+    {platform: 'facebook', url: facebookUrl, icon: 'facebook'},
+    {platform: 'twitter', url: twitterUrl, icon: 'twitter'},
+    {platform: 'instagram', url: instagramUrl, icon: 'instagram'},
+    {platform: 'linkedin', url: linkedinUrl, icon: 'linkedin'},
+    {platform: 'youtube', url: youtubeUrl, icon: 'youtube'},
+    {platform: 'tiktok', url: tiktokUrl, icon: 'tiktok'},
+    {platform: 'whatsapp', url: whatsappUrl, icon: 'whatsapp'}
+];
+
+// Filtrar solo los enlaces que tienen una URL válida
+const validSocialLinks = socialLinks.filter(link => link.url);
+---
+<div class="flex space-x-4">
+    {validSocialLinks.map(link => (
+            <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-neutral-600 dark:text-neutral-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors duration-200"
+                    aria-label={`Follow us on ${link.platform}`}
+            >
+                {link.icon === 'linkedin' ?
+                        <Linkedin></Linkedin> :
+                    link.icon === 'youtube' ?
+                            <Youtube></Youtube> :
+                        link.icon === 'facebook' ?
+                                <Facebook></Facebook> :
+                            link.icon === 'twitter' ?
+                                    <Twitter></Twitter> :
+                                link.icon === 'instagram' ?
+                                        <Instagram></Instagram> :
+                                    link.icon === 'tiktok' ?
+                                            <Tiktok></Tiktok> :
+                                        link.icon === 'whatsapp' ?
+                                                <Whatsapp></Whatsapp> :
+                                            null
+                }
+            </a>
+    ))}
+</div>

@@ -1,0 +1,35 @@
+---
+interface Props {
+  lang: string
+}
+
+const {lang} = Astro.props;
+---
+
+<section class="py-16 bg-primary-500 dark:bg-primary-600 text-white">
+  <div class="container">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-3xl md:text-4xl font-semibold mb-4">Stay Updated</h2>
+      <p class="mb-8 text-lg opacity-90">
+        Subscribe to our newsletter for exclusive offers, travel inspiration, and updates on our newest properties.
+      </p>
+      
+      <form class="max-w-md mx-auto">
+        <div class="flex flex-col sm:flex-row gap-3">
+          <input 
+            type="email" 
+            placeholder="Your email address" 
+            class="flex-grow px-4 py-3 rounded-md border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white placeholder:text-white/70 focus:outline-none focus:border-white"
+            required
+          />
+          <button type="submit" class="btn bg-white text-primary-600 hover:bg-neutral-100 py-3">
+            Subscribe
+          </button>
+        </div>
+        <p class="mt-3 text-sm opacity-80">
+          We respect your privacy and will never share your information.
+        </p>
+      </form>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,82 @@
+---
+import {trans} from "~/utils/translations";
+import {getRelativeLocaleUrl} from "astro:i18n";
+
+interface Props {
+    lang: string
+}
+
+const {lang} = Astro.props;
+
+const navItems = [
+    {label: trans(lang, "components.common.navigation.url.hotel"), href: "/hotels"},
+    {label: trans(lang, "components.common.navigation.url.destinations"), href: "/destinations"},
+    {label: trans(lang, "components.common.navigation.url.offers"), href: "/offers"},
+    {label: trans(lang, "components.common.navigation.url.blog"), href: "/blog"},
+    {label: trans(lang, "components.common.navigation.url.contact"), href: "/contact"},
+]
+---
+
+<nav class="hidden md:block">
+    <ul class="flex space-x-8">
+        {navItems.map(item => (
+            <li>
+                <a href={getRelativeLocaleUrl(lang, item.href)}
+                   class="text-neutral-700 dark:text-neutral-300 hover:text-primary-500 dark:hover:text-primary-400 font-medium transition-colors duration-200">
+                    {item.label}
+                </a>
+            </li>
+        ))}
+    </ul>
+</nav>
+
+<!-- Mobile Navigation Menu -->
+<div class="md:hidden">
+    <button id="mobile-menu-toggle" class="text-neutral-700 dark:text-neutral-300 p-2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+             class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+        </svg>
+    </button>
+
+    <div id="mobile-menu"
+         class="fixed inset-0 bg-white dark:bg-neutral-900 z-50 hidden flex flex-col justify-center items-center transition-all duration-300">
+        <button id="mobile-menu-close" class="absolute top-6 right-6 text-neutral-700 dark:text-neutral-300 p-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                 stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+
+        <ul class="flex flex-col space-y-6 text-center">
+            {navItems.map(item => (
+                    <li>
+                        <a href={item.href}
+                           class="text-xl font-medium text-neutral-800 dark:text-neutral-100 hover:text-primary-500 dark:hover:text-primary-400">
+                            {item.label}
+                        </a>
+                    </li>
+            ))}
+        </ul>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileMenuClose = document.getElementById('mobile-menu-close');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (mobileMenuToggle && mobileMenuClose && mobileMenu) {
+            mobileMenuToggle.addEventListener('click', () => {
+                mobileMenu.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            });
+
+            mobileMenuClose.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                document.body.style.overflow = '';
+            });
+        }
+    });
+</script>

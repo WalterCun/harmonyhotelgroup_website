@@ -1,0 +1,16 @@
+---
+hotel_id: 1
+name: Hotel Majestic 2
+stars: 3
+location: 'Cuenca, Ecuador'
+hotelRooms: 15
+roomPrice: 25
+coverImage: /upload/hm2_portada.jpg
+gallery:
+  - /upload/chorro_giron.jpeg
+  - /upload/hm2_portada.jpg
+amenities:
+  - amenities: src/data/icons/iconWifi.md
+highlight: true
+---
+

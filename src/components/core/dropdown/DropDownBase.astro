@@ -1,0 +1,366 @@
+---
+// Define interfaces para las props
+interface DropdownOption {
+    label: string | number;
+    iconPath: string;
+}
+
+interface Props {
+    title: string;
+    options: DropdownOption[];
+    iconWidth?: number | string;
+    iconHeight?: number | string;
+}
+
+
+const {
+    title,
+    options,
+    iconWidth = 50,
+    iconHeight = 25
+} = Astro.props;
+---
+
+<div class="container">
+    <div class="dropdown-wrapper">
+        <button class="dropdown-trigger">
+            <span>{title}</span>
+            <svg class="chevron-icon" viewBox="0 0 24 24" width="16" height="16">
+                <path d="M7 10l5 5 5-5z" fill="currentColor"></path>
+            </svg>
+        </button>
+
+        <div class="dropdown-menu">
+            {options.map(async (option) => {
+                return (
+                        <div class="dropdown-item">
+                            <img src={option.iconPath} alt=`Imagen de Selector ${option.label}` width={iconWidth} height={iconHeight}/>
+                            <span>{option.label}</span>
+                        </div>
+                )
+            })}
+        </div>
+    </div>
+</div>
+
+
+<style>
+    :root {
+        /* Colors */
+        --primary: #2196f3;
+        --primary-glow: rgba(33, 150, 243, 0.4);
+        --background: #0a0a12;
+        --surface: rgba(30, 30, 45, 0.95);
+        --surface-hover: rgba(40, 40, 60, 0.95);
+        --text: #ffffff;
+        --text-secondary: rgba(255, 255, 255, 0.7);
+        --border: rgba(255, 255, 255, 0.1);
+        --shadow: rgba(0, 0, 0, 0.3);
+
+        /* Effects */
+        --glow: 0 0 10px var(--primary-glow);
+        --glass: saturate(180%) blur(10px);
+        --gradient: linear-gradient(135deg, var(--surface), rgba(40, 40, 60, 0.95));
+
+        /* Timing */
+        --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-medium: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+        /* Dimensions */
+        --border-radius: 8px;
+        --menu-min-width: 220px;
+    }
+
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 2rem;
+        gap: 2rem;
+    }
+
+    /* Dropdown Styles */
+    .dropdown-wrapper {
+        position: relative;
+    }
+
+    .dropdown-trigger {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 20px;
+        background: var(--gradient);
+        border: 1px solid var(--border);
+        border-radius: var(--border-radius);
+        color: var(--text);
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all var(--transition-medium);
+        backdrop-filter: var(--glass);
+        -webkit-backdrop-filter: var(--glass);
+    }
+
+    .dropdown-trigger:hover {
+        border-color: var(--primary);
+        box-shadow: var(--glow);
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        min-width: var(--menu-min-width);
+        background: var(--gradient);
+        border: 1px solid var(--border);
+        border-radius: var(--border-radius);
+        padding: 8px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all var(--transition-medium);
+        backdrop-filter: var(--glass);
+        -webkit-backdrop-filter: var(--glass);
+        box-shadow: 0 4px 20px var(--shadow);
+    }
+
+    .dropdown-wrapper.active .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 16px;
+        color: var(--text);
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        position: relative;
+    }
+
+    .dropdown-item:hover {
+        background: var(--surface-hover);
+        color: var(--primary);
+    }
+
+    .dropdown-divider {
+        height: 1px;
+        background: var(--border);
+        margin: 8px 0;
+    }
+
+    /* Badge */
+    .badge {
+        background: var(--primary);
+        color: white;
+        padding: 2px 6px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        margin-left: auto;
+    }
+
+    /* Submenu */
+    .has-submenu {
+        padding-right: 36px;
+    }
+
+    .submenu-icon {
+        position: absolute;
+        right: 12px;
+        transition: transform var(--transition-medium);
+    }
+
+    .has-submenu:hover .submenu-icon {
+        transform: rotate(90deg);
+    }
+
+    .submenu {
+        position: absolute;
+        left: 100%;
+        top: -8px;
+        min-width: var(--menu-min-width);
+        background: var(--gradient);
+        border: 1px solid var(--border);
+        border-radius: var(--border-radius);
+        padding: 8px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateX(-10px);
+        transition: all var(--transition-medium);
+        backdrop-filter: var(--glass);
+        -webkit-backdrop-filter: var(--glass);
+        box-shadow: 0 4px 20px var(--shadow);
+    }
+
+    .has-submenu:hover .submenu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0);
+    }
+
+    /* Theme Toggle */
+    .theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+    }
+
+    .theme-toggle input {
+        display: none;
+    }
+
+    .theme-toggle label {
+        cursor: pointer;
+        padding: 10px 20px;
+        background: var(--gradient);
+        border: 1px solid var(--border);
+        border-radius: var(--border-radius);
+        color: var(--text);
+        transition: all var(--transition-medium);
+    }
+
+    .theme-toggle label:hover {
+        border-color: var(--primary);
+        box-shadow: var(--glow);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .submenu {
+            left: 0;
+            top: 100%;
+        }
+    }
+
+    .flag-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 24px; /* Para mantener consistencia en el espaciado */
+    }
+
+    .flag-icon {
+        border-radius: 2px; /* Opcional: para dar un borde redondeado a las banderas */
+        object-fit: contain;
+    }
+
+
+</style>
+
+
+<script>
+    class ModernDropdown {
+        constructor(element: HTMLElement, options: {} = {}) {
+            this.wrapper = element;
+            this.trigger = element.querySelector('.dropdown-trigger');
+            this.menu = element.querySelector('.dropdown-menu');
+            this.options = {
+                openOnHover: window.innerWidth > 768,
+                closeOnClickOutside: true,
+                animation: true,
+                ...options
+            };
+
+            this.init();
+        }
+
+        init() {
+            // Desktop hover events
+            if (this.options.openOnHover) {
+                this.wrapper.addEventListener('mouseenter', () => this.open());
+                this.wrapper.addEventListener('mouseleave', () => this.close());
+            }
+
+            // Mobile click events
+            this.trigger.addEventListener('click', (e: MouseEvent) => {
+                e.preventDefault();
+                this.toggle();
+            });
+
+            // Close on click outside
+            if (this.options.closeOnClickOutside) {
+                document.addEventListener('click', (e) => {
+                    if (!this.wrapper.contains(e.target)) {
+                        this.close();
+                    }
+                });
+            }
+
+            // Handle submenu positioning
+            this.handleSubmenuPosition();
+
+            // Initialize keyboard navigation
+            this.initKeyboardNav();
+        }
+
+        open() {
+            this.wrapper.classList.add('active');
+            this.menu.setAttribute('aria-expanded', 'true');
+        }
+
+        close() {
+            this.wrapper.classList.remove('active');
+            this.menu.setAttribute('aria-expanded', 'false');
+        }
+
+        toggle() {
+            this.wrapper.classList.contains('active') ? this.close() : this.open();
+        }
+
+        handleSubmenuPosition() {
+            const submenus = this.wrapper.querySelectorAll('.submenu') as NodeListOf<HTMLDivElement>;
+            submenus.forEach(submenu => {
+                const rect = submenu.getBoundingClientRect();
+                if (rect.right > window.innerWidth) {
+                    submenu.style.left = 'auto';
+                    submenu.style.right = '100%';
+                }
+            });
+        }
+
+        initKeyboardNav() {
+            const items = this.menu.querySelectorAll('.dropdown-item') as NodeListOf<HTMLDivElement>;
+            items.forEach((item, index) => {
+                item.setAttribute('tabindex', '0');
+                item.addEventListener('keydown', (e: KeyboardEvent) => {
+                    switch (e.key) {
+                        case 'ArrowDown':
+                            e.preventDefault();
+                            items[index + 1]?.focus();
+                            break;
+                        case 'ArrowUp':
+                            e.preventDefault();
+                            items[index - 1]?.focus();
+                            break;
+                        case 'Enter':
+                        case ' ':
+                            e.preventDefault();
+                            item.click();
+                            break;
+                    }
+                });
+            });
+        }
+    }
+
+    // Initialize dropdowns
+    document.addEventListener('DOMContentLoaded', () => {
+        // Initialize dropdowns
+        const dropdown = document.querySelector('.dropdown-wrapper') as HTMLDivElement;
+
+        new ModernDropdown(dropdown);
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            new ModernDropdown(dropdown, {
+                openOnHover: window.innerWidth > 768
+            });
+        });
+    });
+
+</script>

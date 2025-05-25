@@ -1,36 +1,27 @@
 {
-  "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "module": "ESNext",
-    "lib": [
-      "ES2020",
-      "DOM",
-      "DOM.Iterable"
-    ],
-    "skipLibCheck": true,
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "preserve",
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
-  },
+  "extends": "astro/tsconfigs/strict",
   "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue"
+    ".astro/types.d.ts",
+    "**/*",
+    "src/**/*",
+    "astro.config.mjs",
+    "tailwind.config.mjs"
   ],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".vercel",
+    ".vscode"
+  ],
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "~/*": [
+        "src/*"
+      ],
+      "lib/*": [
+        "src/lib/*"
+      ]
     }
-  ]
+  }
 }

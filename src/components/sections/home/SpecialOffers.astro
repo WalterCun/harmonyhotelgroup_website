@@ -1,0 +1,75 @@
+---
+import {Image} from 'astro:assets';
+import {Api} from "~/utils/tina";
+import {trans} from "../../../utils/translations";
+
+const api = new Api(true, 4)
+const offers = await api.offers();
+
+interface Props {
+    lang: string
+}
+const {lang} = Astro.props;
+---
+
+<section class="section bg-white dark:bg-neutral-900">
+    <div class="container">
+        <div class="text-center mb-12">
+            <h2 class="mb-4">{trans(lang, "components.sections.home.special-offer.title")}</h2>
+            <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
+                {trans(lang, "components.sections.home.special-offer.subtitle")}
+            </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {offers.map(offer => (
+                    <div class="card group hover:shadow-xl transition-all duration-300">
+                        <div class="relative">
+                            {offer.coverImage && (
+                                    <Image
+                                            src={offer.coverImage}
+                                            alt={offer.title}
+                                            width="100"
+                                            height="100"
+                                            class="w-full h-48 object-cover"
+                                    />)}
+                            <div class="absolute top-4 left-4 bg-primary-500 text-white py-1 px-3 rounded-full text-sm font-bold">
+                                {offer.discount} OFF
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                {offer.tags?.map(item => (
+                                        <span class="text-xs font-semibold bg-secondary-100 dark:bg-secondary-900 text-secondary-800 dark:text-secondary-200 py-1 px-2 rounded-full">{item?.tag}</span>
+                                ))}
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">{offer.title}</h3>
+                            <p class="text-neutral-600 dark:text-neutral-400 mb-4">
+                                {offer.description_offers?.find(item => item?.lang_offer === lang)?.content_offer ||
+                                        trans(lang, "components.sections.home.special-offer.no-text")}
+                            </p>
+                            <div class="flex flex-row justify-between">
+                                <div class="flex flex-col justify-between items-center">
+                                    <p class="text-sm">
+                                        <span class="font-medium">{trans(lang, "components.sections.home.special-offer.expired")}</span>
+                                    </p>
+                                    <p class="text-sm">
+                                        {offer.expiration_date.split('T')[0]}
+                                    </p>
+
+                                </div>
+                                <a href={`/offers/${offer.offer_id}`}
+                                   class="text-primary-500 font-medium hover:text-primary-600 transition-colors">
+                                    {trans(lang, "components.sections.home.special-offer.btn-details")}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+            ))}
+        </div>
+        <div class="text-center mt-12">
+            <a href="/offers" class="btn btn-outline">
+                View All Offers
+            </a>
+        </div>
+    </div>
+</section>

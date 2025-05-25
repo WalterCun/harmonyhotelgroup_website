@@ -1,0 +1,88 @@
+---
+const testimonials = [
+  {
+    id: 1,
+    name: "Sarah Johnson",
+    location: "London, UK",
+    quote: "The Harmony Grand Plaza exceeded all our expectations. The attention to detail and personalized service made our anniversary truly special.",
+    hotel: "Harmony Grand Plaza",
+    rating: 5,
+    image: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+  },
+  {
+    id: 2,
+    name: "Michael Rodriguez",
+    location: "Toronto, Canada",
+    quote: "The beachfront location was breathtaking. The staff went above and beyond to ensure our family had a memorable vacation experience.",
+    hotel: "Harmony Beachfront Resort",
+    rating: 5,
+    image: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+  },
+  {
+    id: 3,
+    name: "Emily Wong",
+    location: "Singapore",
+    quote: "As a business traveler, I appreciate efficiency and comfort. The Harmony City Center provides both, along with excellent amenities and location.",
+    hotel: "Harmony City Center",
+    rating: 4,
+    image: "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+  }
+];
+interface Props {
+  lang: string
+}
+
+const {lang} = Astro.props;
+---
+
+<section class="section bg-neutral-50 dark:bg-neutral-800">
+  <div class="container">
+    <div class="text-center mb-12">
+      <h2 class="mb-4">Guest Experiences</h2>
+      <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
+        Hear what our guests have to say about their stay with Harmony Hotel Group.
+      </p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {testimonials.map(testimonial => (
+        <div class="card p-6 hover:shadow-lg transition-shadow duration-300">
+          <div class="flex justify-between items-start mb-4">
+            <div class="flex items-center">
+              <div class="w-14 h-14 rounded-full overflow-hidden mr-4">
+                <img 
+                  src={testimonial.image} 
+                  alt={testimonial.name} 
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div>
+                <h4 class="font-semibold">{testimonial.name}</h4>
+                <p class="text-sm text-neutral-600 dark:text-neutral-400">{testimonial.location}</p>
+              </div>
+            </div>
+            <div class="flex">
+              {Array.from({ length: testimonial.rating }).map(() => (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-primary-500">
+                  <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                </svg>
+              ))}
+            </div>
+          </div>
+          <blockquote class="text-neutral-700 dark:text-neutral-300 italic mb-3">
+            "{testimonial.quote}"
+          </blockquote>
+          <p class="text-sm text-neutral-600 dark:text-neutral-400">
+            Stayed at: <span class="text-primary-500">{testimonial.hotel}</span>
+          </p>
+        </div>
+      ))}
+    </div>
+    
+    <div class="text-center mt-12">
+      <a href="/testimonials" class="btn btn-outline">
+        Read More Testimonials
+      </a>
+    </div>
+  </div>
+</section>
