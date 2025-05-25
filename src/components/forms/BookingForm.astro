@@ -2,7 +2,7 @@
 import {trans} from "../../utils/translations";
 // import {bookingFormState} from '../../stores/bookingStore';
 import {range} from "../../utils/tools";
-import {maxAdults, maxChildren} from "../../constants";
+import {maxAdults, maxChildren} from "lib/constants";
 
 const showBookingForm = ['/', '/hotels/[id]'].includes(Astro.url.pathname) ||
     Astro.url.pathname.startsWith('/hotels/');
