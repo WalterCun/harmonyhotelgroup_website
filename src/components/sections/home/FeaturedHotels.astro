@@ -1,8 +1,7 @@
 ---
 import {trans} from "~/utils/translations";
 
-import {Api} from "~/utils/tina";
-import {imageUrl} from "../../../utils/tina";
+import {Api,imageUrl} from "~/utils/tina";
 
 const api = new Api(true, 4);
 const hoteles = await api.hotels()

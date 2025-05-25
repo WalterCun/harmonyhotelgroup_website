@@ -1,6 +1,7 @@
 ---
 import {trans} from "~/utils/translations";
 import ReservationForm from "~/components/forms/ReservationForm.astro";
+import BookingForm2 from "~/components/forms/BookingForm2.astro";
 
 interface Props {
     lang: string
@@ -47,7 +48,8 @@ const {lang} = Astro.props
                 </a>
             </div>
         </div>
-        <ReservationForm lang={lang}/>
+        <!--<ReservationForm lang={lang}/>-->
+        <BookingForm2/>
     </div>
 
     <!-- Scroll Indicator -->
