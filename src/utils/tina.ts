@@ -42,10 +42,6 @@ export class Api {
     // Añadir propiedad para el directorio de los hoteles
     private readonly hotelsDirectory: string = 'src/data/hotels'; // Ruta predeterminada
 
-    // readonly hotels_json = [
-    //     'Hotel_Majestic2_by_HHG.md'
-    // ];
-
     // async hotels(): Promise<HotelsQuery["hotels"][]> {
     //     try {
     //         const hotelPromises = this.hotels_json.map(item =>
@@ -123,10 +119,6 @@ export class Api {
 
     private readonly destinationsDirectory: string = 'src/data/destinations';
 
-    // readonly destinations_json = [
-    //     'Chorro_Giron.json'
-    // ]
-
     async destinations(): Promise<DestinationsQuery["destinations"][]> {
         try {
             // Obtenemos la lista de archivos dinámicamente
@@ -170,9 +162,6 @@ export class Api {
 
     // ----------------------------------------------------------------------------------------------------------------
 
-    // readonly offers_json = [
-    //     'Dia_Madre.json'
-    // ]
     private readonly offersDirectory: string = 'src/data/offers';
 
     async offers(): Promise<OffersQuery["offers"][]> {
@@ -197,9 +186,6 @@ export class Api {
 
             let offers = results.filter((offer): offer is OffersQuery["offers"] => offer !== null);
 
-            // if (this.destacado) {
-            //     offers = offers.filter(offer=>offer.expiration_date)
-            // }
             offers = offers.filter((offer => offer.expiration_date !== null && new Date(offer.expiration_date) >= new Date()))
 
             if (this.limit > 0) {
@@ -208,47 +194,15 @@ export class Api {
 
             return offers;
         } catch (error) {
-            console.error('❌ Error general leyendo JSONs:', error);
+            console.error('❌ Error general leyendo Archivo:', error);
             return [];
         }
     }
 
-    // ----------------------------------------------------------------------------------------------------------------
-
-    // readonly blog_json = []
-
-    // async blogs(): Promise<BlogQuery["blogs"][]>{
-    //     try{
-    //         const offersPromises = this.offers_json.map(item => {
-    //             return client.queries.offers({relativePath: item})
-    //                 .then(result => result.data.offers)
-    //                 .catch(err => {
-    //                     console.error(`❌ Error procesando ${item}:`, err);
-    //                     return null;
-    //                 })
-    //         })
-    //
-    //         const results = await Promise.all(offersPromises);
-    //
-    //         let  offers = results.filter((offer): offer is OffersQuery["offers"] => offer !== null);
-    //
-    //         // if (this.destacado) {
-    //         //     offers = offers.filter(offer=>offer.expiration_date)
-    //         // }
-    //
-    //         if (this.limit > 0) {
-    //             offers = offers.slice(0, this.limit);
-    //         }
-    //
-    //         return offers;
-    //     }
-    //     catch (error){
-    //         console.error('❌ Error general leyendo JSONs:', error);
-    //         return [];
-    //     }
-    // }
 
 }
+
+// --------------------------------------------------------------------------------------------------------------------
 
 export function imageUrl({url, back = 0}: { url: string, back: number }) {
     // Si ya tiene el prefijo correcto, devolverla tal cual
