@@ -23,6 +23,8 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 pnpm-lock.yaml
+package-lock.json
+
 /.vscode/
 
 node_modules
