@@ -1,9 +1,16 @@
 // tina/config.ts
 import { defineConfig } from "tinacms";
+var clientId = process.env.NEXT_PUBLIC_TINA_CLIENT_ID || "";
+var token = process.env.TINA_TOKEN || "";
+var isLocalMode = !clientId || !token;
 var branch = process.env.GITHUB_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || process.env.HEAD || "main";
 console.info(`Using branch: ${branch}`);
+console.info(`Running in ${isLocalMode ? "local" : "production"} mode`);
 var config_default = defineConfig({
   branch,
+  // Configuration for API o modo local
+  clientId,
+  token,
   build: {
     publicFolder: "public",
     outputFolder: "admin"
