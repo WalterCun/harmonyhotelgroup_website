@@ -3,16 +3,16 @@ export const lang_en = "en";
 
 export type Language = 'en' | 'es';
 export const LANGUAGES: { code: Language; name: string }[] = [
-    { code: 'en', name: 'English' },
-    { code: 'es', name: 'Español' },
+    {code: 'en', name: 'English'},
+    {code: 'es', name: 'Español'},
     // { code: 'fr', name: 'Français' },
 ];
 export const DEFAULT_LANGUAGE: Language = 'es';
 
 export type Currency = 'USD' | 'EUR';
 export const CURRENCIES: { code: Currency; name: string; symbol: string }[] = [
-    { code: 'USD', name: 'US Dollar', symbol: '$' },
-    { code: 'EUR', name: 'Euro', symbol: '€' }
+    {code: 'USD', name: 'US Dollar', symbol: '$'},
+    {code: 'EUR', name: 'Euro', symbol: '€'}
 ];
 export const DEFAULT_CURRENCY: Currency = 'USD';
 
@@ -21,6 +21,18 @@ export const exchangeRates: Record<Currency, number> = {
     USD: 1,
     EUR: 0.92
 };
+
+// -------------------------------------------------------------------------------------------------------------------
+
+// Agrega esto a tu archivo constants.ts existente
+export const whatsappNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER;
+
+// Función útil para generar enlaces de WhatsApp con mensajes predefinidos
+export const formatWhatsAppText = (message: string) => {
+    const encodedMessage = encodeURIComponent(message);
+    return `https://wa.me/${whatsappNumber}${message ? `?text=${encodedMessage}` : ''}`;
+};
+
 
 // -------------------------------------------------------------------------------------------------------------------
 
