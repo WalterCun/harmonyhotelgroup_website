@@ -9,6 +9,7 @@ import client from "../../tina/__generated__/client.ts";
 export class Api {
     destacado: boolean;
     limit: number;
+    VALID_FILE_EXTENSIONS:string [] = ['.md', '.json', '.mdx'];
 
     constructor(destacado = false, limit = -1) {
         this.destacado = destacado;
@@ -17,7 +18,7 @@ export class Api {
 
     // ----------------------------------------------------------------------------------------------------------------
 
-    // Métod para obtener los archivos .md y .json del directorio
+    // Métod para obtener los archivos .md del directorio
     private async getFiles(directory: string): Promise<string[]> {
         try {
             // Importamos el módulo fs con promesas para operaciones asíncronas de archivos
@@ -26,11 +27,9 @@ export class Api {
             // Leemos el contenido del directorio
             const files = await fs.readdir(directory);
 
-            console.log(files)
-
             // Filtramos solo los archivos .md y .json
             return files.filter(file =>
-                file.endsWith('.md')
+                this.VALID_FILE_EXTENSIONS.some(ext => file.toLowerCase().endsWith(ext))
             );
         } catch (error) {
             console.error(`❌ Error leyendo el directorio ${directory}:`, error);
