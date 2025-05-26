@@ -32,7 +32,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
       - name: Lint code
         run: pnpm lint
@@ -57,8 +57,7 @@ jobs:
             
             ## Verificaciones completadas:
             - ✅ Lint
-            - ✅ Compilación TinaCMS
-            - ✅ Compilación Astro
+            - ✅ Compilación
           labels: |
             automated-pr
             ready-for-review
