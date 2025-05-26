@@ -85,5 +85,21 @@
         "description": "Experimente el lujo y el confort con Harmony Hotel Group. Reserve su estancia perfecta en nuestros hoteles de todo el Ecuador."
       }
     }
+  },
+  "404": {
+    "title-page": "Error 404",
+    "title": "404",
+    "subtitle": "Página no encontrada",
+    "description": "Parece que la página que estás buscando no existe o ha sido movida.\nNuestro equipo está en la búsqueda, pero mientras tanto...\nParece que la página que estás buscando no existe o ha sido movida.\nNuestro equipo está en la búsqueda, pero mientras tanto...",
+    "btn-home": "Volver al inicio",
+    "btn-contact": "Contactar con nosotros"
+  },
+  "500": {
+    "title-page": "Error 500",
+    "title": "500",
+    "subtitle": "Error del Servidor",
+    "description": "Lo sentimos, algo salió mal en nuestros servidores. Este error no es culpa tuya.\nNuestro equipo técnico ya está trabajando para resolver el problema.",
+    "btn-home": "Volver al inicio",
+    "btn-contact": "Reportar el Problema"
   }
 }

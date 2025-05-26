@@ -21,7 +21,7 @@ Descargar SVG desde Wikipedia "Wikipedia [Pais] Flag SVG"
 export const LANGUAGES: Record<string, Language> = {
     'es': {name: "Español", flag: import('../assets/img/flags/es.svg')},
     'en': {name: "English", flag: import('../assets/img/flags/en.svg')},
-    'fr': {name: "Frances", flag: import('../assets/img/flags/fr.svg')},
+    // 'fr': {name: "Frances", flag: import('../assets/img/flags/fr.svg')},
 }
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 type TranslationObject = Record<string, any>;
@@ -29,7 +29,7 @@ type TranslationObject = Record<string, any>;
 export const TranslationData: Record<string, TranslationObject> = {
     es,
     en,
-    fr
+    // fr
 };
 
 export const defaultLanguage = 'es';
@@ -55,7 +55,6 @@ export const structUrl = (url: URL, langCode?: keyof typeof LANGUAGES): string =
     if (!pathname.startsWith('/')) {
         pathname = `/${pathname}`;
     }
-
 
     // Regex para busca /en/, /es/, /fr/ al inicio del pathname
     const mainLanguageCodes = Object.keys(LANGUAGES);
@@ -108,7 +107,6 @@ export const trans = (lang = "es", key: string, params?: Record<string, string |
         return translationCache[lang][cacheKey];
     }
 
-
     // Obtener el objeto de traducción para el idioma especificado
     const translations = TranslationData[lang]|| TranslationData.es;
 
@@ -118,42 +116,10 @@ export const trans = (lang = "es", key: string, params?: Record<string, string |
     //     return trans(defaultLanguage.code, key, params);
     // }
 
-    // try {
-    //     // Dividir la clave y reducir para navegar por el objeto de traducción
-    //     const keys = key.split('.');
-    //     const result = keys.reduce((obj, k) =>
-    //             obj && typeof obj === 'object' && k in obj ? obj[k] : null,
-    //         translations as TranslationObject
-    //     );
-    //
-    //     // Si no se encuentra la traducción, intentar con el idioma por defecto
-    //     if (result === null) {
-    //         return `No translation found for: ${key}`;
-    //         // return trans(defaultLanguage.code, key, params);
-    //     }
-    //
-    //     // Convertir a string
-    //     let translation = String(result);
-    //
-    //     // Reemplazar parámetros si se proporcionaron
-    //     if (params && typeof params === 'object') {
-    //         // Reemplazar cada parámetro en el formato {{nombreParametro}}
-    //         // biome-ignore lint/complexity/noForEach: <explanation>
-    //         Object.entries(params).forEach(([paramName, paramValue]) => {
-    //             const regex = new RegExp(`\\{\\{\\s*${paramName}\\s*\\}\\}`, 'g');
-    //             translation = translation.replace(regex, String(paramValue));
-    //         });
-    //     }
-    //
-    //     return translation;
-    // } catch (error) {
-    //     console.warn(`Error al obtener la traducción para: ${key}`, error);
-    //     return trans(defaultLanguage.code, key, params);
-    // }
-
     // ------------------------------------------------------------------------------
     // Usar un enfoque directo para acceder a traducciones anidadas
     const keys = key.split('.');
+    // console.log('keys',keys)
     let result = translations;
 
     for (const k of keys) {
