@@ -38,13 +38,6 @@ export default defineConfig({
             }
         ),
     ],
-    adapter: vercel({
-        analytics: true,
-        includeFiles: [],
-        exclude: [],
-        packageOptions: {
-            packageManager: "pnpm"
-        }
-    }),
+    adapter: vercel(),
     output: "server",
 });
