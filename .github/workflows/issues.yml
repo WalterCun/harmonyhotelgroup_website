@@ -1,0 +1,64 @@
+name: Issue Branch CI
+
+on:
+  push:
+    branches:
+      - 'issue/**'
+      - 'feature/**'
+      - 'bugfix/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  build-and-create-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint code
+        run: pnpm lint
+
+      - name: Build project
+        run: pnpm build
+
+      - name: Create Pull Request to dev
+        if: success()
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: dev
+          branch: auto-pr-to-dev/${{ github.ref_name }}
+          delete-branch: false
+          title: "Merge ${{ github.ref_name }} into dev"
+          body: |
+            Este PR fue creado automáticamente después de una compilación exitosa de la rama ${{ github.ref_name }}.
+            
+            ## Cambios incluidos
+            ${{ github.event.head_commit.message }}
+            
+            ## Verificaciones completadas:
+            - ✅ Lint
+            - ✅ Compilación TinaCMS
+            - ✅ Compilación Astro
+          labels: |
+            automated-pr
+            ready-for-review

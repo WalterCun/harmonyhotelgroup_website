@@ -1,12 +1,5 @@
 import {defineConfig} from "tinacms";
 
-// Verificar y utilizar las variables de entorno, o usar valores de respaldo para desarrollo local
-const clientId = process.env.NEXT_PUBLIC_TINA_CLIENT_ID || "";
-const token = process.env.TINA_TOKEN || "";
-
-// Modo de desarrollo local si no hay credenciales
-const isLocalMode = !clientId || !token;
-
 const branch =
     process.env.GITHUB_BRANCH ||
     process.env.VERCEL_GIT_COMMIT_REF ||
@@ -14,18 +7,12 @@ const branch =
     "main";
 
 console.info(`Using branch: ${branch}`);
-console.info(`Running in ${isLocalMode ? 'local' : 'production'} mode`);
 
 export default defineConfig({
     branch,
 
-    // Configuration for API o modo local
-    clientId,
-    token,
-
-
     build: {
-        publicFolder: "src/admin",
+        publicFolder: "public",
         outputFolder: "admin",
     },
 
@@ -44,6 +31,11 @@ export default defineConfig({
                 name: "hotels",
                 label: "Hotels",
                 path: "src/data/hotels",
+                // defaultItem: () => {
+                //     return {
+                //         hotel_id: AutoIncrement('hotels'),
+                //     }
+                // },
                 fields: [
                     {
                         type: "number",
@@ -165,12 +157,12 @@ export default defineConfig({
                                 return {label: `${item?.tag ? `${item.tag}" > "` : ""}${item?.value} > ${item?.type}`}
                             }
                         },
-                        fields:[
+                        fields: [
                             {
-                                type:"string",
+                                type: "string",
                                 name: "name",
                                 label: "Tipo de Habitación:",
-                                options:[
+                                options: [
                                     'Individual',
                                     'Matrimonial',
                                     'Doble Individual',
@@ -184,22 +176,22 @@ export default defineConfig({
                                 ]
                             },
                             {
-                                type:"string",
-                                name:"description",
+                                type: "string",
+                                name: "description",
                                 label: "Descripcion de habitacion"
                             },
                             {
-                                type:"number",
-                                name:"size",
+                                type: "number",
+                                name: "size",
                                 label: "Tamaño de habitacion (m2)"
                             },
                             {
-                                type:"string",
-                                name:"occupancy",
+                                type: "string",
+                                name: "occupancy",
                                 label: "Ocupación min, max (Eje: Min: 1, Max: 2)"
                             },
                             {
-                                type:"image",
+                                type: "image",
                                 name: "images",
                                 label: "Imagenes (La primera Imagen sera la portada)",
                                 list: true
@@ -214,12 +206,12 @@ export default defineConfig({
                                 name: "amenities",
                                 label: "Servicios de la Habitacion",
                                 list: true,
-                                ui:{
+                                ui: {
                                     itemProps: (item) => {
-                                        return { label: `${item?.amenities}` }
+                                        return {label: `${item?.amenities}`}
                                     }
                                 },
-                                fields:[
+                                fields: [
                                     {
                                         type: "reference",
                                         name: "amenities",
@@ -282,12 +274,12 @@ export default defineConfig({
                         name: "amenities",
                         label: "Servicios del Hotel",
                         list: true,
-                        ui:{
+                        ui: {
                             itemProps: (item) => {
-                                return { label: `${item?.amenities}` }
+                                return {label: `${item?.amenities}`}
                             }
                         },
-                        fields:[
+                        fields: [
                             {
                                 type: "reference",
                                 name: "amenities",
@@ -330,7 +322,7 @@ export default defineConfig({
                 name: 'icons',
                 label: 'Icons',
                 path: 'src/data/icons',
-                fields:[
+                fields: [
                     {
                         type: "string",
                         name: "icon",
@@ -351,6 +343,11 @@ export default defineConfig({
                 name: "destinations",
                 label: "Destinations",
                 path: "src/data/destinations",
+                // defaultItem: () => {
+                //     return {
+                //         destination_id: AutoIncrement('destinations'),
+                //     }
+                // },
                 fields: [
                     {
                         type: "number",
@@ -440,24 +437,29 @@ export default defineConfig({
                 name: "offers",
                 label: "Offers",
                 path: "src/data/offers",
+                // defaultItem: () => {
+                //     return {
+                //         offer_id: AutoIncrement('offers'),
+                //     }
+                // },
                 fields: [
                     {
                         type: "number",
                         name: "offer_id",
                         label: "ID*",
-                        required:true
+                        required: true
                     },
                     {
                         type: "string",
                         name: "title",
                         label: "Title*",
-                        required:true
+                        required: true
                     },
                     {
-                        type:"image",
-                        name:"coverImage",
-                        label:"Cover Image*",
-                        required:true
+                        type: "image",
+                        name: "coverImage",
+                        label: "Cover Image*",
+                        required: true
                     },
                     {
                         type: "object",
@@ -491,13 +493,13 @@ export default defineConfig({
                         type: "datetime",
                         name: "expiration_date",
                         label: "Expiration Date",
-                        required:true
+                        required: true
                     },
                     {
                         type: "string",
                         name: "discount",
                         label: "Discount",
-                        required:true
+                        required: true
                     },
                     {
                         type: "object",

@@ -1,18 +1,11 @@
 // tina/config.ts
 import { defineConfig } from "tinacms";
-var clientId = process.env.NEXT_PUBLIC_TINA_CLIENT_ID || "";
-var token = process.env.TINA_TOKEN || "";
-var isLocalMode = !clientId || !token;
 var branch = process.env.GITHUB_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || process.env.HEAD || "main";
 console.info(`Using branch: ${branch}`);
-console.info(`Running in ${isLocalMode ? "local" : "production"} mode`);
 var config_default = defineConfig({
   branch,
-  // Configuration for API o modo local
-  clientId,
-  token,
   build: {
-    publicFolder: "src/admin",
+    publicFolder: "public",
     outputFolder: "admin"
   },
   media: {
@@ -29,6 +22,11 @@ var config_default = defineConfig({
         name: "hotels",
         label: "Hotels",
         path: "src/data/hotels",
+        // defaultItem: () => {
+        //     return {
+        //         hotel_id: AutoIncrement('hotels'),
+        //     }
+        // },
         fields: [
           {
             type: "number",
@@ -335,6 +333,11 @@ var config_default = defineConfig({
         name: "destinations",
         label: "Destinations",
         path: "src/data/destinations",
+        // defaultItem: () => {
+        //     return {
+        //         destination_id: AutoIncrement('destinations'),
+        //     }
+        // },
         fields: [
           {
             type: "number",
@@ -424,6 +427,11 @@ var config_default = defineConfig({
         name: "offers",
         label: "Offers",
         path: "src/data/offers",
+        // defaultItem: () => {
+        //     return {
+        //         offer_id: AutoIncrement('offers'),
+        //     }
+        // },
         fields: [
           {
             type: "number",
