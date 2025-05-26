@@ -1,8 +1,8 @@
 import {defineConfig} from "tinacms";
 
 // Verificar y utilizar las variables de entorno, o usar valores de respaldo para desarrollo local
-const clientId = process.env.NEXT_PUBLIC_TINA_CLIENT_ID || "";
-const token = process.env.TINA_TOKEN || "";
+const clientId = "";
+const token = "";
 
 // Modo de desarrollo local si no hay credenciales
 const isLocalMode = !clientId || !token;
