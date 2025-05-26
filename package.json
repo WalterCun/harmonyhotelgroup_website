@@ -8,7 +8,7 @@
     "audit": "tinacms audit",
     "tina-clean": "tinacms audit --clean",
     "tina-build": "tinacms build",
-    "build": "tinacms build && astro build",
+    "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
     "lint": "biome lint --write .",
