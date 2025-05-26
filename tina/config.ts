@@ -1,5 +1,12 @@
 import {defineConfig} from "tinacms";
 
+// Verificar y utilizar las variables de entorno, o usar valores de respaldo para desarrollo local
+const clientId = process.env.NEXT_PUBLIC_TINA_CLIENT_ID || "";
+const token = process.env.TINA_TOKEN || "";
+
+// Modo de desarrollo local si no hay credenciales
+const isLocalMode = !clientId || !token;
+
 const branch =
     process.env.GITHUB_BRANCH ||
     process.env.VERCEL_GIT_COMMIT_REF ||
@@ -7,9 +14,15 @@ const branch =
     "main";
 
 console.info(`Using branch: ${branch}`);
+console.info(`Running in ${isLocalMode ? 'local' : 'production'} mode`);
 
 export default defineConfig({
     branch,
+
+    // Configuration for API o modo local
+    clientId,
+    token,
+
 
     build: {
         publicFolder: "public",
