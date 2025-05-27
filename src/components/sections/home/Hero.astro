@@ -1,10 +1,10 @@
 ---
-import {trans} from "~/utils/translations";
-import ReservationForm from "~/components/forms/ReservationForm.astro";
 import BookingForm2 from "~/components/forms/BookingForm2.astro";
+import ReservationForm from "~/components/forms/ReservationForm.astro";
+import { trans } from "~/utils/translations";
 
 interface Props {
-    lang: string
+	lang: string;
 }
 // const quickLinks = [
 //     {label: trans(lang, "components.common.navigation.url.about-us"), href: "/about"},
@@ -16,7 +16,7 @@ interface Props {
 //     {label: trans(lang, "components.common.navigation.url.privacy-policy"), href: "/privacy"},
 //     {label: trans(lang, "components.common.navigation.url.terms-of-service"), href: "/terms"},
 // ];
-const {lang} = Astro.props
+const { lang } = Astro.props;
 ---
 
 <section class="relative h-[85vh] min-h-[600px] overflow-hidden">

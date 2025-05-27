@@ -1,11 +1,12 @@
 ---
-import {trans} from "../../utils/translations";
+import { maxAdults, maxChildren } from "lib/constants";
 // import {bookingFormState} from '../../stores/bookingStore';
-import {range} from "../../utils/tools";
-import {maxAdults, maxChildren} from "lib/constants";
+import { range } from "../../utils/tools";
+import { trans } from "../../utils/translations";
 
-const showBookingForm = ['/', '/hotels/[id]'].includes(Astro.url.pathname) ||
-    Astro.url.pathname.startsWith('/hotels/');
+const showBookingForm =
+	["/", "/hotels/[id]"].includes(Astro.url.pathname) ||
+	Astro.url.pathname.startsWith("/hotels/");
 
 if (!showBookingForm) return null;
 
@@ -105,11 +106,11 @@ const lang = Astro.currentLocale;
 
         const checkInInput = form.querySelector('#check-in') as HTMLInputElement;
         const checkOutInput = form.querySelector('#check-out') as HTMLInputElement;
-        const adultsSelect = form.querySelector('#adults') as HTMLSelectElement;
+        // const adultsSelect = form.querySelector('#adults') as HTMLSelectElement;
         const childrenSelect = form.querySelector('#children') as HTMLSelectElement;
         const childAgesContainer = form.querySelector('#child-ages-container') as HTMLDivElement;
-        const breakfastCheckbox = form.querySelector('#breakfast') as HTMLInputElement;
-        const parkingCheckbox = form.querySelector('#parking') as HTMLInputElement;
+        // const breakfastCheckbox = form.querySelector('#breakfast') as HTMLInputElement;
+        // const parkingCheckbox = form.querySelector('#parking') as HTMLInputElement;
 
         // Load initial state
         // // const state = bookingFormState.get();

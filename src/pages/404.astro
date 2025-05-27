@@ -1,11 +1,11 @@
 ---
+import { lang_es } from "lib/constants";
 import Layout from "~/layouts/Layout.astro";
-import {lang_es} from "lib/constants";
-import {imageUrl} from "../utils/tina";
-import {trans} from "../utils/translations";
+import { imageUrl } from "../utils/tina";
+import { trans } from "../utils/translations";
 
 interface Props {
-    lang: string
+	lang: string;
 }
 // const quickLinks = [
 //     {label: trans(lang, "components.common.navigation.url.about-us"), href: "/about"},
@@ -17,7 +17,7 @@ interface Props {
 //     {label: trans(lang, "components.common.navigation.url.privacy-policy"), href: "/privacy"},
 //     {label: trans(lang, "components.common.navigation.url.terms-of-service"), href: "/terms"},
 // ];
-const {lang = lang_es} = Astro.props
+const { lang = lang_es } = Astro.props;
 ---
 
 <Layout lang={lang} title={trans(lang, "404.title-page")}>

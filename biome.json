@@ -11,7 +11,8 @@
 	},
 	"formatter": {
 		"enabled": true,
-		"indentStyle": "tab"
+		"indentStyle": "space",
+		"indentWidth": 2
 	},
 	"organizeImports": {
 		"enabled": true
@@ -19,8 +20,17 @@
 	"linter": {
 		"enabled": true,
 		"rules": {
-			"recommended": true
-		}
+			"recommended": true,
+			"suspicious": {
+				"noExplicitAny": "error"
+			}
+		},
+		"ignore": [
+			"node_modules",
+			"dist",
+			".astro",
+			"tina/__generated__/**"
+		]
 	},
 	"javascript": {
 		"formatter": {

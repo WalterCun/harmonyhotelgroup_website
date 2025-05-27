@@ -1,74 +1,89 @@
 ---
-import {lang_en} from "lib/constants";
-import Layout from '~/layouts/Layout.astro';
+import { lang_en } from "lib/constants";
+import Layout from "~/layouts/Layout.astro";
 
 const destinations = [
-    {
-        id: 1,
-        name: "Paris",
-        country: "France",
-        description: "Experience the romance and history of the City of Light with iconic landmarks like the Eiffel Tower, Louvre Museum, and Notre-Dame Cathedral.",
-        hotels: 12,
-        image: "https://images.pexels.com/photos/532826/pexels-photo-532826.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-    },
-    {
-        id: 2,
-        name: "Tokyo",
-        country: "Japan",
-        description: "Discover where ancient traditions meet cutting-edge technology in this dynamic metropolis, featuring historic temples, vibrant districts, and renowned cuisine.",
-        hotels: 8,
-        image: "https://images.pexels.com/photos/2187662/pexels-photo-2187662.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-    },
-    {
-        id: 3,
-        name: "Santorini",
-        country: "Greece",
-        description: "Explore this stunning island with its iconic white buildings and blue domes perched on cliffs overlooking the crystal-clear Aegean Sea.",
-        hotels: 10,
-        image: "https://images.pexels.com/photos/1010657/pexels-photo-1010657.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-    },
-    {
-        id: 4,
-        name: "New York",
-        country: "USA",
-        description: "Immerse yourself in the energy of the city that never sleeps, with world-class museums, Broadway shows, diverse neighborhoods, and iconic skyscrapers.",
-        hotels: 15,
-        image: "https://images.pexels.com/photos/466685/pexels-photo-466685.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-    },
-    {
-        id: 5,
-        name: "Bali",
-        country: "Indonesia",
-        description: "Find paradise on this tropical island known for its lush landscapes, pristine beaches, ancient temples, and vibrant cultural experiences.",
-        hotels: 14,
-        image: "https://images.pexels.com/photos/3225531/pexels-photo-3225531.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-    },
-    {
-        id: 6,
-        name: "Dubai",
-        country: "UAE",
-        description: "Marvel at this ultra-modern city rising from the desert, featuring futuristic architecture, luxury shopping, and thrilling desert adventures.",
-        hotels: 11,
-        image: "https://images.pexels.com/photos/1539116/pexels-photo-1539116.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-    },
-    {
-        id: 7,
-        name: "Rome",
-        country: "Italy",
-        description: "Step back in time in the Eternal City, where ancient ruins like the Colosseum stand alongside Renaissance masterpieces and bustling piazzas.",
-        hotels: 13,
-        image: "https://images.pexels.com/photos/1797158/pexels-photo-1797158.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-    },
-    {
-        id: 8,
-        name: "Maldives",
-        country: "Maldives",
-        description: "Escape to this idyllic archipelago of pristine islands, where overwater bungalows, coral reefs, and turquoise lagoons create the ultimate luxury retreat.",
-        hotels: 9,
-        image: "https://images.pexels.com/photos/1483053/pexels-photo-1483053.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-    }
+	{
+		id: 1,
+		name: "Paris",
+		country: "France",
+		description:
+			"Experience the romance and history of the City of Light with iconic landmarks like the Eiffel Tower, Louvre Museum, and Notre-Dame Cathedral.",
+		hotels: 12,
+		image:
+			"https://images.pexels.com/photos/532826/pexels-photo-532826.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+	},
+	{
+		id: 2,
+		name: "Tokyo",
+		country: "Japan",
+		description:
+			"Discover where ancient traditions meet cutting-edge technology in this dynamic metropolis, featuring historic temples, vibrant districts, and renowned cuisine.",
+		hotels: 8,
+		image:
+			"https://images.pexels.com/photos/2187662/pexels-photo-2187662.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+	},
+	{
+		id: 3,
+		name: "Santorini",
+		country: "Greece",
+		description:
+			"Explore this stunning island with its iconic white buildings and blue domes perched on cliffs overlooking the crystal-clear Aegean Sea.",
+		hotels: 10,
+		image:
+			"https://images.pexels.com/photos/1010657/pexels-photo-1010657.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+	},
+	{
+		id: 4,
+		name: "New York",
+		country: "USA",
+		description:
+			"Immerse yourself in the energy of the city that never sleeps, with world-class museums, Broadway shows, diverse neighborhoods, and iconic skyscrapers.",
+		hotels: 15,
+		image:
+			"https://images.pexels.com/photos/466685/pexels-photo-466685.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+	},
+	{
+		id: 5,
+		name: "Bali",
+		country: "Indonesia",
+		description:
+			"Find paradise on this tropical island known for its lush landscapes, pristine beaches, ancient temples, and vibrant cultural experiences.",
+		hotels: 14,
+		image:
+			"https://images.pexels.com/photos/3225531/pexels-photo-3225531.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+	},
+	{
+		id: 6,
+		name: "Dubai",
+		country: "UAE",
+		description:
+			"Marvel at this ultra-modern city rising from the desert, featuring futuristic architecture, luxury shopping, and thrilling desert adventures.",
+		hotels: 11,
+		image:
+			"https://images.pexels.com/photos/1539116/pexels-photo-1539116.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+	},
+	{
+		id: 7,
+		name: "Rome",
+		country: "Italy",
+		description:
+			"Step back in time in the Eternal City, where ancient ruins like the Colosseum stand alongside Renaissance masterpieces and bustling piazzas.",
+		hotels: 13,
+		image:
+			"https://images.pexels.com/photos/1797158/pexels-photo-1797158.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+	},
+	{
+		id: 8,
+		name: "Maldives",
+		country: "Maldives",
+		description:
+			"Escape to this idyllic archipelago of pristine islands, where overwater bungalows, coral reefs, and turquoise lagoons create the ultimate luxury retreat.",
+		hotels: 9,
+		image:
+			"https://images.pexels.com/photos/1483053/pexels-photo-1483053.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+	},
 ];
-
 ---
 
 <Layout lang={lang_en||"es"} title="Destinations">

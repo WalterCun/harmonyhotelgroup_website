@@ -1,9 +1,9 @@
 ---
 interface Props {
-  lang: string
+	lang: string;
 }
 
-const {lang} = Astro.props;
+const { lang } = Astro.props;
 ---
 
 <section class="py-16 bg-primary-500 dark:bg-primary-600 text-white">
@@ -16,12 +16,14 @@ const {lang} = Astro.props;
       
       <form class="max-w-md mx-auto">
         <div class="flex flex-col sm:flex-row gap-3">
-          <input 
-            type="email" 
-            placeholder="Your email address" 
-            class="flex-grow px-4 py-3 rounded-md border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white placeholder:text-white/70 focus:outline-none focus:border-white"
-            required
-          />
+          <label>
+            <input
+              type="email"
+              placeholder="Your email address"
+              class="flex-grow px-4 py-3 rounded-md border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white placeholder:text-white/70 focus:outline-none focus:border-white"
+              required
+            />
+          </label>
           <button type="submit" class="btn bg-white text-primary-600 hover:bg-neutral-100 py-3">
             Subscribe
           </button>

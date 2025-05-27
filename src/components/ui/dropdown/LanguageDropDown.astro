@@ -1,12 +1,12 @@
 ---
-import {Image} from 'astro:assets';
-import {LANGUAGES, structUrl, trans} from "~/utils/translations";
+import { Image } from "astro:assets";
+import { LANGUAGES, structUrl, trans } from "~/utils/translations";
 
 interface Props {
-    lang: string
+	lang: string;
 }
 
-const {lang} = Astro.props;
+const { lang } = Astro.props;
 const currentLanguage = LANGUAGES[lang] || LANGUAGES.es;
 ---
 

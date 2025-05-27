@@ -1,105 +1,105 @@
 {
-  "components": {
-    "common": {
-      "navigation": {
-        "url": {
-          "hotel": "Hoteles",
-          "destinations": "Destinos",
-          "offers": "Ofertas",
-          "blog": "Blog",
-          "contact": "Contacto",
-          "about-us": "Sobre Nosotros",
-          "privacy-policy": "Politicas de Privacidad",
-          "terms-of-service": "Terminos de Servicio",
-          "faq-booking": "Reservas",
-          "faq-cancellation-policy": "Politicas de Cancelacion",
-          "faq-loyalty-program": "Programa de Lealtad",
-          "faq-payment-methods": "Metodos de Pago"
-        }
-      },
-      "footer": {
-        "title": "Harmony Hotel Group",
-        "subtitle": "Experimente el lujo y el confort en nuestros hoteles y resorts premium de todo el mundo. Descubra estancias inolvidables con un servicio excepcional.",
-        "quick-links": "Enlaces Rapidos"
-      }
-    },
-    "forms": {
-      "reservation": {
-        "check-in": "Fecha de Ingreso",
-        "check-out": "Fecha de Salida",
-        "adult": "Adulto{{s}}",
-        "child": "Niño{{s}}",
-        "breakfast": "Desayuno",
-        "parking": "Parqueadero",
-        "contact": "Reservar",
-        "label-child": "Edad del niño {{year}}",
-        "input-child": "{{year}} año{{s}}",
-        "child-less-ages": "Menos de {{year}} año",
-        "child-ages": "{{year}} año{{s}}"
-      }
-    },
-    "ui": {
-      "dropdown": {
-        "languagedropdown": "Selecciona el Idioma"
-      }
-    },
-    "sections":{
-      "home": {
-        "featured-hotels": {
-          "title": "Hoteles destacados",
-          "description": "Descubra nuestras propiedades más populares, conocidas por su servicio excepcional, sus impresionantes ubicaciones y sus servicios de primera clase.",
-          "night": "la noche",
-          "btn-details": "Mas Detalles",
-          "btn-all-hotels": "Ver todos los hoteles"
-        },
-        "popular-destination": {
-          "title": "Destinos Populares",
-          "subtitle": "Explore nuestros destinos más solicitados y encuentre su próxima aventura inolvidable.",
-          "no-text": "No hay texto",
-          "btn-all-destination": "Ver todos los destinos"
-        },
-        "special-offer": {
-          "title": "Ofertas Especiales",
-          "subtitle": "Aproveche nuestras promociones exclusivas y disfrute de ventajas adicionales con su estancia.",
-          "expired": "Valido hasta",
-          "btn-details": "Ver Detalles",
-          "no-text": "No hay texto"
-        }
-      }
-    }
-  },
-  "home": {
-    "hero": {
-      "title": "Experiencia nueva cada dia",
-      "subtitle": "Descubra un confort incomparable y un servicio impecable en nuestros selectos hoteles y resorts de todo el mundo. del mundo.",
-      "buttons": {
-        "view-hotels": "Ver nuestros Hoteles",
-        "view-offers": "Ofertas Especiales"
-      }
-    }
-  },
-  "layouts": {
-    "layout": {
-      "meta": {
-        "title": "Harmony Hotel Group",
-        "description": "Experimente el lujo y el confort con Harmony Hotel Group. Reserve su estancia perfecta en nuestros hoteles de todo el Ecuador."
-      }
-    }
-  },
-  "404": {
-    "title-page": "Error 404",
-    "title": "404",
-    "subtitle": "Página no encontrada",
-    "description": "Parece que la página que estás buscando no existe o ha sido movida.\nNuestro equipo está en la búsqueda, pero mientras tanto...\nParece que la página que estás buscando no existe o ha sido movida.\nNuestro equipo está en la búsqueda, pero mientras tanto...",
-    "btn-home": "Volver al inicio",
-    "btn-contact": "Contactar con nosotros"
-  },
-  "500": {
-    "title-page": "Error 500",
-    "title": "500",
-    "subtitle": "Error del Servidor",
-    "description": "Lo sentimos, algo salió mal en nuestros servidores. Este error no es culpa tuya.\nNuestro equipo técnico ya está trabajando para resolver el problema.",
-    "btn-home": "Volver al inicio",
-    "btn-contact": "Reportar el Problema"
-  }
+	"components": {
+		"common": {
+			"navigation": {
+				"url": {
+					"hotel": "Hoteles",
+					"destinations": "Destinos",
+					"offers": "Ofertas",
+					"blog": "Blog",
+					"contact": "Contacto",
+					"about-us": "Sobre Nosotros",
+					"privacy-policy": "Politicas de Privacidad",
+					"terms-of-service": "Terminos de Servicio",
+					"faq-booking": "Reservas",
+					"faq-cancellation-policy": "Politicas de Cancelacion",
+					"faq-loyalty-program": "Programa de Lealtad",
+					"faq-payment-methods": "Metodos de Pago"
+				}
+			},
+			"footer": {
+				"title": "Harmony Hotel Group",
+				"subtitle": "Experimente el lujo y el confort en nuestros hoteles y resorts premium de todo el mundo. Descubra estancias inolvidables con un servicio excepcional.",
+				"quick-links": "Enlaces Rapidos"
+			}
+		},
+		"forms": {
+			"reservation": {
+				"check-in": "Fecha de Ingreso",
+				"check-out": "Fecha de Salida",
+				"adult": "Adulto{{s}}",
+				"child": "Niño{{s}}",
+				"breakfast": "Desayuno",
+				"parking": "Parqueadero",
+				"contact": "Reservar",
+				"label-child": "Edad del niño {{year}}",
+				"input-child": "{{year}} año{{s}}",
+				"child-less-ages": "Menos de {{year}} año",
+				"child-ages": "{{year}} año{{s}}"
+			}
+		},
+		"ui": {
+			"dropdown": {
+				"languagedropdown": "Selecciona el Idioma"
+			}
+		},
+		"sections": {
+			"home": {
+				"featured-hotels": {
+					"title": "Hoteles destacados",
+					"description": "Descubra nuestras propiedades más populares, conocidas por su servicio excepcional, sus impresionantes ubicaciones y sus servicios de primera clase.",
+					"night": "la noche",
+					"btn-details": "Mas Detalles",
+					"btn-all-hotels": "Ver todos los hoteles"
+				},
+				"popular-destination": {
+					"title": "Destinos Populares",
+					"subtitle": "Explore nuestros destinos más solicitados y encuentre su próxima aventura inolvidable.",
+					"no-text": "No hay texto",
+					"btn-all-destination": "Ver todos los destinos"
+				},
+				"special-offer": {
+					"title": "Ofertas Especiales",
+					"subtitle": "Aproveche nuestras promociones exclusivas y disfrute de ventajas adicionales con su estancia.",
+					"expired": "Valido hasta",
+					"btn-details": "Ver Detalles",
+					"no-text": "No hay texto"
+				}
+			}
+		}
+	},
+	"home": {
+		"hero": {
+			"title": "Experiencia nueva cada dia",
+			"subtitle": "Descubra un confort incomparable y un servicio impecable en nuestros selectos hoteles y resorts de todo el mundo. del mundo.",
+			"buttons": {
+				"view-hotels": "Ver nuestros Hoteles",
+				"view-offers": "Ofertas Especiales"
+			}
+		}
+	},
+	"layouts": {
+		"layout": {
+			"meta": {
+				"title": "Harmony Hotel Group",
+				"description": "Experimente el lujo y el confort con Harmony Hotel Group. Reserve su estancia perfecta en nuestros hoteles de todo el Ecuador."
+			}
+		}
+	},
+	"404": {
+		"title-page": "Error 404",
+		"title": "404",
+		"subtitle": "Página no encontrada",
+		"description": "Parece que la página que estás buscando no existe o ha sido movida.\nNuestro equipo está en la búsqueda, pero mientras tanto...\nParece que la página que estás buscando no existe o ha sido movida.\nNuestro equipo está en la búsqueda, pero mientras tanto...",
+		"btn-home": "Volver al inicio",
+		"btn-contact": "Contactar con nosotros"
+	},
+	"500": {
+		"title-page": "Error 500",
+		"title": "500",
+		"subtitle": "Error del Servidor",
+		"description": "Lo sentimos, algo salió mal en nuestros servidores. Este error no es culpa tuya.\nNuestro equipo técnico ya está trabajando para resolver el problema.",
+		"btn-home": "Volver al inicio",
+		"btn-contact": "Reportar el Problema"
+	}
 }

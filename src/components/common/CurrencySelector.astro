@@ -1,15 +1,15 @@
 ---
-import { CURRENCIES } from '@/lib/constants';
+import { CURRENCIES } from "@/lib/constants";
 
 interface Props {
-  class?: string;
+	class?: string;
 }
 
-const { class: className = '' } = Astro.props;
+const { class: className = "" } = Astro.props;
 ---
 
 <div class={`currency-selector ${className}`}>
-  <select id="currency-selector" class="select">
+  <label for="currency-selector"></label><select id="currency-selector" class="select">
     {CURRENCIES.map(curr => (
       <option value={curr.code}>{curr.code} ({curr.symbol})</option>
     ))}

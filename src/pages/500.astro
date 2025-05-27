@@ -1,14 +1,14 @@
 ---
+import { lang_es } from "lib/constants";
 import Layout from "~/layouts/Layout.astro";
-import {trans} from "../utils/translations";
-import {lang_es} from "lib/constants";
+import { trans } from "../utils/translations";
 
 interface Props {
-    error: unknown;
-    lang: string;
+	error: unknown;
+	lang: string;
 }
 
-const {error, lang = lang_es} = Astro.props;
+const { error, lang = lang_es } = Astro.props;
 ---
 
 <Layout lang={lang} title={trans(lang, "500.title-page")}>

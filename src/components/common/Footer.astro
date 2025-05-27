@@ -1,25 +1,64 @@
 ---
-import SocialLinks from './SocialLinks.astro';
-import {trans} from "../../utils/translations";
+import { trans } from "../../utils/translations";
+import SocialLinks from "./SocialLinks.astro";
 
 const lang = Astro.currentLocale;
 
 const quickLinks = [
-    {label: trans(lang, "components.common.navigation.url.about-us"), href: "/about"},
-    {label: trans(lang, "components.common.navigation.url.hotel"), href: "/hotels"},
-    {label: trans(lang, "components.common.navigation.url.destinations"), href: "/destinations"},
-    {label: trans(lang, "components.common.navigation.url.offers"), href: "/offers"},
-    {label: trans(lang, "components.common.navigation.url.blog"), href: "/blog"},
-    {label: trans(lang, "components.common.navigation.url.contact"), href: "/contact"},
-    {label: trans(lang, "components.common.navigation.url.privacy-policy"), href: "/privacy"},
-    {label: trans(lang, "components.common.navigation.url.terms-of-service"), href: "/terms"},
+	{
+		label: trans(lang, "components.common.navigation.url.about-us"),
+		href: "/about",
+	},
+	{
+		label: trans(lang, "components.common.navigation.url.hotel"),
+		href: "/hotels",
+	},
+	{
+		label: trans(lang, "components.common.navigation.url.destinations"),
+		href: "/destinations",
+	},
+	{
+		label: trans(lang, "components.common.navigation.url.offers"),
+		href: "/offers",
+	},
+	{
+		label: trans(lang, "components.common.navigation.url.blog"),
+		href: "/blog",
+	},
+	{
+		label: trans(lang, "components.common.navigation.url.contact"),
+		href: "/contact",
+	},
+	{
+		label: trans(lang, "components.common.navigation.url.privacy-policy"),
+		href: "/privacy",
+	},
+	{
+		label: trans(lang, "components.common.navigation.url.terms-of-service"),
+		href: "/terms",
+	},
 ];
 
 const faqs = [
-    {label: trans(lang, "components.common.navigation.url.faq-booking"), href: "/faq#booking"},
-    {label: trans(lang, "components.common.navigation.url.faq-cancellation-policy"), href: "/faq#cancellation"},
-    {label: trans(lang, "components.common.navigation.url.faq-loyalty-program"), href: "/faq#loyalty"},
-    {label: trans(lang, "components.common.navigation.url.faq-payment-methods"), href: "/faq#payment"},
+	{
+		label: trans(lang, "components.common.navigation.url.faq-booking"),
+		href: "/faq#booking",
+	},
+	{
+		label: trans(
+			lang,
+			"components.common.navigation.url.faq-cancellation-policy",
+		),
+		href: "/faq#cancellation",
+	},
+	{
+		label: trans(lang, "components.common.navigation.url.faq-loyalty-program"),
+		href: "/faq#loyalty",
+	},
+	{
+		label: trans(lang, "components.common.navigation.url.faq-payment-methods"),
+		href: "/faq#payment",
+	},
 ];
 ---
 

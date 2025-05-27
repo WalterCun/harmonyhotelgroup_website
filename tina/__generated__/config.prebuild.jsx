@@ -81,7 +81,9 @@ var config_default = defineConfig({
             list: true,
             ui: {
               itemProps: (item) => {
-                return { label: `${item?.tag ? `${item.tag}" > "` : ""}${item?.value} > ${item?.type}` };
+                return {
+                  label: `${item?.tag ? `${item.tag}" > "` : ""}${item?.value} > ${item?.type}`
+                };
               }
             },
             fields: [
@@ -90,12 +92,7 @@ var config_default = defineConfig({
                 name: "type",
                 label: "Tipo de Contacto*",
                 required: true,
-                options: [
-                  "Email",
-                  "Cellphone",
-                  "Telephone",
-                  "Others"
-                ]
+                options: ["Email", "Cellphone", "Telephone", "Others"]
               },
               {
                 type: "string",
@@ -152,7 +149,9 @@ var config_default = defineConfig({
             list: true,
             ui: {
               itemProps: (item) => {
-                return { label: `${item?.tag ? `${item.tag}" > "` : ""}${item?.value} > ${item?.type}` };
+                return {
+                  label: `${item?.tag ? `${item.tag}" > "` : ""}${item?.value} > ${item?.type}`
+                };
               }
             },
             fields: [
@@ -253,11 +252,7 @@ var config_default = defineConfig({
                 type: "string",
                 name: "lang_hotel",
                 label: "Language",
-                options: [
-                  "es",
-                  "en",
-                  "fr"
-                ]
+                options: ["es", "en", "fr"]
               },
               {
                 type: "string",
@@ -385,11 +380,7 @@ var config_default = defineConfig({
                 type: "string",
                 name: "lang_destination",
                 label: "Language",
-                options: [
-                  "es",
-                  "en",
-                  "fr"
-                ]
+                options: ["es", "en", "fr"]
               },
               {
                 type: "string",
@@ -473,11 +464,7 @@ var config_default = defineConfig({
                 type: "string",
                 name: "lang_offer",
                 label: "Language",
-                options: [
-                  "es",
-                  "en",
-                  "fr"
-                ]
+                options: ["es", "en", "fr"]
               },
               {
                 type: "string",

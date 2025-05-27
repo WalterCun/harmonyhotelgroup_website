@@ -1,14 +1,14 @@
 ---
-import {Calendar, Baby, Users, Search} from 'lucide-astro'
-import {range} from "~/utils/tools";
-import {maxAdults, maxChildren} from "lib/constants";
-import {trans} from "~/utils/translations";
+import { maxAdults, maxChildren } from "lib/constants";
+import { Baby, Calendar, Search, Users } from "lucide-astro";
+import { range } from "~/utils/tools";
+import { trans } from "~/utils/translations";
 
 interface Props {
-    lang: string
+	lang: string;
 }
 
-const {lang} = Astro.props
+const { lang } = Astro.props;
 
 // if (Astro.request.method === "POST") {
 //     try {

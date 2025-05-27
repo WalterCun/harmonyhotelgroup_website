@@ -1,4 +1,4 @@
-import {defineConfig} from "tinacms";
+import { defineConfig } from "tinacms";
 
 // Verificar y utilizar las variables de entorno, o usar valores de respaldo para desarrollo local
 const clientId = process.env.NEXT_PUBLIC_TINA_CLIENT_ID || "";
@@ -8,35 +8,34 @@ const token = process.env.TINA_TOKEN || "";
 const isLocalMode = !clientId || !token;
 
 const branch =
-    process.env.GITHUB_BRANCH ||
-    process.env.VERCEL_GIT_COMMIT_REF ||
-    process.env.HEAD ||
-    "main";
+	process.env.GITHUB_BRANCH ||
+	process.env.VERCEL_GIT_COMMIT_REF ||
+	process.env.HEAD ||
+	"main";
 
 console.info(`Using branch: ${branch}`);
-console.info(`Running in ${isLocalMode ? 'local' : 'production'} mode`);
+console.info(`Running in ${isLocalMode ? "local" : "production"} mode`);
 
 export default defineConfig({
-    branch,
+	branch,
 
-    // Configuration for API o modo local
-    clientId,
-    token,
+	// Configuration for API o modo local
+	clientId,
+	token,
 
+	build: {
+		publicFolder: "public",
+		outputFolder: "admin",
+	},
 
-    build: {
-        publicFolder: "public",
-        outputFolder: "admin",
-    },
+	media: {
+		tina: {
+			publicFolder: "src/assets",
+			mediaRoot: "upload",
+		},
+	},
 
-    media: {
-        tina: {
-            publicFolder: "src/assets",
-            mediaRoot: "upload"
-        },
-    },
-
-    // See docs on content modeling for more info on how to setup new content models: https://tina.io/docs/schema/
+	// See docs on content modeling for more info on how to setup new content models: https://tina.io/docs/schema/
     schema: {
         collections: [
             // COLECCION DE HOTELES
@@ -44,35 +43,30 @@ export default defineConfig({
                 name: "hotels",
                 label: "Hotels",
                 path: "src/data/hotels",
-                // defaultItem: () => {
-                //     return {
-                //         hotel_id: AutoIncrement('hotels'),
-                //     }
-                // },
                 fields: [
                     {
                         type: "number",
                         name: "hotel_id",
                         label: "ID*",
-                        required: true
+                        required: true,
                     },
                     {
                         type: "string",
                         name: "name",
                         label: "Name*",
-                        required: true
+                        required: true,
                     },
                     {
                         type: "number",
                         name: "stars",
                         label: "Estrellas*",
-                        required: true
+                        required: true,
                     },
                     {
                         type: "string",
                         name: "location",
                         label: "Ubicación (Ciudad, País)*",
-                        required: true
+                        required: true,
                     },
                     {
                         type: "string",
@@ -82,12 +76,12 @@ export default defineConfig({
                     {
                         type: "string",
                         name: "addressNumber",
-                        label: "Número"
+                        label: "Número",
                     },
                     {
                         type: "string",
                         name: "secondaryStreet",
-                        label: "Calle Secundaria"
+                        label: "Calle Secundaria",
                     },
                     {
                         type: "object",
@@ -96,8 +90,13 @@ export default defineConfig({
                         list: true,
                         ui: {
                             itemProps: (item) => {
-                                return {label: `${item?.tag ? `${item.tag}" > "` : ""}${item?.value} > ${item?.type}`}
-                            }
+                                const type = item?.type || "Contacto";
+                                const value = item?.value || "";
+                                const tag = item?.tag || "";
+                                return {
+                                    label: `${tag ? `${tag} > ` : ""}${value} > ${type}`,
+                                };
+                            },
                         },
                         fields: [
                             {
@@ -105,18 +104,13 @@ export default defineConfig({
                                 name: "type",
                                 label: "Tipo de Contacto*",
                                 required: true,
-                                options: [
-                                    "Email",
-                                    "Cellphone",
-                                    "Telephone",
-                                    "Others"
-                                ]
+                                options: ["Email", "Cellphone", "Telephone", "Others"],
                             },
                             {
                                 type: "string",
                                 name: "value",
                                 label: "Contacto*",
-                                required: true
+                                required: true,
                             },
                             {
                                 type: "string",
@@ -128,37 +122,46 @@ export default defineConfig({
                                     "Información",
                                     "Gerencia",
                                     "Emergencias",
-                                    "Otro"
-                                ]
-                            }
-                        ]
+                                    "Otro",
+                                ],
+                            },
+                        ],
                     },
                     {
                         type: "object",
                         name: "socialMedia",
                         label: "Redes Sociales",
                         list: true,
+                        ui: {
+                            itemProps: (item) => {
+                                const name = item?.name || "Red Social";
+                                const url = item?.url || "";
+                                return {
+                                    label: `${name}: ${url}`,
+                                };
+                            },
+                        },
                         fields: [
                             {
                                 type: "string",
                                 name: "name",
                                 label: "Red Social",
                                 options: [
-                                    'Facebook',
-                                    'Instagram',
-                                    'Tiktok',
-                                    'Linkedin',
-                                    'X',
-                                    'Whatsapp',
-                                    'Telegram',
-                                ]
+                                    "Facebook",
+                                    "Instagram",
+                                    "Tiktok",
+                                    "Linkedin",
+                                    "X",
+                                    "Whatsapp",
+                                    "Telegram",
+                                ],
                             },
                             {
                                 type: "string",
                                 name: "url",
-                                label: "URL"
-                            }
-                        ]
+                                label: "URL",
+                            },
+                        ],
                     },
                     {
                         type: "object",
@@ -167,8 +170,12 @@ export default defineConfig({
                         list: true,
                         ui: {
                             itemProps: (item) => {
-                                return {label: `${item?.tag ? `${item.tag}" > "` : ""}${item?.value} > ${item?.type}`}
-                            }
+                                const name = item?.name || "Habitación";
+                                const price = item?.price || "";
+                                return {
+                                    label: `${name} - ${price}`,
+                                };
+                            },
                         },
                         fields: [
                             {
@@ -176,43 +183,43 @@ export default defineConfig({
                                 name: "name",
                                 label: "Tipo de Habitación:",
                                 options: [
-                                    'Individual',
-                                    'Matrimonial',
-                                    'Doble Individual',
-                                    'Triple',
-                                    'Quadruple',
-                                    'Quintuple',
-                                    'Sextuple',
-                                    'Deluxe',
-                                    'Suite Matrimonial',
-                                    'Suite Familiar'
-                                ]
+                                    "Individual",
+                                    "Matrimonial",
+                                    "Doble Individual",
+                                    "Triple",
+                                    "Quadruple",
+                                    "Quintuple",
+                                    "Sextuple",
+                                    "Deluxe",
+                                    "Suite Matrimonial",
+                                    "Suite Familiar",
+                                ],
                             },
                             {
                                 type: "string",
                                 name: "description",
-                                label: "Descripcion de habitacion"
+                                label: "Descripcion de habitacion",
                             },
                             {
                                 type: "number",
                                 name: "size",
-                                label: "Tamaño de habitacion (m2)"
+                                label: "Tamaño de habitacion (m2)",
                             },
                             {
                                 type: "string",
                                 name: "occupancy",
-                                label: "Ocupación min, max (Eje: Min: 1, Max: 2)"
+                                label: "Ocupación min, max (Eje: Min: 1, Max: 2)",
                             },
                             {
                                 type: "image",
                                 name: "images",
                                 label: "Imagenes (La primera Imagen sera la portada)",
-                                list: true
+                                list: true,
                             },
                             {
                                 type: "string",
-                                name: 'price',
-                                label: 'Precio'
+                                name: "price",
+                                label: "Precio",
                             },
                             {
                                 type: "object",
@@ -221,37 +228,39 @@ export default defineConfig({
                                 list: true,
                                 ui: {
                                     itemProps: (item) => {
-                                        return {label: `${item?.amenities}`}
-                                    }
+                                        // Accedemos de forma segura, con un valor por defecto
+                                        const amenityName = item?.amenities || "Servicio";
+                                        return { label: `${amenityName}` };
+                                    },
                                 },
                                 fields: [
                                     {
                                         type: "reference",
                                         name: "amenities",
                                         label: "Servicios del Hotel",
-                                        collections: ['icons']
-                                    }
-                                ]
-                            }
-                        ]
+                                        collections: ["icons"],
+                                    },
+                                ],
+                            },
+                        ],
                     },
                     {
                         type: "number",
                         name: "roomPrice",
                         label: "Precio Promedio*",
-                        required: true
+                        required: true,
                     },
                     {
                         type: "image",
                         name: "coverImage",
                         label: "Fotografía Portada Hotel*",
-                        required: true
+                        required: true,
                     },
                     {
                         type: "image",
                         name: "gallery",
                         label: "Galería de Imágenes del Hotel",
-                        list: true
+                        list: true,
                     },
                     {
                         type: "object",
@@ -260,27 +269,23 @@ export default defineConfig({
                         list: true,
                         ui: {
                             itemProps: (item) => {
-                                return {label: `${item?.lang_hotel}`}
-                            }
+                                const lang = item?.lang_hotel || "Idioma";
+                                return { label: `${lang}` };
+                            },
                         },
                         fields: [
                             {
                                 type: "string",
                                 name: "lang_hotel",
                                 label: "Language",
-                                options: [
-                                    'es',
-                                    'en',
-                                    'fr'
-                                ]
+                                options: ["es", "en", "fr"],
                             },
                             {
                                 type: "string",
                                 name: "content_hotel",
                                 label: "Description",
-
                             },
-                        ]
+                        ],
                     },
                     {
                         type: "object",
@@ -289,130 +294,102 @@ export default defineConfig({
                         list: true,
                         ui: {
                             itemProps: (item) => {
-                                return {label: `${item?.amenities}`}
-                            }
+                                // Accedemos de forma segura, con un valor por defecto
+                                const amenityName = item?.amenities || "Servicio";
+                                return { label: `${amenityName}` };
+                            },
                         },
                         fields: [
                             {
                                 type: "reference",
                                 name: "amenities",
                                 label: "Servicios del Hotel",
-                                collections: ['icons']
-                            }
-                        ]
+                                collections: ["icons"],
+                            },
+                        ],
                     },
-                    // {
-                    //     type: "reference",
-                    //     name: "amenities",
-                    //     label: "Servicios del Hotel",
-                    //     collections: ['icons']
-                    //     // options: [
-                    //     //     "WiFi Gratis",
-                    //     //     "Piscina",
-                    //     //     "Spa",
-                    //     //     "Restaurante",
-                    //     //     "Gimnasio",
-                    //     //     "Servicio a la Habitación",
-                    //     //     "Vista a la Playa",
-                    //     //     "Vista a la Montaña",
-                    //     //     "Bar",
-                    //     //     "Estacionamiento",
-                    //     //     "Transporte al Aeropuerto",
-                    //     //     "Desayuno Incluido",
-                    //     //     "Acceso para Discapacitados",
-                    //     //     "Centro de Negocios"
-                    //     // ]
-                    // },
                     {
                         type: "boolean",
                         name: "highlight",
-                        label: "Destacar"
-                    }
-                ]
+                        label: "Destacar",
+                    },
+                ],
             },
             // COLLECTION AMENITIES
             {
-                name: 'icons',
-                label: 'Icons',
-                path: 'src/data/icons',
+                name: "icons",
+                label: "Icons",
+                path: "src/data/icons",
                 fields: [
                     {
                         type: "string",
                         name: "icon",
                         label: "Icon",
-                        required: true
+                        required: true,
                     },
                     {
                         type: "string",
                         name: "name",
                         label: "Name",
                         required: true,
-                        list: true
+                        list: true,
                     },
-                ]
+                ],
             },
             // COLECCION DE DESTINOS POPULARES
             {
                 name: "destinations",
                 label: "Destinations",
                 path: "src/data/destinations",
-                // defaultItem: () => {
-                //     return {
-                //         destination_id: AutoIncrement('destinations'),
-                //     }
-                // },
                 fields: [
                     {
                         type: "number",
                         name: "destination_id",
                         label: "ID",
-                        required: true
+                        required: true,
                     },
                     {
                         type: "string",
                         name: "name",
                         label: "Name",
-                        required: true
+                        required: true,
                     },
                     {
                         type: "string",
                         name: "country",
                         label: "Country",
-                        required: true
+                        required: true,
                     },
                     {
                         type: "string",
                         name: "city",
                         label: "City",
-                        required: true
+                        required: true,
                     },
                     {
                         type: "object",
                         name: "description_destination",
-                        label: "Descripción del Hotel",
+                        label: "Descripción del Destino",
                         list: true,
                         ui: {
                             itemProps: (item) => {
-                                return {label: `${item?.lang_destination}`}
-                            }
+                                const lang = item?.lang_destination || "Idioma";
+                                return { label: `${lang}` };
+                            },
                         },
                         fields: [
                             {
                                 type: "string",
                                 name: "lang_destination",
                                 label: "Language",
-                                options: [
-                                    'es',
-                                    'en',
-                                    'fr'
-                                ]
+                                options: ["es", "en", "fr"],
                             },
                             {
                                 type: "string",
                                 name: "content_destination",
                                 label: "Description",
                             },
-                        ]
+                        ],
                     },
                     {
                         type: "object",
@@ -421,58 +398,54 @@ export default defineConfig({
                         list: true,
                         ui: {
                             itemProps: (item) => {
-                                return {label: `${item?.tag}`}
-                            }
+                                const tag = item?.tag || "Etiqueta";
+                                return { label: `${tag}` };
+                            },
                         },
                         fields: [
                             {
                                 type: "string",
                                 name: "tag",
-                                label: "Tag"
-                            }
-                        ]
+                                label: "Tag",
+                            },
+                        ],
                     },
                     {
                         type: "image",
                         name: "coverImage",
                         label: "Image",
-                        required: true
+                        required: true,
                     },
                     {
                         type: "boolean",
                         name: "highlight",
-                        label: "Destacar"
-                    }
-                ]
+                        label: "Destacar",
+                    },
+                ],
             },
             // COLECCION DE OFERTAS
             {
                 name: "offers",
                 label: "Offers",
                 path: "src/data/offers",
-                // defaultItem: () => {
-                //     return {
-                //         offer_id: AutoIncrement('offers'),
-                //     }
-                // },
                 fields: [
                     {
                         type: "number",
                         name: "offer_id",
                         label: "ID*",
-                        required: true
+                        required: true,
                     },
                     {
                         type: "string",
                         name: "title",
                         label: "Title*",
-                        required: true
+                        required: true,
                     },
                     {
                         type: "image",
                         name: "coverImage",
                         label: "Cover Image*",
-                        required: true
+                        required: true,
                     },
                     {
                         type: "object",
@@ -481,38 +454,35 @@ export default defineConfig({
                         list: true,
                         ui: {
                             itemProps: (item) => {
-                                return {label: `${item?.lang_offer}`}
-                            }
+                                const lang = item?.lang_offer || "Idioma";
+                                return { label: `${lang}` };
+                            },
                         },
                         fields: [
                             {
                                 type: "string",
                                 name: "lang_offer",
                                 label: "Language",
-                                options: [
-                                    'es',
-                                    'en',
-                                    'fr'
-                                ]
+                                options: ["es", "en", "fr"],
                             },
                             {
                                 type: "string",
                                 name: "content_offer",
                                 label: "Content",
                             },
-                        ]
+                        ],
                     },
                     {
                         type: "datetime",
                         name: "expiration_date",
                         label: "Expiration Date",
-                        required: true
+                        required: true,
                     },
                     {
                         type: "string",
                         name: "discount",
                         label: "Discount",
-                        required: true
+                        required: true,
                     },
                     {
                         type: "object",
@@ -521,26 +491,27 @@ export default defineConfig({
                         list: true,
                         ui: {
                             itemProps: (item) => {
-                                return {label: `${item?.tag}`}
-                            }
+                                const tag = item?.tag || "Etiqueta";
+                                return { label: `${tag}` };
+                            },
                         },
                         fields: [
                             {
                                 type: "string",
                                 name: "tag",
-                                label: "Tag"
-                            }
-                        ]
-                    }
-                ]
+                                label: "Tag",
+                            },
+                        ],
+                    },
+                ],
             },
         ],
     },
-    // search: {
-    //     tina: {
-    //         stopwordLanguages: ['esp'],
-    //     },
-    //     indexBatchSize: 100,
-    //     maxSearchIndexFieldLength: 100,
-    // },
+    search: {
+        tina: {
+            stopwordLanguages: ['es'],  // Corregido de 'esp' a 'es' (código ISO para español)
+        },
+        indexBatchSize: 100,
+        maxSearchIndexFieldLength: 100,
+    },
 });
