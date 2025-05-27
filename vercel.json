@@ -1,6 +1,6 @@
 {
 	"version": 2,
-	"buildCommand": "rm -rf node_modules && rm -rf .vercel && pnpm install && pnpm build",
+	"buildCommand": "pnpm build",
 	"outputDirectory": "dist",
 	"framework": "astro",
 	"cleanUrls": true,
