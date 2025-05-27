@@ -7,8 +7,7 @@
 	"installCommand": "pnpm install --no-frozen-lockfile",
 	"github": {
 		"enabled": true,
-		"silent": false,
-		"autoJobCancelation": true
+		"silent": false
 	},
 	"ignoreCommand": "git diff --quiet HEAD^ HEAD ./",
 	"public": true
