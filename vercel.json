@@ -1,10 +1,15 @@
 {
 	"version": 2,
-	"buildCommand": "pnpm build",
+	"buildCommand": "rm -rf node_modules && rm -rf .vercel && pnpm install && pnpm build",
 	"outputDirectory": "dist",
 	"framework": "astro",
+	"cleanUrls": true,
+	"installCommand": "pnpm install --no-frozen-lockfile",
 	"github": {
 		"enabled": true,
-		"silent": false
-	}
+		"silent": false,
+		"autoJobCancelation": true
+	},
+	"ignoreCommand": "git diff --quiet HEAD^ HEAD ./",
+	"public": true
 }

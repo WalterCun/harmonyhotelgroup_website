@@ -1,5 +1,4 @@
 ---
-import  SpeedInsights  from "@vercel/speed-insights/astro"
 import Layout from "~/layouts/Layout.astro";
 
 import Hero from "~/components/sections/home/Hero.astro";
@@ -12,7 +11,7 @@ import { lang_es } from "lib/constants";
 // import Testimonials from "../components/sections/home/Testimonials.astro";
 
 ---
-<SpeedInsights>
+<!--<SpeedInsights>-->
     <Layout lang={lang_es}>
         <Hero lang={lang_es}/>
         <!--<FeaturedHotels lang={lang_es}/>-->
@@ -21,4 +20,4 @@ import { lang_es } from "lib/constants";
         <!--<Testimonials lang={lang_es}/>-->
         <!--<Newsletter lang={lang_es}/>-->
     </Layout>
-</SpeedInsights>
+<!--</SpeedInsights>-->
