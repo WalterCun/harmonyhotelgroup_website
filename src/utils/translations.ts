@@ -1,6 +1,5 @@
 import en from "~/i18n/en.json";
 import es from "~/i18n/es.json";
-// import fr from "~/i18n/fr.json";
 
 // ---------------------------------------------------------------------------------------------------
 
@@ -23,13 +22,12 @@ export const LANGUAGES: Record<string, Language> = {
 	en: { name: "English", flag: import("../assets/img/flags/en.svg") },
 	// 'fr': {name: "Frances", flag: import('../assets/img/flags/fr.svg')},
 };
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+
 type TranslationObject = Record<string, any>;
 // Mapa de idiomas soportados
 export const TranslationData: Record<string, TranslationObject> = {
 	es,
-	en,
-	// fr
+	en
 };
 
 export const defaultLanguage = "es";

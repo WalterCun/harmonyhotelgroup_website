@@ -22,7 +22,7 @@
 		"rules": {
 			"recommended": true,
 			"suspicious": {
-				"noExplicitAny": "error"
+				"noExplicitAny": "off"
 			}
 		},
 		"ignore": [
@@ -30,6 +30,9 @@
 			"tmp",
 			"dist",
 			".astro",
+			".vercel",
+			".idea",
+			".github",
 			"tina/__generated__/**"
 		]
 	},
