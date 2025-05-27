@@ -3,6 +3,9 @@ dist/
 
 # generated types
 .astro/
+.vscode/
+.vercel/
+.idea/
 
 # dependencies
 node_modules/
@@ -21,12 +24,9 @@ pnpm-debug.log*
 .DS_Store
 
 # jetbrains setting folder
-.idea/
 pnpm-lock.yaml
 package-lock.json
 
 /temp/
-
-/.vscode/
 
 node_modules
