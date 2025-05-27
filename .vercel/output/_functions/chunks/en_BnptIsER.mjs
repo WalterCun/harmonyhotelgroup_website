@@ -1,5 +1,0 @@
-import { c as createSvgComponent } from './runtime_HVMOfkQV.mjs';
-
-const en = createSvgComponent({"meta":{"src":"/_astro/en.CW2q4FlO.svg","width":1235,"height":650,"format":"svg"},"attributes":{"width":"1235","height":"650","viewBox":"0 0 7410 3900"},"children":"\n<path d=\"M0,0h7410v3900H0\" fill=\"#b31942\" />\n<path d=\"M0,450H7410m0,600H0m0,600H7410m0,600H0m0,600H7410m0,600H0\" stroke=\"#FFF\" stroke-width=\"300\" />\n<path d=\"M0,0h2964v2100H0\" fill=\"#0a3161\" />\n<g fill=\"#FFF\">\n<g id=\"s18\">\n<g id=\"s9\">\n<g id=\"s5\">\n<g id=\"s4\">\n<path id=\"s\" d=\"M247,90 317.534230,307.082039 132.873218,172.917961H361.126782L176.465770,307.082039z\" />\n<use xlink:href=\"#s\" y=\"420\" />\n<use xlink:href=\"#s\" y=\"840\" />\n<use xlink:href=\"#s\" y=\"1260\" />\n</g>\n<use xlink:href=\"#s\" y=\"1680\" />\n</g>\n<use xlink:href=\"#s4\" x=\"247\" y=\"210\" />\n</g>\n<use xlink:href=\"#s9\" x=\"494\" />\n</g>\n<use xlink:href=\"#s18\" x=\"988\" />\n<use xlink:href=\"#s9\" x=\"1976\" />\n<use xlink:href=\"#s5\" x=\"2470\" />\n</g>\n"});
-
-export { en as default };
