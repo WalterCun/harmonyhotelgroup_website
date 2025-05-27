@@ -43,7 +43,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: main
-          branch: auto-pr-to-main/dev-${{ github.sha }}
+          branch: dev
           delete-branch: true
           title: "Release: dev a main"
           body: |
