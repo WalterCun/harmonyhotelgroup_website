@@ -3,11 +3,8 @@
 	"buildCommand": "pnpm build",
 	"outputDirectory": "dist",
 	"framework": "astro",
-	"installCommand": "pnpm install --no-frozen-lockfile",
 	"github": {
 		"enabled": true,
 		"silent": false
-	},
-	"ignoreCommand": "git diff --quiet HEAD^ HEAD ./",
-	"public": true
+	}
 }
