@@ -1,6 +1,5 @@
 interface ImportMetaEnv {
 	readonly PUBLIC_WHATSAPP_NUMBER: string;
-	readonly GITHUB_BRANCH: string;
 }
 
 interface ImportMeta {
