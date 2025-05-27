@@ -7,7 +7,6 @@
 		"dev": "tinacms dev -c \"astro dev --host\"",
 		"audit": "tinacms audit",
 		"tina-clean": "tinacms audit --clean",
-		"tina-build": "tinacms build",
 		"build": "astro build",
 		"preview": "astro preview",
 		"astro": "astro",
