@@ -1,0 +1,34 @@
+/* empty css                                */
+import { c as createComponent, b as renderComponent, r as renderTemplate, m as maybeRenderHead, d as addAttribute } from '../chunks/astro/server_OcGr0KEC.mjs';
+import { $ as $$Layout, l as lang_es } from '../chunks/Layout_DV1peyq8.mjs';
+import { A as Api } from '../chunks/tina_YnfrB-oI.mjs';
+export { renderers } from '../renderers.mjs';
+
+const $$Index = createComponent(async ($$result, $$props, $$slots) => {
+  const api = new Api(true, 4);
+  const hotels = await api.hotels();
+  return renderTemplate`${renderComponent($$result, "Layout", $$Layout, { "lang": lang_es, "title": "Our Hotels" }, { "default": async ($$result2) => renderTemplate` ${maybeRenderHead()}<div class="bg-primary-500/10 dark:bg-neutral-800 py-16"> <div class="container"> <h1 class="text-center mb-6">Our Hotels</h1> <p class="text-center text-lg text-neutral-700 dark:text-neutral-300 max-w-3xl mx-auto">
+Discover our collection of luxury hotels and resorts in the world's most desirable destinations.
+</p> </div> </div> <section class="section"> <div class="container"> <!-- Filters --> <div class="bg-white dark:bg-neutral-800 shadow-md rounded-lg p-6 mb-8"> <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4"> <div> <label for="destination" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">Destination</label> <select id="destination" class="select"> <option value="">All Destinations</option> <option value="us">United States</option> <option value="asia">Asia</option> <option value="europe">Europe</option> <option value="middle-east">Middle East</option> </select> </div> <div> <label for="price" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">Price Range</label> <select id="price" class="select"> <option value="">Any Price</option> <option value="budget">Under $200</option> <option value="mid">$200 - $350</option> <option value="luxury">$350 - $500</option> <option value="ultra">$500+</option> </select> </div> <div> <label for="amenities" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">Amenities</label> <select id="amenities" class="select"> <option value="">All Amenities</option> <option value="pool">Pool</option> <option value="spa">Spa</option> <option value="beach">Beachfront</option> <option value="fitness">Fitness Center</option> </select> </div> <div class="flex items-end"> <button class="btn btn-primary w-full">
+Apply Filters
+</button> </div> </div> </div> <!-- Hotel Listings --> <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"> ${hotels.map((hotel) => renderTemplate`<div class="card group hover:shadow-xl transition-all duration-300"> <div class="relative h-64 overflow-hidden"> <img${addAttribute(hotel.image, "src")}${addAttribute(hotel.name, "alt")} class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"> <div class="absolute top-4 right-4 bg-white dark:bg-neutral-800 rounded-full py-1 px-3 text-sm font-semibold text-primary-500"> ${hotel.rating}/5
+</div> </div> <div class="p-6"> <h3 class="text-xl font-semibold mb-2">${hotel.name}</h3> <p class="text-neutral-600 dark:text-neutral-400 mb-3"> <span class="inline-flex items-center"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 mr-1"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path> </svg> ${hotel.location} </span> </p> <div class="flex flex-wrap gap-2 mb-4"> ${hotel.amenities.slice(0, 3).map((amenity) => renderTemplate`<span class="inline-flex items-center text-xs bg-neutral-100 dark:bg-neutral-700 px-2 py-1 rounded-full"> ${amenity} </span>`)} ${hotel.amenities.length > 3 && renderTemplate`<span class="inline-flex items-center text-xs bg-neutral-100 dark:bg-neutral-700 px-2 py-1 rounded-full">
++${hotel.amenities.length - 3} more
+</span>`} </div> <div class="flex justify-between items-center"> <div> <span class="text-xl font-bold">$${hotel.price}</span> <span class="text-neutral-600 dark:text-neutral-400"> / night</span> </div> <a${addAttribute(`/hotels/${hotel.id}`, "href")} class="btn btn-primary py-2 px-4">
+View Details
+</a> </div> </div> </div>`)} </div> </div> </section> ` })}`;
+}, "/home/runner/work/harmonyhotelgroup_website/harmonyhotelgroup_website/src/pages/hotels/index.astro", void 0);
+
+const $$file = "/home/runner/work/harmonyhotelgroup_website/harmonyhotelgroup_website/src/pages/hotels/index.astro";
+const $$url = "/hotels";
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+    __proto__: null,
+    default: $$Index,
+    file: $$file,
+    url: $$url
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };
