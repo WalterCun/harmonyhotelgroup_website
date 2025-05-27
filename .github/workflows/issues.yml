@@ -45,7 +45,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: dev
-          branch: auto-pr-to-dev/${{ github.ref_name }}
+          branch: issue/${{ github.ref_name }}
           delete-branch: false
           title: "Merge ${{ github.ref_name }} into dev"
           body: |
