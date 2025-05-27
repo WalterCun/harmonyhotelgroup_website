@@ -1,0 +1,13 @@
+---
+import { lang_es } from "~/lib/constants";
+import Layout from "../../layouts/Layout.astro";
+interface Props {
+	lang: string;
+}
+
+const { id } = Astro.params;
+const { lang } = Astro.props;
+---
+<Layout lang={lang_es} title={`Destino ${id}`}>
+    <h3>Información del destino {id}</h3>
+</Layout>

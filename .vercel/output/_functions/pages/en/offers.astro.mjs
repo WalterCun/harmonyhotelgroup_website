@@ -1,0 +1,114 @@
+/* empty css                                   */
+import { c as createComponent, b as renderComponent, r as renderTemplate, m as maybeRenderHead, d as addAttribute } from '../../chunks/astro/server_OcGr0KEC.mjs';
+import { $ as $$Layout, a as lang_en } from '../../chunks/Layout_DV1peyq8.mjs';
+export { renderers } from '../../renderers.mjs';
+
+const $$Offers = createComponent(($$result, $$props, $$slots) => {
+  const offers = [
+    {
+      id: 1,
+      title: "Summer Escape Package",
+      description: "Enjoy 25% off your stay, complimentary breakfast for two daily, and a welcome amenity upon arrival. Minimum stay of 3 nights required.",
+      longDescription: "Make the most of your summer getaway with our exclusive Summer Escape Package. Enjoy significant savings on our best available rates, start each day with a delicious breakfast, and receive a special welcome gift to enhance your stay. Perfect for couples or families looking to create unforgettable summer memories.",
+      discount: "25%",
+      validity: "May 15 - Sep 30, 2025",
+      hotels: [
+        "Harmony Grand Plaza",
+        "Harmony Beachfront Resort",
+        "Harmony Lakeside Retreat"
+      ],
+      tags: ["Limited Time", "Popular"],
+      bookByDate: "April 30, 2025",
+      image: "https://images.pexels.com/photos/2373201/pexels-photo-2373201.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+    },
+    {
+      id: 2,
+      title: "Weekend Retreat",
+      description: "Book a two-night weekend stay and receive a free spa treatment or $100 dining credit per person.",
+      longDescription: "Turn your weekend into a rejuvenating escape with our Weekend Retreat offer. Stay with us for two nights over any weekend and choose between indulging in a relaxing spa treatment or enjoying a delicious meal at one of our acclaimed restaurants. This offer is designed to help you make the most of your valuable weekend time.",
+      discount: "Free Spa",
+      validity: "All Year, 2025",
+      hotels: ["All Harmony Hotels"],
+      tags: ["Weekends"],
+      bookByDate: "Ongoing",
+      image: "https://images.pexels.com/photos/1743165/pexels-photo-1743165.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+    },
+    {
+      id: 3,
+      title: "Extended Stay Offer",
+      description: "Stay 5 nights or more and save 30% on your entire booking, plus receive complimentary airport transfers.",
+      longDescription: "The longer you stay, the more you save with our Extended Stay Offer. Enjoy substantial savings on our best available rates and eliminate the hassle of airport transportation with our complimentary transfer service. This offer is perfect for those looking to immerse themselves in the destination and enjoy a more leisurely pace of travel.",
+      discount: "30%",
+      validity: "Jan 1 - Dec 31, 2025",
+      hotels: ["All Harmony Hotels"],
+      tags: ["Long Stay"],
+      bookByDate: "Ongoing",
+      image: "https://images.pexels.com/photos/2029698/pexels-photo-2029698.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+    },
+    {
+      id: 4,
+      title: "Early Bird Special",
+      description: "Book 60 days in advance and save 20% on our best available rates across all room types.",
+      longDescription: "Plan ahead and save with our Early Bird Special. By confirming your reservation at least 60 days before arrival, you'll enjoy significant savings on any room category. This offer provides excellent value for those who like to plan their travels well in advance.",
+      discount: "20%",
+      validity: "Jan 1 - Dec 31, 2025",
+      hotels: ["All Harmony Hotels"],
+      tags: ["Advance Booking"],
+      bookByDate: "60 days prior to arrival",
+      image: "https://images.pexels.com/photos/1268855/pexels-photo-1268855.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+    },
+    {
+      id: 5,
+      title: "Family Fun Package",
+      description: "Children under 12 stay and eat free. Includes welcome amenities for kids and access to children's activities.",
+      longDescription: "Create lasting family memories with our Family Fun Package. We've designed this offer to make family travel both enjoyable and affordable. Children under 12 stay in their parents' room at no additional charge and enjoy complimentary meals from the children's menu. Special welcome gifts and engaging activities will make your little ones feel especially welcome.",
+      discount: "Kids Stay Free",
+      validity: "School Holidays, 2025",
+      hotels: [
+        "Harmony Beachfront Resort",
+        "Harmony Lakeside Retreat",
+        "Harmony Mountain Lodge"
+      ],
+      tags: ["Family", "Popular"],
+      bookByDate: "30 days prior to arrival",
+      image: "https://images.pexels.com/photos/1024960/pexels-photo-1024960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+    },
+    {
+      id: 6,
+      title: "Honeymoon Bliss",
+      description: "Celebrate your love with a romantic package including champagne, daily breakfast in bed, and a couple's spa treatment.",
+      longDescription: "Begin your married life in perfect harmony with our specially curated Honeymoon Bliss package. Toast to your future with champagne upon arrival, indulge in the luxury of breakfast in bed, and experience ultimate relaxation with a couple's spa treatment. We'll ensure your honeymoon is as special and unique as your relationship.",
+      discount: "Romantic Extras",
+      validity: "Jan 1 - Dec 31, 2025",
+      hotels: ["All Harmony Hotels"],
+      tags: ["Romantic", "Couples"],
+      bookByDate: "Ongoing",
+      image: "https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+    }
+  ];
+  return renderTemplate`${renderComponent($$result, "Layout", $$Layout, { "lang": lang_en, "title": "Special Offers | Harmony Hotel Group" }, { "default": ($$result2) => renderTemplate` ${maybeRenderHead()}<div class="bg-primary-500/10 dark:bg-neutral-800 py-16"> <div class="container"> <h1 class="text-center mb-6">Special Offers</h1> <p class="text-center text-lg text-neutral-700 dark:text-neutral-300 max-w-3xl mx-auto">
+Take advantage of our exclusive promotions and enjoy extra benefits with your next stay.
+</p> </div> </div> <section class="section"> <div class="container"> <!-- Filter by offer type --> <div class="mb-12 flex flex-wrap justify-center gap-4"> <button class="btn bg-primary-500 text-white hover:bg-primary-600">All Offers</button> <button class="btn bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 hover:border-primary-500 dark:hover:border-primary-500">Seasonal</button> <button class="btn bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 hover:border-primary-500 dark:hover:border-primary-500">Family</button> <button class="btn bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 hover:border-primary-500 dark:hover:border-primary-500">Romantic</button> <button class="btn bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 hover:border-primary-500 dark:hover:border-primary-500">Extended Stay</button> </div> <!-- Offers grid --> <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"> ${offers.map((offer) => renderTemplate`<div class="card group hover:shadow-xl transition-all duration-300"> <div class="relative"> <img${addAttribute(offer.image, "src")}${addAttribute(offer.title, "alt")} class="w-full h-48 object-cover"> <div class="absolute top-4 left-4 bg-primary-500 text-white py-1 px-3 rounded-full text-sm font-bold"> ${offer.discount} </div> </div> <div class="p-6"> <div class="flex flex-wrap gap-2 mb-3"> ${offer.tags.map((tag) => renderTemplate`<span class="text-xs font-semibold bg-secondary-100 dark:bg-secondary-900 text-secondary-800 dark:text-secondary-200 py-1 px-2 rounded-full"> ${tag} </span>`)} </div> <h3 class="text-xl font-semibold mb-2">${offer.title}</h3> <p class="text-neutral-600 dark:text-neutral-400 mb-4"> ${offer.description} </p> <div class="space-y-2 mb-4"> <p class="text-sm flex items-start"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 mr-2 text-primary-500 flex-shrink-0"> <path fill-rule="evenodd" d="M5.75 2a.75.75 0 01.75.75V4h7V2.75a.75.75 0 011.5 0V4h.25A2.75 2.75 0 0118 6.75v8.5A2.75 2.75 0 0115.25 18H4.75A2.75 2.75 0 012 15.25v-8.5A2.75 2.75 0 014.75 4H5V2.75A.75.75 0 015.75 2zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75z" clip-rule="evenodd"></path> </svg> <span> <strong>Valid:</strong> ${offer.validity} </span> </p> <p class="text-sm flex items-start"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 mr-2 text-primary-500 flex-shrink-0"> <path fill-rule="evenodd" d="M5.75 2a.75.75 0 01.75.75V4h7V2.75a.75.75 0 011.5 0V4h.25A2.75 2.75 0 0118 6.75v8.5A2.75 2.75 0 0115.25 18H4.75A2.75 2.75 0 012 15.25v-8.5A2.75 2.75 0 014.75 4H5V2.75A.75.75 0 015.75 2zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75z" clip-rule="evenodd"></path> </svg> <span> <strong>Book by:</strong> ${offer.bookByDate} </span> </p> <p class="text-sm flex items-start"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 mr-2 text-primary-500 flex-shrink-0"> <path fill-rule="evenodd" d="M9.69 18.933l.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 00.281-.14c.186-.096.446-.24.757-.433.62-.384 1.445-.966 2.274-1.765C15.302 14.988 17 12.493 17 9A7 7 0 103 9c0 3.492 1.698 5.988 3.355 7.584a13.731 13.731 0 002.273 1.765 11.842 11.842 0 00.976.544l.062.029.018.008.006.003zM10 11.25a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5z" clip-rule="evenodd"></path> </svg> <span> <strong>Available at:</strong> ${Array.isArray(offer.hotels) ? offer.hotels.join(", ") : offer.hotels} </span> </p> </div> <div class="flex justify-between items-center pt-3 border-t border-neutral-200 dark:border-neutral-700"> <a${addAttribute(`/offers/${offer.id}`, "href")} class="text-primary-500 font-medium hover:text-primary-600 transition-colors">
+View Details
+</a> <a href="/booking" class="btn btn-primary py-2 px-4">
+Book Now
+</a> </div> </div> </div>`)} </div> </div> </section>  <section class="py-16 bg-primary-500/5 dark:bg-neutral-800"> <div class="container"> <div class="max-w-4xl mx-auto text-center"> <h2 class="text-3xl md:text-4xl font-semibold mb-4">Never Miss an Offer</h2> <p class="mb-8 text-lg text-neutral-700 dark:text-neutral-300">
+Subscribe to our newsletter to receive exclusive offers and promotions directly to your inbox.
+</p> <form class="max-w-md mx-auto"> <div class="flex flex-col sm:flex-row gap-3"> <label> <input type="email" placeholder="Your email address" class="flex-grow px-4 py-3 rounded-md input" required> </label> <button type="submit" class="btn btn-primary py-3">
+Subscribe
+</button> </div> </form> </div> </div> </section> ` })}`;
+}, "/home/runner/work/harmonyhotelgroup_website/harmonyhotelgroup_website/src/pages/en/offers.astro", void 0);
+
+const $$file = "/home/runner/work/harmonyhotelgroup_website/harmonyhotelgroup_website/src/pages/en/offers.astro";
+const $$url = "/en/offers";
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: $$Offers,
+  file: $$file,
+  url: $$url
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };
