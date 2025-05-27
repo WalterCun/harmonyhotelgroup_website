@@ -9,7 +9,6 @@
 		"tina-clean": "tinacms audit --clean",
 		"build": "astro build",
 		"preview": "astro preview",
-		"astro": "astro",
 		"lint": "biome lint --write .",
 		"lint:fix": "biome check --write .",
 		"lint:ci": "biome lint --write . --allow-warnings"

@@ -3,7 +3,6 @@
 	"buildCommand": "pnpm build",
 	"outputDirectory": "dist",
 	"framework": "astro",
-	"cleanUrls": true,
 	"installCommand": "pnpm install --no-frozen-lockfile",
 	"github": {
 		"enabled": true,
