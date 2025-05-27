@@ -29,11 +29,6 @@ var config_default = defineConfig({
         name: "hotels",
         label: "Hotels",
         path: "src/data/hotels",
-        // defaultItem: () => {
-        //     return {
-        //         hotel_id: AutoIncrement('hotels'),
-        //     }
-        // },
         fields: [
           {
             type: "number",
@@ -81,8 +76,11 @@ var config_default = defineConfig({
             list: true,
             ui: {
               itemProps: (item) => {
+                const type = item?.type || "Contacto";
+                const value = item?.value || "";
+                const tag = item?.tag || "";
                 return {
-                  label: `${item?.tag ? `${item.tag}" > "` : ""}${item?.value} > ${item?.type}`
+                  label: `${tag ? `${tag} > ` : ""}${value} > ${type}`
                 };
               }
             },
@@ -120,6 +118,15 @@ var config_default = defineConfig({
             name: "socialMedia",
             label: "Redes Sociales",
             list: true,
+            ui: {
+              itemProps: (item) => {
+                const name = item?.name || "Red Social";
+                const url = item?.url || "";
+                return {
+                  label: `${name}: ${url}`
+                };
+              }
+            },
             fields: [
               {
                 type: "string",
@@ -149,8 +156,10 @@ var config_default = defineConfig({
             list: true,
             ui: {
               itemProps: (item) => {
+                const name = item?.name || "Habitaci\xF3n";
+                const price = item?.price || "";
                 return {
-                  label: `${item?.tag ? `${item.tag}" > "` : ""}${item?.value} > ${item?.type}`
+                  label: `${name} - ${price}`
                 };
               }
             },
@@ -205,7 +214,8 @@ var config_default = defineConfig({
                 list: true,
                 ui: {
                   itemProps: (item) => {
-                    return { label: `${item?.amenities}` };
+                    const amenityName = item?.amenities || "Servicio";
+                    return { label: `${amenityName}` };
                   }
                 },
                 fields: [
@@ -244,7 +254,8 @@ var config_default = defineConfig({
             list: true,
             ui: {
               itemProps: (item) => {
-                return { label: `${item?.lang_hotel}` };
+                const lang = item?.lang_hotel || "Idioma";
+                return { label: `${lang}` };
               }
             },
             fields: [
@@ -268,7 +279,8 @@ var config_default = defineConfig({
             list: true,
             ui: {
               itemProps: (item) => {
-                return { label: `${item?.amenities}` };
+                const amenityName = item?.amenities || "Servicio";
+                return { label: `${amenityName}` };
               }
             },
             fields: [
@@ -280,28 +292,6 @@ var config_default = defineConfig({
               }
             ]
           },
-          // {
-          //     type: "reference",
-          //     name: "amenities",
-          //     label: "Servicios del Hotel",
-          //     collections: ['icons']
-          //     // options: [
-          //     //     "WiFi Gratis",
-          //     //     "Piscina",
-          //     //     "Spa",
-          //     //     "Restaurante",
-          //     //     "Gimnasio",
-          //     //     "Servicio a la Habitación",
-          //     //     "Vista a la Playa",
-          //     //     "Vista a la Montaña",
-          //     //     "Bar",
-          //     //     "Estacionamiento",
-          //     //     "Transporte al Aeropuerto",
-          //     //     "Desayuno Incluido",
-          //     //     "Acceso para Discapacitados",
-          //     //     "Centro de Negocios"
-          //     // ]
-          // },
           {
             type: "boolean",
             name: "highlight",
@@ -335,11 +325,6 @@ var config_default = defineConfig({
         name: "destinations",
         label: "Destinations",
         path: "src/data/destinations",
-        // defaultItem: () => {
-        //     return {
-        //         destination_id: AutoIncrement('destinations'),
-        //     }
-        // },
         fields: [
           {
             type: "number",
@@ -368,11 +353,12 @@ var config_default = defineConfig({
           {
             type: "object",
             name: "description_destination",
-            label: "Descripci\xF3n del Hotel",
+            label: "Descripci\xF3n del Destino",
             list: true,
             ui: {
               itemProps: (item) => {
-                return { label: `${item?.lang_destination}` };
+                const lang = item?.lang_destination || "Idioma";
+                return { label: `${lang}` };
               }
             },
             fields: [
@@ -396,7 +382,8 @@ var config_default = defineConfig({
             list: true,
             ui: {
               itemProps: (item) => {
-                return { label: `${item?.tag}` };
+                const tag = item?.tag || "Etiqueta";
+                return { label: `${tag}` };
               }
             },
             fields: [
@@ -425,11 +412,6 @@ var config_default = defineConfig({
         name: "offers",
         label: "Offers",
         path: "src/data/offers",
-        // defaultItem: () => {
-        //     return {
-        //         offer_id: AutoIncrement('offers'),
-        //     }
-        // },
         fields: [
           {
             type: "number",
@@ -456,7 +438,8 @@ var config_default = defineConfig({
             list: true,
             ui: {
               itemProps: (item) => {
-                return { label: `${item?.lang_offer}` };
+                const lang = item?.lang_offer || "Idioma";
+                return { label: `${lang}` };
               }
             },
             fields: [
@@ -492,7 +475,8 @@ var config_default = defineConfig({
             list: true,
             ui: {
               itemProps: (item) => {
-                return { label: `${item?.tag}` };
+                const tag = item?.tag || "Etiqueta";
+                return { label: `${tag}` };
               }
             },
             fields: [
@@ -507,13 +491,6 @@ var config_default = defineConfig({
       }
     ]
   }
-  // search: {
-  //     tina: {
-  //         stopwordLanguages: ['esp'],
-  //     },
-  //     indexBatchSize: 100,
-  //     maxSearchIndexFieldLength: 100,
-  // },
 });
 export {
   config_default as default

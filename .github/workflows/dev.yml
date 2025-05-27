@@ -44,7 +44,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: main
           branch: dev
-          delete-branch: true
+          delete-branch: false
           title: "Release: dev a main"
           body: |
             Este PR fue creado automáticamente después de una compilación exitosa de la rama dev.

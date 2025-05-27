@@ -507,11 +507,4 @@ export default defineConfig({
             },
         ],
     },
-    search: {
-        tina: {
-            stopwordLanguages: ['es'],  // Corregido de 'esp' a 'es' (código ISO para español)
-        },
-        indexBatchSize: 100,
-        maxSearchIndexFieldLength: 100,
-    },
 });
