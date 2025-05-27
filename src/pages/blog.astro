@@ -1,75 +1,86 @@
 ---
-import Layout from '~/layouts/Layout.astro';
-import {lang_es} from "lib/constants";
+import { lang_es } from "lib/constants";
+import Layout from "~/layouts/Layout.astro";
 
 const blogPosts = [
-  {
-    id: 1,
-    title: "Top 10 Beach Destinations for 2025",
-    excerpt: "Discover the most stunning beach destinations that should be on your travel bucket list this year.",
-    date: "May 15, 2025",
-    author: "Emma Rodriguez",
-    category: "Destinations",
-    image: "https://images.pexels.com/photos/1450360/pexels-photo-1450360.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-  },
-  {
-    id: 2,
-    title: "The Art of Luxury Travel: A Guide to First-Class Experiences",
-    excerpt: "Learn how to elevate your travel experience with insider tips from seasoned luxury travelers.",
-    date: "April 28, 2025",
-    author: "Jonathan Chang",
-    category: "Luxury Travel",
-    image: "https://images.pexels.com/photos/2873951/pexels-photo-2873951.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-  },
-  {
-    id: 3,
-    title: "Sustainable Tourism: How to Travel Responsibly",
-    excerpt: "Explore how you can reduce your environmental impact while still enjoying unforgettable travel experiences.",
-    date: "April 10, 2025",
-    author: "Sophia Green",
-    category: "Sustainable Travel",
-    image: "https://images.pexels.com/photos/346885/pexels-photo-346885.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-  },
-  {
-    id: 4,
-    title: "Cultural Immersion: Beyond the Tourist Attractions",
-    excerpt: "Dive deeper into local cultures and discover authentic experiences that most tourists miss.",
-    date: "March 22, 2025",
-    author: "Marcus Johnson",
-    category: "Cultural Travel",
-    image: "https://images.pexels.com/photos/3155666/pexels-photo-3155666.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-  },
-  {
-    id: 5,
-    title: "The Ultimate Guide to Travel Photography",
-    excerpt: "Capture stunning travel memories with these professional photography tips and tricks.",
-    date: "March 5, 2025",
-    author: "Lily Chen",
-    category: "Travel Tips",
-    image: "https://images.pexels.com/photos/3049685/pexels-photo-3049685.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-  },
-  {
-    id: 6,
-    title: "Hidden Gems: Exploring Off-the-Beaten-Path Destinations",
-    excerpt: "Discover extraordinary destinations that haven't yet made it onto most travelers' radar.",
-    date: "February 18, 2025",
-    author: "David Wilson",
-    category: "Destinations",
-    image: "https://images.pexels.com/photos/2108845/pexels-photo-2108845.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-  }
+	{
+		id: 1,
+		title: "Top 10 Beach Destinations for 2025",
+		excerpt:
+			"Discover the most stunning beach destinations that should be on your travel bucket list this year.",
+		date: "May 15, 2025",
+		author: "Emma Rodriguez",
+		category: "Destinations",
+		image:
+			"https://images.pexels.com/photos/1450360/pexels-photo-1450360.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+	},
+	{
+		id: 2,
+		title: "The Art of Luxury Travel: A Guide to First-Class Experiences",
+		excerpt:
+			"Learn how to elevate your travel experience with insider tips from seasoned luxury travelers.",
+		date: "April 28, 2025",
+		author: "Jonathan Chang",
+		category: "Luxury Travel",
+		image:
+			"https://images.pexels.com/photos/2873951/pexels-photo-2873951.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+	},
+	{
+		id: 3,
+		title: "Sustainable Tourism: How to Travel Responsibly",
+		excerpt:
+			"Explore how you can reduce your environmental impact while still enjoying unforgettable travel experiences.",
+		date: "April 10, 2025",
+		author: "Sophia Green",
+		category: "Sustainable Travel",
+		image:
+			"https://images.pexels.com/photos/346885/pexels-photo-346885.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+	},
+	{
+		id: 4,
+		title: "Cultural Immersion: Beyond the Tourist Attractions",
+		excerpt:
+			"Dive deeper into local cultures and discover authentic experiences that most tourists miss.",
+		date: "March 22, 2025",
+		author: "Marcus Johnson",
+		category: "Cultural Travel",
+		image:
+			"https://images.pexels.com/photos/3155666/pexels-photo-3155666.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+	},
+	{
+		id: 5,
+		title: "The Ultimate Guide to Travel Photography",
+		excerpt:
+			"Capture stunning travel memories with these professional photography tips and tricks.",
+		date: "March 5, 2025",
+		author: "Lily Chen",
+		category: "Travel Tips",
+		image:
+			"https://images.pexels.com/photos/3049685/pexels-photo-3049685.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+	},
+	{
+		id: 6,
+		title: "Hidden Gems: Exploring Off-the-Beaten-Path Destinations",
+		excerpt:
+			"Discover extraordinary destinations that haven't yet made it onto most travelers' radar.",
+		date: "February 18, 2025",
+		author: "David Wilson",
+		category: "Destinations",
+		image:
+			"https://images.pexels.com/photos/2108845/pexels-photo-2108845.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+	},
 ];
 
 const categories = [
-  "All Categories",
-  "Destinations",
-  "Luxury Travel",
-  "Sustainable Travel",
-  "Cultural Travel",
-  "Travel Tips",
-  "Hotel Reviews",
-  "Culinary Journeys"
+	"All Categories",
+	"Destinations",
+	"Luxury Travel",
+	"Sustainable Travel",
+	"Cultural Travel",
+	"Travel Tips",
+	"Hotel Reviews",
+	"Culinary Journeys",
 ];
-
 ---
 
 <Layout lang={lang_es} title="Blog">
@@ -91,11 +102,13 @@ const categories = [
           <div class="mb-8">
             <h3 class="text-xl font-semibold mb-4">Search</h3>
             <div class="relative">
-              <input 
-                type="text" 
-                placeholder="Search articles..." 
-                class="input pr-10"
-              />
+              <label>
+                <input
+                  type="text"
+                  placeholder="Search articles..."
+                  class="input pr-10"
+                />
+              </label>
               <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-500">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
                   <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
@@ -154,12 +167,14 @@ const categories = [
               Get our latest blog posts and travel inspiration delivered to your inbox.
             </p>
             <form class="space-y-3">
-              <input 
-                type="email" 
-                placeholder="Your email address" 
-                class="input"
-                required
-              />
+              <label>
+                <input
+                  type="email"
+                  placeholder="Your email address"
+                  class="input"
+                  required
+                />
+              </label>
               <button type="submit" class="btn btn-primary w-full">
                 Subscribe
               </button>

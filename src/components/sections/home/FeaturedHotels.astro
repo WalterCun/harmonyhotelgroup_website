@@ -1,15 +1,15 @@
 ---
-import {trans} from "~/utils/translations";
+import { trans } from "~/utils/translations";
 
-import {Api,imageUrl} from "~/utils/tina";
+import { Api, imageUrl } from "~/utils/tina";
 
 const api = new Api(true, 4);
-const hoteles = await api.hotels()
+const hoteles = await api.hotels();
 
 interface Props {
-    lang: string
+	lang: string;
 }
-const {lang} = Astro.props;
+const { lang } = Astro.props;
 ---
 
 <section class="section bg-white dark:bg-neutral-900">

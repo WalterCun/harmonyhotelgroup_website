@@ -1,20 +1,20 @@
 ---
-import Layout from '~/layouts/Layout.astro';
-import {lang_es} from "lib/constants";
-import {Api} from "~/utils/tina";
-import {imageUrl} from "../../utils/tina";
-import { Icon } from 'astro-icon/components'
+import { Icon } from "astro-icon/components";
+import { lang_es } from "lib/constants";
+import Layout from "~/layouts/Layout.astro";
+import { Api } from "~/utils/tina";
+import { imageUrl } from "../../utils/tina";
 
 interface Props {
-    lang: string,
+	lang: string;
 }
 
-const {id} = Astro.params;
-const {lang} = Astro.props;
+const { id } = Astro.params;
+const { lang } = Astro.props;
 
 const api = new Api();
-const hoteles = await api.hotels()
-const hotel = hoteles.find((item => item.hotel_id === Number(id)))
+const hoteles = await api.hotels();
+const hotel = hoteles.find((item) => item.hotel_id === Number(id));
 ---
 
 <Layout lang={lang_es} title={`${hotel?.name}`}>

@@ -1,0 +1,61 @@
+name: Dev Branch CI
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  build-and-create-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Lint code
+        run: pnpm lint
+
+      - name: Build project
+        run: pnpm build
+
+      - name: Create Pull Request to main
+        if: success()
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: main
+          branch: auto-pr-to-main/dev-${{ github.sha }}
+          delete-branch: true
+          title: "Release: dev a main"
+          body: |
+            Este PR fue creado automáticamente después de una compilación exitosa de la rama dev.
+            
+            ## Cambios incluidos en esta versión
+            ${{ github.event.head_commit.message }}
+            
+            ## Verificaciones completadas:
+            - ✅ Lint
+            - ✅ Compilación
+          labels: |
+            automated-pr
+            release
+            ready-for-review

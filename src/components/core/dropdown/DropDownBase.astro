@@ -1,24 +1,18 @@
 ---
 // Define interfaces para las props
 interface DropdownOption {
-    label: string | number;
-    iconPath: string;
+	label: string | number;
+	iconPath: string;
 }
 
 interface Props {
-    title: string;
-    options: DropdownOption[];
-    iconWidth?: number | string;
-    iconHeight?: number | string;
+	title: string;
+	options: DropdownOption[];
+	iconWidth?: number | string;
+	iconHeight?: number | string;
 }
 
-
-const {
-    title,
-    options,
-    iconWidth = 50,
-    iconHeight = 25
-} = Astro.props;
+const { title, options, iconWidth = 50, iconHeight = 25 } = Astro.props;
 ---
 
 <div class="container">

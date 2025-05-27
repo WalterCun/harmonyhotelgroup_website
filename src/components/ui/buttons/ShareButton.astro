@@ -1,33 +1,33 @@
 ---
 // ShareButton.astro - Reusable share button component
 interface Props {
-  lang:string,
-  title: string;
-  url: string;
-  description?: string;
-  hashtags?: string[];
-  className?: string;
+	lang: string;
+	title: string;
+	url: string;
+	description?: string;
+	hashtags?: string[];
+	className?: string;
 }
 
 const {
-  lang,
-  title, 
-  url, 
-  description = '', 
-  hashtags = ['HarmonyHotelGroup', 'Cuenca', 'Ecuador'], 
-  className = '' 
+	lang,
+	title,
+	url,
+	description = "",
+	hashtags = ["HarmonyHotelGroup", "Cuenca", "Ecuador"],
+	className = "",
 } = Astro.props;
 
 // Ensure we have the full URL
-const fullUrl = url.startsWith('http') ? url : `${Astro.url.origin}${url}`;
+const fullUrl = url.startsWith("http") ? url : `${Astro.url.origin}${url}`;
 
 // Prepare social media share URLs
 const shareUrls = {
-  facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fullUrl)}`,
-  twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(fullUrl)}&text=${encodeURIComponent(title)}&hashtags=${hashtags.join(',')}`,
-  whatsapp: `https://wa.me/?text=${encodeURIComponent(`${title} - ${description} ${fullUrl}`)}`,
-  telegram: `https://t.me/share/url?url=${encodeURIComponent(fullUrl)}&text=${encodeURIComponent(title)}`,
-  email: `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(`${description} ${fullUrl}`)}`
+	facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fullUrl)}`,
+	twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(fullUrl)}&text=${encodeURIComponent(title)}&hashtags=${hashtags.join(",")}`,
+	whatsapp: `https://wa.me/?text=${encodeURIComponent(`${title} - ${description} ${fullUrl}`)}`,
+	telegram: `https://t.me/share/url?url=${encodeURIComponent(fullUrl)}&text=${encodeURIComponent(title)}`,
+	email: `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(`${description} ${fullUrl}`)}`,
 };
 ---
 

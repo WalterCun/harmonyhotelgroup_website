@@ -1,48 +1,59 @@
-# Astro Starter Kit: Basics
+# Harmony Hotel Group Website
 
-```sh
-pnpm create astro@latest -- --template basics
-```
+Este proyecto utiliza Astro.js y TinaCMS para el sitio web de Harmony Hotel Group.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+## Configuración de desarrollo
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+1. Clona el repositorio
+2. Instala las dependencias: `npm install`
+3. Copia `.env.example` a `.env` y configura las variables de entorno
+4. Inicia el servidor de desarrollo: `npm run dev`
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+## Procesos de CI/CD
 
-## 🚀 Project Structure
+Este proyecto utiliza GitHub Actions para la integración y despliegue continuos:
 
-Inside of your Astro project, you'll see the following folders and files:
+### Ramas principales
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+- **main**: Rama de producción. Los cambios se despliegan automáticamente al entorno de producción.
+- **dev**: Rama de desarrollo. Los cambios se despliegan automáticamente al entorno de staging.
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+### Flujos de trabajo
 
-## 🧞 Commands
+1. **Production Deployment**: Se ejecuta cuando se realizan cambios en la rama `main`.
+    - Ejecuta linting, compilación y pruebas
+    - Despliega a producción en Vercel
 
-All commands are run from the root of the project, from a terminal:
+2. **Staging Deployment**: Se ejecuta cuando se realizan cambios en la rama `dev`.
+    - Ejecuta linting, compilación y pruebas
+    - Despliega a un entorno de staging en Vercel
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+3. **Pull Request CI**: Se ejecuta en pull requests hacia `main` o `dev`, y en ramas de issues.
+    - Ejecuta linting, compilación y pruebas
+    - Para pull requests, crea un despliegue de vista previa
 
-## 👀 Want to learn more?
+4. **Integration Tests**: Se ejecuta semanalmente y bajo demanda.
+    - Ejecuta pruebas de integración en múltiples navegadores
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+### Convenciones de ramas
+
+- `feature/nombre-de-la-característica`: Para nuevas características
+- `bugfix/nombre-del-bug`: Para correcciones de errores
+- `issue/numero-de-issue`: Para trabajar en issues específicos
+
+## Pruebas
+
+Este proyecto utiliza Playwright para pruebas de integración:
+
+- `npm test`: Ejecuta todas las pruebas
+- `npm run test:e2e`: Ejecuta pruebas end-to-end
+- `npm run test:ci`: Ejecuta pruebas en modo CI (solo Chromium)
+
+## Despliegue manual
+
+Si necesitas desplegar manualmente:
+
+1. Construye TinaCMS: `npm run tina-build`
+2. Construye el proyecto: `npm run build`
+3. Vista previa: `npm run preview`
+4. Despliega a Vercel: `vercel --prod` (requiere CLI de Vercel)

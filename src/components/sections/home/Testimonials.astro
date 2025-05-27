@@ -1,38 +1,44 @@
 ---
 const testimonials = [
-  {
-    id: 1,
-    name: "Sarah Johnson",
-    location: "London, UK",
-    quote: "The Harmony Grand Plaza exceeded all our expectations. The attention to detail and personalized service made our anniversary truly special.",
-    hotel: "Harmony Grand Plaza",
-    rating: 5,
-    image: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-  },
-  {
-    id: 2,
-    name: "Michael Rodriguez",
-    location: "Toronto, Canada",
-    quote: "The beachfront location was breathtaking. The staff went above and beyond to ensure our family had a memorable vacation experience.",
-    hotel: "Harmony Beachfront Resort",
-    rating: 5,
-    image: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-  },
-  {
-    id: 3,
-    name: "Emily Wong",
-    location: "Singapore",
-    quote: "As a business traveler, I appreciate efficiency and comfort. The Harmony City Center provides both, along with excellent amenities and location.",
-    hotel: "Harmony City Center",
-    rating: 4,
-    image: "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-  }
+	{
+		id: 1,
+		name: "Sarah Johnson",
+		location: "London, UK",
+		quote:
+			"The Harmony Grand Plaza exceeded all our expectations. The attention to detail and personalized service made our anniversary truly special.",
+		hotel: "Harmony Grand Plaza",
+		rating: 5,
+		image:
+			"https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+	},
+	{
+		id: 2,
+		name: "Michael Rodriguez",
+		location: "Toronto, Canada",
+		quote:
+			"The beachfront location was breathtaking. The staff went above and beyond to ensure our family had a memorable vacation experience.",
+		hotel: "Harmony Beachfront Resort",
+		rating: 5,
+		image:
+			"https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+	},
+	{
+		id: 3,
+		name: "Emily Wong",
+		location: "Singapore",
+		quote:
+			"As a business traveler, I appreciate efficiency and comfort. The Harmony City Center provides both, along with excellent amenities and location.",
+		hotel: "Harmony City Center",
+		rating: 4,
+		image:
+			"https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+	},
 ];
 interface Props {
-  lang: string
+	lang: string;
 }
 
-const {lang} = Astro.props;
+const { lang } = Astro.props;
 ---
 
 <section class="section bg-neutral-50 dark:bg-neutral-800">

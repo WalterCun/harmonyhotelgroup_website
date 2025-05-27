@@ -1,0 +1,10 @@
+{
+	"version": 2,
+	"buildCommand": "pnpm tina-build && pnpm build",
+	"outputDirectory": "dist",
+	"framework": "astro",
+	"github": {
+		"enabled": true,
+		"silent": false
+	}
+}

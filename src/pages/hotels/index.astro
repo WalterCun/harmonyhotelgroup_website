@@ -1,11 +1,11 @@
 ---
-import Layout from '~/layouts/Layout.astro';
-import {lang_es} from "lib/constants";
+import { lang_es } from "lib/constants";
+import Layout from "~/layouts/Layout.astro";
 
-import {Api} from "~/utils/tina";
+import { Api } from "~/utils/tina";
 
 const api = new Api(true, 4);
-const hotels = await api.hotels()
+const hotels = await api.hotels();
 ---
 
 <Layout lang={lang_es} title="Our Hotels">

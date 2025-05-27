@@ -1,14 +1,14 @@
 ---
 // TouristSites.astro - Tourist sites section for homepage
-import { getFeaturedTouristSites } from '@utils/api';
+import { getFeaturedTouristSites } from "@utils/api";
 
 // Fetch featured tourist sites from API
 const featuredSites = await getFeaturedTouristSites(4);
 interface Props {
-  lang: string
+	lang: string;
 }
 
-const {lang} = Astro.props;
+const { lang } = Astro.props;
 ---
 
 <section class="py-16 bg-white dark:bg-harmony-black-800">
