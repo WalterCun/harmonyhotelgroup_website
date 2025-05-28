@@ -208,7 +208,7 @@ export function imageUrl({url, back = 0}: { url: string; back?: number }) {
             finalPath = `../${finalPath}`;
         }
     } else {
-        finalPath = `src/assets/${cleanPath}`;
+        finalPath = `/src/assets/${cleanPath}`;
     }
     // Devolver la ruta correcta
     return finalPath;
