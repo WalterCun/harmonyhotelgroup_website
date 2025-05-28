@@ -27,24 +27,39 @@
 			"reservation": {
 				"title": "Realiza tu Reserva",
 				"subtitle": "Reserva tu estancia de forma rápida y sencilla.",
-
-
 				"label-child": "Edad del niño {{year}}",
 				"input-child": "{{year}} año{{s}}",
 				"child-less-ages": "Menos de {{year}} año",
 				"child-ages": "{{year}} año{{s}}",
-
 				"lbl": {
 					"country": "Ciudad",
 					"checkin-checkout": "Fecha Ingreso - Salida",
 					"adult": "Adulto{{s}}",
-					"rooms": "Habitaciones"
+					"rooms": "Habitaciones",
+					"group": "Detalles de Reserva de Grupo",
+					"group-adult": "N° Adultos",
+					"group-children-5": "N° Niños < 5 años",
+					"group-children-12": "N° Niños < 12 años",
+					"children-item": "Niño {{index}}"
 				},
 				"placeholder": {
 					"country": "Selecciona la ciudad",
 					"checkin-checkout": "Selecciona un rango de fecha",
 					"adult": "Adulto{{s}}",
-					"rooms": "Habitacion{{s}}"
+					"rooms": "Habitacion{{s}}",
+					"group-shared-beds": "Camas Compartidas",
+					"group-shared-rooms": "Habitaciones Compartidas",
+					"group-independent-rooms": "Habitaciones Independientes",
+					"child-age": "Edad < 17 años",
+					"group-type-vehicle": "Tipo de vehiculo",
+					"group-type-novehicle": "Sin Vehiculo",
+					"group-type-buseta": "Buseta",
+					"group-type-van": "Furgoneta",
+					"group-type-fleet": "Flota Vehicular",
+					"group-type-cooperativa": "Cooperativa de Transporte",
+					"group-type-bus": "Bus",
+					"group-type-multiple-options": "Varias Opciones",
+					"group-type-others": "Otros"
 				},
 				"group": "Grupo",
 				"child": "Niño{{s}}",
@@ -52,7 +67,7 @@
 				"breakfast": "Desayuno",
 				"parking": "Parqueadero",
 				"btn": {
-					"reservations":"Contactar con asesor"
+					"reservations":"Reserva con un Asesor"
 				}
 			}
 		},

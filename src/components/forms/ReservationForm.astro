@@ -1,8 +1,6 @@
 ---
 import {Baby, Calendar, Search, Users, MapPin, BedDouble, Utensils, Car, Smile, Hotel, BusFront} from "lucide-astro";
 import {trans} from "~/utils/translations";
-import flatpickr from "flatpickr";
-import {Spanish} from "flatpickr/dist/l10n/es.js";
 import {z} from "zod";
 
 const uniqueCities = ["Quito, Ecuador", "Lima, Perú", "Bogotá, Colombia", "Medellín, Colombia", "Cartagena, Colombia"];
@@ -12,17 +10,19 @@ const adultOptions = [...Array(8).keys()]
 const childrenOptions = Array.from({length: 8}, (_, i) => String(i));
 const roomOptions = Array.from({length: 10}, (_, i) => String(i + 1));
 const groupRoomTypeOptions = [
-    {value: "shared_room", labelKey: "group_room_type_shared_room"},
-    {value: "shared_beds", labelKey: "group_room_type_shared_beds"},
-    {value: "independent_rooms", labelKey: "group_room_type_independent_rooms"},
+    {value: "shared_room", labelKey: "components.forms.reservation.placeholder.group-shared-rooms"},
+    {value: "shared_beds", labelKey: "components.forms.reservation.placeholder.group-shared-beds"},
+    {value: "independent_rooms", labelKey: "components.forms.reservation.placeholder.group-independent-rooms"},
 ];
 const vehicleTypeOptions = [
-    {value: "buseta", labelKey: "vehicle_type_buseta"},
-    {value: "furgoneta", labelKey: "vehicle_type_furgoneta"},
-    {value: "bus", labelKey: "vehicle_type_bus"},
-    {value: "flota_vehiculos", labelKey: "vehicle_type_flota"},
-    {value: "cooperativa_transporte", labelKey: "vehicle_type_cooperativa"},
-    {value: "otro", labelKey: "vehicle_type_other"},
+    {value: "no_vehicle", labelKey: "components.forms.reservation.placeholder.group-type-novehicle"},
+    {value: "buseta", labelKey: "components.forms.reservation.placeholder.group-type-buseta"},
+    {value: "furgoneta", labelKey: "components.forms.reservation.placeholder.group-type-van"},
+    {value: "bus", labelKey: "components.forms.reservation.placeholder.group-type-bus"},
+    {value: "flota_vehiculos", labelKey: "components.forms.reservation.placeholder.group-type-fleet"},
+    {value: "cooperativa_transporte", labelKey: "components.forms.reservation.placeholder.group-type-cooperativa"},
+    {value: "multiple_options", labelKey: "components.forms.reservation.placeholder.group-type-multiple-options"},
+    {value: "otro", labelKey: "components.forms.reservation.placeholder.group-type-others"},
 ];
 
 // Zod schema for form validation
@@ -137,14 +137,13 @@ const {lang} = Astro.props;
                         <Calendar class="mr-1.5 h-3.5 w-3.5 text-primary"/>
                         {trans(lang, 'components.forms.reservation.lbl.checkin-checkout')}
                     </label>
-                    <button
+                    <input
                             id="date-range"
-                            type="button"
+                            type="text"
                             class="w-full justify-start text-left font-normal h-10 text-sm border rounded-md px-3 focus:ring focus:ring-primary/50"
-                    >
-                        <span id="date-range-text"
-                              class="text-muted-foreground">{trans(lang, 'components.forms.reservation.placeholder.checkin-checkout')}</span>
-                    </button>
+                            placeholder={trans(lang, 'components.forms.reservation.placeholder.checkin-checkout')}
+                            readonly
+                    />
                     <input type="hidden" id="date-from" name="from"/>
                     <input type="hidden" id="date-to" name="to"/>
                     <div id="date-range-error" class="text-xs mt-0.5 text-red-500 hidden"></div>
@@ -195,7 +194,7 @@ const {lang} = Astro.props;
                             class="h-10 text-sm w-full border rounded-md px-3 focus:ring focus:ring-primary/50">
                         {roomOptions.map(option => (
                                 <option value={option} selected={option === "1"} class="text-sm">
-                                    {option} {trans(lang,'components.forms.reservation.placeholder.rooms', parseInt(option) !== 1 ? {"s": "es"} : {"s": ""})}
+                                    {option} {trans(lang, 'components.forms.reservation.placeholder.rooms', parseInt(option) !== 1 ? {"s": "es"} : {"s": ""})}
                                 </option>
                         ))}
                     </select>
@@ -203,18 +202,38 @@ const {lang} = Astro.props;
                 </div>
             </div>
 
+            <template id="child-age-template">
+                <div>
+                    <label for="children-details" class="text-sm text-muted-foreground mb-0.5" data-label-text>
+                        <Smile class="mr-1.5 h-3.5 w-3.5 text-primary"/>
+                        {trans(lang, 'components.forms.reservation.lbl.children-item', {index: 1})}
+                    </label>
+                    <input
+                            id="children-details"
+                            type="number"
+                            name="childrenAges[0].age"
+                            min="0"
+                            max="17"
+                            placeholder={trans(lang, 'components.forms.reservation.placeholder.child-age')}
+                            class="h-9 text-sm w-full border rounded-md px-3 focus:ring focus:ring-primary/50"
+                    />
+                    <div class="text-xs mt-0.5 text-red-500 hidden"></div>
+                </div>
+            </template>
+
             <div id="children-ages"
                  class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 hidden"></div>
+
 
             <div id="group-details" class="hidden space-y-2 pt-1.5 border-t border-border mt-2.5">
                 <p class="text-sm font-medium text-primary flex items-center">
                     <Users class="mr-1.5 h-4 w-4"/>
-                    {trans(lang, 'booking_form_group_details_title')}
+                    {trans(lang, 'components.forms.reservation.lbl.group')}
                 </p>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-2.5 gap-y-2.5">
                     <div>
                         <label for="groupAdults" class="text-sm font-medium text-foreground/80">
-                            {trans(lang, 'booking_form_group_adults_label')}
+                            {trans(lang, 'components.forms.reservation.lbl.group-adult')}
                         </label>
                         <input
                                 type="number"
@@ -228,7 +247,7 @@ const {lang} = Astro.props;
                     </div>
                     <div>
                         <label for="groupChildrenUnder5" class="text-sm font-medium text-foreground/80">
-                            {trans(lang, 'booking_form_group_children_under_5_label')}
+                            {trans(lang, 'components.forms.reservation.lbl.group-children-5')}
                         </label>
                         <input
                                 type="number"
@@ -242,7 +261,7 @@ const {lang} = Astro.props;
                     </div>
                     <div>
                         <label for="groupChildrenUnder12" class="text-sm font-medium text-foreground/80">
-                            {trans(lang, 'booking_form_group_children_under_12_label')}
+                            {trans(lang, 'components.forms.reservation.lbl.group-children-12')}
                         </label>
                         <input
                                 type="number"
@@ -256,13 +275,13 @@ const {lang} = Astro.props;
                     </div>
                     <div>
                         <label for="groupRooms" class="flex items-center text-sm font-medium text-foreground/80">
-                            <BedDouble class="mr-1.5 h-3.5 w-3.5 text-primary"/>
-                            {trans(lang, 'booking_form_rooms')}
+                            <BedDouble class="mr-1.5 h-4 w-4 text-primary"/>
+                            {trans(lang, 'components.forms.reservation.lbl.rooms')}
                         </label>
                         <select id="groupRooms" name="rooms"
                                 class="h-9 text-sm w-full border rounded-md px-3 focus:ring focus:ring-primary/50">
                             {groupRoomTypeOptions.map(option => (
-                                    <option value={option.value} selected={option.value === "independent_rooms"}
+                                    <option value={option.value} selected={option.value === "shared_beds"}
                                             class="text-sm">
                                         {trans(lang, option.labelKey)}
                                     </option>
@@ -282,7 +301,7 @@ const {lang} = Astro.props;
                     </span>
                 </label>
                 <label id="parking-wrapper" class="flex flex-row items-center space-x-1.5 space-y-0">
-                    <input type="checkbox" id="parking" name="parking" checked class="h-4 w-4"/>
+                    <input type="checkbox" id="parking" name="parking" class="h-4 w-4"/>
                     <span class="text-sm font-normal text-foreground/80 flex items-center cursor-pointer">
                         <Car class="mr-1 h-5 w-5 text-primary/80"/>
                         {trans(lang, 'components.forms.reservation.parking')}
@@ -307,7 +326,7 @@ const {lang} = Astro.props;
                         <label for="largeGroupVehicleType"
                                class="flex items-center text-sm font-medium text-foreground/80 whitespace-nowrap shrink-0">
                             <BusFront class="mr-1.5 h-3.5 w-3.5 text-primary shrink-0"/>
-                            {trans(lang, 'booking_form_large_group_vehicle_type_label')}
+                            {trans(lang, 'components.forms.reservation.placeholder.group-type-vehicle')}
                         </label>
                     </div>
                     <div id="largeGroupVehicleType-error" class="text-xs mt-0.5 text-red-500 hidden"></div>
@@ -324,401 +343,445 @@ const {lang} = Astro.props;
 </div>
 
 
-<script is:inline define:vars={{lang, trans, flatpickr, Spanish, bookingFormSchema}}>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Cache DOM elements
-        const form = document.getElementById('booking-form');
-        const citySelect = document.getElementById('city');
-        const dateRangeBtn = document.getElementById('date-range');
-        const dateRangeText = document.getElementById('date-range-text');
-        const dateFromInput = document.getElementById('date-from');
-        const dateToInput = document.getElementById('date-to');
-        const adultsSelect = document.getElementById('adults');
-        const childrenSelect = document.getElementById('children');
-        const childrenWrapper = document.getElementById('children-wrapper');
-        const childrenAgesContainer = document.getElementById('children-ages');
-        const roomsWrapper = document.getElementById('rooms-wrapper');
-        const roomsSelect = document.getElementById('rooms');
-        const groupDetails = document.getElementById('group-details');
-        const groupRoomsSelect = document.getElementById('groupRooms');
-        const groupAdultsInput = document.getElementById('groupAdults');
-        const groupChildrenUnder5Input = document.getElementById('groupChildrenUnder5');
-        const groupChildrenUnder12Input = document.getElementById('groupChildrenUnder12');
-        const parkingWrapper = document.getElementById('parking-wrapper');
-        const parkingCheckbox = document.getElementById('parking');
-        const breakfastCheckbox = document.getElementById('breakfast');
-        const vehicleWrapper = document.getElementById('vehicle-wrapper');
-        const vehicleTypeSelect = document.getElementById('largeGroupVehicleType');
+<script is:inline define:vars={{lang, trans, bookingFormSchema}}>`x`
+document.addEventListener('DOMContentLoaded', async () => {
+    const form = document.getElementById('booking-form');
 
-        // Error message elements
-        const errorElements = {
-            city: document.getElementById('city-error'),
-            dateRange: document.getElementById('date-range-error'),
-            adults: document.getElementById('adults-error'),
-            children: document.getElementById('children-error'),
-            rooms: document.getElementById('rooms-error'),
-            groupAdults: document.getElementById('groupAdults-error'),
-            groupChildrenUnder5: document.getElementById('groupChildrenUnder5-error'),
-            groupChildrenUnder12: document.getElementById('groupChildrenUnder12-error'),
-            groupRooms: document.getElementById('groupRooms-error'),
-            largeGroupVehicleType: document.getElementById('largeGroupVehicleType-error')
-        };
+    const citySelect = document.getElementById('city');
 
-        // Initialize flatpickr for date range
-        let dateRangePicker;
-        let selectedDates = {from: null, to: null};
+    // const geolocation = await getGeolocation()
 
-        // Function to initialize the date picker
-        function initDatePicker() {
-            if (dateRangePicker) {
-                dateRangePicker.destroy();
-            }
+    const dateInput = document.querySelector('#date-range');
+    const dateFrom = document.querySelector('#date-from');
+    const dateTo = document.querySelector('#date-to');
 
-            dateRangePicker = flatpickr(dateRangeBtn, {
-                mode: "range",
-                dateFormat: "Y-m-d",
-                minDate: "today",
-                locale: Spanish,
-                static: true,
-                onChange: function (dates, dateStr, instance) {
+    const adultsSelect = document.getElementById('adults');
+    const childrenSelect = document.getElementById('children');
+    const childrenWrapper = document.getElementById('children-wrapper');
+    const childrenAgesContainer = document.getElementById('children-ages');
+
+    const roomsWrapper = document.getElementById('rooms-wrapper');
+    const roomsSelect = document.getElementById('rooms');
+    const groupDetails = document.getElementById('group-details');
+    const groupRoomsSelect = document.getElementById('groupRooms');
+    const groupAdultsInput = document.getElementById('groupAdults');
+    const groupChildrenUnder5Input = document.getElementById('groupChildrenUnder5');
+    const groupChildrenUnder12Input = document.getElementById('groupChildrenUnder12');
+
+    const parkingWrapper = document.getElementById('parking-wrapper');
+    const parkingCheckbox = document.getElementById('parking');
+    const breakfastCheckbox = document.getElementById('breakfast');
+    const vehicleWrapper = document.getElementById('vehicle-wrapper');
+    const vehicleTypeSelect = document.getElementById('largeGroupVehicleType');
+
+    // Error message elements
+    const errorElements = {
+        city: document.getElementById('city-error'),
+        dateRange: document.getElementById('date-range-error'),
+        adults: document.getElementById('adults-error'),
+        children: document.getElementById('children-error'),
+        rooms: document.getElementById('rooms-error'),
+        groupAdults: document.getElementById('groupAdults-error'),
+        groupChildrenUnder5: document.getElementById('groupChildrenUnder5-error'),
+        groupChildrenUnder12: document.getElementById('groupChildrenUnder12-error'),
+        groupRooms: document.getElementById('groupRooms-error'),
+        largeGroupVehicleType: document.getElementById('largeGroupVehicleType-error')
+    };
+
+    // Initialize flatpickr for date range
+    let dateRangePicker;
+    let selectedDates = {from: null, to: null};
+
+    // Function to initialize the date picker
+    function initDatePicker() {
+        if (dateRangePicker) {
+            dateRangePicker.destroy();
+        }
+
+        if (dateInput) {
+            dateRangePicker = flatpickr(dateInput, {
+                mode: 'range',
+                dateFormat: 'Y-m-d',
+                minDate: 'today',
+                locale: flatpickr.l10ns.es, // usar la versión desde CDN
+                altInput: true,
+                altFormat: 'j M Y',
+                onChange: (dates, dateStr, instance) => {
                     if (dates.length === 0) {
                         selectedDates = {from: null, to: null};
-                        dateRangeText.textContent = trans(lang, 'booking_form_date_range_placeholder');
-                        dateRangeText.classList.add('text-muted-foreground');
-                        dateFromInput.value = '';
-                        dateToInput.value = '';
+                        dateFrom.value = '';
+                        dateTo.value = '';
                     } else if (dates.length === 1) {
                         selectedDates = {from: dates[0], to: null};
-                        dateRangeText.textContent = formatDate(dates[0]);
-                        dateRangeText.classList.remove('text-muted-foreground');
-                        dateFromInput.value = formatDateISO(dates[0]);
-                        dateToInput.value = '';
+                        dateFrom.value = dates[0].toISOString().split('T')[0];
+                        dateTo.value = '';
                     } else if (dates.length === 2) {
-                        // Check if check-in date is after check-out date
-                        if (dates[0] > dates[1]) {
-                            // Replace check-in with check-out and clear check-out
-                            selectedDates = {from: dates[1], to: null};
-                            dateRangeText.textContent = formatDate(dates[1]);
-                            dateFromInput.value = formatDateISO(dates[1]);
-                            dateToInput.value = '';
-                            instance.setDate([dates[1]]);
-                        } else {
-                            selectedDates = {from: dates[0], to: dates[1]};
-                            dateRangeText.textContent = `${formatDate(dates[0])} - ${formatDate(dates[1])}`;
-                            dateRangeText.classList.remove('text-muted-foreground');
-                            dateFromInput.value = formatDateISO(dates[0]);
-                            dateToInput.value = formatDateISO(dates[1]);
-                            instance.close();
-                        }
+                        const [start, end] = dates[0] <= dates[1] ? dates : [dates[1], dates[0]];
+                        selectedDates = {from: start, to: end};
+                        dateFrom.value = start.toISOString().split('T')[0];
+                        dateTo.value = end.toISOString().split('T')[0];
                     }
                 },
-                onOpen: function () {
-                    if (selectedDates.from) {
-                        this.setDate([selectedDates.from, selectedDates.to].filter(Boolean));
-                    }
-                }
             });
+
+
+            // flatpickr(dateInput, {
+            //     mode: 'range',
+            //     dateFormat: 'Y-m-d',
+            //     minDate: 'today',
+            //     locale: Spanish,
+            //     altInput: true,
+            //     altFormat: 'j M Y',
+            //     onChange: (dates, dateStr, instance) => {
+            //         if (dates.length === 0) {
+            //             selectedDates = { from: null, to: null };
+            //             dateFrom.value = '';
+            //             dateTo.value = '';
+            //         } else if (dates.length === 1) {
+            //             selectedDates = { from: dates[0], to: null };
+            //             dateFrom.value = dates[0].toISOString().split('T')[0];
+            //             dateTo.value = '';
+            //         } else if (dates.length === 2) {
+            //             const [start, end] = dates[0] <= dates[1] ? dates : [dates[1], dates[0]];
+            //             selectedDates = { from: start, to: end };
+            //             dateFrom.value = start.toISOString().split('T')[0];
+            //             dateTo.value = end.toISOString().split('T')[0];
+            //         }
+            //     },
+            // });
+        }
+    }
+
+    // Format date for display
+    function formatDate(date) {
+        return date.toLocaleDateString(lang === 'es' ? 'es-ES' : 'en-US', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        });
+    }
+
+    // Format date for ISO string (YYYY-MM-DD)
+    function formatDateISO(date) {
+        return date.toISOString().split('T')[0];
+    }
+
+    // Initialize date picker
+    initDatePicker();
+
+    // Toggle group booking UI
+    function toggleGroupBooking() {
+        const isGroup = adultsSelect.value === "Group";
+        groupDetails.classList.toggle('hidden', !isGroup);
+        childrenWrapper.classList.toggle('hidden', isGroup);
+        roomsWrapper.classList.toggle('hidden', isGroup);
+
+        // Reset children if switching to group
+        if (isGroup && childrenSelect.value !== "0") {
+            childrenSelect.value = "0";
+            updateChildrenAges();
         }
 
-        // Format date for display
-        function formatDate(date) {
-            return date.toLocaleDateString(lang === 'es' ? 'es-ES' : 'en-US', {
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric'
-            });
+        // Check if it's a large group and update UI accordingly
+        updateLargeGroupUI();
+    }
+
+    // Update UI for large groups
+    function updateLargeGroupUI() {
+        const isGroup = adultsSelect.value === "Group";
+        if (!isGroup) {
+            vehicleWrapper.classList.add('hidden');
+            parkingWrapper.classList.remove('hidden');
+            return;
         }
 
-        // Format date for ISO string (YYYY-MM-DD)
-        function formatDateISO(date) {
-            return date.toISOString().split('T')[0];
-        }
+        const groupAdults = parseInt(groupAdultsInput.value || "0", 10);
+        const groupChildrenUnder5 = parseInt(groupChildrenUnder5Input.value || "0", 10);
+        const groupChildrenUnder12 = parseInt(groupChildrenUnder12Input.value || "0", 10);
+        const totalPeopleAdult = groupAdults + groupChildrenUnder12;
+        const totalPeople = groupAdults + groupChildrenUnder5 + groupChildrenUnder12;
 
-        // Initialize date picker
-        initDatePicker();
+        const isLargeGroup = isGroup && totalPeopleAdult > 8;
 
-        // Toggle group booking UI
-        function toggleGroupBooking() {
-            const isGroup = adultsSelect.value === "Group";
-            groupDetails.classList.toggle('hidden', !isGroup);
-            childrenWrapper.classList.toggle('hidden', isGroup);
-            roomsWrapper.classList.toggle('hidden', isGroup);
+        vehicleWrapper.classList.toggle('hidden', !isLargeGroup);
+        parkingWrapper.classList.toggle('hidden', isLargeGroup);
 
-            // Reset children if switching to group
-            if (isGroup && childrenSelect.value !== "0") {
-                childrenSelect.value = "0";
-                updateChildrenAges();
+        if (isLargeGroup) {
+            // Update a vehicle type based on group size
+            // const totalPeopleForVehicle = groupAdults + groupChildrenUnder12;
+            if (totalPeople > 24 && vehicleTypeSelect.value === "furgoneta") {
+                vehicleTypeSelect.value = "bus";
+            } else if (totalPeople > 12 && vehicleTypeSelect.value === "buseta") {
+                vehicleTypeSelect.value = "furgoneta";
             }
-
-            // Check if it's a large group and update UI accordingly
-            updateLargeGroupUI();
         }
+    }
 
-        // Update UI for large groups
-        function updateLargeGroupUI() {
-            const isGroup = adultsSelect.value === "Group";
-            if (!isGroup) {
-                vehicleWrapper.classList.add('hidden');
-                parkingWrapper.classList.remove('hidden');
-                return;
-            }
+    // Update children ages UI
+    function updateChildrenAges() {
+        const childCount = parseInt(childrenSelect.value, 10);
+        childrenAgesContainer.innerHTML = '';
+        childrenAgesContainer.classList.toggle('hidden', childCount === 0);
 
-            const groupAdults = parseInt(groupAdultsInput.value || "0", 10);
-            const groupChildrenUnder5 = parseInt(groupChildrenUnder5Input.value || "0", 10);
-            const groupChildrenUnder12 = parseInt(groupChildrenUnder12Input.value || "0", 10);
-            const totalPeople = groupAdults + groupChildrenUnder5 + groupChildrenUnder12;
+        // Obtener la plantilla
+        const template = document.getElementById('child-age-template');
 
-            const isLargeGroup = isGroup && totalPeople > 8;
 
-            vehicleWrapper.classList.toggle('hidden', !isLargeGroup);
-            parkingWrapper.classList.toggle('hidden', isLargeGroup);
-
-            if (isLargeGroup) {
-                parkingCheckbox.checked = false;
-
-                // Update vehicle type based on group size
-                const totalPeopleForVehicle = groupAdults + groupChildrenUnder12;
-                if (totalPeopleForVehicle > 24 && vehicleTypeSelect.value === "furgoneta") {
-                    vehicleTypeSelect.value = "bus";
-                } else if (totalPeopleForVehicle > 12 && vehicleTypeSelect.value === "buseta") {
-                    vehicleTypeSelect.value = "furgoneta";
-                }
-            } else {
-                parkingCheckbox.checked = true;
-            }
-        }
-
-        // Update children ages UI
-        function updateChildrenAges() {
-            const childCount = parseInt(childrenSelect.value, 10);
-            childrenAgesContainer.innerHTML = '';
-            childrenAgesContainer.classList.toggle('hidden', childCount === 0);
-
+        // for (let i = 0; i < childCount; i++) {
+        //     const div = document.createElement('div');
+        //
+        //     const label = document.createElement('label');
+        //     label.className = 'text-sm text-muted-foreground mb-0.5';
+        //     label.textContent = trans(lang, 'components.forms.reservation.lbl.children-item', {index: i + 1});
+        //
+        //     const input = document.createElement('input');
+        //     input.type = 'number';
+        //     input.name = `childrenAges[${i}].age`;
+        //     input.min = '0';
+        //     input.max = '17';
+        //     input.placeholder = "placeholder";
+        //     // input.placeholder = trans(lang, 'booking_form_child_age_placeholder');
+        //     input.className = 'h-9 text-sm w-full border rounded-md px-3 focus:ring focus:ring-primary/50';
+        //
+        //     const errorDiv = document.createElement('div');
+        //     errorDiv.className = 'text-xs mt-0.5 text-red-500 hidden';
+        //     errorDiv.id = `childAge-${i}-error`;
+        //
+        //     div.appendChild(label);
+        //     div.appendChild(input);
+        //     div.appendChild(errorDiv);
+        //
+        //     childrenAgesContainer.appendChild(div);
+        // }
+        if (template) {
             for (let i = 0; i < childCount; i++) {
-                const div = document.createElement('div');
+                // Clonar la plantilla
+                const clone = template.content.cloneNode(true);
 
-                const label = document.createElement('label');
-                label.className = 'text-sm text-muted-foreground mb-0.5';
-                label.textContent = trans(lang, 'booking_form_child_age_label', {index: i + 1});
-
-                const input = document.createElement('input');
-                input.type = 'number';
-                input.name = `childrenAges[${i}].age`;
-                input.min = '0';
-                input.max = '17';
-                input.placeholder = trans(lang, 'booking_form_child_age_placeholder');
-                input.className = 'h-9 text-sm w-full border rounded-md px-3 focus:ring focus:ring-primary/50';
-
-                const errorDiv = document.createElement('div');
-                errorDiv.className = 'text-xs mt-0.5 text-red-500 hidden';
-                errorDiv.id = `childAge-${i}-error`;
-
-                div.appendChild(label);
-                div.appendChild(input);
-                div.appendChild(errorDiv);
-
-                childrenAgesContainer.appendChild(div);
-            }
-        }
-
-        // Show error message
-        function showError(field, message) {
-            const errorElement = errorElements[field];
-            if (errorElement) {
-                errorElement.textContent = trans(lang, message) || message;
-                errorElement.classList.remove('hidden');
-            }
-        }
-
-        // Clear all error messages
-        function clearErrors() {
-            Object.values(errorElements).forEach(el => {
-                if (el) el.classList.add('hidden');
-            });
-
-            // Clear child age errors
-            const childAgeErrors = document.querySelectorAll('[id^="childAge-"]');
-            childAgeErrors.forEach(el => el.classList.add('hidden'));
-        }
-
-        // Validate form using Zod schema
-        function validateForm() {
-            clearErrors();
-
-            try {
-                // Prepare form data for validation
-                const formData = {
-                    city: citySelect.value,
-                    dateRange: {
-                        from: dateFromInput.value ? new Date(dateFromInput.value) : undefined,
-                        to: dateToInput.value ? new Date(dateToInput.value) : undefined
-                    },
-                    adults: adultsSelect.value,
-                    rooms: adultsSelect.value === "Group" ? groupRoomsSelect.value : roomsSelect.value,
-                    children: childrenSelect.value,
-                    childrenAges: [],
-                    breakfast: breakfastCheckbox.checked,
-                    parking: parkingCheckbox.checked
-                };
-
-                // Add group-specific fields if group is selected
-                if (adultsSelect.value === "Group") {
-                    formData.groupAdults = groupAdultsInput.value ? parseInt(groupAdultsInput.value, 10) : undefined;
-                    formData.groupChildrenUnder5 = groupChildrenUnder5Input.value ? parseInt(groupChildrenUnder5Input.value, 10) : undefined;
-                    formData.groupChildrenUnder12 = groupChildrenUnder12Input.value ? parseInt(groupChildrenUnder12Input.value, 10) : undefined;
-
-                    const isLargeGroup = (formData.groupAdults || 0) + (formData.groupChildrenUnder5 || 0) + (formData.groupChildrenUnder12 || 0) > 8;
-                    if (isLargeGroup) {
-                        formData.largeGroupVehicleType = vehicleTypeSelect.value;
-                    }
-                } else {
-                    // Get children ages
-                    const childCount = parseInt(childrenSelect.value, 10);
-                    if (childCount > 0) {
-                        const ageInputs = childrenAgesContainer.querySelectorAll('input[name^="childrenAges"]');
-                        ageInputs.forEach((input, _) => {
-                            formData.childrenAges.push({age: input.value});
-                        });
-                    }
+                // Actualizar los atributos y contenidos específicos
+                const label = clone.querySelector('label');
+                if (label && label.hasAttribute('data-label-text')) {
+                    // Reemplazar el texto {index} en la etiqueta
+                    const labelText = label.textContent.replace('1', String(i + 1));
+                    label.textContent = labelText;
                 }
 
-                // Validate with Zod schema
-                const result = bookingFormSchema.parse(formData);
-                return {isValid: true, data: result};
-            } catch (error) {
-                // Handle Zod validation errors
-                if (error.errors) {
-                    error.errors.forEach(err => {
-                        const path = err.path.join('.');
+                const input = clone.querySelector('input');
+                if (input) {
+                    input.name = `childrenAges[${i}].age`;
+                }
 
-                        // Handle nested paths
-                        if (path.startsWith('childrenAges')) {
-                            const match = path.match(/childrenAges\.(\d+)\.age/);
-                            if (match) {
-                                const index = match[1];
-                                const errorEl = document.getElementById(`childAge-${index}-error`);
-                                if (errorEl) {
-                                    errorEl.textContent = trans(lang, err.message) || err.message;
-                                    errorEl.classList.remove('hidden');
-                                }
+                const errorDiv = clone.querySelector('div');
+                if (errorDiv) {
+                    errorDiv.id = `childAge-${i}-error`;
+                }
+
+                // Añadir al contenedor
+                childrenAgesContainer.appendChild(clone);
+            }
+        }
+
+    }
+
+    // Show error message
+    function showError(field, message) {
+        const errorElement = errorElements[field];
+        if (errorElement) {
+            errorElement.textContent = trans(lang, message) || message;
+            errorElement.classList.remove('hidden');
+        }
+    }
+
+    // Clear all error messages
+    function clearErrors() {
+        Object.values(errorElements).forEach(el => {
+            if (el) el.classList.add('hidden');
+        });
+
+        // Clear child age errors
+        const childAgeErrors = document.querySelectorAll('[id^="childAge-"]');
+        childAgeErrors.forEach(el => el.classList.add('hidden'));
+    }
+
+    // Validate form using Zod schema
+    function validateForm() {
+        clearErrors();
+
+        try {
+            // Prepare form data for validation
+            const formData = {
+                city: citySelect.value,
+                dateRange: {
+                    from: dateFrom.value ? new Date(dateFrom.value) : undefined,
+                    to: dateTo.value ? new Date(dateTo.value) : undefined
+                },
+                adults: adultsSelect.value,
+                rooms: adultsSelect.value === "Group" ? groupRoomsSelect.value : roomsSelect.value,
+                children: childrenSelect.value,
+                childrenAges: [],
+                breakfast: breakfastCheckbox.checked,
+                parking: parkingCheckbox.checked
+            };
+
+            // Add group-specific fields if group is selected
+            if (adultsSelect.value === "Group") {
+                formData.groupAdults = groupAdultsInput.value ? parseInt(groupAdultsInput.value, 10) : undefined;
+                formData.groupChildrenUnder5 = groupChildrenUnder5Input.value ? parseInt(groupChildrenUnder5Input.value, 10) : undefined;
+                formData.groupChildrenUnder12 = groupChildrenUnder12Input.value ? parseInt(groupChildrenUnder12Input.value, 10) : undefined;
+
+                const isLargeGroup = (formData.groupAdults || 0) + (formData.groupChildrenUnder5 || 0) + (formData.groupChildrenUnder12 || 0) > 8;
+                if (isLargeGroup) {
+                    formData.largeGroupVehicleType = vehicleTypeSelect.value;
+                }
+            } else {
+                // Get children ages
+                const childCount = parseInt(childrenSelect.value, 10);
+                if (childCount > 0) {
+                    const ageInputs = childrenAgesContainer.querySelectorAll('input[name^="childrenAges"]');
+                    ageInputs.forEach((input, _) => {
+                        formData.childrenAges.push({age: input.value});
+                    });
+                }
+            }
+
+            // Validate with Zod schema
+            const result = bookingFormSchema.parse(formData);
+            return {isValid: true, data: result};
+        } catch (error) {
+            // Handle Zod validation errors
+            if (error.errors) {
+                error.errors.forEach(err => {
+                    const path = err.path.join('.');
+
+                    // Handle nested paths
+                    if (path.startsWith('childrenAges')) {
+                        const match = path.match(/childrenAges\.(\d+)\.age/);
+                        if (match) {
+                            const index = match[1];
+                            const errorEl = document.getElementById(`childAge-${index}-error`);
+                            if (errorEl) {
+                                errorEl.textContent = trans(lang, err.message) || err.message;
+                                errorEl.classList.remove('hidden');
                             }
-                        } else if (path.startsWith('dateRange')) {
-                            showError('dateRange', err.message);
-                        } else if (path === '') {
-                            // General error or dateRange refinement error
-                            if (err.message.includes('check')) {
-                                showError('dateRange', err.message);
-                            }
-                        } else {
-                            // Standard field error
-                            showError(err.path[0], err.message);
                         }
-                    });
+                    } else if (path.startsWith('dateRange')) {
+                        showError('dateRange', err.message);
+                    } else if (path === '') {
+                        // General error or dateRange refinement error
+                        if (err.message.includes('check')) {
+                            showError('dateRange', err.message);
+                        }
+                    } else {
+                        // Standard field error
+                        showError(err.path[0], err.message);
+                    }
+                });
+            }
+            return {isValid: false, error};
+        }
+    }
+
+    // Handle form submission
+    function handleSubmit(event) {
+        console.log('Form submit event triggered');
+        event.preventDefault();
+
+        const validation = validateForm();
+        if (!validation.isValid) {
+            return;
+        }
+
+        const data = validation.data;
+
+        // Prepare WhatsApp message
+        let message = `${trans(lang, 'whatsapp_booking_header')}\n\n`;
+        message += `${trans(lang, 'booking_form_city_select_label')}: ${data.city}\n`;
+
+        const fromDate = data.dateRange.from ? formatDate(data.dateRange.from) : 'N/A';
+        const toDate = data.dateRange.to ? formatDate(data.dateRange.to) : 'N/A';
+        message += `${trans(lang, 'booking_form_check_in')}: ${fromDate}\n`;
+        message += `${trans(lang, 'booking_form_check_out')}: ${toDate}\n`;
+
+        if (data.adults === "Group") {
+            const roomTypeText = trans(lang, groupRoomTypeOptions.find(opt => opt.value === data.rooms)?.labelKey || '');
+            message += `${trans(lang, 'booking_form_rooms')}: ${roomTypeText}\n`;
+            message += `${trans(lang, 'booking_form_adults_group_label')}: ${data.groupAdults}\n`;
+
+            if (data.groupChildrenUnder5 && data.groupChildrenUnder5 > 0) {
+                message += `${trans(lang, 'booking_form_group_children_under_5_label')}: ${data.groupChildrenUnder5}\n`;
+            }
+
+            if (data.groupChildrenUnder12 && data.groupChildrenUnder12 > 0) {
+                message += `${trans(lang, 'booking_form_group_children_under_12_label')}: ${data.groupChildrenUnder12}\n`;
+            }
+
+            const isLargeGroup = (data.groupAdults || 0) + (data.groupChildrenUnder5 || 0) + (data.groupChildrenUnder12 || 0) > 8;
+            if (isLargeGroup && data.largeGroupVehicleType) {
+                const vehicleTypeText = trans(lang, vehicleTypeOptions.find(opt => opt.value === data.largeGroupVehicleType)?.labelKey || '');
+                message += `${trans(lang, 'booking_form_large_group_vehicle_type_message_label')}: ${vehicleTypeText}\n`;
+            }
+        } else {
+            message += `${trans(lang, 'booking_form_rooms')}: ${data.rooms} ${trans(lang, parseInt(data.rooms) !== 1 ? 'booking_form_rooms_plural_suffix' : 'booking_form_rooms_singular_suffix')}\n`;
+            message += `${trans(lang, 'booking_form_adults')}: ${data.adults}\n`;
+
+            if (parseInt(data.children || "0", 10) > 0) {
+                message += `${trans(lang, 'booking_form_children')}: ${data.children}\n`;
+                if (data.childrenAges && data.childrenAges.length > 0) {
+                    const ages = data.childrenAges.map(child => child.age).join(', ');
+                    message += `${trans(lang, 'Ages of Children')}: ${ages}\n`;
                 }
-                return {isValid: false, error};
             }
         }
 
-        // Handle form submission
-        function handleSubmit(event) {
-            event.preventDefault();
+        message += `${trans(lang, 'booking_form_breakfast')}: ${data.breakfast ? trans(lang, 'Yes') : trans(lang, 'No')}\n`;
 
-            const validation = validateForm();
-            if (!validation.isValid) {
-                return;
-            }
-
-            const data = validation.data;
-
-            // Prepare WhatsApp message
-            let message = `${trans(lang, 'whatsapp_booking_header')}\n\n`;
-            message += `${trans(lang, 'booking_form_city_select_label')}: ${data.city}\n`;
-
-            const fromDate = data.dateRange.from ? formatDate(data.dateRange.from) : 'N/A';
-            const toDate = data.dateRange.to ? formatDate(data.dateRange.to) : 'N/A';
-            message += `${trans(lang, 'booking_form_check_in')}: ${fromDate}\n`;
-            message += `${trans(lang, 'booking_form_check_out')}: ${toDate}\n`;
-
-            if (data.adults === "Group") {
-                const roomTypeText = trans(lang, groupRoomTypeOptions.find(opt => opt.value === data.rooms)?.labelKey || '');
-                message += `${trans(lang, 'booking_form_rooms')}: ${roomTypeText}\n`;
-                message += `${trans(lang, 'booking_form_adults_group_label')}: ${data.groupAdults}\n`;
-
-                if (data.groupChildrenUnder5 && data.groupChildrenUnder5 > 0) {
-                    message += `${trans(lang, 'booking_form_group_children_under_5_label')}: ${data.groupChildrenUnder5}\n`;
-                }
-
-                if (data.groupChildrenUnder12 && data.groupChildrenUnder12 > 0) {
-                    message += `${trans(lang, 'booking_form_group_children_under_12_label')}: ${data.groupChildrenUnder12}\n`;
-                }
-
-                const isLargeGroup = (data.groupAdults || 0) + (data.groupChildrenUnder5 || 0) + (data.groupChildrenUnder12 || 0) > 8;
-                if (isLargeGroup && data.largeGroupVehicleType) {
-                    const vehicleTypeText = trans(lang, vehicleTypeOptions.find(opt => opt.value === data.largeGroupVehicleType)?.labelKey || '');
-                    message += `${trans(lang, 'booking_form_large_group_vehicle_type_message_label')}: ${vehicleTypeText}\n`;
-                }
-            } else {
-                message += `${trans(lang, 'booking_form_rooms')}: ${data.rooms} ${trans(lang, parseInt(data.rooms) !== 1 ? 'booking_form_rooms_plural_suffix' : 'booking_form_rooms_singular_suffix')}\n`;
-                message += `${trans(lang, 'booking_form_adults')}: ${data.adults}\n`;
-
-                if (parseInt(data.children || "0", 10) > 0) {
-                    message += `${trans(lang, 'booking_form_children')}: ${data.children}\n`;
-                    if (data.childrenAges && data.childrenAges.length > 0) {
-                        const ages = data.childrenAges.map(child => child.age).join(', ');
-                        message += `${trans(lang, 'Ages of Children')}: ${ages}\n`;
-                    }
-                }
-            }
-
-            message += `${trans(lang, 'booking_form_breakfast')}: ${data.breakfast ? trans(lang, 'Yes') : trans(lang, 'No')}\n`;
-
-            if (!isLargeGroup) {
-                message += `${trans(lang, 'booking_form_parking')}: ${data.parking ? trans(lang, 'Yes') : trans(lang, 'No')}\n\n`;
-            } else {
-                message += '\n';
-            }
-
-            message += trans(lang, 'Please confirm availability.');
-
-            // Open WhatsApp with the message
-            const encodedMessage = encodeURIComponent(message);
-            const whatsappPhoneNumber = "593996146471";
-            const whatsappUrl = `https://wa.me/${whatsappPhoneNumber}?text=${encodedMessage}`;
-
-            window.open(whatsappUrl, '_blank');
+        if (!isLargeGroup) {
+            message += `${trans(lang, 'booking_form_parking')}: ${data.parking ? trans(lang, 'Yes') : trans(lang, 'No')}\n\n`;
+        } else {
+            message += '\n';
         }
 
-        // Event listeners
-        adultsSelect.addEventListener('change', toggleGroupBooking);
-        childrenSelect.addEventListener('change', updateChildrenAges);
-        dateRangeBtn.addEventListener('click', () => dateRangePicker.open());
-        form.addEventListener('submit', handleSubmit);
+        message += trans(lang, 'Please confirm availability.');
 
-        // Group-specific event listeners
-        groupAdultsInput.addEventListener('input', updateLargeGroupUI);
-        groupChildrenUnder5Input.addEventListener('input', updateLargeGroupUI);
-        groupChildrenUnder12Input.addEventListener('input', updateLargeGroupUI);
+        // Open WhatsApp with the message
+        const encodedMessage = encodeURIComponent(message);
+        const whatsappPhoneNumber = "593996146471";
+        const whatsappUrl = `https://wa.me/${whatsappPhoneNumber}?text=${encodedMessage}`;
 
-        // Initialize UI
-        toggleGroupBooking();
-        updateChildrenAges();
+        window.open(whatsappUrl, '_blank');
+    }
 
-        // Auto-detect city by IP
-        fetch('http://ip-api.com/json')
-            .then(response => response.json())
-            .then(data => {
-                if (data.country) {
-                    const userCountry = data.country;
-                    const cityOption = Array.from(citySelect.options).find(option => {
-                        const cityText = option.value.toLowerCase();
-                        return cityText.includes(userCountry.toLowerCase());
-                    });
+    // Event listeners
+    adultsSelect.addEventListener('change', toggleGroupBooking);
+    childrenSelect.addEventListener('change', updateChildrenAges);
+    form.addEventListener('submit', handleSubmit);
 
-                    if (cityOption) {
-                        citySelect.value = cityOption.value;
-                    }
-                }
-            })
-            .catch(error => console.warn("Could not fetch geolocation:", error));
-    });
+    // Group-specific event listeners
+    groupAdultsInput.addEventListener('input', updateLargeGroupUI);
+    groupChildrenUnder5Input.addEventListener('input', updateLargeGroupUI);
+    groupChildrenUnder12Input.addEventListener('input', updateLargeGroupUI);
+
+    // Initialize UI
+    toggleGroupBooking();
+    adultsSelect.dispatchEvent(new Event('change'));
+    updateChildrenAges();
+
+    // Auto-detect city by IP
+    // fetch('http://ip-api.coms/json')
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         if (data.country) {
+    //             const userCountry = data.country;
+    //             const cityOption = Array.from(citySelect.options).find(option => {
+    //                 const cityText = option.value.toLowerCase();
+    //                 return cityText.includes(userCountry.toLowerCase());
+    //             });
+    //
+    //             if (cityOption) {
+    //                 citySelect.value = cityOption.value;
+    //             }
+    //         }
+    //     })
+    //     .catch(error => console.warn("Could not fetch geolocation:", error));
+});
 </script>

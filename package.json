@@ -23,7 +23,6 @@
 		"astro-icon": "^1.1.5",
 		"clsx": "^2.1.1",
 		"date-fns": "^3.6.0",
-		"flatpickr": "^4.6.13",
 		"lucide-astro": "^0.503.0",
 		"lucide-react": "^0.511.0",
 		"lucide-static": "^0.503.0",
