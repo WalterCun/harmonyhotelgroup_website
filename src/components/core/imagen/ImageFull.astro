@@ -1,0 +1,47 @@
+---
+import {Image} from 'astro:assets';
+
+interface Props {
+    lang?: string,
+    src?: string
+}
+
+const {lang, src = null} = Astro.props;
+---
+
+<div class="image-container absolute inset-0 z-0">
+    <!--<img-->
+    <!--        alt="hero_alt_tropical_resort"-->
+    <!--        src="https://placehold.co/1920x1080.png"-->
+    <!--        data-ai-hint="tropical resort pool"-->
+    <!--        loading="eager"-->
+    <!--        class="hero-image"-->
+    <!--        width="1920"-->
+    <!--        height="1080"-->
+    <!--/>-->
+    <Image
+            alt="hero_alt_tropical_resort"
+            src={src ?? "https://placehold.co/1920x1080.png"}
+            data-ai-hint="tropical resort pool"
+            width={1920}
+            height={1080}
+            loading="eager"
+            class="hero-image"
+            format="webp"
+            quality={90}
+    />
+    <div class="absolute inset-0 bg-black/40"/>
+</div>
+
+<style>
+    .image-container {
+        width: 100%;
+        height: 100%;
+    }
+
+    .hero-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+</style>

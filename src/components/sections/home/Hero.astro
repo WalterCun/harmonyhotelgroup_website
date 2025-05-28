@@ -1,10 +1,12 @@
 ---
-import BookingForm2 from "~/components/forms/BookingForm2.astro";
-import ReservationForm from "~/components/forms/ReservationForm.astro";
-import { trans } from "~/utils/translations";
+import {trans} from "~/utils/translations";
+import ImageFull from "../../core/imagen/ImageFull.astro";
+import {imageUrl} from "../../../utils/tina";
+import Button from "../../ui/Button.astro";
+import ReservationForm from "../../forms/ReservationForm.astro";
 
 interface Props {
-	lang: string;
+    lang: string;
 }
 // const quickLinks = [
 //     {label: trans(lang, "components.common.navigation.url.about-us"), href: "/about"},
@@ -16,46 +18,91 @@ interface Props {
 //     {label: trans(lang, "components.common.navigation.url.privacy-policy"), href: "/privacy"},
 //     {label: trans(lang, "components.common.navigation.url.terms-of-service"), href: "/terms"},
 // ];
-const { lang } = Astro.props;
+const {lang} = Astro.props;
 ---
 
-<section class="relative h-[85vh] min-h-[600px] overflow-hidden">
-    <!-- Hero Background -->
-    <div class="absolute inset-0 z-0">
-        <img
-                src="https://images.pexels.com/photos/338504/pexels-photo-338504.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt="Hotel view"
-                class="w-full h-full object-cover"
-                fetchpriority="high"
-        />
-        <div class="absolute inset-0 bg-neutral-900/50"></div>
-    </div>
+<!--<section class="relative h-[85vh] min-h-[600px] overflow-hidden">-->
+<!--<section class="relative flex flex-col items-center justify-center min-h-[calc(100vh-5rem)] overflow-hidden">-->
+<!--    &lt;!&ndash; Hero Background &ndash;&gt;-->
+<!--    <div class="absolute inset-0 z-0">-->
+<!--        <img-->
+<!--                src="https://images.pexels.com/photos/338504/pexels-photo-338504.jpeg?auto=compress&cs=tinysrgb&w=1600"-->
+<!--                alt="Hotel view"-->
+<!--                class="w-full h-full object-cover"-->
+<!--                fetchpriority="high"-->
+<!--        />-->
+<!--        <div class="absolute inset-0 bg-neutral-900/50"></div>-->
+<!--    </div>-->
 
-    <!-- Hero Content -->
-    <div class="container relative z-10 flex h-full items-center justify-between">
-        <div class="max-w-2xl text-white slide-up">
-            <h1 class="mb-6">{trans(lang, "home.hero.title")}</h1>
-            <p class="text-xl mb-8">
+<!--    &lt;!&ndash; Hero Content &ndash;&gt;-->
+<!--    <div class="container relative z-10 flex h-full items-center justify-between">-->
+<!--        <div class="max-w-2xl text-white slide-up">-->
+<!--            <h1 class="mb-6">{trans(lang, "home.hero.title")}</h1>-->
+<!--            <p class="text-xl mb-8">-->
+<!--                {trans(lang, "home.hero.subtitle")}-->
+<!--            </p>-->
+<!--            <div class="flex flex-wrap gap-4">-->
+<!--                <a href="/hotels" class="btn btn-primary">-->
+<!--                    {trans(lang, "home.hero.buttons.view-hotels")}-->
+<!--                </a>-->
+<!--                <a href="/offers" class="btn bg-white text-neutral-900 hover:bg-neutral-100">-->
+<!--                    {trans(lang, "home.hero.buttons.view-offers")}-->
+<!--                </a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        &lt;!&ndash;<ReservationForm lang={lang}/>&ndash;&gt;-->
+<!--        &lt;!&ndash;<BookingForm2/>&ndash;&gt;-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Scroll Indicator &ndash;&gt;-->
+<!--    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce">-->
+<!--        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"-->
+<!--             class="w-10 h-10">-->
+<!--            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 5.25l-7.5 7.5-7.5-7.5m15 6l-7.5 7.5-7.5-7.5"/>-->
+<!--        </svg>-->
+<!--    </div>-->
+<!--</section>-->
+
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+
+<div class="relative flex flex-col items-center justify-start min-h-[calc(100vh-5rem)] overflow-hidden"> {/* 5rem is approx header height */}
+    {/* Background Image */}
+    <ImageFull src={imageUrl({url: "upload/hm2_portada.jpg", back: 0})}></ImageFull>
+
+    {/* Hero Content */}
+    <div class="relative z-10 w-full pt-20 md:pt-28 lg:pt-32 text-center text-white">
+        <div class="container px-4 md:px-6 max-w-4xl mx-auto">
+            <h1 class="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl drop-shadow-md">
+                {trans(lang, "home.hero.title")}
+            </h1>
+            <p class="mt-4 max-w-2xl mx-auto text-lg md:text-xl text-neutral-200 drop-shadow-sm">
                 {trans(lang, "home.hero.subtitle")}
             </p>
-            <div class="flex flex-wrap gap-4">
-                <a href="/hotels" class="btn btn-primary">
-                    {trans(lang, "home.hero.buttons.view-hotels")}
-                </a>
-                <a href="/offers" class="btn bg-white text-neutral-900 hover:bg-neutral-100">
-                    {trans(lang, "home.hero.buttons.view-offers")}
-                </a>
+            <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+                <Button
+                        href="/hotels"
+                        variant="outline"
+                        class="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
+                >
+                    {trans(lang, "home.hero.btn.view-hotels")}
+                </Button>
+
+                <Button
+                        href="/offers"
+                        variant="outline"
+                        class="bg-white text-primary border-primary hover:bg-neutral-100 shadow-lg"
+                >
+                    {trans(lang, "home.hero.btn.view-offers")}
+                </Button>
             </div>
         </div>
-        <!--<ReservationForm lang={lang}/>-->
-        <BookingForm2/>
     </div>
 
-    <!-- Scroll Indicator -->
-    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-             class="w-10 h-10">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 5.25l-7.5 7.5-7.5-7.5m15 6l-7.5 7.5-7.5-7.5"/>
-        </svg>
+    {/* Booking Form Section */}
+    <div class="relative z-10 w-full mt-12 md:mt-16 lg:mt-20 pb-12 px-4">
+        <div class="container max-w-4xl mx-auto">
+            <ReservationForm lang={lang}/>
+        </div>
     </div>
-</section>
+</div>
+

@@ -25,17 +25,35 @@
 		},
 		"forms": {
 			"reservation": {
-				"check-in": "Fecha de Ingreso",
-				"check-out": "Fecha de Salida",
-				"adult": "Adulto{{s}}",
-				"child": "Niño{{s}}",
-				"breakfast": "Desayuno",
-				"parking": "Parqueadero",
-				"contact": "Reservar",
+				"title": "Realiza tu Reserva",
+				"subtitle": "Reserva tu estancia de forma rápida y sencilla.",
+
+
 				"label-child": "Edad del niño {{year}}",
 				"input-child": "{{year}} año{{s}}",
 				"child-less-ages": "Menos de {{year}} año",
-				"child-ages": "{{year}} año{{s}}"
+				"child-ages": "{{year}} año{{s}}",
+
+				"lbl": {
+					"country": "Ciudad",
+					"checkin-checkout": "Fecha Ingreso - Salida",
+					"adult": "Adulto{{s}}",
+					"rooms": "Habitaciones"
+				},
+				"placeholder": {
+					"country": "Selecciona la ciudad",
+					"checkin-checkout": "Selecciona un rango de fecha",
+					"adult": "Adulto{{s}}",
+					"rooms": "Habitacion{{s}}"
+				},
+				"group": "Grupo",
+				"child": "Niño{{s}}",
+				"nochildren": "Sin Niños",
+				"breakfast": "Desayuno",
+				"parking": "Parqueadero",
+				"btn": {
+					"reservations":"Contactar con asesor"
+				}
 			}
 		},
 		"ui": {
@@ -72,7 +90,7 @@
 		"hero": {
 			"title": "Experiencia nueva cada dia",
 			"subtitle": "Descubra un confort incomparable y un servicio impecable en nuestros selectos hoteles y resorts de todo el mundo. del mundo.",
-			"buttons": {
+			"btn": {
 				"view-hotels": "Ver nuestros Hoteles",
 				"view-offers": "Ofertas Especiales"
 			}
