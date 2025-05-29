@@ -1,7 +1,6 @@
 ---
 import {trans} from "~/utils/translations";
 import ImageFull from "../../core/imagen/ImageFull.astro";
-import {imageUrl} from "../../../utils/tina";
 import Button from "../../ui/Button.astro";
 import ReservationForm from "../../forms/ReservationForm.astro";
 
@@ -11,21 +10,36 @@ interface Props {
 const {lang} = Astro.props;
 
 // Importar la imagen directamente
-import heroImage1 from "../../../assets/upload/hm2_portada.jpg";
+import heroImage1 from "../../../assets/upload/hero-backgrounds/bg-cuenca1.jpeg";
+import heroImage2 from "../../../assets/upload/hero-backgrounds/bg-cuenca2.webp";
+import heroImage3 from "../../../assets/upload/hero-backgrounds/bg-cuenca3.jpg";
+import heroImage4 from "../../../assets/upload/hero-backgrounds/bg-cuenca4.jpg";
+import heroImage5 from "../../../assets/upload/hero-backgrounds/bg-cuenca5.avif";
+import heroImage6 from "../../../assets/upload/hero-backgrounds/bg-cuenca6.jpeg";
+import heroImage7 from "../../../assets/upload/hero-backgrounds/bg-cuenca7.jpg";
+import heroImage8 from "../../../assets/upload/hero-backgrounds/bg-cuenca8.jpg";
+import heroImage9 from "../../../assets/upload/hero-backgrounds/bg-cuenca9.jpg";
+import heroImage10 from "../../../assets/upload/hero-backgrounds/bg-cuenca10.jpg";
+import heroImage11 from "../../../assets/upload/hero-backgrounds/bg-cuenca11.jpg";
+import heroImage12 from "../../../assets/upload/hero-backgrounds/bg-cuenca12.jpg";
+import heroImage13 from "../../../assets/upload/hero-backgrounds/bg-cuenca13.jpg";
+import heroImage14 from "../../../assets/upload/hero-backgrounds/bg-cuenca14.jpg";
+import heroImage15 from "../../../assets/upload/hero-backgrounds/bg-cuenca15.jpg";
 
 const heroImages = [
-    heroImage1
+    heroImage1, heroImage2, heroImage3, heroImage4, heroImage5,
+    heroImage6, heroImage7, heroImage8, heroImage9, heroImage10,
+    heroImage11, heroImage12, heroImage13, heroImage14, heroImage15
 ];
 
 // Seleccionar una imagen aleatoria
 const heroImage = heroImages[Math.floor(Math.random() * heroImages.length)];
-
-
+// console.info("Imagen Background - Seleted: ", heroImage.src, "Format: ",heroImage.format, "", heroImage)
 ---
 
 <div class="relative flex flex-col items-center justify-start min-h-[calc(100vh-5rem)] overflow-hidden"> {/* 5rem is approx header height */}
     {/* Background Image */}
-    // <ImageFull src={heroImage}></ImageFull>
+    <ImageFull src={heroImage}></ImageFull>
 
     {/* Hero Content */}
     <div class="relative z-10 w-full pt-20 md:pt-28 lg:pt-32 text-center text-white">

@@ -4,7 +4,8 @@
 	"version": "1.0.0",
 	"private": true,
 	"scripts": {
-		"dev": "tinacms dev -c \"astro dev --host\"",
+		"dev": "astro dev --host",
+		"tina:dev": "tinacms dev -c \"astro dev --host\"",
 		"audit": "tinacms audit",
 		"tina-clean": "tinacms audit --clean",
 		"build": "astro build",
@@ -23,6 +24,7 @@
 		"astro-icon": "^1.1.5",
 		"clsx": "^2.1.1",
 		"date-fns": "^3.6.0",
+		"flatpickr": "^4.6.13",
 		"lucide-astro": "^0.503.0",
 		"lucide-react": "^0.511.0",
 		"lucide-static": "^0.503.0",
@@ -33,8 +35,7 @@
 		"tinacms": "^2.7.5",
 		"typescript": "^5.8.3",
 		"uuid": "^11.1.0",
-		"vanillajs-datepicker": "^1.3.4",
-		"zod": "^3.24.3"
+		"vanillajs-datepicker": "^1.3.4"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",

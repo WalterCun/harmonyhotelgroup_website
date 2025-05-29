@@ -5,7 +5,15 @@ import Layout from "~/layouts/Layout.astro";
 import { Api } from "~/utils/tina";
 
 const api = new Api(true, 4);
-const hotels = await api.hotels();
+let hotels = [];
+
+try {
+    hotels = await api.hotels();
+    console.log('All hotels loaded successfully:', hotels.length);
+} catch (error) {
+    console.error('Error loading hotels:', error);
+    // Fallback to empty array if API call fails
+}
 ---
 
 <Layout lang={lang_es} title="Our Hotels">

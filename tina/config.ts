@@ -43,6 +43,7 @@ export default defineConfig({
                 name: "hotels",
                 label: "Hotels",
                 path: "src/data/hotels",
+                format:"json",
                 fields: [
                     {
                         type: "number",
@@ -320,6 +321,7 @@ export default defineConfig({
                 name: "icons",
                 label: "Icons",
                 path: "src/data/icons",
+                format:"json",
                 fields: [
                     {
                         type: "string",
@@ -341,6 +343,7 @@ export default defineConfig({
                 name: "destinations",
                 label: "Destinations",
                 path: "src/data/destinations",
+                format:"json",
                 fields: [
                     {
                         type: "number",
@@ -428,6 +431,7 @@ export default defineConfig({
                 name: "offers",
                 label: "Offers",
                 path: "src/data/offers",
+                format:"json",
                 fields: [
                     {
                         type: "number",

@@ -1,6 +1,0 @@
----
-icon: wifi
-name:
-  - Wifi
----
-

@@ -13,8 +13,20 @@ const { id } = Astro.params;
 const { lang } = Astro.props;
 
 const api = new Api();
-const hoteles = await api.hotels();
-const hotel = hoteles.find((item) => item.hotel_id === Number(id));
+let hoteles = [];
+let hotel = null;
+
+try {
+    hoteles = await api.hotels();
+    hotel = hoteles.find((item) => item.hotel_id === Number(id));
+
+    if (!hotel) {
+        console.error(`Hotel with ID ${id} not found`);
+    }
+} catch (error) {
+    console.error('Error loading hotels:', error);
+    // Fallback to empty array if API call fails
+}
 ---
 
 <Layout lang={lang_es} title={`${hotel?.name}`}>

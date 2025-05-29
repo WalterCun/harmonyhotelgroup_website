@@ -1,9 +1,0 @@
----
-destination_id: 1
-name: Chorro de Giron
-country: Ecuador
-city: Giron
-coverImage: /upload/chorro_giron.jpeg
-highlight: true
----
-

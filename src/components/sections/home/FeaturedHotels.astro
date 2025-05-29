@@ -4,7 +4,15 @@ import { trans } from "~/utils/translations";
 import { Api, imageUrl } from "~/utils/tina";
 
 const api = new Api(true, 4);
-const hoteles = await api.hotels();
+let hoteles = [];
+
+try {
+    hoteles = await api.hotels();
+    console.log('Featured hotels loaded successfully:', hoteles.length);
+} catch (error) {
+    console.error('Error loading featured hotels:', error);
+    // Fallback to empty array if API call fails
+}
 
 interface Props {
 	lang: string;

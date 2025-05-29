@@ -1,47 +1,68 @@
 ---
 import {Image} from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 
-interface Props {
-    lang?: string,
-    src?: string | ImageMetaData
+// Tipos mejorados y simplificados
+type ImageSource = string | ImageMetadata | Promise<{ default: ImageMetadata }>;
+
+// Constantes para valores predeterminados
+const DEFAULT_IMAGE_URL = "https://placehold.co/1920x1080.png";
+const DEFAULT_IMAGE_WIDTH = 1920;
+const DEFAULT_IMAGE_HEIGHT = 1080;
+const DEFAULT_IMAGE_QUALITY = 90;
+
+// Props con nombres más descriptivos y tipos mejorados
+interface HeroImageProps {
+    lang?: string;
+    src?: ImageSource;
+    alt?: string;
+    overlayOpacity?: number;
 }
 
-const {lang, src = null} = Astro.props;
+const {
+    lang,
+    src = DEFAULT_IMAGE_URL,
+    alt = "No alt applied",
+    overlayOpacity = 40
+} = Astro.props;
+
+// Helper para crear el estilo de overlay dinámicamente
+const overlayStyle = `bg-black/${overlayOpacity}`;
 ---
 
-<div class="image-container absolute inset-0 z-0">
-    <!--<img-->
-    <!--        alt="hero_alt_tropical_resort"-->
-    <!--        src="https://placehold.co/1920x1080.png"-->
-    <!--        data-ai-hint="tropical resort pool"-->
-    <!--        loading="eager"-->
-    <!--        class="hero-image"-->
-    <!--        width="1920"-->
-    <!--        height="1080"-->
-    <!--/>-->
+<div class="image-container">
     <Image
-            alt="hero_alt_tropical_resort"
-            src={src ?? "https://placehold.co/1920x1080.png"}
+            alt={alt}
+            src={src}
             data-ai-hint="tropical resort pool"
-            width={1920}
-            height={1080}
+            width={DEFAULT_IMAGE_WIDTH}
+            height={DEFAULT_IMAGE_HEIGHT}
             loading="eager"
             class="hero-image"
             format="webp"
-            quality={90}
+            quality={DEFAULT_IMAGE_QUALITY}
     />
     <div class="absolute inset-0 bg-black/40"/>
+    <div class={`overlay ${overlayStyle}`}/>
 </div>
 
 <style>
     .image-container {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+
         width: 100%;
         height: 100%;
     }
-
     .hero-image {
         width: 100%;
         height: 100%;
         object-fit: cover;
     }
+    .overlay {
+        position: absolute;
+        inset: 0;
+    }
+
 </style>

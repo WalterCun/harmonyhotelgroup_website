@@ -4,7 +4,15 @@ import { Api } from "~/utils/tina";
 import { trans } from "../../../utils/translations";
 
 const api = new Api(true, 4);
-const offers = await api.offers();
+let offers = [];
+
+try {
+    offers = await api.offers();
+    console.log('Special offers loaded successfully:', offers.length);
+} catch (error) {
+    console.error('Error loading offers:', error);
+    // Fallback to empty array if API call fails
+}
 
 interface Props {
 	lang: string;
