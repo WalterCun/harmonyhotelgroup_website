@@ -8,7 +8,6 @@ import type {HotelsQuery} from "../../tina/__generated__/types.ts";
 export class Api {
     destacado: boolean;
     limit: number;
-    VALID_FILE_EXTENSIONS: string[] = [".md", ".json", ".mdx"];
 
     constructor(destacado = false, limit = -1) {
         this.destacado = destacado;
@@ -64,8 +63,6 @@ export class Api {
 
 
     // ----------------------------------------------------------------------------------------------------------------
-
-    private readonly destinationsDirectory: string = "src/data/destinations";
 
     // async destinations(): Promise<DestinationsQuery["destinations"][]> {
     //     try {
