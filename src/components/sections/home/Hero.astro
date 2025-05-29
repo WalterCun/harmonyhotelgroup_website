@@ -8,22 +8,24 @@ import ReservationForm from "../../forms/ReservationForm.astro";
 interface Props {
     lang: string;
 }
-// const quickLinks = [
-//     {label: trans(lang, "components.common.navigation.url.about-us"), href: "/about"},
-//     {label: trans(lang, "components.common.navigation.url.hotel"), href: "/hotels"},
-//     {label: trans(lang, "components.common.navigation.url.destinations"), href: "/destinations"},
-//     {label: trans(lang, "components.common.navigation.url.offers"), href: "/offers"},
-//     {label: trans(lang, "components.common.navigation.url.blog"), href: "/blog"},
-//     {label: trans(lang, "components.common.navigation.url.contact"), href: "/contact"},
-//     {label: trans(lang, "components.common.navigation.url.privacy-policy"), href: "/privacy"},
-//     {label: trans(lang, "components.common.navigation.url.terms-of-service"), href: "/terms"},
-// ];
 const {lang} = Astro.props;
+
+// Importar la imagen directamente
+import heroImage1 from "../../../assets/upload/hm2_portada.jpg";
+
+const heroImages = [
+    heroImage1
+];
+
+// Seleccionar una imagen aleatoria
+const heroImage = heroImages[Math.floor(Math.random() * heroImages.length)];
+
+
 ---
 
 <div class="relative flex flex-col items-center justify-start min-h-[calc(100vh-5rem)] overflow-hidden"> {/* 5rem is approx header height */}
     {/* Background Image */}
-    // <ImageFull src={imageUrl({url: "upload/hm2_portada.jpg", back: 0})}></ImageFull>
+    // <ImageFull src={heroImage}></ImageFull>
 
     {/* Hero Content */}
     <div class="relative z-10 w-full pt-20 md:pt-28 lg:pt-32 text-center text-white">
