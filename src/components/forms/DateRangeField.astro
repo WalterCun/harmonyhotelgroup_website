@@ -1,6 +1,4 @@
 ---
-import {Calendar} from "lucide-astro";
-
 import {trans} from "~/utils/translations";
 import {cn} from "../../utils/tailwind";
 
@@ -18,7 +16,7 @@ const {lang, lblTitle, placeholder, className} = Astro.props;
 
 <div class={cn("flex flex-col lg:col-span-2", className)}>
     <label for="date-range" class="flex items-center text-sm font-medium text-foreground/80 mb-0.5">
-        <Calendar class="mr-1.5 h-3.5 w-3.5 text-primary"/>
+        <div class="mr-1.5 h-3.5 w-3.5 text-primary"/>
         {lblTitle ?? trans(lang, 'components.forms.reservation.lbl.checkin-checkout')}
     </label>
     <input

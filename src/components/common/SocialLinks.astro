@@ -1,5 +1,4 @@
 ---
-import { Facebook, Instagram, Linkedin, Twitter, Youtube } from "lucide-astro";
 import {
 	facebookUrl,
 	instagramUrl,
@@ -40,19 +39,19 @@ const validSocialLinks = socialLinks.filter((link) => link.url);
                     aria-label={`Follow us on ${link.platform}`}
             >
                 {link.icon === 'linkedin' ?
-                        <Linkedin></Linkedin> :
+                        <div></div> :
                     link.icon === 'youtube' ?
-                            <Youtube></Youtube> :
+                            <div></div> :
                         link.icon === 'facebook' ?
-                                <Facebook></Facebook> :
+                                <div></div> :
                             link.icon === 'twitter' ?
-                                    <Twitter></Twitter> :
+                                    <div></div> :
                                 link.icon === 'instagram' ?
-                                        <Instagram></Instagram> :
+                                        <div></div> :
                                     link.icon === 'tiktok' ?
-                                            <Tiktok></Tiktok> :
+                                            <div></div> :
                                         link.icon === 'whatsapp' ?
-                                                <Whatsapp></Whatsapp> :
+                                                <div></div> :
                                             null
                 }
             </a>
