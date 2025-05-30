@@ -16,79 +16,6 @@ const api = new Api()
 let hotels = await api.hotels()
 const uniqueCities: CityOption[] = [...new Set(hotels.map(hotel => hotel.location).filter(Boolean))];
 
-// Zod schema for form validation
-// const bookingFormSchema = z.object({
-//     city: z.string().min(1, "booking_form_city_required"),
-//     dateRange: z.object({
-//         from: z.date().optional(),
-//         to: z.date().optional(),
-//     })
-//         .refine(data => data.from !== undefined, {
-//             message: "booking_form_check_in_required",
-//             path: [],
-//         })
-//         .refine(data => data.to !== undefined, {
-//             message: "booking_form_check_out_required",
-//             path: [],
-//         })
-//         .refine(data => {
-//                 if (data.from && data.to) {
-//                     return data.to > data.from;
-//                 }
-//                 return true;
-//             },
-//             {
-//                 message: "booking_form_checkout_after_checkin_error",
-//                 path: [],
-//             }),
-//     adults: z.string().min(1, "booking_form_adults_selection_required"),
-//     rooms: z.string().min(1, "booking_form_rooms_required"),
-//
-//     children: z.string().optional(),
-//     childrenAges: z.array(
-//         z.object({
-//             age: z.string({required_error: "child_age_required"})
-//                 .pipe(
-//                     z.coerce.number({invalid_type_error: "child_age_must_be_number"})
-//                         .min(0, {message: "child_age_min_error"})
-//                         .max(17, {message: "child_age_max_error"})
-//                 )
-//         })
-//     ).optional().default([]),
-//
-//     groupAdults: z.coerce.number({invalid_type_error: "booking_form_group_adults_numeric"}).optional(),
-//     groupChildrenUnder5: z.coerce.number({invalid_type_error: "booking_form_group_children_numeric"}).min(0, "booking_form_group_children_non_negative").optional(),
-//     groupChildrenUnder12: z.coerce.number({invalid_type_error: "booking_form_group_children_numeric"}).min(0, "booking_form_group_children_non_negative").optional(),
-//
-//     breakfast: z.boolean().default(false),
-//     parking: z.boolean().default(false),
-//     largeGroupVehicleType: z.string().optional(),
-// }).superRefine((data, ctx) => {
-//     const isGroupSelected = data.adults === "Group";
-//
-//     if (isGroupSelected) {
-//         if (data.groupAdults === undefined || data.groupAdults < 1) {
-//             ctx.addIssue({
-//                 code: z.ZodIssueCode.custom,
-//                 message: "booking_form_group_adults_required",
-//                 path: ["groupAdults"]
-//             });
-//         }
-//     } else {
-//         const adultsVal = data.adults ? Number.parseInt(data.adults, 10) : 0;
-//         if (Number.isNaN(adultsVal) || adultsVal < 1 || adultsVal > 8) {
-//             ctx.addIssue({code: z.ZodIssueCode.custom, message: "booking_form_adults_invalid_count", path: ["adults"]});
-//         }
-//
-//         const numChildren = Number.parseInt(data.children || "0", 10);
-//         if (numChildren > 0) {
-//             if (!data.childrenAges || data.childrenAges.length !== numChildren) {
-//                 // Individual age field validation is primary.
-//             }
-//         }
-//     }
-// });
-
 // ---------------------------------------------------------------------------------------------------------
 
 interface Props {
@@ -109,6 +36,7 @@ const {lang} = Astro.props;
     </header>
     <div class="p-1.5 md:p-1">
         <form id="booking-form" class="space-y-3" method="POST">
+            <!--Input Ciudad-->
             <div class="w-full">
                 <label for="city" class="flex flex-col items-start  text-sm font-medium text-foreground/80 mb-0.5">
                     <div class="flex gap-1">
@@ -124,7 +52,8 @@ const {lang} = Astro.props;
                         ))}
                     </select>
                 </label>
-                <div id="city-error" class="text-xs mt-0.5 text-red-500 hidden"></div>
+                <div id="city-error" data-error={trans(lang, "components.forms.errors.city")}
+                     class="text-xs mt-0.5 text-red-500 hidden"></div>
             </div>
 
             <!--Calendario, Selector de Adultos-->
@@ -208,121 +137,122 @@ const {lang} = Astro.props;
 
             <!--Seccion de detalle de grupos-->
             <div id="group-details" class="hidden space-y-2 pt-1.5 border-t border-border mt-2.5">
-                <p class="text-sm font-medium text-primary flex items-center">
-                    <div class="mr-1.5 h-4 w-4"/>
+                <p class="text-sm font-medium text-primary flex items-center"/>
+                <div class="mr-1.5 h-4 w-4">
                     {trans(lang, 'components.forms.reservation.lbl.group')}
-                </p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-2.5 gap-y-2.5">
-                    <div>
-                        <label for="groupAdults" class="text-sm font-medium text-foreground/80">
-                            {trans(lang, 'components.forms.reservation.lbl.group-adult')}
-                        </label>
-                        <input
-                                type="number"
-                                id="groupAdults"
-                                name="groupAdults"
-                                placeholder="e.g. 10"
-                                min="1"
-                                class="h-9 text-sm w-full border rounded-md px-3 focus:ring focus:ring-primary/50"
-                        />
-                        <div id="groupAdults-error" class="text-xs mt-0.5 text-red-500 hidden"></div>
-                    </div>
-                    <div>
-                        <label for="groupChildrenUnder5" class="text-sm font-medium text-foreground/80">
-                            {trans(lang, 'components.forms.reservation.lbl.group-children-5')}
-                        </label>
-                        <input
-                                type="number"
-                                id="groupChildrenUnder5"
-                                name="groupChildrenUnder5"
-                                placeholder="e.g. 2"
-                                min="0"
-                                class="h-9 text-sm w-full border rounded-md px-3 focus:ring focus:ring-primary/50"
-                        />
-                        <div id="groupChildrenUnder5-error" class="text-xs mt-0.5 text-red-500 hidden"></div>
-                    </div>
-                    <div>
-                        <label for="groupChildrenUnder12" class="text-sm font-medium text-foreground/80">
-                            {trans(lang, 'components.forms.reservation.lbl.group-children-12')}
-                        </label>
-                        <input
-                                type="number"
-                                id="groupChildrenUnder12"
-                                name="groupChildrenUnder12"
-                                placeholder="e.g. 3"
-                                min="0"
-                                class="h-9 text-sm w-full border rounded-md px-3 focus:ring focus:ring-primary/50"
-                        />
-                        <div id="groupChildrenUnder12-error" class="text-xs mt-0.5 text-red-500 hidden"></div>
-                    </div>
-                    <div>
-                        <label for="groupRooms" class="flex items-center text-sm font-medium text-foreground/80">
-                            <div class="mr-1.5 h-4 w-4 text-primary"/>
-                            {trans(lang, 'components.forms.reservation.lbl.rooms')}
-                        </label>
-                        <select id="groupRooms" name="rooms"
-                                class="h-9 text-sm w-full border rounded-md px-3 focus:ring focus:ring-primary/50">
-                            {groupRoomTypeOptions.map(option => (
-                                    <option value={option.value} selected={option.value === "shared_beds"}
-                                            class="text-sm">
-                                        {trans(lang, option.labelKey)}
-                                    </option>
-                            ))}
-                        </select>
-                        <div id="groupRooms-error" class="text-xs mt-0.5 text-red-500 hidden"></div>
-                    </div>
+                </div>
+            <!--</p>-->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-2.5 gap-y-2.5">
+                <div>
+                    <label for="groupAdults" class="text-sm font-medium text-foreground/80">
+                        {trans(lang, 'components.forms.reservation.lbl.group-adult')}
+                    </label>
+                    <input
+                            type="number"
+                            id="groupAdults"
+                            name="groupAdults"
+                            placeholder="e.g. 10"
+                            min="1"
+                            class="h-9 text-sm w-full border rounded-md px-3 focus:ring focus:ring-primary/50"
+                    />
+                    <div id="groupAdults-error" class="text-xs mt-0.5 text-red-500 hidden"></div>
+                </div>
+                <div>
+                    <label for="groupChildrenUnder5" class="text-sm font-medium text-foreground/80">
+                        {trans(lang, 'components.forms.reservation.lbl.group-children-5')}
+                    </label>
+                    <input
+                            type="number"
+                            id="groupChildrenUnder5"
+                            name="groupChildrenUnder5"
+                            placeholder="e.g. 2"
+                            min="0"
+                            class="h-9 text-sm w-full border rounded-md px-3 focus:ring focus:ring-primary/50"
+                    />
+                    <div id="groupChildrenUnder5-error" class="text-xs mt-0.5 text-red-500 hidden"></div>
+                </div>
+                <div>
+                    <label for="groupChildrenUnder12" class="text-sm font-medium text-foreground/80">
+                        {trans(lang, 'components.forms.reservation.lbl.group-children-12')}
+                    </label>
+                    <input
+                            type="number"
+                            id="groupChildrenUnder12"
+                            name="groupChildrenUnder12"
+                            placeholder="e.g. 3"
+                            min="0"
+                            class="h-9 text-sm w-full border rounded-md px-3 focus:ring focus:ring-primary/50"
+                    />
+                    <div id="groupChildrenUnder12-error" class="text-xs mt-0.5 text-red-500 hidden"></div>
+                </div>
+                <div>
+                    <label for="groupRooms" class="flex items-center text-sm font-medium text-foreground/80">
+                        <div class="mr-1.5 h-4 w-4 text-primary"/>
+                        {trans(lang, 'components.forms.reservation.lbl.rooms')}
+                    </label>
+                    <select id="groupRooms" name="rooms"
+                            class="h-9 text-sm w-full border rounded-md px-3 focus:ring focus:ring-primary/50">
+                        {groupRoomTypeOptions.map(option => (
+                                <option value={option.value} selected={option.value === "shared_beds"}
+                                        class="text-sm">
+                                    {trans(lang, option.labelKey)}
+                                </option>
+                        ))}
+                    </select>
+                    <div id="groupRooms-error" class="text-xs mt-0.5 text-red-500 hidden"></div>
                 </div>
             </div>
-
-            <!--Checkbox de Desayuno & Parking / Selector de Parking-->
-            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 pt-1">
-                <label class="flex flex-row items-center space-x-1.5 space-y-0">
-                    <input type="checkbox" id="breakfast" name="breakfast" class="h-4 w-4"/>
-                    <span class="text-sm font-normal text-foreground/80 flex items-center cursor-pointer">
-                        <div class="mr-1 h-5 w-5 text-primary/80"/>
-                        {trans(lang, 'components.forms.reservation.breakfast')}
-                    </span>
-                </label>
-                <label id="parking-wrapper" class="flex flex-row items-center space-x-1.5 space-y-0">
-                    <input type="checkbox" id="parking" name="parking" class="h-4 w-4"/>
-                    <span class="text-sm font-normal text-foreground/80 flex items-center cursor-pointer">
-                        <div class="mr-1 h-5 w-5 text-primary/80"/>
-                        {trans(lang, 'components.forms.reservation.parking')}
-                    </span>
-                </label>
-                <div id="vehicle-wrapper" class="hidden flex-grow">
-                    <div class="flex items-center gap-x-2">
-                        <div class="w-auto">
-                            <select
-                                    id="largeGroupVehicleType"
-                                    name="largeGroupVehicleType"
-                                    class="h-10 text-sm w-full border rounded-md px-3 focus:ring focus:ring-primary/50"
-                            >
-                                {vehicleTypeOptions.map(option => (
-                                        <option value={option.value} selected={option.value === "buseta"}
-                                                class="text-sm">
-                                            {trans(lang, option.labelKey)}
-                                        </option>
-                                ))}
-                            </select>
-                        </div>
-                        <label for="largeGroupVehicleType"
-                               class="flex items-center text-sm font-medium text-foreground/80 whitespace-nowrap shrink-0">
-                            <div class="mr-1.5 h-3.5 w-3.5 text-primary shrink-0"/>
-                            {trans(lang, 'components.forms.reservation.placeholder.group-type-vehicle')}
-                        </label>
-                    </div>
-                    <div id="largeGroupVehicleType-error" class="text-xs mt-0.5 text-red-500 hidden"></div>
-                </div>
-            </div>
-
-            <button id="booking-form-submit" type="submit"
-                    class="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-base mt-2 py-2.5 rounded-md flex items-center justify-center">
-                <div class="mr-1.5 h-4 w-4"/>
-                {trans(lang, 'components.forms.reservation.btn.reservations')}
-            </button>
-        </form>
     </div>
+
+    <!--Checkbox de Desayuno & Parking / Selector de Parking-->
+    <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 pt-1">
+        <label class="flex flex-row items-center space-x-1.5 space-y-0">
+            <input type="checkbox" id="breakfast" name="breakfast" class="h-4 w-4"/>
+            <span class="text-sm font-normal text-foreground/80 flex items-center cursor-pointer">
+                        <div class="mr-1 h-5 w-5 text-primary/80"/>
+                {trans(lang, 'components.forms.reservation.breakfast')}
+                    </span>
+        </label>
+        <label id="parking-wrapper" class="flex flex-row items-center space-x-1.5 space-y-0">
+            <input type="checkbox" id="parking" name="parking" class="h-4 w-4"/>
+            <span class="text-sm font-normal text-foreground/80 flex items-center cursor-pointer">
+                        <div class="mr-1 h-5 w-5 text-primary/80"/>
+                {trans(lang, 'components.forms.reservation.parking')}
+                    </span>
+        </label>
+        <div id="vehicle-wrapper" class="hidden flex-grow">
+            <div class="flex items-center gap-x-2">
+                <div class="w-auto">
+                    <select
+                            id="largeGroupVehicleType"
+                            name="largeGroupVehicleType"
+                            class="h-10 text-sm w-full border rounded-md px-3 focus:ring focus:ring-primary/50"
+                    >
+                        {vehicleTypeOptions.map(option => (
+                                <option value={option.value} selected={option.value === "buseta"}
+                                        class="text-sm">
+                                    {trans(lang, option.labelKey)}
+                                </option>
+                        ))}
+                    </select>
+                </div>
+                <label for="largeGroupVehicleType"
+                       class="flex items-center text-sm font-medium text-foreground/80 whitespace-nowrap shrink-0">
+                    <div class="mr-1.5 h-3.5 w-3.5 text-primary shrink-0"/>
+                    {trans(lang, 'components.forms.reservation.placeholder.group-type-vehicle')}
+                </label>
+            </div>
+            <div id="largeGroupVehicleType-error" class="text-xs mt-0.5 text-red-500 hidden"></div>
+        </div>
+    </div>
+
+    <button id="booking-form-submit" type="submit"
+            class="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-base mt-2 py-2.5 rounded-md flex items-center justify-center">
+        <div class="mr-1.5 h-4 w-4"/>
+        {trans(lang, 'components.forms.reservation.btn.reservations')}
+    </button>
+    </form>
+</div>
 </div>
 
 
@@ -475,176 +405,74 @@ const {lang} = Astro.props;
         // }
 
         // Clear all error messages
-        // function clearErrors(): void {
-        //     Object.values(errorElements).forEach(el => {
-        //         if (el) el.classList.add('hidden');
-        //     });
-        //
-        //     // Clear child age errors
-        //     const childAgeErrors: NodeListOf<Element> = document.querySelectorAll('[id^="childAge-"]');
-        //     childAgeErrors.forEach(el => el.classList.add('hidden'));
-        // }
+        function clearErrors(): void {
+            // // Eliminar mensajes de error generales
+            // const generalErrors = form.querySelectorAll('.text-red-500, .text-green-500');
+            // generalErrors.forEach(el => el.remove());
 
-        // Validate form using Zod schema
-        // interface ValidationResult {
-        //     isValid: boolean;
-        //     data?: any;
-        //     error?: any;
-        // }
+            // Limpiar errores específicos de campo
+            Object.values(errorElements).forEach(el => {
+                if (el) {
+                    // el.textContent = '';
+                    el.classList.add('hidden');
+                }
+            });
 
-        // function validateForm(): ValidationResult {
-        //     clearErrors();
-        //
-        //     try {
-        //         // Prepare form data for validation
-        //         const formData: any = {
-        //             city: citySelect.value,
-        //             dateRange: {
-        //                 from: dateFrom.value ? new Date(dateFrom.value) : undefined,
-        //                 to: dateTo.value ? new Date(dateTo.value) : undefined
-        //             },
-        //             adults: adultsSelect.value,
-        //             rooms: adultsSelect.value === "Group" ? groupRoomsSelect.value : roomsSelect.value,
-        //             children: childrenSelect.value,
-        //             childrenAges: [],
-        //             breakfast: breakfastCheckbox.checked,
-        //             parking: parkingCheckbox.checked
-        //         };
-        //         // Add group-specific fields if group is selected
-        //         if (adultsSelect.value === "Group") {
-        //             formData.groupAdults = groupAdultsInput.value ? parseInt(groupAdultsInput.value, 10) : undefined;
-        //             formData.groupChildrenUnder5 = groupChildrenUnder5Input.value ? parseInt(groupChildrenUnder5Input.value, 10) : undefined;
-        //             formData.groupChildrenUnder12 = groupChildrenUnder12Input.value ? parseInt(groupChildrenUnder12Input.value, 10) : undefined;
-        //
-        //             const isLargeGroup: boolean = (formData.groupAdults || 0) + (formData.groupChildrenUnder5 || 0) + (formData.groupChildrenUnder12 || 0) > 8;
-        //             if (isLargeGroup) {
-        //                 formData.largeGroupVehicleType = vehicleTypeSelect.value;
-        //             }
-        //         } else {
-        //             // Get children ages
-        //             const childCount: number = parseInt(childrenSelect.value, 10);
-        //             if (childCount > 0) {
-        //                 const ageInputs: NodeListOf<Element> = childrenAgesContainer.querySelectorAll('input[name^="childrenAges"]');
-        //                 ageInputs.forEach((input: Element, _: number) => {
-        //                     formData.childrenAges.push({age: (input as HTMLInputElement).value});
-        //                 });
-        //             }
-        //         }
-        //
-        //         // Validate with Zod schema
-        //         console.log(bookingFormSchema);
-        //         const result = bookingFormSchema.parse(formData);
-        //         return {isValid: true, data: result};
-        //     } catch (error: any) {
-        //         // Handle Zod validation errors
-        //         if (error.errors) {
-        //             error.errors.forEach((err: any) => {
-        //                 const path: string = err.path.join('.');
-        //
-        //                 // Handle nested paths
-        //                 if (path.startsWith('childrenAges')) {
-        //                     const match: RegExpMatchArray | null = path.match(/childrenAges\.(\d+)\.age/);
-        //                     if (match) {
-        //                         const index: string = match[1];
-        //                         const errorEl: HTMLElement | null = document.getElementById(`childAge-${index}-error`);
-        //                         if (errorEl) {
-        //                             errorEl.textContent = trans(lang, err.message) || err.message;
-        //                             errorEl.classList.remove('hidden');
-        //                         }
-        //                     }
-        //                 } else if (path.startsWith('dateRange')) {
-        //                     showError('dateRange', err.message);
-        //                 } else if (path === '') {
-        //                     // General error or dateRange refinement error
-        //                     if (err.message.includes('check')) {
-        //                         showError('dateRange', err.message);
-        //                     }
-        //                 } else {
-        //                     // Standard field error
-        //                     showError(err.path[0], err.message);
-        //                 }
-        //             });
-        //         }
-        //         return {isValid: false, error};
-        //     }
-        // }
+            // Limpiar errores de edades de niños
+            const childAgeErrors = document.querySelectorAll('[id^="childAge-"]');
+            childAgeErrors.forEach(el => {
+                if (el) {
+                    // el.textContent = '';
+                    el.classList.add('hidden');
+                }
+            });
+        }
+
 
         // Handle form submission
         async function handleSubmit(event: Event): Promise<void> {
             console.log('Form submit event triggered');
             event.preventDefault();
 
+            // Limpiar errores previos
+            clearErrors();
+
             const formData: FormData = new FormData(form);
 
-            const {error} = await actions.reservation(formData);
-            if (!error) console.info("Reservation", error);
+            try {
+                const result = await actions.validationForm(formData);
+                if (result.error) {
+                    console.warn("Error al procesar el formulario:", result.error);
+                    console.warn("Errores: ", result.error.issues);
+                    console.warn("Data: ", result.data);
 
-            // const validation: ValidationResult = validateForm();
-            // if (!validation.isValid) {
-            //     return;
-            // }
-            //
-            // console.log("Validation True");
-            //
-            // const data: any = validation.data;
-            //
-            // // Prepare WhatsApp message
-            // let message: string = `${trans(lang, 'whatsapp_booking_header')}\n\n`;
-            // message += `${trans(lang, 'booking_form_city_select_label')}: ${data.city}\n`;
-            //
-            // const fromDate: string = data.dateRange.from ? formatDate(data.dateRange.from) : 'N/A';
-            // const toDate: string = data.dateRange.to ? formatDate(data.dateRange.to) : 'N/A';
-            // message += `${trans(lang, 'booking_form_check_in')}: ${fromDate}\n`;
-            // message += `${trans(lang, 'booking_form_check_out')}: ${toDate}\n`;
-            //
-            // if (data.adults === "Group") {
-            //     const roomTypeText: string = trans(lang, groupRoomTypeOptions.find(opt => opt.value === data.rooms)?.labelKey || '');
-            //     message += `${trans(lang, 'booking_form_rooms')}: ${roomTypeText}\n`;
-            //     message += `${trans(lang, 'booking_form_adults_group_label')}: ${data.groupAdults}\n`;
-            //
-            //     if (data.groupChildrenUnder5 && data.groupChildrenUnder5 > 0) {
-            //         message += `${trans(lang, 'booking_form_group_children_under_5_label')}: ${data.groupChildrenUnder5}\n`;
-            //     }
-            //
-            //     if (data.groupChildrenUnder12 && data.groupChildrenUnder12 > 0) {
-            //         message += `${trans(lang, 'booking_form_group_children_under_12_label')}: ${data.groupChildrenUnder12}\n`;
-            //     }
-            //
-            //     const isLargeGroup: boolean = (data.groupAdults || 0) + (data.groupChildrenUnder5 || 0) + (data.groupChildrenUnder12 || 0) > 8;
-            //     if (isLargeGroup && data.largeGroupVehicleType) {
-            //         const vehicleTypeText: string = trans(lang, vehicleTypeOptions.find(opt => opt.value === data.largeGroupVehicleType)?.labelKey || '');
-            //         message += `${trans(lang, 'booking_form_large_group_vehicle_type_message_label')}: ${vehicleTypeText}\n`;
-            //     }
-            // } else {
-            //     message += `${trans(lang, 'booking_form_rooms')}: ${data.rooms} ${trans(lang, parseInt(data.rooms) !== 1 ? 'booking_form_rooms_plural_suffix' : 'booking_form_rooms_singular_suffix')}\n`;
-            //     message += `${trans(lang, 'booking_form_adults')}: ${data.adults}\n`;
-            //
-            //     if (parseInt(data.children || "0", 10) > 0) {
-            //         message += `${trans(lang, 'booking_form_children')}: ${data.children}\n`;
-            //         if (data.childrenAges && data.childrenAges.length > 0) {
-            //             const ages: string = data.childrenAges.map((child: any) => child.age).join(', ');
-            //             message += `${trans(lang, 'Ages of Children')}: ${ages}\n`;
-            //         }
-            //     }
-            // }
-            //
-            // message += `${trans(lang, 'booking_form_breakfast')}: ${data.breakfast ? trans(lang, 'Yes') : trans(lang, 'No')}\n`;
-            //
-            // if (!isLargeGroup) {
-            //     message += `${trans(lang, 'booking_form_parking')}: ${data.parking ? trans(lang, 'Yes') : trans(lang, 'No')}\n\n`;
-            // } else {
-            //     message += '\n';
-            // }
-            //
-            // message += trans(lang, 'Please confirm availability.');
-            //
-            // // Open WhatsApp with the message
-            // const encodedMessage: string = encodeURIComponent(message);
-            // const whatsappPhoneNumber: string = "+593996146471";
-            // const whatsappUrl: string = `https://wa.me/${whatsappPhoneNumber}?text=${encodedMessage}`;
-            //
-            // window.open(whatsappUrl, '_blank');
+                    // Si hay errores de validación, mostrarlos
+                    result.error.issues.forEach((issue: any) => {
+                        // Mostrar error para cada campo
+                        const field: string = issue.path[0];
+                        const errorElement = errorElements[field];
+                        errorElement?.classList.toggle('hidden')
+
+                    });
+                } else if (result.data) {
+                    // Éxito - puedes redirigir o mostrar un mensaje de éxito
+                    const successElement = document.createElement('div');
+                    successElement.className = 'text-green-500 text-sm mt-2 p-2 bg-green-50 rounded';
+                    successElement.textContent = result.data.message || 'Reserva exitosa';
+                    form.prepend(successElement);
+
+                    // Opcional: limpiar el formulario después de un envío exitoso
+                    form.reset();
+                }
+            } catch (error) {
+                console.error("Error al procesar el formulario:", error);
+                const generalErrorElement = document.createElement('div');
+                generalErrorElement.className = 'text-red-500 text-sm mt-2 p-2 bg-red-50 rounded';
+                generalErrorElement.textContent = "Ocurrió un error al procesar tu reserva. Por favor intenta de nuevo.";
+                form.prepend(generalErrorElement);
+            }
         }
+
 
         // Event listeners
         adultsSelect.addEventListener('change', toggleGroupBooking);

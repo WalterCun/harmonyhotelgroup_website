@@ -2,7 +2,11 @@
 import { trans } from "../../utils/translations";
 import SocialLinks from "./SocialLinks.astro";
 
-const lang = Astro.currentLocale;
+interface Props {
+    lang: string;
+}
+
+const {lang} = Astro.props;
 
 const quickLinks = [
 	{
