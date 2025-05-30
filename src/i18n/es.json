@@ -69,6 +69,9 @@
 				"btn": {
 					"reservations":"Reserva con un Asesor"
 				}
+			},
+			"errors": {
+				"city":"Debe seleccionar una opcion para continuar..."
 			}
 		},
 		"ui": {
