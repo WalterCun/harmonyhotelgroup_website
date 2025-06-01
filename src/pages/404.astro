@@ -18,6 +18,8 @@ interface Props {
 //     {label: trans(lang, "components.common.navigation.url.terms-of-service"), href: "/terms"},
 // ];
 const { lang = lang_es } = Astro.props;
+
+import search from '../assets/gifs/search.gif'
 ---
 
 <Layout lang={lang} title={trans(lang, "404.title-page")}>
@@ -28,7 +30,7 @@ const { lang = lang_es } = Astro.props;
 
             <div class="flex justify-center items-center my-8">
                 <img
-                        src={imageUrl({url: 'gifs/search.gif', back: 1})}
+                        src={search.src}
                         alt="Gif Busqueda"
                         class="w-[300px] h-[300px] object-cover mx-auto"
                 >
