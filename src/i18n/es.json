@@ -70,6 +70,20 @@
 					"reservations":"Reserva con un Asesor"
 				}
 			},
+			"contact": {
+				"title": "Contactanos",
+				"lbl": {
+					"email": "Correo Electronico:",
+					"descripcion": "Mensaje:"
+				},
+				"placeholder": {
+					"input": "Ingrese correo",
+					"textarea": "Escriba su mensaje"
+				},
+				"btn": {
+					"text": "Contactar"
+				}
+			},
 			"errors": {
 				"city":"Debe seleccionar una opcion para continuar..."
 			}
