@@ -13,6 +13,8 @@ import DateRangeField from "./DateRangeField.astro";
 import {Icon} from "astro-icon/components";
 import DropDownField from "./DropDownField.astro";
 import GridLayout from "../../layouts/GridLayout.astro";
+import CheckField from "./CheckField.astro";
+import Button from "../ui/Button.astro";
 
 const api = new Api()
 
@@ -312,20 +314,22 @@ const {lang} = Astro.props;
 
             <!--Checkbox de Desayuno & Parking / Selector de Parking-->
             <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 pt-1">
-                <label class="flex flex-row items-center space-x-1.5 space-y-0">
-                    <input type="checkbox" id="breakfast" name="breakfast" class="h-4 w-4"/>
-                    <span class="text-sm font-normal text-foreground/80 flex items-center cursor-pointer">
-                        <Icon name="breakfast" class="mr-1 h-5 w-5 text-primary/80"/>
-                        {trans(lang, 'components.forms.reservation.breakfast')}
-                    </span>
-                </label>
-                <label id="parking-wrapper" class="flex flex-row items-center space-x-1.5 space-y-0">
-                    <input type="checkbox" id="parking" name="parking" class="h-4 w-4"/>
-                    <span class="text-sm font-normal text-foreground/80 flex items-center cursor-pointer">
-                        <Icon name="parking" class="mr-1 h-5 w-5 text-primary/80"/>
-                        {trans(lang, 'components.forms.reservation.parking')}
-                    </span>
-                </label>
+                <!--<label class="flex flex-row items-center space-x-1.5 space-y-0">-->
+                <!--    <input type="checkbox" id="breakfast" name="breakfast" class="h-4 w-4"/>-->
+                <!--    <span class="text-sm font-normal text-foreground/80 flex items-center cursor-pointer">-->
+                <!--        <Icon name="breakfast" class="mr-1 h-5 w-5 text-primary/80"/>-->
+                <!--        {trans(lang, 'components.forms.reservation.breakfast')}-->
+                <!--    </span>-->
+                <!--</label>-->
+                <CheckField _id="breakfast" name="breakfast" iconName="breakfast" text={trans(lang, 'components.forms.reservation.breakfast')} />
+                <!--<label id="parking-wrapper" class="flex flex-row items-center space-x-1.5 space-y-0">-->
+                <!--    <input type="checkbox" id="parking" name="parking" class="h-4 w-4"/>-->
+                <!--    <span class="text-sm font-normal text-foreground/80 flex items-center cursor-pointer">-->
+                <!--        <Icon name="parking" class="mr-1 h-5 w-5 text-primary/80"/>-->
+                <!--        {trans(lang, 'components.forms.reservation.parking')}-->
+                <!--    </span>-->
+                <!--</label>-->
+                <CheckField idContainer="parking-wrapper" _id="parking" name="parking" iconName="parking" text={trans(lang, 'components.forms.reservation.parking')} />
                 <div id="vehicle-wrapper" class="hidden grow">
                     <div class="flex items-center gap-x-2">
                         <div class="w-auto">
@@ -352,11 +356,12 @@ const {lang} = Astro.props;
                 </div>
             </div>
 
-            <button id="booking-form-submit" type="submit"
-                    class="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-base mt-2 py-2.5 rounded-md flex items-center justify-center">
-                <div class="mr-1.5 h-4 w-4"/>
+            <Button id="booking-form-submit" type="submit" class="w-full text-base">
+            <!--<button id="booking-form-submit" type="submit"-->
+            <!--        class="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-base mt-2 py-2.5 rounded-md flex items-center justify-center">-->
+                <Icon name="hotel" class="mr-1.5 h-4 w-4"/>
                 {trans(lang, 'components.forms.reservation.btn.reservations')}
-            </button>
+            </Button>
         </form>
     </div>
 </div>
