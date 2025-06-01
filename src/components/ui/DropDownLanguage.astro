@@ -14,12 +14,12 @@ const currentLanguage = LANGUAGES[lang] || LANGUAGES.es;
     <button id="language-toggle" aria-label="Cambiar idioma" aria-haspopup="true" aria-expanded="false"
             class="flex items-center gap-2 px-3 py-1.5 rounded-md text-neutral-700 dark:text-neutral-300 hover:text-primary-500 dark:hover:text-primary-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors">
         {currentLanguage.flag && (
-                <Image src={currentLanguage.flag} alt="" width="20" height="20" class="flex-shrink-0 object-cover"/>)}
+                <Image src={currentLanguage.flag} alt="" width="20" height="20" class="shrink-0 object-cover"/>)}
         <span id="current-language" class="text-sm font-medium">
         {currentLanguage.name || trans(lang, 'components.ui.dropdown.languagedropdown')}
     </span>
         <svg
-                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 flex-shrink-0"
+                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 shrink-0"
                 aria-hidden="true">
             <path
                     fill-rule="evenodd"
@@ -37,7 +37,7 @@ const currentLanguage = LANGUAGES[lang] || LANGUAGES.es;
                     <div class="flex items-center">
                         <a href={structUrl(Astro.url, code)} data-lang-code={code}
                            class="flex items-center w-full text-left px-4 py-2 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700">
-                            <div class="flex-shrink-0">
+                            <div class="shrink-0">
                                 <Image src={value.flag} alt="" width="20"></Image>
                             </div>
                             <span class="ml-2">{value.name}</span>

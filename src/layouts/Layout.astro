@@ -57,7 +57,7 @@ const { lang, title = "" } = Astro.props;
 </head>
 <body class="min-h-screen flex flex-col bg-neutral-50 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-100 transition-colors duration-300">
 <Header lang={lang}/>
-    <main class="flex-grow">
+    <main class="grow">
         <slot/>
     </main>
 <Footer lang={lang}/>

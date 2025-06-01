@@ -140,7 +140,7 @@ const categories = [
             <div class="space-y-4">
               {blogPosts.slice(0, 3).map(post => (
                 <a href={`/blog/${post.id}`} class="flex items-start group">
-                  <div class="w-16 h-16 flex-shrink-0 overflow-hidden rounded-md mr-3">
+                  <div class="w-16 h-16 shrink-0 overflow-hidden rounded-md mr-3">
                     <img 
                       src={post.image} 
                       alt={post.title}
@@ -193,7 +193,7 @@ const categories = [
                   alt={blogPosts[0].title}
                   class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                <div class="absolute inset-0 bg-linear-to-t from-black/80 to-transparent"></div>
                 <div class="absolute bottom-0 left-0 p-6 text-white">
                   <span class="inline-block px-3 py-1 bg-primary-500 text-white text-xs font-semibold rounded-full mb-3">
                     {blogPosts[0].category}
