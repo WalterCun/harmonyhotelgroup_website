@@ -117,10 +117,13 @@ const {lang} = Astro.props;
             <!-- Seccion de seleccion de niños en grupos-->
             <template id="child-age-template">
                 <div>
-                    <label for="children-details" class="text-sm text-muted-foreground mb-0.5" data-label-text>
-                        <Icon name="child" class="mr-2 h-4 w-4 text-primary"/>
-                        {trans(lang, 'components.forms.reservation.lbl.children-item', {index: '...'})}
-                    </label>
+                    <div class="flex flex-row">
+                        <Icon name="baby" class="mr-2 h-4 w-4 text-primary"/>
+                        <label for="children-details" class="flex flex-row text-sm text-muted-foreground mb-0.5"
+                               data-label-text>
+                            {trans(lang, 'components.forms.reservation.lbl.children-item', {index: '...'})}
+                        </label>
+                    </div>
                     <input
                             id="children-details"
                             type="number"
@@ -274,21 +277,19 @@ const {lang} = Astro.props;
         // const geolocation = await getGeolocation()
 
         const adultsSelect: HTMLSelectElement = document.getElementById('adults') as HTMLSelectElement;
+
         const childrenSelect: HTMLSelectElement = document.getElementById('children') as HTMLSelectElement;
-        const childrenWrapper: HTMLElement = document.getElementById('children-wrapper') as HTMLElement;
         const childrenAgesContainer: HTMLElement = document.getElementById('children-ages') as HTMLElement;
 
+        const childrenWrapper: HTMLElement = document.getElementById('children-wrapper') as HTMLElement;
+
         const roomsWrapper: HTMLElement = document.getElementById('rooms-wrapper') as HTMLElement;
-        // const roomsSelect: HTMLSelectElement = document.getElementById('rooms') as HTMLSelectElement;
         const groupDetails: HTMLElement = document.getElementById('group-details') as HTMLElement;
-        // const groupRoomsSelect: HTMLSelectElement = document.getElementById('groupRooms') as HTMLSelectElement;
         const groupAdultsInput: HTMLInputElement = document.getElementById('groupAdults') as HTMLInputElement;
         const groupChildrenUnder5Input: HTMLInputElement = document.getElementById('groupChildrenUnder5') as HTMLInputElement;
         const groupChildrenUnder12Input: HTMLInputElement = document.getElementById('groupChildrenUnder12') as HTMLInputElement;
 
         const parkingWrapper: HTMLElement = document.getElementById('parking-wrapper') as HTMLElement;
-        // const parkingCheckbox: HTMLInputElement = document.getElementById('parking') as HTMLInputElement;
-        // const breakfastCheckbox: HTMLInputElement = document.getElementById('breakfast') as HTMLInputElement;
         const vehicleWrapper: HTMLElement = document.getElementById('vehicle-wrapper') as HTMLElement;
         const vehicleTypeSelect: HTMLSelectElement = document.getElementById('largeGroupVehicleType') as HTMLSelectElement;
 
@@ -328,6 +329,8 @@ const {lang} = Astro.props;
                 }
             } else {
                 groupAdultsInput.removeAttribute('required');
+                // Reactivar el campo rooms
+                document.getElementById('rooms')?.removeAttribute('disabled');
             }
 
             // Check if it's a large group and update the UI accordingly
@@ -381,15 +384,24 @@ const {lang} = Astro.props;
 
                     // Actualizar los atributos y contenidos específicos
                     const label: HTMLLabelElement | null = clone.querySelector('label');
-                    console.log("label", label);
+
+                    // console.log("icon", icon);
                     if (label && label.hasAttribute('data-label-text')) {
                         // Reemplazar el texto {index} en la etiqueta
                         label.textContent = label.textContent!.replace('...', String(i + 1));
                     }
+                    // console.log("label", label);
+                    // const icon: SVGSVGElement | null = clone.querySelector('svg');
+                    // if (icon) {
+                    //     // Reemplazar el texto {index} en la etiqueta
+                    //     icon.id = icon.id!.replace('...', String(i + 1));
+                    // }
 
                     const input: HTMLInputElement | null = clone.querySelector('input');
                     if (input) {
                         input.name = `childrenAges[${i}].age`;
+                        // Agregar el evento onInput
+                        // input.setAttribute('onInput', `updateChildIcon(this, ${i})`);
                     }
 
                     const errorDiv: HTMLDivElement | null = clone.querySelector('div');
@@ -420,20 +432,26 @@ const {lang} = Astro.props;
                     el.classList.toggle('hidden');
                 }
             });
+        }
 
-            // Limpiar errores de edades de niños
-            // const childAgeErrors = document.querySelectorAll('[id^="childAge-"]');
-            // childAgeErrors.forEach(el => {
-            //     if (el) {
-            //         el.classList.add('hidden');
-            //     }
-            // });
+        function updateChildIcon(input: HTMLInputElement, index: Number) {
+            console.log("input", input, "index", index)
+            const value = parseInt(input.value) || 0;
+            const iconElement = document.getElementById(`child-icon-${index}`);
+
+            if (iconElement) {
+                // Cambiar el nombre del icono basado en el valor
+                if (value > 11) {
+                    iconElement.setAttribute('name', 'child'); // Icono para niños mayores
+                } else {
+                    iconElement.setAttribute('name', 'baby'); // Icono para bebés/niños pequeños
+                }
+            }
         }
 
 
         // Handle form submission
         async function handleSubmit(event: Event): Promise<void> {
-            console.log('Form submit event triggered');
             event.preventDefault();
 
             // Limpiar errores previos

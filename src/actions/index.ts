@@ -10,7 +10,10 @@ export const server = {
             checkin: z.string().optional(),
             checkout: z.string().optional(),
             adults: z.string().min(1),
-            rooms: z.string().min(1),
+            // Hacemos que rooms sea opcional
+            rooms: z.string().optional(),
+            parking: z.string().optional(),
+            breakfast: z.string().optional(),
 
             children: z.string().optional(),
             groupAdults: z.string().optional(),
@@ -18,14 +21,20 @@ export const server = {
             groupChildrenUnder12: z.string().optional(),
             groupRooms: z.string().optional(),
             largeGroupVehicleType: z.string().optional(),
-        }).refine((data) => {
 
+        }).refine((data) => {
+            // Si es grupo, requerimos groupAdults
             if (data.adults === "Group") {
                 return !!data.groupAdults;
             }
+            // Si NO es grupo, requerimos rooms
+            return !!data.rooms;
 
-            return true;
+        }, {
+            message: "Se requiere el número de habitaciones o el número de adultos para grupo",
+            path: ["rooms", "groupAdults"]
         }),
+
         handler: async ({
                             city,
                             adults,
@@ -38,7 +47,9 @@ export const server = {
                             largeGroupVehicleType,
                             dateRange,
                             checkin,
-                            checkout
+                            checkout,
+                            parking,
+                            breakfast
                         }) => {
             return {
                 success: true,
@@ -54,7 +65,9 @@ export const server = {
                     largeGroupVehicleType,
                     dateRange,
                     checkin,
-                    checkout
+                    checkout,
+                    parking,
+                    breakfast
                 },
                 message: 'Reserva procesada correctamente'
             }
