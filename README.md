@@ -5,9 +5,9 @@ Este proyecto utiliza Astro.js y TinaCMS para el sitio web de Harmony Hotel Grou
 ## Configuración de desarrollo
 
 1. Clona el repositorio
-2. Instala las dependencias: `npm install`
+2. Instala las dependencias: `pnpm install`
 3. Copia `.env.example` a `.env` y configura las variables de entorno
-4. Inicia el servidor de desarrollo: `npm run dev`
+4. Inicia el servidor de desarrollo: `pnpm run dev`
 
 ## Procesos de CI/CD
 
