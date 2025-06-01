@@ -113,7 +113,7 @@ export class Api {
 
     // ----------------------------------------------------------------------------------------------------------------
 
-    private readonly offersDirectory: string = "src/data/offers";
+    // private readonly offersDirectory: string = "src/data/offers";
 
     // async offers(): Promise<OffersQuery["offers"][]> {
     //     try {
@@ -160,24 +160,25 @@ export class Api {
 
 // --------------------------------------------------------------------------------------------------------------------
 
-export function imageUrl({url, back = 0}: { url: string; back?: number }) {
-    let finalPath = ''
-    // Si ya tiene el prefijo correcto, devolverla tal cual
-    if (url.startsWith("/src/assets")) {
-        return url;
-    }
-
-    // Si comienza con ~ o / eliminarlo
-    const cleanPath =
-        url.startsWith("~") || url.startsWith("/") ? url.substring(1) : url;
-
-    if (back > 0) {
-        for (let i = 0; i < back; i++) {
-            finalPath = `../${finalPath}`;
-        }
-    } else {
-        finalPath = `/src/assets/${cleanPath}`;
-    }
-    // Devolver la ruta correcta
-    return finalPath;
-}
+// export function imageUrl({url, back = 0}: { url: string; back?: number }) {
+//     let finalPath = ''
+//     // Si ya tiene el prefijo correcto, devolverla tal cual
+//     if (url.startsWith("/src/assets")) {
+//         return url;
+//     }
+//
+//     // Si comienza con ~ o / eliminarlo
+//     const cleanPath =
+//         url.startsWith("~") || url.startsWith("/") ? url.substring(1) : url;
+//
+//     if (back > 0) {
+//         finalPath = cleanPath;
+//         for (let i = 0; i < back; i++) {
+//             finalPath = `../${finalPath}`;
+//         }
+//     } else {
+//         finalPath = `/src/assets/${cleanPath}`;
+//     }
+//     // Devolver la ruta correcta
+//     return finalPath;
+// }
