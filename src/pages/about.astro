@@ -1,0 +1,28 @@
+---
+import Layout from "~/layouts/Layout.astro";
+
+import Hero from "~/components/sections/home/Hero.astro";
+// import FeaturedHotels from "../components/sections/home/FeaturedHotels.astro";
+// import PopularDestinations from "../components/sections/home/PopularDestinations.astro";
+
+import { lang_es } from "lib/constants";
+// import Newsletter from "../components/sections/home/Newsletter.astro";
+// import SpecialOffers from "../components/sections/home/SpecialOffers.astro";
+// import Testimonials from "../components/sections/home/Testimonials.astro";
+---
+
+<Layout lang={lang_es}>
+  <div
+    class="container mx-auto p-8 flex flex-col items-center justify-center min-h-[60vh]"
+  >
+    <h1 class="text-4xl font-bold mb-4 text-gray-800">About Page</h1>
+    <p class="text-lg text-gray-600 mb-6">
+      This page is under construction. We're working hard to bring you more
+      information soon!
+    </p>
+    <div
+      class="animate-spin rounded-full h-12 w-12 border-t-4 border-primary-500 border-solid"
+    >
+    </div>
+  </div>
+</Layout>
