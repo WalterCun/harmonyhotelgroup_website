@@ -1,5 +1,5 @@
 ---
-import type { HTMLAttributes } from 'astro/types';
+import type {HTMLAttributes} from 'astro/types';
 import {cn} from "../../utils/tailwind";
 
 
@@ -57,17 +57,16 @@ const classes = cn(
 const isLink = typeof href !== 'undefined';
 ---
 
-{isLink ? (
-<a href={href} class={classes} {...rest}>
-    <slot />
-</a>
-    ) : (
-<button
-        type={type}
-        class={classes}
-        disabled={disabled}
-        {...rest}
->
-    <slot />
-</button>
-    )}
+{
+    isLink ?
+        (
+        <a href={href} class={classes} {...rest}>
+            <slot/>
+        </a>
+            ) :
+        (
+        <button type={type} class={classes} disabled={disabled} {...rest}>
+            <slot/>
+        </button>
+            )
+    }
