@@ -3,14 +3,17 @@
 @plugin 'tailwindcss-animate';
 
 @plugin "daisyui" {
+  /* biome-ignore lint/correctness/noUnknownProperty: <explanation> */
   themes: false;
 }
 
 @plugin "daisyui/theme" {
+  /* biome-ignore lint/correctness/noUnknownProperty: <explanation> */
   name: "harmony_theme";
+  /* biome-ignore lint/correctness/noUnknownProperty: <explanation> */
   default: true;
-  /* set as default */
-  prefersdark: false;
+  /* biome-ignore lint/correctness/noUnknownProperty: <explanation> */
+    prefersdark: false;
   /* set as default dark mode (prefers-color-scheme:dark) */
   color-scheme: light;
   /* color of browser-provided UI */
