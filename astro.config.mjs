@@ -1,7 +1,7 @@
 import tailwindcss from '@tailwindcss/vite'
 import vercel from "@astrojs/vercel";
 import icon from "astro-icon";
-import { defineConfig } from "astro/config";
+import {defineConfig} from "astro/config";
 
 // https://astro.build/config
 export default defineConfig({
@@ -18,9 +18,9 @@ export default defineConfig({
         },
     },
     vite: {
-		plugins: [tailwindcss()],
-	},
-        integrations: [
+        plugins: [tailwindcss()],
+    },
+    integrations: [
         icon({
             iconSets: [
                 {
@@ -32,6 +32,8 @@ export default defineConfig({
             ],
         }),
     ],
-    adapter: vercel(),
+    adapter: vercel({
+        webAnalytics: {enabled: true}
+    }),
     output: "server",
 });
