@@ -1,7 +1,21 @@
 ---
+import {Icon} from "astro-icon/components";
+
 interface Props {
-    lang: string
+    idContainer?: string
+    _id: string
+    name: string
+    iconName: string
+    text: string
 }
 
-const {lang} = Astro.props;
+const {idContainer, _id, name, iconName, text} = Astro.props;
 ---
+
+<label id={idContainer} class="flex flex-row items-center space-x-1.5 space-y-0">
+    <input type="checkbox" id={_id} name={name} class="h-4 w-4"/>
+    <span class="text-sm font-normal text-foreground/80 flex items-center cursor-pointer">
+                        <Icon name={iconName} class="mr-1 h-5 w-5 text-primary/80"/>
+        {text}
+                    </span>
+</label>
