@@ -72,13 +72,12 @@ const heroImage = heroImages[Math.floor(Math.random() * heroImages.length)];
         {trans(lang, "home.hero.subtitle")}
       </p>
       <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-        <Button
+        <a
           href="/hotels"
-          variant="outline"
-          class="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
+          class="btn btn-primary"
         >
           {trans(lang, "home.hero.btn.view-hotels")}
-        </Button>
+      </a>
 
         <Button
           href="/offers"

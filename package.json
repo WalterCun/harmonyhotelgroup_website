@@ -18,10 +18,10 @@
 		"astro": "^5.7.5",
 		"astro-icon": "^1.1.5",
 		"flatpickr": "^4.6.13",
-		"tailwindcss": "^4.1.8",
 		"tinacms": "^2.7.5"
 	},
 	"devDependencies": {
+		"tailwindcss": "^4.1.8",
 		"@astrojs/check": "^0.9.4",
 		"@astrojs/vercel": "^8.1.4",
 		"@biomejs/biome": "1.9.4",
