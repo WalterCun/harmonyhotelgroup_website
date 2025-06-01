@@ -1,0 +1,7 @@
+onlyBuiltDependencies:
+  - '@biomejs/biome'
+  - '@tailwindcss/oxide'
+  - '@vercel/speed-insights'
+  - better-sqlite3
+  - esbuild
+  - sharp
