@@ -5,15 +5,37 @@ export const server = {
     validationForm: defineAction({
         accept: "form",
         input: z.object({
-            city: z.string().min(2, "form.city.error"),
-            adults: z.string().min(1, "Por favor selecciona el número de adultos"),
+            city: z.string().min(2),
+            dateRange: z.string().optional(),
+            adults: z.string().min(1),
+            rooms: z.string().min(1),
+
             children: z.string().optional(),
-            rooms: z.string().min(1, "Por favor selecciona el número de habitaciones"),
+            groupAdults: z.string().optional(),
+            groupChildrenUnder5: z.string().optional(),
+            groupChildrenUnder12: z.string().optional(),
+            groupRooms: z.string().optional(),
+            largeGroupVehicleType: z.string().optional(),
+        }).refine((data) => {
 
+            if (data.adults === "Group") {
+                return !!data.groupAdults;
+            }
+
+            return true;
         }),
-        handler: async ({city, adults, rooms, children}) => {
-            console.log("Action recibido:", {city, adults, rooms});
-
+        handler: async ({
+                            city,
+                            adults,
+                            rooms,
+                            children,
+                            groupAdults,
+                            groupChildrenUnder5,
+                            groupChildrenUnder12,
+                            groupRooms,
+                            largeGroupVehicleType,
+                            dateRange
+                        }) => {
             return {
                 success: true,
                 message: 'Reserva procesada correctamente'

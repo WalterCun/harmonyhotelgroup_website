@@ -31,6 +31,7 @@ const { lang, title = "" } = Astro.props;
         // 1. Tema
         const theme = localStorage.getItem('theme') || 'light';
         document.documentElement.classList.add(theme);
+        document.documentElement.setAttribute('data-theme', theme);
 
         // // 2. Cargar Flatpickr dinámicamente
         // const loadScript = (src) => {
@@ -72,10 +73,12 @@ const { lang, title = "" } = Astro.props;
                 if (isDark) {
                     document.documentElement.classList.remove('dark');
                     document.documentElement.classList.add('light');
+                    document.documentElement.setAttribute('data-theme', 'light');
                     localStorage.setItem('theme', 'light');
                 } else {
                     document.documentElement.classList.remove('light');
                     document.documentElement.classList.add('dark');
+                    document.documentElement.setAttribute('data-theme', 'dark');
                     localStorage.setItem('theme', 'dark');
                 }
             });

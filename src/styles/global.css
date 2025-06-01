@@ -4,7 +4,7 @@
 
 @plugin "daisyui";
 
-/* @custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:is(.dark *));
 
 @theme {
   --color-primary-50: #fbf8e6;
@@ -134,6 +134,7 @@
     }
   }
 }
+
 @layer base {
   *,
   ::after,
@@ -146,7 +147,7 @@
 
 @layer utilities {
   body {
-    font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+    font-family: var(--font-sans), Arial, Helvetica, sans-serif;
   }
 }
 
@@ -164,8 +165,8 @@
     --primary: 42 70% 50%;
     --primary-foreground: 30 80% 10%;
 
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
+    --secondary: 180 100% 25%;
+    --secondary-foreground: 0 0% 100%;
 
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
@@ -210,8 +211,8 @@
     --primary: 42 70% 50%;
     --primary-foreground: 30 80% 10%;
 
-    --secondary: 240 5% 18%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 180 100% 25%;
+    --secondary-foreground: 0 0% 100%;
 
     --muted: 240 5% 18%;
     --muted-foreground: 0 0% 65%;
@@ -238,12 +239,11 @@
 }
 
 @layer base {
-	* {
-		@apply border-border;
-	}
-	body {
-		@apply bg-background text-foreground;
-		@apply transition-colors duration-300;
-	}
-} */
-
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    @apply transition-colors duration-300;
+  }
+}

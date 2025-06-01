@@ -5,39 +5,33 @@ import { defineConfig } from "astro/config";
 
 // https://astro.build/config
 export default defineConfig({
-	site: "https://www.harmonyhotelgroup.com",
-	build: {
-		partialBuild: true,
-	},
-	i18n: {
-		locales: ["es", "en"],
-		defaultLocale: "es",
-		routing: {
-			prefixDefaultLocale: false,
-			redirectToDefaultLocale: true,
-		},
-	},
-	vite: {
+    site: "https://www.harmonyhotelgroup.com",
+    build: {
+        partialBuild: true,
+    },
+    i18n: {
+        locales: ["es", "en"],
+        defaultLocale: "es",
+        routing: {
+            prefixDefaultLocale: false,
+            redirectToDefaultLocale: true,
+        },
+    },
+    vite: {
 		plugins: [tailwindcss()],
 	},
-	integrations: [
-		icon({
-			iconSets: [
-				{
-					name: "lucide",
-					svg: {
-						dir: "node_modules/lucide-static/icons",
-					},
-				},
-				{
-					name: "astro",
-					svg: {
-						dir: "src/icons",
-					},
-				},
-			],
-		}),
-	],
-	adapter: vercel(),
-	output: "server",
+        integrations: [
+        icon({
+            iconSets: [
+                {
+                    name: "astro",
+                    svg: {
+                        dir: "src/icons",
+                    },
+                },
+            ],
+        }),
+    ],
+    adapter: vercel(),
+    output: "server",
 });

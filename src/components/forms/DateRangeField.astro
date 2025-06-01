@@ -1,4 +1,5 @@
 ---
+import {Icon} from "astro-icon/components"
 import {trans} from "~/utils/translations";
 import {cn} from "../../utils/tailwind";
 
@@ -16,7 +17,7 @@ const {lang, lblTitle, placeholder, className} = Astro.props;
 
 <div class={cn("flex flex-col lg:col-span-2", className)}>
     <label for="date-range" class="flex items-center text-sm font-medium text-foreground/80 mb-0.5">
-        <div class="mr-1.5 h-3.5 w-3.5 text-primary"/>
+        <Icon name="calendar" class="mr-2 h-4 w-4 text-primary"/>
         {lblTitle ?? trans(lang, 'components.forms.reservation.lbl.checkin-checkout')}
     </label>
     <input
