@@ -1,6 +1,6 @@
 import {lang_es, lang_en, type Language, LANGUAGES, DEFAULT_LANGUAGE} from "./language";
 import {type Currency, CURRENCIES, DEFAULT_CURRENCY, exchangeRates} from "./currency";
-import {whatsappNumber, formatWhatsAppText} from "./whatsapp";
+import {whatsappNumber, formatWhatsAppMessage, createWhatsAppLink} from "./whatsapp";
 import {
     type CityOption,
     adultOptions,
@@ -42,7 +42,8 @@ export {
 
     // WhatsApp constants
     whatsappNumber,
-    formatWhatsAppText,
+    formatWhatsAppMessage,
+    createWhatsAppLink,
 
     // Limit constants
     type CityOption,

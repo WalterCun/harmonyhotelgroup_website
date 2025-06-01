@@ -22,13 +22,14 @@ const {lang, lblTitle, placeholder, className} = Astro.props;
     </label>
     <input
             id="date-range"
+            name="dateRange"
             type="text"
             class="w-full justify-start text-left font-normal h-10 text-sm border rounded-md px-3 focus:ring-3 focus:ring-primary/50"
             placeholder={placeholder ?? trans(lang, 'components.forms.reservation.placeholder.checkin-checkout')}
             readonly
     />
-    <input type="hidden" id="date-from" name="from"/>
-    <input type="hidden" id="date-to" name="to"/>
+    <input type="hidden" id="date-from" name="checkin"/>
+    <input type="hidden" id="date-to" name="checkout"/>
     <div id="date-range-error" class="text-xs mt-0.5 text-red-500 hidden"></div>
 </div>
 

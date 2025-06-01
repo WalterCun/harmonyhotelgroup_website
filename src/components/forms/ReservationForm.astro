@@ -177,7 +177,8 @@ const {lang} = Astro.props;
                         <div id="groupChildrenUnder5-error" class="text-xs mt-0.5 text-red-500 hidden"></div>
                     </div>
                     <div>
-                        <label for="groupChildrenUnder12" class="flex flex-start p-1 text-sm font-medium text-foreground/80">
+                        <label for="groupChildrenUnder12"
+                               class="flex flex-start p-1 text-sm font-medium text-foreground/80">
                             <Icon name="child" class="mr-2 h-4 w-4 text-primary"/>
                             {trans(lang, 'components.forms.reservation.lbl.group-children-12')}
                         </label>
@@ -197,7 +198,7 @@ const {lang} = Astro.props;
                             <Icon name="bed" class="mr-1.5 h-4 w-4 text-primary"/>
                             {trans(lang, 'components.forms.reservation.lbl.rooms')}
                         </label>
-                        <select id="groupRooms" name="rooms"
+                        <select id="groupRooms" name="groupRooms"
                                 class="h-9 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50">
                             {groupRoomTypeOptions.map(option => (
                                     <option value={option.value} selected={option.value === "shared_beds"}
@@ -265,6 +266,7 @@ const {lang} = Astro.props;
 
 <script>
     import {actions} from 'astro:actions';
+    import {createWhatsAppLink, formatWhatsAppMessage, whatsappNumber} from "../../lib/constants";
 
     document.addEventListener('DOMContentLoaded', async (): Promise<void> => {
         const form: HTMLFormElement = document.getElementById('booking-form') as HTMLFormElement;
@@ -469,12 +471,17 @@ const {lang} = Astro.props;
                         successElement.remove();
                     }, 5000); // 5 segundos
 
+                    createWhatsAppLink({phoneNumber: whatsappNumber, message: formatWhatsAppMessage(result.data.form)})
+
                     // Opcional: limpiar el formulario después de un envío exitoso
                     form.reset();
                     clearErrors();
                     updateChildrenAges()
                     updateLargeGroupUI()
                     toggleGroupBooking()
+
+                    console.log(result.data)
+
                 }
             } catch (error) {
                 console.error("Error al procesar el formulario:", error);

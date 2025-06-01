@@ -7,6 +7,8 @@ export const server = {
         input: z.object({
             city: z.string().min(2),
             dateRange: z.string().optional(),
+            checkin: z.string().optional(),
+            checkout: z.string().optional(),
             adults: z.string().min(1),
             rooms: z.string().min(1),
 
@@ -34,10 +36,26 @@ export const server = {
                             groupChildrenUnder12,
                             groupRooms,
                             largeGroupVehicleType,
-                            dateRange
+                            dateRange,
+                            checkin,
+                            checkout
                         }) => {
             return {
                 success: true,
+                form: {
+                    city,
+                    adults,
+                    rooms,
+                    children,
+                    groupAdults,
+                    groupChildrenUnder5,
+                    groupChildrenUnder12,
+                    groupRooms,
+                    largeGroupVehicleType,
+                    dateRange,
+                    checkin,
+                    checkout
+                },
                 message: 'Reserva procesada correctamente'
             }
 

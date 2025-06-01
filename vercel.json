@@ -6,5 +6,10 @@
 	"github": {
 		"enabled": true,
 		"silent": false
+	},
+	"git": {
+		"deploymentEnabled": {
+			"dev": false
+		}
 	}
 }
