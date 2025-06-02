@@ -1,5 +1,6 @@
 // tina/config.ts
 import { defineConfig } from "tinacms";
+import "nanoid";
 var clientId = process.env.NEXT_PUBLIC_TINA_CLIENT_ID || "";
 var token = process.env.TINA_TOKEN || "";
 var isLocalMode = !clientId || !token;
@@ -29,13 +30,8 @@ var config_default = defineConfig({
         name: "hotels",
         label: "Hotels",
         path: "src/data/hotels",
+        format: "json",
         fields: [
-          {
-            type: "number",
-            name: "hotel_id",
-            label: "ID*",
-            required: true
-          },
           {
             type: "string",
             name: "name",
@@ -304,6 +300,7 @@ var config_default = defineConfig({
         name: "icons",
         label: "Icons",
         path: "src/data/icons",
+        format: "json",
         fields: [
           {
             type: "string",
@@ -325,6 +322,7 @@ var config_default = defineConfig({
         name: "destinations",
         label: "Destinations",
         path: "src/data/destinations",
+        format: "json",
         fields: [
           {
             type: "number",
@@ -412,6 +410,7 @@ var config_default = defineConfig({
         name: "offers",
         label: "Offers",
         path: "src/data/offers",
+        format: "json",
         fields: [
           {
             type: "number",

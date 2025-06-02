@@ -1,4 +1,5 @@
-import { defineConfig } from "tinacms";
+import {defineConfig} from "tinacms";
+import {nanoid} from 'nanoid';
 
 // Verificar y utilizar las variables de entorno, o usar valores de respaldo para desarrollo local
 const clientId = process.env.NEXT_PUBLIC_TINA_CLIENT_ID || "";
@@ -8,34 +9,34 @@ const token = process.env.TINA_TOKEN || "";
 const isLocalMode = !clientId || !token;
 
 const branch =
-	process.env.GITHUB_BRANCH ||
-	process.env.VERCEL_GIT_COMMIT_REF ||
-	process.env.HEAD ||
-	"main";
+    process.env.GITHUB_BRANCH ||
+    process.env.VERCEL_GIT_COMMIT_REF ||
+    process.env.HEAD ||
+    "main";
 
 console.info(`Using branch: ${branch}`);
 console.info(`Running in ${isLocalMode ? "local" : "production"} mode`);
 
 export default defineConfig({
-	branch,
+    branch,
 
-	// Configuration for API o modo local
-	clientId,
-	token,
+    // Configuration for API o modo local
+    clientId,
+    token,
 
-	build: {
-		publicFolder: "public",
-		outputFolder: "admin",
-	},
+    build: {
+        publicFolder: "public",
+        outputFolder: "admin",
+    },
 
-	media: {
-		tina: {
-			publicFolder: "src/assets",
-			mediaRoot: "upload",
-		},
-	},
+    media: {
+        tina: {
+            publicFolder: "src/assets",
+            mediaRoot: "upload",
+        },
+    },
 
-	// See docs on content modeling for more info on how to setup new content models: https://tina.io/docs/schema/
+    // See docs on content modeling for more info on how to setup new content models: https://tina.io/docs/schema/
     schema: {
         collections: [
             // COLECCION DE HOTELES
@@ -43,14 +44,8 @@ export default defineConfig({
                 name: "hotels",
                 label: "Hotels",
                 path: "src/data/hotels",
-                format:"json",
+                format: "json",
                 fields: [
-                    {
-                        type: "number",
-                        name: "hotel_id",
-                        label: "ID*",
-                        required: true,
-                    },
                     {
                         type: "string",
                         name: "name",
@@ -231,7 +226,7 @@ export default defineConfig({
                                     itemProps: (item) => {
                                         // Accedemos de forma segura, con un valor por defecto
                                         const amenityName = item?.amenities || "Servicio";
-                                        return { label: `${amenityName}` };
+                                        return {label: `${amenityName}`};
                                     },
                                 },
                                 fields: [
@@ -271,7 +266,7 @@ export default defineConfig({
                         ui: {
                             itemProps: (item) => {
                                 const lang = item?.lang_hotel || "Idioma";
-                                return { label: `${lang}` };
+                                return {label: `${lang}`};
                             },
                         },
                         fields: [
@@ -297,7 +292,7 @@ export default defineConfig({
                             itemProps: (item) => {
                                 // Accedemos de forma segura, con un valor por defecto
                                 const amenityName = item?.amenities || "Servicio";
-                                return { label: `${amenityName}` };
+                                return {label: `${amenityName}`};
                             },
                         },
                         fields: [
@@ -321,7 +316,7 @@ export default defineConfig({
                 name: "icons",
                 label: "Icons",
                 path: "src/data/icons",
-                format:"json",
+                format: "json",
                 fields: [
                     {
                         type: "string",
@@ -343,7 +338,7 @@ export default defineConfig({
                 name: "destinations",
                 label: "Destinations",
                 path: "src/data/destinations",
-                format:"json",
+                format: "json",
                 fields: [
                     {
                         type: "number",
@@ -377,7 +372,7 @@ export default defineConfig({
                         ui: {
                             itemProps: (item) => {
                                 const lang = item?.lang_destination || "Idioma";
-                                return { label: `${lang}` };
+                                return {label: `${lang}`};
                             },
                         },
                         fields: [
@@ -402,7 +397,7 @@ export default defineConfig({
                         ui: {
                             itemProps: (item) => {
                                 const tag = item?.tag || "Etiqueta";
-                                return { label: `${tag}` };
+                                return {label: `${tag}`};
                             },
                         },
                         fields: [
@@ -431,7 +426,7 @@ export default defineConfig({
                 name: "offers",
                 label: "Offers",
                 path: "src/data/offers",
-                format:"json",
+                format: "json",
                 fields: [
                     {
                         type: "number",
@@ -459,7 +454,7 @@ export default defineConfig({
                         ui: {
                             itemProps: (item) => {
                                 const lang = item?.lang_offer || "Idioma";
-                                return { label: `${lang}` };
+                                return {label: `${lang}`};
                             },
                         },
                         fields: [
@@ -496,7 +491,7 @@ export default defineConfig({
                         ui: {
                             itemProps: (item) => {
                                 const tag = item?.tag || "Etiqueta";
-                                return { label: `${tag}` };
+                                return {label: `${tag}`};
                             },
                         },
                         fields: [

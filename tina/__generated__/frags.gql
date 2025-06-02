@@ -1,6 +1,5 @@
 fragment HotelsParts on Hotels {
   __typename
-  hotel_id
   name
   stars
   location

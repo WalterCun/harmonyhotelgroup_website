@@ -1,0 +1,59 @@
+{
+  "_meta": {
+    "created_at": "2025-06-02T00:00:17.797Z",
+    "updated_at": "2025-06-02T00:00:17.797Z"
+  },
+  "name": "Hotel Majestic 2 by HHG",
+  "stars": 3,
+  "location": "Cuenca, Ecuador",
+  "mainStreet": "Gran Colombia",
+  "addressNumber": "207",
+  "secondaryStreet": "Manuel Vega",
+  "contact": [
+    {
+      "type": "Cellphone",
+      "value": "+593996146471",
+      "tag": "Gerencia"
+    },
+    {
+      "type": "Cellphone",
+      "value": "+593996146471",
+      "tag": "Recepción"
+    },
+    {
+      "type": "Email",
+      "value": "reservas@hotelmajestic2.com",
+      "tag": "Reservaciones"
+    }
+  ],
+  "socialMedia": [
+    {
+      "name": "Tiktok",
+      "url": "https://www.tiktok.com/@hotelmajestic2cuenca"
+    },
+    {
+      "name": "Instagram",
+      "url": "https://www.instagram.com/hotelmajestic2cuenca/"
+    },
+    {
+      "name": "Facebook",
+      "url": "https://www.facebook.com/hotelmajestic2cuenca"
+    }
+  ],
+  "rooms": [
+    {
+      "name": "Individual",
+      "size": 12,
+      "occupancy": "Min: 1, Max: 2",
+      "price": "",
+      "amenities": [
+        {
+          "amenities": "src/data/icons/iconWifi.json"
+        }
+      ]
+    }
+  ],
+  "roomPrice": 30,
+  "coverImage": "/upload/hotels/hm2_portada.jpg",
+  "highlight": false
+}
