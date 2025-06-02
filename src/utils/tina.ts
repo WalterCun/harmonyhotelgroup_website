@@ -1,4 +1,6 @@
 import type {HotelsQuery} from "../../tina/__generated__/types.ts";
+import fs from 'node:fs';
+
 
 /**
  * Lee todos los archivos JSON de una carpeta y devuelve sus contenidos.
@@ -33,13 +35,15 @@ export class Api {
                 return fileContent.data?.hotels || fileContent.hotels || fileContent;
             }).filter(Boolean); // Eliminamos valores nulos o undefined
 
+            console.log("hoteles",hoteles)
+
             // Aplicar filtro por ubicación si se proporciona
             if (filterLocation) {
                 hoteles = hoteles.filter((hotel) => {
-                    // biome-ignore lint/complexity/useOptionalChain: <explanation>
-                    if (hotel.location && hotel.location.toLowerCase().includes(filterLocation.toLowerCase())){
-                        return true;
-                    }
+                        // biome-ignore lint/complexity/useOptionalChain: <explanation>
+                        if (hotel.location && hotel.location.toLowerCase().includes(filterLocation.toLowerCase())) {
+                            return true;
+                        }
                     }
                 );
             }
