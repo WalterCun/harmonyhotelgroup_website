@@ -1,6 +1,4 @@
-import type {HotelsQuery} from "../../tina/__generated__/types.ts";
-import fs from 'node:fs';
-
+import {DEBUG} from "lib/constants/global.ts";
 
 /**
  * Lee todos los archivos JSON de una carpeta y devuelve sus contenidos.
@@ -18,24 +16,42 @@ export class Api {
 
     // ----------------------------------------------------------------------------------------------------------------
 
-    async hotels(filterLocation?: string): Promise<HotelsQuery["hotels"][]> {
+    async hotels(filterLocation?: string): Promise<any> {
         try {
             // Obtenemos la lista de archivos dinámicamente
             const hotelFiles: Record<string, any> = import.meta.glob('../data/hotels/*.json', {eager: true});
 
             if (Object.keys(hotelFiles).length === 0) {
-                console.warn('⚠️ No se encontraron archivos en ../data/hotels');
+                !DEBUG && console.warn('⚠️ No se encontraron archivos en ../data/hotels');
                 return [];
             }
 
-            // Extraemos directamente los datos de los hoteles de los archivos
-            let hoteles = Object.values(hotelFiles).map(fileContent => {
-                // Asumiendo que cada archivo tiene el contenido del hotel
-                // Si el contenido está anidado, ajusta esta lógica según sea necesario
-                return fileContent.data?.hotels || fileContent.hotels || fileContent;
-            }).filter(Boolean); // Eliminamos valores nulos o undefined
+            let hoteles = Object.entries(hotelFiles).map(([filePath, fileContent]) => {
+                // Extraer el nombre del archivo (sin extensión) del path
+                const fileName = filePath.split('/').pop()?.replace('.json', '');
+                // Obtener los datos del hotel
+                // Si no hay datos, retornar null (se filtrará después)
+                if (!fileContent) return null;
 
-            console.log("hoteles",hoteles)
+                // Crear una copia para no mutar el objeto original
+                const hotelData = {...fileContent};
+
+                let imagePath = fileContent.coverImage;
+                if (imagePath && !imagePath.startsWith('/src/')) {
+                    // Si la ruta no comienza con /src/, asumimos que es relativa
+                    imagePath = `/src/assets${imagePath}`;
+                }
+
+                hotelData.coverImage = import(imagePath);
+                // Retornar objeto con metadatos añadidos
+                return {
+                    _filename: fileName,
+                    id: hotelData.id || fileName,
+                    _path: filePath,
+                    ...hotelData
+                };
+
+            }).filter(Boolean); // Eliminamos valores nulos o undefined
 
             // Aplicar filtro por ubicación si se proporciona
             if (filterLocation) {
@@ -64,7 +80,6 @@ export class Api {
             return [];
         }
     }
-
 
     // ----------------------------------------------------------------------------------------------------------------
 
@@ -164,25 +179,25 @@ export class Api {
 
 // --------------------------------------------------------------------------------------------------------------------
 
-// export function imageUrl({url, back = 0}: { url: string; back?: number }) {
-//     let finalPath = ''
-//     // Si ya tiene el prefijo correcto, devolverla tal cual
-//     if (url.startsWith("/src/assets")) {
-//         return url;
-//     }
-//
-//     // Si comienza con ~ o / eliminarlo
-//     const cleanPath =
-//         url.startsWith("~") || url.startsWith("/") ? url.substring(1) : url;
-//
-//     if (back > 0) {
-//         finalPath = cleanPath;
-//         for (let i = 0; i < back; i++) {
-//             finalPath = `../${finalPath}`;
-//         }
-//     } else {
-//         finalPath = `/src/assets/${cleanPath}`;
-//     }
-//     // Devolver la ruta correcta
-//     return finalPath;
-// }
+export function imageUrl({url, back = 0, startPath = ""}: { url: string; back?: number, startPath?: "" | "/" }) {
+    let finalPath = ''
+    // Si ya tiene el prefijo correcto, devolverla tal cual
+    if (url.startsWith(`${startPath}src/assets`)) {
+        return url;
+    }
+
+    // Si comienza con ~ o / eliminarlo
+    const cleanPath =
+        url.startsWith("~") || url.startsWith("/") ? url.substring(1) : url;
+
+    if (back > 0) {
+        finalPath = cleanPath;
+        for (let i = 0; i < back; i++) {
+            finalPath = `../${finalPath}`;
+        }
+    } else {
+        finalPath = `${startPath}src/assets/${cleanPath}`;
+    }
+    // Devolver la ruta correcta
+    return finalPath;
+}

@@ -1,23 +1,23 @@
 ---
-import { trans } from "~/utils/translations";
+import {Image} from "astro:assets";
+import {trans} from "~/utils/translations";
 
-import { Api, imageUrl } from "~/utils/tina";
+import {Api, imageUrl} from "~/utils/tina";
 
 const api = new Api(true, 4);
-let hoteles = [];
+let hoteles: any[] = [];
 
 try {
     hoteles = await api.hotels();
     console.log('Featured hotels loaded successfully:', hoteles.length);
 } catch (error) {
     console.error('Error loading featured hotels:', error);
-    // Fallback to empty array if API call fails
 }
 
 interface Props {
-	lang: string;
+    lang: string;
 }
-const { lang } = Astro.props;
+const {lang} = Astro.props;
 ---
 
 <section class="section bg-white dark:bg-neutral-900">
@@ -34,8 +34,7 @@ const { lang } = Astro.props;
                     <div class="card group hover:scale-[1.02] transition-transform duration-300 ease-out">
                         <div class="relative h-64 overflow-hidden">
                             {hotel.coverImage && (
-                                    <img src={imageUrl({url: hotel.coverImage, back: 0})} alt={hotel.name}
-                                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"/>
+                                    <Image src={hotel.coverImage} alt="" width={250} height={250}></Image>
                             )}
                             <div class="absolute top-4 right-4 bg-white dark:bg-neutral-800 rounded-full py-1 px-3 text-sm font-semibold text-primary-500">
                                 5/5
