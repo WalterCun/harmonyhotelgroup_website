@@ -36,13 +36,6 @@ export class Api {
                 // Crear una copia para no mutar el objeto original
                 const hotelData = {...fileContent};
 
-                let imagePath = fileContent.coverImage;
-                if (imagePath && !imagePath.startsWith('/src/')) {
-                    // Si la ruta no comienza con /src/, asumimos que es relativa
-                    imagePath = `/src/assets${imagePath}`;
-                }
-
-                hotelData.coverImage = import(imagePath);
                 // Retornar objeto con metadatos añadidos
                 return {
                     _filename: fileName,

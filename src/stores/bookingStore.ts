@@ -1,5 +1,3 @@
-import { atom } from "nanostores";
-
 export interface BookingFormData {
 	checkIn: string;
 	checkOut: string;
@@ -10,7 +8,7 @@ export interface BookingFormData {
 	parking: boolean;
 }
 
-export const bookingFormState = atom<BookingFormData>({
+export const bookingFormState = {
 	checkIn: "",
 	checkOut: "",
 	adults: 2,
@@ -18,4 +16,4 @@ export const bookingFormState = atom<BookingFormData>({
 	childrenAges: [],
 	breakfast: false,
 	parking: false,
-});
+};

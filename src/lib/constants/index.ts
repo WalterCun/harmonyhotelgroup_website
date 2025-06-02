@@ -1,6 +1,10 @@
+// Language Data
 export * from "./language";
+// Currency Data
 export * from "./currency";
+// WhatsApp Tools
 export {whatsappNumber, formatWhatsAppMessage, createWhatsAppLink} from "./whatsapp";
+// Reservation Form
 export {
     type CityOption,
     adultOptions,
@@ -9,6 +13,7 @@ export {
     groupRoomTypeOptions,
     vehicleTypeOptions
 } from "./reservation-form";
+// Social Media
 export {
     facebookUrl,
     twitterUrl,
@@ -18,6 +23,7 @@ export {
     youtubeUrl,
     whatsappUrl
 } from "./social-media";
+// Contact Media
 export {
     emailUrl,
     phoneUrl,
@@ -25,4 +31,5 @@ export {
     addressUrl,
     directionsUrl
 } from "./contact";
-
+// Images Hotels
+export * from './hotels-images.ts'
