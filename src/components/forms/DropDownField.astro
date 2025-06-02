@@ -20,7 +20,7 @@ const {_id, idContainer,lblTitle,iconName,name} = Astro.props;
         {lblTitle}
     </label>
     <select id={_id} name={name}
-            class="h-10 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50">
+            class="select w-full">
         <slot />
     </select>
     <div id=`${_id}-error` class="text-xs mt-0.5 text-red-500 hidden"></div>

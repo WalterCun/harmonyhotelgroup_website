@@ -1,646 +1,841 @@
 ---
-import {trans} from "~/utils/translations";
+import { trans } from "~/utils/translations";
 import {
-    type CityOption,
-    adultOptions,
-    childrenOptions,
-    roomOptions,
-    groupRoomTypeOptions,
-    vehicleTypeOptions
-} from '../../lib/constants'
-import {Api} from "../../utils/tina";
+  type CityOption,
+  adultOptions,
+  childrenOptions,
+  roomOptions,
+  groupRoomTypeOptions,
+  vehicleTypeOptions,
+} from "../../lib/constants";
+import { Api } from "../../utils/tina";
 import DateRangeField from "./DateRangeField.astro";
-import {Icon} from "astro-icon/components";
+import { Icon } from "astro-icon/components";
 import DropDownField from "./DropDownField.astro";
 import GridLayout from "../../layouts/GridLayout.astro";
 import CheckField from "./CheckField.astro";
 import Button from "../ui/Button.astro";
 
-const api = new Api()
+const api = new Api();
 
-let hotels = await api.hotels()
-const uniqueCities: CityOption[] = [...new Set(hotels.map(hotel => hotel.location).filter(Boolean))];
+let hotels = await api.hotels();
+const uniqueCities: CityOption[] = [
+  ...new Set(hotels.map((hotel) => hotel.location).filter(Boolean)),
+];
 
 // ---------------------------------------------------------------------------------------------------------
 
 interface Props {
-    lang: string;
+  lang: string;
 }
 
-const {lang} = Astro.props;
+const { lang } = Astro.props;
 ---
 
-<div class="bg-background/90 backdrop-blur-xs shadow-2xl p-2 sm:p-3 md:p-2 rounded-lg">
-    <header class="pb-2 pt-4">
-        <h2 class="text-center text-2xl font-bold text-primary">
-            {trans(lang, 'components.forms.reservation.title')}
-        </h2>
-        <p class="text-center text-sm text-muted-foreground">
-            {trans(lang, 'components.forms.reservation.subtitle')}
-        </p>
-    </header>
-    <div class="p-1.5 md:p-1">
-        <form id="booking-form" class="space-y-3" method="POST">
-            <!--Input Ciudad-->
-            <div class="w-full">
-                <label for="city" class="flex flex-col items-start  text-sm font-medium text-foreground/80 mb-0.5">
-                    <div class="flex gap-1">
-                        <div class="mr-1.5 h-3.5 w-3.5 text-primary"/>
-                        {trans(lang, 'components.forms.reservation.lbl.country')}</div>
-                    <select id="city" name="city"
-                            class="h-10 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50">
-                        <option value="" selected disabled>
-                            {trans(lang, 'components.forms.reservation.placeholder.country')}
-                        </option>
-                        {uniqueCities.map(city => (
-                                <option value={city} class="text-sm">{city}</option>
-                        ))}
-                    </select>
-                </label>
-                <div id="city-error" data-error={trans(lang, "components.forms.errors.city")}
-                     class="text-xs mt-0.5 text-red-500 hidden"></div>
+<div
+  class="bg-white/90 backdrop-blur-xs shadow-2xl p-2 sm:p-3 md:p-2 rounded-lg"
+>
+  <header class="pb-2 pt-4">
+    <h2 class="text-center text-2xl font-bold text-primary">
+      {trans(lang, "components.forms.reservation.title")}
+    </h2>
+    <p class="text-center text-sm text-muted-foreground">
+      {trans(lang, "components.forms.reservation.subtitle")}
+    </p>
+  </header>
+  <div class="p-1.5 md:p-1">
+    <form id="booking-form" class="space-y-3" method="POST">
+      <!--Input Ciudad-->
+      <div class="w-full">
+        <label
+          for="city"
+          class="flex flex-col items-start justify-center text-sm font-medium text-foreground/80 mb-0.5"
+        >
+          <div class="flex gap-1">
+            <Icon name="location" class="h-4 w-4 text-primary" />
+            {trans(lang, "components.forms.reservation.lbl.country")}
+          </div>
+          <select
+            id="city"
+            name="city"
+            class="select w-full"
+          >
+            <option value="" selected disabled>
+              {trans(lang, "components.forms.reservation.placeholder.country")}
+            </option>
+            {
+              uniqueCities.map((city) => (
+                <option value={city} class="text-sm">
+                  {city}
+                </option>
+              ))
+            }
+          </select>
+        </label>
+        <div
+          id="city-error"
+          data-error={trans(lang, "components.forms.errors.city")}
+          class="text-xs mt-0.5 text-red-500 hidden"
+        >
+        </div>
+      </div>
+
+      <!--Calendario, Selector de Adultos-->
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-x-2.5 gap-y-3"
+      >
+        <DateRangeField lang={lang} />
+
+        <!--<div class="lg:col-span-1">-->
+        <!--    <label for="adults" class="flex items-center text-sm font-medium text-foreground/80 mb-0.5">-->
+        <!--        <Icon name="people" class="mr-2 h-4 w-4 text-primary"/>-->
+        <!--        {trans(lang, 'components.forms.reservation.lbl.adult', {"s": "s"})}-->
+        <!--    </label>-->
+        <!--    <select id="adults" name="adults"-->
+        <!--            class="h-10 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50">-->
+        <!--        {adultOptions.map(option => (-->
+        <!--                <option value={option} selected={option === "2"} class="text-sm">-->
+        <!--                    {option === "Group"-->
+        <!--                        ? trans(lang, 'components.forms.reservation.group')-->
+        <!--                        : `${option} ${trans(lang, "components.forms.reservation.placeholder.adult", {'s': parseInt(option) > 1 ? 's' : ''})}`}-->
+        <!--                </option>-->
+        <!--        ))}-->
+        <!--    </select>-->
+        <!--    <div id="adults-error" class="text-xs mt-0.5 text-red-500 hidden"></div>-->
+        <!--</div>-->
+        <DropDownField
+          _id="adults"
+          name="adults"
+          lblTitle={trans(lang, "components.forms.reservation.lbl.adult", {
+            s: "s",
+          })}
+          iconName="people"
+        >
+          {
+            adultOptions.map((option) => (
+              <option value={option} selected={option === "2"} class="text-sm">
+                {option === "Group"
+                  ? trans(lang, "components.forms.reservation.group")
+                  : `${option} ${trans(lang, "components.forms.reservation.placeholder.adult", { s: parseInt(option) > 1 ? "s" : "" })}`}
+              </option>
+            ))
+          }
+        </DropDownField>
+
+        <!--<div id="children-wrapper" class="lg:col-span-1">-->
+        <!--    <label for="children" class="flex items-center text-sm font-medium text-foreground/80 mb-0.5">-->
+        <!--        <Icon name="child-care" class="mr-2 h-4 w-4 text-primary"/>-->
+        <!--        {trans(lang, 'components.forms.reservation.child', {'s': 's'})}-->
+        <!--    </label>-->
+        <!--    <select id="children" name="children"-->
+        <!--            class="h-10 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50">-->
+        <!--        {childrenOptions.map(option => (-->
+        <!--                <option value={option} selected={option === "0"} class="text-sm">-->
+        <!--                    {-->
+        <!--                        parseInt(option) === 0 ? `${trans(lang, 'components.forms.reservation.nochildren')}` : parseInt(option) > 1 ? `${option} ${trans(lang, 'components.forms.reservation.child', {'s': 's'})}` : `${option} ${trans(lang, 'components.forms.reservation.child', {'s': ''})}`-->
+        <!--                    }-->
+        <!--                </option>-->
+        <!--        ))}-->
+        <!--    </select>-->
+        <!--    <div id="children-error" class="text-xs mt-0.5 text-red-500 hidden"></div>-->
+        <!--</div>-->
+        <DropDownField
+          _id="children"
+          idContainer="children-wrapper"
+          iconName="child-care"
+          lblTitle={trans(lang, "components.forms.reservation.child", {
+            s: "s",
+          })}
+          name="children"
+        >
+          {
+            childrenOptions.map((option) => (
+              <option value={option} selected={option === "0"} class="text-sm">
+                {parseInt(option) === 0
+                  ? `${trans(lang, "components.forms.reservation.nochildren")}`
+                  : parseInt(option) > 1
+                    ? `${option} ${trans(lang, "components.forms.reservation.child", { s: "s" })}`
+                    : `${option} ${trans(lang, "components.forms.reservation.child", { s: "" })}`}
+              </option>
+            ))
+          }
+        </DropDownField>
+
+        <!--<div id="rooms-wrapper" class="lg:col-span-1">-->
+        <!--    <label for="rooms" class="flex items-center text-sm font-medium text-foreground/80 mb-0.5">-->
+        <!--        <Icon name="bed" class="mr-2 h-4 w-4 text-primary"/>-->
+        <!--        {trans(lang, 'components.forms.reservation.lbl.rooms')}-->
+        <!--    </label>-->
+        <!--    <select id="rooms" name="rooms"-->
+        <!--            class="h-10 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50">-->
+        <!--        {roomOptions.map(option => (-->
+        <!--                <option value={option} selected={option === "1"} class="text-sm">-->
+        <!--                    {option} {trans(lang, 'components.forms.reservation.placeholder.rooms', parseInt(option) !== 1 ? {"s": "es"} : {"s": ""})}-->
+        <!--                </option>-->
+        <!--        ))}-->
+        <!--    </select>-->
+        <!--    <div id="rooms-error" class="text-xs mt-0.5 text-red-500 hidden"></div>-->
+        <!--</div>-->
+        <DropDownField
+          idContainer="rooms-wrapper"
+          _id="rooms"
+          name="rooms"
+          iconName="bed"
+          lblTitle={trans(lang, "components.forms.reservation.lbl.rooms")}
+        >
+          {
+            roomOptions.map((option) => (
+              <option value={option} selected={option === "1"} class="text-sm">
+                {option}{" "}
+                {trans(
+                  lang,
+                  "components.forms.reservation.placeholder.rooms",
+                  parseInt(option) !== 1 ? { s: "es" } : { s: "" }
+                )}
+              </option>
+            ))
+          }
+        </DropDownField>
+      </div>
+
+      <!-- Seccion de seleccion de niños en grupos-->
+      <template id="child-age-template">
+        <div>
+          <div class="flex flex-row">
+            <Icon name="baby" class="mr-2 h-4 w-4 text-primary" />
+            <label
+              for="children-details"
+              class="flex flex-row text-sm text-muted-foreground mb-0.5"
+              data-label-text
+            >
+              {
+                trans(lang, "components.forms.reservation.lbl.children-item", {
+                  index: "...",
+                })
+              }
+            </label>
+          </div>
+          <input
+            id="children-details"
+            type="number"
+            name="childrenAges[0].age"
+            min="0"
+            max="17"
+            placeholder={trans(
+              lang,
+              "components.forms.reservation.placeholder.child-age"
+            )}
+            class="h-9 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50"
+          />
+          <div class="text-xs mt-0.5 text-red-500 hidden"></div>
+        </div>
+      </template>
+      <div
+        id="children-ages"
+        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2"
+      >
+      </div>
+
+      <!--Seccion de detalle de grupos-->
+      <div
+        id="group-details"
+        class="hidden space-y-2 pt-1.5 border-t border-border mt-2.5"
+      >
+        <label
+          class="flex flex-start items-center p-1 text-sm font-medium text-foreground/80 mb-0.5"
+        >
+          <Icon name="people-group" class="mr-2 h-4 w-4 text-primary" />
+          {trans(lang, "components.forms.reservation.lbl.group")}
+        </label>
+        <!--<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-2.5 gap-y-2.5">-->
+        <!--    <div>-->
+        <!--        <label for="groupAdults"-->
+        <!--               class="flex flex-start items-center p-1 text-sm font-medium text-foreground/80">-->
+        <!--            <Icon name="adult" class="mr-2 h-4 w-4 text-primary"/>-->
+        <!--            {trans(lang, 'components.forms.reservation.lbl.group-adult')}-->
+        <!--        </label>-->
+        <!--        <input-->
+        <!--                type="number"-->
+        <!--                id="groupAdults"-->
+        <!--                name="groupAdults"-->
+        <!--                placeholder="e.g. 10"-->
+        <!--                min="1"-->
+        <!--                class="h-9 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50"-->
+        <!--        />-->
+        <!--        <div id="groupAdults-error" class="text-xs mt-0.5 text-red-500 hidden"></div>-->
+        <!--    </div>-->
+        <!--    <div>-->
+        <!--        <label for="groupChildrenUnder5"-->
+        <!--               class="flex flex-start p-1 text-sm font-medium text-foreground/80">-->
+        <!--            <Icon name="baby" class="mr-2 h-4 w-4 text-primary"/>-->
+        <!--            {trans(lang, 'components.forms.reservation.lbl.group-children-5')}-->
+        <!--        </label>-->
+        <!--        <input-->
+        <!--                type="number"-->
+        <!--                id="groupChildrenUnder5"-->
+        <!--                name="groupChildrenUnder5"-->
+        <!--                placeholder="e.g. 2"-->
+        <!--                min="0"-->
+        <!--                value="0"-->
+        <!--                class="h-9 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50"-->
+        <!--        />-->
+        <!--        <div id="groupChildrenUnder5-error" class="text-xs mt-0.5 text-red-500 hidden"></div>-->
+        <!--    </div>-->
+        <!--    <div>-->
+        <!--        <label for="groupChildrenUnder12"-->
+        <!--               class="flex flex-start p-1 text-sm font-medium text-foreground/80">-->
+        <!--            <Icon name="child" class="mr-2 h-4 w-4 text-primary"/>-->
+        <!--            {trans(lang, 'components.forms.reservation.lbl.group-children-12')}-->
+        <!--        </label>-->
+        <!--        <input-->
+        <!--                type="number"-->
+        <!--                id="groupChildrenUnder12"-->
+        <!--                name="groupChildrenUnder12"-->
+        <!--                placeholder="e.g. 3"-->
+        <!--                min="0"-->
+        <!--                value="0"-->
+        <!--                class="h-9 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50"-->
+        <!--        />-->
+        <!--        <div id="groupChildrenUnder12-error" class="text-xs mt-0.5 text-red-500 hidden"></div>-->
+        <!--    </div>-->
+        <!--    <div>-->
+        <!--        <label for="groupRooms" class="flex items-center text-sm font-medium text-foreground/80">-->
+        <!--            <Icon name="bed" class="mr-1.5 h-4 w-4 text-primary"/>-->
+        <!--            {trans(lang, 'components.forms.reservation.lbl.rooms')}-->
+        <!--        </label>-->
+        <!--        <select id="groupRooms" name="groupRooms"-->
+        <!--                class="h-9 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50">-->
+        <!--            {groupRoomTypeOptions.map(option => (-->
+        <!--                    <option value={option.value} selected={option.value === "shared_beds"}-->
+        <!--                            class="text-sm">-->
+        <!--                        {trans(lang, option.labelKey)}-->
+        <!--                    </option>-->
+        <!--            ))}-->
+        <!--        </select>-->
+        <!--        <div id="groupRooms-error" class="text-xs mt-0.5 text-red-500 hidden"></div>-->
+        <!--    </div>-->
+        <!--</div>-->
+        <GridLayout cols={1} col_sm={2} col_md={4} space_x={2.5} space_y={2.5}>
+          <div>
+            <label
+              for="groupAdults"
+              class="flex flex-start items-center p-1 text-sm font-medium text-foreground/80"
+            >
+              <Icon name="adult" class="mr-2 h-4 w-4 text-primary" />
+              {trans(lang, "components.forms.reservation.lbl.group-adult")}
+            </label>
+            <input
+              type="number"
+              id="groupAdults"
+              name="groupAdults"
+              placeholder="e.g. 10"
+              min="1"
+              class="h-9 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50"
+            />
+            <div
+              id="groupAdults-error"
+              class="text-xs mt-0.5 text-red-500 hidden"
+            >
             </div>
-
-            <!--Calendario, Selector de Adultos-->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-x-2.5 gap-y-3">
-                <DateRangeField lang={lang}></DateRangeField>
-
-                <!--<div class="lg:col-span-1">-->
-                <!--    <label for="adults" class="flex items-center text-sm font-medium text-foreground/80 mb-0.5">-->
-                <!--        <Icon name="people" class="mr-2 h-4 w-4 text-primary"/>-->
-                <!--        {trans(lang, 'components.forms.reservation.lbl.adult', {"s": "s"})}-->
-                <!--    </label>-->
-                <!--    <select id="adults" name="adults"-->
-                <!--            class="h-10 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50">-->
-                <!--        {adultOptions.map(option => (-->
-                <!--                <option value={option} selected={option === "2"} class="text-sm">-->
-                <!--                    {option === "Group"-->
-                <!--                        ? trans(lang, 'components.forms.reservation.group')-->
-                <!--                        : `${option} ${trans(lang, "components.forms.reservation.placeholder.adult", {'s': parseInt(option) > 1 ? 's' : ''})}`}-->
-                <!--                </option>-->
-                <!--        ))}-->
-                <!--    </select>-->
-                <!--    <div id="adults-error" class="text-xs mt-0.5 text-red-500 hidden"></div>-->
-                <!--</div>-->
-                <DropDownField _id="adults" name="adults" lblTitle={trans(lang, 'components.forms.reservation.lbl.adult', {"s": "s"})} iconName="people">
-                    {adultOptions.map(option => (
-                            <option value={option} selected={option === "2"} class="text-sm">
-                                {option === "Group"
-                                    ? trans(lang, 'components.forms.reservation.group')
-                                    : `${option} ${trans(lang, "components.forms.reservation.placeholder.adult", {'s': parseInt(option) > 1 ? 's' : ''})}`}
-                            </option>
-                    ))}
-                </DropDownField>
-
-                <!--<div id="children-wrapper" class="lg:col-span-1">-->
-                <!--    <label for="children" class="flex items-center text-sm font-medium text-foreground/80 mb-0.5">-->
-                <!--        <Icon name="child-care" class="mr-2 h-4 w-4 text-primary"/>-->
-                <!--        {trans(lang, 'components.forms.reservation.child', {'s': 's'})}-->
-                <!--    </label>-->
-                <!--    <select id="children" name="children"-->
-                <!--            class="h-10 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50">-->
-                <!--        {childrenOptions.map(option => (-->
-                <!--                <option value={option} selected={option === "0"} class="text-sm">-->
-                <!--                    {-->
-                <!--                        parseInt(option) === 0 ? `${trans(lang, 'components.forms.reservation.nochildren')}` : parseInt(option) > 1 ? `${option} ${trans(lang, 'components.forms.reservation.child', {'s': 's'})}` : `${option} ${trans(lang, 'components.forms.reservation.child', {'s': ''})}`-->
-                <!--                    }-->
-                <!--                </option>-->
-                <!--        ))}-->
-                <!--    </select>-->
-                <!--    <div id="children-error" class="text-xs mt-0.5 text-red-500 hidden"></div>-->
-                <!--</div>-->
-                <DropDownField _id="children" idContainer="children-wrapper" iconName="child-care" lblTitle={trans(lang, 'components.forms.reservation.child', {'s': 's'})} name="children">
-                    {childrenOptions.map(option => (
-                            <option value={option} selected={option === "0"} class="text-sm">
-                                {
-                                    parseInt(option) === 0 ? `${trans(lang, 'components.forms.reservation.nochildren')}` : parseInt(option) > 1 ? `${option} ${trans(lang, 'components.forms.reservation.child', {'s': 's'})}` : `${option} ${trans(lang, 'components.forms.reservation.child', {'s': ''})}`
-                                }
-                            </option>
-                    ))}
-                </DropDownField>
-
-                <!--<div id="rooms-wrapper" class="lg:col-span-1">-->
-                <!--    <label for="rooms" class="flex items-center text-sm font-medium text-foreground/80 mb-0.5">-->
-                <!--        <Icon name="bed" class="mr-2 h-4 w-4 text-primary"/>-->
-                <!--        {trans(lang, 'components.forms.reservation.lbl.rooms')}-->
-                <!--    </label>-->
-                <!--    <select id="rooms" name="rooms"-->
-                <!--            class="h-10 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50">-->
-                <!--        {roomOptions.map(option => (-->
-                <!--                <option value={option} selected={option === "1"} class="text-sm">-->
-                <!--                    {option} {trans(lang, 'components.forms.reservation.placeholder.rooms', parseInt(option) !== 1 ? {"s": "es"} : {"s": ""})}-->
-                <!--                </option>-->
-                <!--        ))}-->
-                <!--    </select>-->
-                <!--    <div id="rooms-error" class="text-xs mt-0.5 text-red-500 hidden"></div>-->
-                <!--</div>-->
-                <DropDownField idContainer="rooms-wrapper" _id="rooms" name="rooms" iconName="bed" lblTitle={trans(lang, 'components.forms.reservation.lbl.rooms')}>
-                    {roomOptions.map(option => (
-                            <option value={option} selected={option === "1"} class="text-sm">
-                                {option} {trans(lang, 'components.forms.reservation.placeholder.rooms', parseInt(option) !== 1 ? {"s": "es"} : {"s": ""})}
-                            </option>
-                    ))}
-                </DropDownField>
+          </div>
+          <div>
+            <label
+              for="groupChildrenUnder5"
+              class="flex flex-start p-1 text-sm font-medium text-foreground/80"
+            >
+              <Icon name="baby" class="mr-2 h-4 w-4 text-primary" />
+              {trans(lang, "components.forms.reservation.lbl.group-children-5")}
+            </label>
+            <input
+              type="number"
+              id="groupChildrenUnder5"
+              name="groupChildrenUnder5"
+              placeholder="e.g. 2"
+              min="0"
+              value="0"
+              class="h-9 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50"
+            />
+            <div
+              id="groupChildrenUnder5-error"
+              class="text-xs mt-0.5 text-red-500 hidden"
+            >
             </div>
-
-            <!-- Seccion de seleccion de niños en grupos-->
-            <template id="child-age-template">
-                <div>
-                    <div class="flex flex-row">
-                        <Icon name="baby" class="mr-2 h-4 w-4 text-primary"/>
-                        <label for="children-details" class="flex flex-row text-sm text-muted-foreground mb-0.5"
-                               data-label-text>
-                            {trans(lang, 'components.forms.reservation.lbl.children-item', {index: '...'})}
-                        </label>
-                    </div>
-                    <input
-                            id="children-details"
-                            type="number"
-                            name="childrenAges[0].age"
-                            min="0"
-                            max="17"
-                            placeholder={trans(lang, 'components.forms.reservation.placeholder.child-age')}
-                            class="h-9 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50"
-                    />
-                    <div class="text-xs mt-0.5 text-red-500 hidden"></div>
-                </div>
-            </template>
-            <div id="children-ages"
-                 class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2"></div>
-
-            <!--Seccion de detalle de grupos-->
-            <div id="group-details" class="hidden space-y-2 pt-1.5 border-t border-border mt-2.5">
-                <label class="flex flex-start items-center p-1 text-sm font-medium text-foreground/80 mb-0.5">
-                    <Icon name="people-group" class="mr-2 h-4 w-4 text-primary"/>
-                    {trans(lang, 'components.forms.reservation.lbl.group')}
-                </label>
-                <!--<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-2.5 gap-y-2.5">-->
-                <!--    <div>-->
-                <!--        <label for="groupAdults"-->
-                <!--               class="flex flex-start items-center p-1 text-sm font-medium text-foreground/80">-->
-                <!--            <Icon name="adult" class="mr-2 h-4 w-4 text-primary"/>-->
-                <!--            {trans(lang, 'components.forms.reservation.lbl.group-adult')}-->
-                <!--        </label>-->
-                <!--        <input-->
-                <!--                type="number"-->
-                <!--                id="groupAdults"-->
-                <!--                name="groupAdults"-->
-                <!--                placeholder="e.g. 10"-->
-                <!--                min="1"-->
-                <!--                class="h-9 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50"-->
-                <!--        />-->
-                <!--        <div id="groupAdults-error" class="text-xs mt-0.5 text-red-500 hidden"></div>-->
-                <!--    </div>-->
-                <!--    <div>-->
-                <!--        <label for="groupChildrenUnder5"-->
-                <!--               class="flex flex-start p-1 text-sm font-medium text-foreground/80">-->
-                <!--            <Icon name="baby" class="mr-2 h-4 w-4 text-primary"/>-->
-                <!--            {trans(lang, 'components.forms.reservation.lbl.group-children-5')}-->
-                <!--        </label>-->
-                <!--        <input-->
-                <!--                type="number"-->
-                <!--                id="groupChildrenUnder5"-->
-                <!--                name="groupChildrenUnder5"-->
-                <!--                placeholder="e.g. 2"-->
-                <!--                min="0"-->
-                <!--                value="0"-->
-                <!--                class="h-9 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50"-->
-                <!--        />-->
-                <!--        <div id="groupChildrenUnder5-error" class="text-xs mt-0.5 text-red-500 hidden"></div>-->
-                <!--    </div>-->
-                <!--    <div>-->
-                <!--        <label for="groupChildrenUnder12"-->
-                <!--               class="flex flex-start p-1 text-sm font-medium text-foreground/80">-->
-                <!--            <Icon name="child" class="mr-2 h-4 w-4 text-primary"/>-->
-                <!--            {trans(lang, 'components.forms.reservation.lbl.group-children-12')}-->
-                <!--        </label>-->
-                <!--        <input-->
-                <!--                type="number"-->
-                <!--                id="groupChildrenUnder12"-->
-                <!--                name="groupChildrenUnder12"-->
-                <!--                placeholder="e.g. 3"-->
-                <!--                min="0"-->
-                <!--                value="0"-->
-                <!--                class="h-9 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50"-->
-                <!--        />-->
-                <!--        <div id="groupChildrenUnder12-error" class="text-xs mt-0.5 text-red-500 hidden"></div>-->
-                <!--    </div>-->
-                <!--    <div>-->
-                <!--        <label for="groupRooms" class="flex items-center text-sm font-medium text-foreground/80">-->
-                <!--            <Icon name="bed" class="mr-1.5 h-4 w-4 text-primary"/>-->
-                <!--            {trans(lang, 'components.forms.reservation.lbl.rooms')}-->
-                <!--        </label>-->
-                <!--        <select id="groupRooms" name="groupRooms"-->
-                <!--                class="h-9 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50">-->
-                <!--            {groupRoomTypeOptions.map(option => (-->
-                <!--                    <option value={option.value} selected={option.value === "shared_beds"}-->
-                <!--                            class="text-sm">-->
-                <!--                        {trans(lang, option.labelKey)}-->
-                <!--                    </option>-->
-                <!--            ))}-->
-                <!--        </select>-->
-                <!--        <div id="groupRooms-error" class="text-xs mt-0.5 text-red-500 hidden"></div>-->
-                <!--    </div>-->
-                <!--</div>-->
-                <GridLayout cols={1} col_sm={2} col_md={4} space_x={2.5} space_y={2.5}>
-                    <div>
-                        <label for="groupAdults"
-                               class="flex flex-start items-center p-1 text-sm font-medium text-foreground/80">
-                            <Icon name="adult" class="mr-2 h-4 w-4 text-primary"/>
-                            {trans(lang, 'components.forms.reservation.lbl.group-adult')}
-                        </label>
-                        <input
-                                type="number"
-                                id="groupAdults"
-                                name="groupAdults"
-                                placeholder="e.g. 10"
-                                min="1"
-                                class="h-9 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50"
-                        />
-                        <div id="groupAdults-error" class="text-xs mt-0.5 text-red-500 hidden"></div>
-                    </div>
-                    <div>
-                        <label for="groupChildrenUnder5"
-                               class="flex flex-start p-1 text-sm font-medium text-foreground/80">
-                            <Icon name="baby" class="mr-2 h-4 w-4 text-primary"/>
-                            {trans(lang, 'components.forms.reservation.lbl.group-children-5')}
-                        </label>
-                        <input
-                                type="number"
-                                id="groupChildrenUnder5"
-                                name="groupChildrenUnder5"
-                                placeholder="e.g. 2"
-                                min="0"
-                                value="0"
-                                class="h-9 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50"
-                        />
-                        <div id="groupChildrenUnder5-error" class="text-xs mt-0.5 text-red-500 hidden"></div>
-                    </div>
-                    <div>
-                        <label for="groupChildrenUnder12"
-                               class="flex flex-start p-1 text-sm font-medium text-foreground/80">
-                            <Icon name="child" class="mr-2 h-4 w-4 text-primary"/>
-                            {trans(lang, 'components.forms.reservation.lbl.group-children-12')}
-                        </label>
-                        <input
-                                type="number"
-                                id="groupChildrenUnder12"
-                                name="groupChildrenUnder12"
-                                placeholder="e.g. 3"
-                                min="0"
-                                value="0"
-                                class="h-9 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50"
-                        />
-                        <div id="groupChildrenUnder12-error" class="text-xs mt-0.5 text-red-500 hidden"></div>
-                    </div>
-                    <div>
-                        <label for="groupRooms" class="flex items-center text-sm font-medium text-foreground/80">
-                            <Icon name="bed" class="mr-1.5 h-4 w-4 text-primary"/>
-                            {trans(lang, 'components.forms.reservation.lbl.rooms')}
-                        </label>
-                        <select id="groupRooms" name="groupRooms"
-                                class="h-9 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50">
-                            {groupRoomTypeOptions.map(option => (
-                                    <option value={option.value} selected={option.value === "shared_beds"}
-                                            class="text-sm">
-                                        {trans(lang, option.labelKey)}
-                                    </option>
-                            ))}
-                        </select>
-                        <div id="groupRooms-error" class="text-xs mt-0.5 text-red-500 hidden"></div>
-                    </div>
-                </GridLayout>
+          </div>
+          <div>
+            <label
+              for="groupChildrenUnder12"
+              class="flex flex-start p-1 text-sm font-medium text-foreground/80"
+            >
+              <Icon name="child" class="mr-2 h-4 w-4 text-primary" />
+              {
+                trans(
+                  lang,
+                  "components.forms.reservation.lbl.group-children-12"
+                )
+              }
+            </label>
+            <input
+              type="number"
+              id="groupChildrenUnder12"
+              name="groupChildrenUnder12"
+              placeholder="e.g. 3"
+              min="0"
+              value="0"
+              class="h-9 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50"
+            />
+            <div
+              id="groupChildrenUnder12-error"
+              class="text-xs mt-0.5 text-red-500 hidden"
+            >
             </div>
-
-            <!--Checkbox de Desayuno & Parking / Selector de Parking-->
-            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 pt-1">
-                <!--<label class="flex flex-row items-center space-x-1.5 space-y-0">-->
-                <!--    <input type="checkbox" id="breakfast" name="breakfast" class="h-4 w-4"/>-->
-                <!--    <span class="text-sm font-normal text-foreground/80 flex items-center cursor-pointer">-->
-                <!--        <Icon name="breakfast" class="mr-1 h-5 w-5 text-primary/80"/>-->
-                <!--        {trans(lang, 'components.forms.reservation.breakfast')}-->
-                <!--    </span>-->
-                <!--</label>-->
-                <CheckField _id="breakfast" name="breakfast" iconName="breakfast" text={trans(lang, 'components.forms.reservation.breakfast')} />
-                <!--<label id="parking-wrapper" class="flex flex-row items-center space-x-1.5 space-y-0">-->
-                <!--    <input type="checkbox" id="parking" name="parking" class="h-4 w-4"/>-->
-                <!--    <span class="text-sm font-normal text-foreground/80 flex items-center cursor-pointer">-->
-                <!--        <Icon name="parking" class="mr-1 h-5 w-5 text-primary/80"/>-->
-                <!--        {trans(lang, 'components.forms.reservation.parking')}-->
-                <!--    </span>-->
-                <!--</label>-->
-                <CheckField idContainer="parking-wrapper" _id="parking" name="parking" iconName="parking" text={trans(lang, 'components.forms.reservation.parking')} />
-                <div id="vehicle-wrapper" class="hidden grow">
-                    <div class="flex items-center gap-x-2">
-                        <div class="w-auto">
-                            <select
-                                    id="largeGroupVehicleType"
-                                    name="largeGroupVehicleType"
-                                    class="h-10 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50"
-                            >
-                                {vehicleTypeOptions.map(option => (
-                                        <option value={option.value} selected={option.value === "buseta"}
-                                                class="text-sm">
-                                            {trans(lang, option.labelKey)}
-                                        </option>
-                                ))}
-                            </select>
-                        </div>
-                        <label for="largeGroupVehicleType"
-                               class="flex items-center text-sm font-medium text-foreground/80 whitespace-nowrap shrink-0">
-                            <div class="mr-1.5 h-3.5 w-3.5 text-primary shrink-0"/>
-                            {trans(lang, 'components.forms.reservation.placeholder.group-type-vehicle')}
-                        </label>
-                    </div>
-                    <div id="largeGroupVehicleType-error" class="text-xs mt-0.5 text-red-500 hidden"></div>
-                </div>
+          </div>
+          <div>
+            <label
+              for="groupRooms"
+              class="flex items-center text-sm font-medium text-foreground/80"
+            >
+              <Icon name="bed" class="mr-1.5 h-4 w-4 text-primary" />
+              {trans(lang, "components.forms.reservation.lbl.rooms")}
+            </label>
+            <select
+              id="groupRooms"
+              name="groupRooms"
+              class="h-9 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50"
+            >
+              {
+                groupRoomTypeOptions.map((option) => (
+                  <option
+                    value={option.value}
+                    selected={option.value === "shared_beds"}
+                    class="text-sm"
+                  >
+                    {trans(lang, option.labelKey)}
+                  </option>
+                ))
+              }
+            </select>
+            <div
+              id="groupRooms-error"
+              class="text-xs mt-0.5 text-red-500 hidden"
+            >
             </div>
+          </div>
+        </GridLayout>
+      </div>
 
-            <Button id="booking-form-submit" type="submit" class="w-full text-base">
-            <!--<button id="booking-form-submit" type="submit"-->
-            <!--        class="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-base mt-2 py-2.5 rounded-md flex items-center justify-center">-->
-                <Icon name="hotel" class="mr-1.5 h-4 w-4"/>
-                {trans(lang, 'components.forms.reservation.btn.reservations')}
-            </Button>
-        </form>
-    </div>
+      <!--Checkbox de Desayuno & Parking / Selector de Parking-->
+      <div
+        class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 pt-1"
+      >
+        <!--<label class="flex flex-row items-center space-x-1.5 space-y-0">-->
+        <!--    <input type="checkbox" id="breakfast" name="breakfast" class="h-4 w-4"/>-->
+        <!--    <span class="text-sm font-normal text-foreground/80 flex items-center cursor-pointer">-->
+        <!--        <Icon name="breakfast" class="mr-1 h-5 w-5 text-primary/80"/>-->
+        <!--        {trans(lang, 'components.forms.reservation.breakfast')}-->
+        <!--    </span>-->
+        <!--</label>-->
+        <CheckField
+          _id="breakfast"
+          name="breakfast"
+          iconName="breakfast"
+          text={trans(lang, "components.forms.reservation.breakfast")}
+        />
+        <!--<label id="parking-wrapper" class="flex flex-row items-center space-x-1.5 space-y-0">-->
+        <!--    <input type="checkbox" id="parking" name="parking" class="h-4 w-4"/>-->
+        <!--    <span class="text-sm font-normal text-foreground/80 flex items-center cursor-pointer">-->
+        <!--        <Icon name="parking" class="mr-1 h-5 w-5 text-primary/80"/>-->
+        <!--        {trans(lang, 'components.forms.reservation.parking')}-->
+        <!--    </span>-->
+        <!--</label>-->
+        <CheckField
+          idContainer="parking-wrapper"
+          _id="parking"
+          name="parking"
+          iconName="parking"
+          text={trans(lang, "components.forms.reservation.parking")}
+        />
+        <div id="vehicle-wrapper" class="hidden grow">
+          <div class="flex items-center gap-x-2">
+            <div class="w-auto">
+              <select
+                id="largeGroupVehicleType"
+                name="largeGroupVehicleType"
+                class="h-10 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50"
+              >
+                {
+                  vehicleTypeOptions.map((option) => (
+                    <option
+                      value={option.value}
+                      selected={option.value === "buseta"}
+                      class="text-sm"
+                    >
+                      {trans(lang, option.labelKey)}
+                    </option>
+                  ))
+                }
+              </select>
+            </div>
+            <label
+              for="largeGroupVehicleType"
+              class="flex items-center text-sm font-medium text-foreground/80 whitespace-nowrap shrink-0"
+            >
+              <div class="mr-1.5 h-3.5 w-3.5 text-primary shrink-0"></div>
+              {
+                trans(
+                  lang,
+                  "components.forms.reservation.placeholder.group-type-vehicle"
+                )
+              }
+            </label>
+          </div>
+          <div
+            id="largeGroupVehicleType-error"
+            class="text-xs mt-0.5 text-red-500 hidden"
+          >
+          </div>
+        </div>
+      </div>
+
+      <Button id="booking-form-submit" type="submit" class="w-full text-base">
+        <!--<button id="booking-form-submit" type="submit"-->
+        <!--        class="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-base mt-2 py-2.5 rounded-md flex items-center justify-center">-->
+        <Icon name="hotel" class="mr-1.5 h-4 w-4" />
+        {trans(lang, "components.forms.reservation.btn.reservations")}
+      </Button>
+    </form>
+  </div>
 </div>
 
-
 <script>
-    import {actions} from 'astro:actions';
-    import {createWhatsAppLink, formatWhatsAppMessage, whatsappNumber} from "../../lib/constants";
+  import { actions } from "astro:actions";
+  import {
+    createWhatsAppLink,
+    formatWhatsAppMessage,
+    whatsappNumber,
+  } from "../../lib/constants";
 
-    document.addEventListener('DOMContentLoaded', async (): Promise<void> => {
-        const form: HTMLFormElement = document.getElementById('booking-form') as HTMLFormElement;
+  document.addEventListener("DOMContentLoaded", async (): Promise<void> => {
+    const form: HTMLFormElement = document.getElementById(
+      "booking-form"
+    ) as HTMLFormElement;
 
-        // const geolocation = await getGeolocation()
+    // const geolocation = await getGeolocation()
 
-        const adultsSelect: HTMLSelectElement = document.getElementById('adults') as HTMLSelectElement;
+    const adultsSelect: HTMLSelectElement = document.getElementById(
+      "adults"
+    ) as HTMLSelectElement;
 
-        const childrenSelect: HTMLSelectElement = document.getElementById('children') as HTMLSelectElement;
-        const childrenAgesContainer: HTMLElement = document.getElementById('children-ages') as HTMLElement;
+    const childrenSelect: HTMLSelectElement = document.getElementById(
+      "children"
+    ) as HTMLSelectElement;
+    const childrenAgesContainer: HTMLElement = document.getElementById(
+      "children-ages"
+    ) as HTMLElement;
 
-        const childrenWrapper: HTMLElement = document.getElementById('children-wrapper') as HTMLElement;
+    const childrenWrapper: HTMLElement = document.getElementById(
+      "children-wrapper"
+    ) as HTMLElement;
 
-        const roomsWrapper: HTMLElement = document.getElementById('rooms-wrapper') as HTMLElement;
-        const groupDetails: HTMLElement = document.getElementById('group-details') as HTMLElement;
-        const groupAdultsInput: HTMLInputElement = document.getElementById('groupAdults') as HTMLInputElement;
-        const groupChildrenUnder5Input: HTMLInputElement = document.getElementById('groupChildrenUnder5') as HTMLInputElement;
-        const groupChildrenUnder12Input: HTMLInputElement = document.getElementById('groupChildrenUnder12') as HTMLInputElement;
+    const roomsWrapper: HTMLElement = document.getElementById(
+      "rooms-wrapper"
+    ) as HTMLElement;
+    const groupDetails: HTMLElement = document.getElementById(
+      "group-details"
+    ) as HTMLElement;
+    const groupAdultsInput: HTMLInputElement = document.getElementById(
+      "groupAdults"
+    ) as HTMLInputElement;
+    const groupChildrenUnder5Input: HTMLInputElement = document.getElementById(
+      "groupChildrenUnder5"
+    ) as HTMLInputElement;
+    const groupChildrenUnder12Input: HTMLInputElement = document.getElementById(
+      "groupChildrenUnder12"
+    ) as HTMLInputElement;
 
-        const parkingWrapper: HTMLElement = document.getElementById('parking-wrapper') as HTMLElement;
-        const vehicleWrapper: HTMLElement = document.getElementById('vehicle-wrapper') as HTMLElement;
-        const vehicleTypeSelect: HTMLSelectElement = document.getElementById('largeGroupVehicleType') as HTMLSelectElement;
+    const parkingWrapper: HTMLElement = document.getElementById(
+      "parking-wrapper"
+    ) as HTMLElement;
+    const vehicleWrapper: HTMLElement = document.getElementById(
+      "vehicle-wrapper"
+    ) as HTMLElement;
+    const vehicleTypeSelect: HTMLSelectElement = document.getElementById(
+      "largeGroupVehicleType"
+    ) as HTMLSelectElement;
 
-        // Error message elements
-        interface ErrorElements {
-            [key: string]: HTMLElement | null;
+    // Error message elements
+    interface ErrorElements {
+      [key: string]: HTMLElement | null;
+    }
+
+    const errorElements: ErrorElements = {
+      city: document.getElementById("city-error"),
+      adults: document.getElementById("adults-error"),
+      children: document.getElementById("children-error"),
+      rooms: document.getElementById("rooms-error"),
+      groupAdults: document.getElementById("groupAdults-error"),
+      groupChildrenUnder5: document.getElementById("groupChildrenUnder5-error"),
+      groupChildrenUnder12: document.getElementById(
+        "groupChildrenUnder12-error"
+      ),
+      groupRooms: document.getElementById("groupRooms-error"),
+      largeGroupVehicleType: document.getElementById(
+        "largeGroupVehicleType-error"
+      ),
+      dateRange: document.getElementById("date-range-error"),
+    };
+
+    // Toggle group booking UI
+    function toggleGroupBooking(): void {
+      const isGroup: boolean = adultsSelect.value === "Group";
+      groupDetails?.classList.toggle("hidden", !isGroup);
+      childrenWrapper?.classList.toggle("hidden", isGroup);
+      roomsWrapper?.classList.toggle("hidden", isGroup);
+
+      // Hacer que groupAdults sea obligatorio cuando se selecciona "Group"
+      if (isGroup) {
+        groupAdultsInput.setAttribute("required", "true");
+
+        // Reset children if switching to group
+        if (childrenSelect.value !== "0") {
+          childrenSelect.value = "0";
+          updateChildrenAges();
         }
+      } else {
+        groupAdultsInput.removeAttribute("required");
+        // Reactivar el campo rooms
+        document.getElementById("rooms")?.removeAttribute("disabled");
+      }
 
-        const errorElements: ErrorElements = {
-            city: document.getElementById('city-error'),
-            adults: document.getElementById('adults-error'),
-            children: document.getElementById('children-error'),
-            rooms: document.getElementById('rooms-error'),
-            groupAdults: document.getElementById('groupAdults-error'),
-            groupChildrenUnder5: document.getElementById('groupChildrenUnder5-error'),
-            groupChildrenUnder12: document.getElementById('groupChildrenUnder12-error'),
-            groupRooms: document.getElementById('groupRooms-error'),
-            largeGroupVehicleType: document.getElementById('largeGroupVehicleType-error'),
-            dateRange: document.getElementById('date-range-error'),
-        };
+      // Check if it's a large group and update the UI accordingly
+      updateLargeGroupUI();
+    }
 
-        // Toggle group booking UI
-        function toggleGroupBooking(): void {
-            const isGroup: boolean = adultsSelect.value === "Group";
-            groupDetails?.classList.toggle('hidden', !isGroup);
-            childrenWrapper?.classList.toggle('hidden', isGroup);
-            roomsWrapper?.classList.toggle('hidden', isGroup);
+    // Update UI for large groups
+    function updateLargeGroupUI(): void {
+      const isGroup: boolean = adultsSelect.value === "Group";
+      if (!isGroup) {
+        vehicleWrapper.classList.add("hidden");
+        parkingWrapper.classList.remove("hidden");
+        return;
+      }
 
-            // Hacer que groupAdults sea obligatorio cuando se selecciona "Group"
-            if (isGroup) {
-                groupAdultsInput.setAttribute('required', 'true');
+      const groupAdults: number = parseInt(groupAdultsInput.value || "0", 10);
+      const groupChildrenUnder5: number = parseInt(
+        groupChildrenUnder5Input.value || "0",
+        10
+      );
+      const groupChildrenUnder12: number = parseInt(
+        groupChildrenUnder12Input.value || "0",
+        10
+      );
+      const totalPeopleAdult: number = groupAdults + groupChildrenUnder12;
+      const totalPeople: number =
+        groupAdults + groupChildrenUnder5 + groupChildrenUnder12;
 
-                // Reset children if switching to group
-                if (childrenSelect.value !== "0") {
-                    childrenSelect.value = "0";
-                    updateChildrenAges();
-                }
-            } else {
-                groupAdultsInput.removeAttribute('required');
-                // Reactivar el campo rooms
-                document.getElementById('rooms')?.removeAttribute('disabled');
-            }
+      const isLargeGroup: boolean = isGroup && totalPeopleAdult > 8;
 
-            // Check if it's a large group and update the UI accordingly
-            updateLargeGroupUI();
+      vehicleWrapper.classList.toggle("hidden", !isLargeGroup);
+      parkingWrapper.classList.toggle("hidden", isLargeGroup);
+
+      if (isLargeGroup) {
+        // Update a vehicle type based on group size
+        // const totalPeopleForVehicle = groupAdults + groupChildrenUnder12;
+        if (totalPeople > 24 && vehicleTypeSelect.value === "furgoneta") {
+          vehicleTypeSelect.value = "bus";
+        } else if (totalPeople > 12 && vehicleTypeSelect.value === "buseta") {
+          vehicleTypeSelect.value = "furgoneta";
         }
+      }
+    }
 
-        // Update UI for large groups
-        function updateLargeGroupUI(): void {
-            const isGroup: boolean = adultsSelect.value === "Group";
-            if (!isGroup) {
-                vehicleWrapper.classList.add('hidden');
-                parkingWrapper.classList.remove('hidden');
-                return;
-            }
+    // Update children ages UI
+    function updateChildrenAges(): void {
+      const childCount: number = parseInt(childrenSelect.value, 10);
+      childrenAgesContainer.innerHTML = "";
+      childrenAgesContainer.classList.toggle("hidden", childCount === 0);
 
-            const groupAdults: number = parseInt(groupAdultsInput.value || "0", 10);
-            const groupChildrenUnder5: number = parseInt(groupChildrenUnder5Input.value || "0", 10);
-            const groupChildrenUnder12: number = parseInt(groupChildrenUnder12Input.value || "0", 10);
-            const totalPeopleAdult: number = groupAdults + groupChildrenUnder12;
-            const totalPeople: number = groupAdults + groupChildrenUnder5 + groupChildrenUnder12;
+      // Obtener la plantilla
+      const template: HTMLTemplateElement | null = document.getElementById(
+        "child-age-template"
+      ) as HTMLTemplateElement;
 
-            const isLargeGroup: boolean = isGroup && totalPeopleAdult > 8;
+      if (template) {
+        for (let i: number = 0; i < childCount; i++) {
+          // Clonar la plantilla
+          const clone: DocumentFragment = template.content.cloneNode(
+            true
+          ) as DocumentFragment;
 
-            vehicleWrapper.classList.toggle('hidden', !isLargeGroup);
-            parkingWrapper.classList.toggle('hidden', isLargeGroup);
+          // Actualizar los atributos y contenidos específicos
+          const label: HTMLLabelElement | null = clone.querySelector("label");
 
-            if (isLargeGroup) {
-                // Update a vehicle type based on group size
-                // const totalPeopleForVehicle = groupAdults + groupChildrenUnder12;
-                if (totalPeople > 24 && vehicleTypeSelect.value === "furgoneta") {
-                    vehicleTypeSelect.value = "bus";
-                } else if (totalPeople > 12 && vehicleTypeSelect.value === "buseta") {
-                    vehicleTypeSelect.value = "furgoneta";
-                }
-            }
+          // console.log("icon", icon);
+          if (label && label.hasAttribute("data-label-text")) {
+            // Reemplazar el texto {index} en la etiqueta
+            label.textContent = label.textContent!.replace(
+              "...",
+              String(i + 1)
+            );
+          }
+          // console.log("label", label);
+          // const icon: SVGSVGElement | null = clone.querySelector('svg');
+          // if (icon) {
+          //     // Reemplazar el texto {index} en la etiqueta
+          //     icon.id = icon.id!.replace('...', String(i + 1));
+          // }
+
+          const input: HTMLInputElement | null = clone.querySelector("input");
+          if (input) {
+            input.name = `childrenAges[${i}].age`;
+            // Agregar el evento onInput
+            // input.setAttribute('onInput', `updateChildIcon(this, ${i})`);
+          }
+
+          const errorDiv: HTMLDivElement | null = clone.querySelector("div");
+          if (errorDiv) {
+            errorDiv.id = `childAge-${i}-error`;
+          }
+
+          // Añadir al contenedor
+          childrenAgesContainer.appendChild(clone);
         }
+      }
+    }
 
-        // Update children ages UI
-        function updateChildrenAges(): void {
-            const childCount: number = parseInt(childrenSelect.value, 10);
-            childrenAgesContainer.innerHTML = '';
-            childrenAgesContainer.classList.toggle('hidden', childCount === 0);
+    // Show the error message
+    function showError(field: string, message: string): void {
+      const errorElement: HTMLElement | null = errorElements[field];
+      if (errorElement) {
+        errorElement.textContent =
+          errorElement.getAttribute("data-error") || message;
+        errorElement.classList.remove("hidden");
+      }
+    }
 
-            // Obtener la plantilla
-            const template: HTMLTemplateElement | null = document.getElementById('child-age-template') as HTMLTemplateElement;
-
-            if (template) {
-                for (let i: number = 0; i < childCount; i++) {
-                    // Clonar la plantilla
-                    const clone: DocumentFragment = template.content.cloneNode(true) as DocumentFragment;
-
-                    // Actualizar los atributos y contenidos específicos
-                    const label: HTMLLabelElement | null = clone.querySelector('label');
-
-                    // console.log("icon", icon);
-                    if (label && label.hasAttribute('data-label-text')) {
-                        // Reemplazar el texto {index} en la etiqueta
-                        label.textContent = label.textContent!.replace('...', String(i + 1));
-                    }
-                    // console.log("label", label);
-                    // const icon: SVGSVGElement | null = clone.querySelector('svg');
-                    // if (icon) {
-                    //     // Reemplazar el texto {index} en la etiqueta
-                    //     icon.id = icon.id!.replace('...', String(i + 1));
-                    // }
-
-                    const input: HTMLInputElement | null = clone.querySelector('input');
-                    if (input) {
-                        input.name = `childrenAges[${i}].age`;
-                        // Agregar el evento onInput
-                        // input.setAttribute('onInput', `updateChildIcon(this, ${i})`);
-                    }
-
-                    const errorDiv: HTMLDivElement | null = clone.querySelector('div');
-                    if (errorDiv) {
-                        errorDiv.id = `childAge-${i}-error`;
-                    }
-
-                    // Añadir al contenedor
-                    childrenAgesContainer.appendChild(clone);
-                }
-            }
+    // Clear all error messages
+    function clearErrors(): void {
+      // Limpiar errores específicos de campo
+      Object.values(errorElements).forEach((el) => {
+        if (el) {
+          el.classList.toggle("hidden");
         }
+      });
+    }
 
-        // Show the error message
-        function showError(field: string, message: string): void {
-            const errorElement: HTMLElement | null = errorElements[field];
-            if (errorElement) {
-                errorElement.textContent = errorElement.getAttribute("data-error") || message;
-                errorElement.classList.remove('hidden');
-            }
+    function updateChildIcon(input: HTMLInputElement, index: Number) {
+      console.log("input", input, "index", index);
+      const value = parseInt(input.value) || 0;
+      const iconElement = document.getElementById(`child-icon-${index}`);
+
+      if (iconElement) {
+        // Cambiar el nombre del icono basado en el valor
+        if (value > 11) {
+          iconElement.setAttribute("name", "child"); // Icono para niños mayores
+        } else {
+          iconElement.setAttribute("name", "baby"); // Icono para bebés/niños pequeños
         }
+      }
+    }
 
-        // Clear all error messages
-        function clearErrors(): void {
-            // Limpiar errores específicos de campo
-            Object.values(errorElements).forEach(el => {
-                if (el) {
-                    el.classList.toggle('hidden');
-                }
+    // Handle form submission
+    async function handleSubmit(event: Event): Promise<void> {
+      event.preventDefault();
+
+      // Limpiar errores previos
+      clearErrors();
+
+      // Validar campos requeridos para grupos
+      const isGroup: boolean = adultsSelect.value === "Group";
+      if (isGroup && !groupAdultsInput.value) {
+        showError(
+          "groupAdults",
+          "Por favor ingresa el número de adultos para el grupo"
+        );
+        return; // Detener el envío si falta información requerida
+      }
+
+      const formData: FormData = new FormData(form);
+
+      try {
+        const result = await actions.validationForm(formData);
+        if (result.error) {
+          // Si hay errores de validación, mostrarlos
+          result.error.issues.forEach((issue: any) => {
+            // Mostrar error para cada campo
+            issue.path.forEach((field: string) => {
+              showError(field, issue.message || issue.reason);
             });
+          });
+        } else if (result.data) {
+          // Éxito - puedes redirigir o mostrar un mensaje de éxito
+          const successElement = document.createElement("div");
+          successElement.className =
+            "text-green-500 text-sm mt-2 p-2 bg-green-50 rounded";
+          successElement.textContent = result.data.message || "Reserva exitosa";
+          form.prepend(successElement);
+
+          // Hacer que el mensaje desaparezca después de 5 segundos
+          setTimeout(() => {
+            // Eliminator el elemento después de que termine la animación
+            successElement.remove();
+          }, 5000); // 5 segundos
+
+          createWhatsAppLink({
+            phoneNumber: whatsappNumber,
+            message: formatWhatsAppMessage(result.data.form),
+          });
+
+          // Opcional: limpiar el formulario después de un envío exitoso
+          form.reset();
+          clearErrors();
+          updateChildrenAges();
+          updateLargeGroupUI();
+          toggleGroupBooking();
+
+          console.log(result.data);
         }
+      } catch (error) {
+        console.error("Error al procesar el formulario:", error);
+        const generalErrorElement = document.createElement("div");
+        generalErrorElement.className =
+          "text-red-500 text-sm mt-2 p-2 bg-red-50 rounded";
+        generalErrorElement.textContent =
+          "Ocurrió un error al procesar tu reserva. Por favor intenta de nuevo.";
+        form.prepend(generalErrorElement);
+      }
+    }
 
-        function updateChildIcon(input: HTMLInputElement, index: Number) {
-            console.log("input", input, "index", index)
-            const value = parseInt(input.value) || 0;
-            const iconElement = document.getElementById(`child-icon-${index}`);
+    // Event listeners
+    adultsSelect.addEventListener("change", toggleGroupBooking);
+    childrenSelect.addEventListener("change", updateChildrenAges);
+    form.addEventListener("submit", handleSubmit);
 
-            if (iconElement) {
-                // Cambiar el nombre del icono basado en el valor
-                if (value > 11) {
-                    iconElement.setAttribute('name', 'child'); // Icono para niños mayores
-                } else {
-                    iconElement.setAttribute('name', 'baby'); // Icono para bebés/niños pequeños
-                }
-            }
-        }
+    // Group-specific event listeners
+    groupAdultsInput.addEventListener("input", updateLargeGroupUI);
+    groupChildrenUnder5Input.addEventListener("input", updateLargeGroupUI);
+    groupChildrenUnder12Input.addEventListener("input", updateLargeGroupUI);
 
+    // Initialize UI
+    toggleGroupBooking();
+    adultsSelect.dispatchEvent(new Event("change"));
+    updateChildrenAges();
 
-        // Handle form submission
-        async function handleSubmit(event: Event): Promise<void> {
-            event.preventDefault();
-
-            // Limpiar errores previos
-            clearErrors();
-
-            // Validar campos requeridos para grupos
-            const isGroup: boolean = adultsSelect.value === "Group";
-            if (isGroup && !groupAdultsInput.value) {
-                showError('groupAdults', 'Por favor ingresa el número de adultos para el grupo');
-                return; // Detener el envío si falta información requerida
-            }
-
-            const formData: FormData = new FormData(form);
-
-            try {
-                const result = await actions.validationForm(formData);
-                if (result.error) {
-                    // Si hay errores de validación, mostrarlos
-                    result.error.issues.forEach((issue: any) => {
-                        // Mostrar error para cada campo
-                        issue.path.forEach((field: string) => {
-                            showError(field, issue.message || issue.reason);
-                        })
-                    });
-                } else if (result.data) {
-                    // Éxito - puedes redirigir o mostrar un mensaje de éxito
-                    const successElement = document.createElement('div');
-                    successElement.className = 'text-green-500 text-sm mt-2 p-2 bg-green-50 rounded';
-                    successElement.textContent = result.data.message || 'Reserva exitosa';
-                    form.prepend(successElement);
-
-                    // Hacer que el mensaje desaparezca después de 5 segundos
-                    setTimeout(() => {
-                        // Eliminator el elemento después de que termine la animación
-                        successElement.remove();
-                    }, 5000); // 5 segundos
-
-                    createWhatsAppLink({phoneNumber: whatsappNumber, message: formatWhatsAppMessage(result.data.form)})
-
-                    // Opcional: limpiar el formulario después de un envío exitoso
-                    form.reset();
-                    clearErrors();
-                    updateChildrenAges()
-                    updateLargeGroupUI()
-                    toggleGroupBooking()
-
-                    console.log(result.data)
-
-                }
-            } catch (error) {
-                console.error("Error al procesar el formulario:", error);
-                const generalErrorElement = document.createElement('div');
-                generalErrorElement.className = 'text-red-500 text-sm mt-2 p-2 bg-red-50 rounded';
-                generalErrorElement.textContent = "Ocurrió un error al procesar tu reserva. Por favor intenta de nuevo.";
-                form.prepend(generalErrorElement);
-            }
-        }
-
-        // Event listeners
-        adultsSelect.addEventListener('change', toggleGroupBooking);
-        childrenSelect.addEventListener('change', updateChildrenAges);
-        form.addEventListener('submit', handleSubmit);
-
-        // Group-specific event listeners
-        groupAdultsInput.addEventListener('input', updateLargeGroupUI);
-        groupChildrenUnder5Input.addEventListener('input', updateLargeGroupUI);
-        groupChildrenUnder12Input.addEventListener('input', updateLargeGroupUI);
-
-        // Initialize UI
-        toggleGroupBooking();
-        adultsSelect.dispatchEvent(new Event('change'));
-        updateChildrenAges();
-
-        // Auto-detect city by IP
-        // fetch('http://ip-api.coms/json')
-        //     .then((response: Response) => response.json())
-        //     .then((data: any) => {
-        //         if (data.country) {
-        //             const userCountry: string = data.country;
-        //             const cityOption: HTMLOptionElement | undefined = Array.from(citySelect.options).find((option: HTMLOptionElement) => {
-        //                 const cityText: string = option.value.toLowerCase();
-        //                 return cityText.includes(userCountry.toLowerCase());
-        //             });
-        //
-        //             if (cityOption) {
-        //                 citySelect.value = cityOption.value;
-        //             }
-        //         }
-        //     })
-        //     .catch((error: Error) => console.warn("Could not fetch geolocation:", error));
-    });
+    // Auto-detect city by IP
+    // fetch('http://ip-api.coms/json')
+    //     .then((response: Response) => response.json())
+    //     .then((data: any) => {
+    //         if (data.country) {
+    //             const userCountry: string = data.country;
+    //             const cityOption: HTMLOptionElement | undefined = Array.from(citySelect.options).find((option: HTMLOptionElement) => {
+    //                 const cityText: string = option.value.toLowerCase();
+    //                 return cityText.includes(userCountry.toLowerCase());
+    //             });
+    //
+    //             if (cityOption) {
+    //                 citySelect.value = cityOption.value;
+    //             }
+    //         }
+    //     })
+    //     .catch((error: Error) => console.warn("Could not fetch geolocation:", error));
+  });
 </script>
