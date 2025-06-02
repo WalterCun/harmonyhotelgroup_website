@@ -265,7 +265,6 @@ export type HotelsAmenities = {
 
 export type Hotels = Node & Document & {
   __typename?: 'Hotels';
-  hotel_id: Scalars['Float']['output'];
   name: Scalars['String']['output'];
   stars: Scalars['Float']['output'];
   location: Scalars['String']['output'];
@@ -286,6 +285,13 @@ export type Hotels = Node & Document & {
   _values: Scalars['JSON']['output'];
 };
 
+export type StringFilter = {
+  startsWith?: InputMaybe<Scalars['String']['input']>;
+  eq?: InputMaybe<Scalars['String']['input']>;
+  exists?: InputMaybe<Scalars['Boolean']['input']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
 export type NumberFilter = {
   lt?: InputMaybe<Scalars['Float']['input']>;
   lte?: InputMaybe<Scalars['Float']['input']>;
@@ -294,13 +300,6 @@ export type NumberFilter = {
   eq?: InputMaybe<Scalars['Float']['input']>;
   exists?: InputMaybe<Scalars['Boolean']['input']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['Float']['input']>>>;
-};
-
-export type StringFilter = {
-  startsWith?: InputMaybe<Scalars['String']['input']>;
-  eq?: InputMaybe<Scalars['String']['input']>;
-  exists?: InputMaybe<Scalars['Boolean']['input']>;
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 export type HotelsContactFilter = {
@@ -358,7 +357,6 @@ export type BooleanFilter = {
 };
 
 export type HotelsFilter = {
-  hotel_id?: InputMaybe<NumberFilter>;
   name?: InputMaybe<StringFilter>;
   stars?: InputMaybe<NumberFilter>;
   location?: InputMaybe<StringFilter>;
@@ -688,7 +686,6 @@ export type HotelsAmenitiesMutation = {
 };
 
 export type HotelsMutation = {
-  hotel_id?: InputMaybe<Scalars['Float']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   stars?: InputMaybe<Scalars['Float']['input']>;
   location?: InputMaybe<Scalars['String']['input']>;
@@ -750,7 +747,7 @@ export type OffersMutation = {
   tags?: InputMaybe<Array<InputMaybe<OffersTagsMutation>>>;
 };
 
-export type HotelsPartsFragment = { __typename: 'Hotels', hotel_id: number, name: string, stars: number, location: string, mainStreet?: string | null, addressNumber?: string | null, secondaryStreet?: string | null, roomPrice: number, coverImage: string, gallery?: Array<string | null> | null, highlight?: boolean | null, contact?: Array<{ __typename: 'HotelsContact', type: string, value: string, tag?: string | null } | null> | null, socialMedia?: Array<{ __typename: 'HotelsSocialMedia', name?: string | null, url?: string | null } | null> | null, rooms?: Array<{ __typename: 'HotelsRooms', name?: string | null, description?: string | null, size?: number | null, occupancy?: string | null, images?: Array<string | null> | null, price?: string | null, amenities?: Array<{ __typename: 'HotelsRoomsAmenities', amenities?: { __typename: 'Icons', icon: string, name: Array<string>, id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } | null> | null, description_hotel?: Array<{ __typename: 'HotelsDescription_hotel', lang_hotel?: string | null, content_hotel?: string | null } | null> | null, amenities?: Array<{ __typename: 'HotelsAmenities', amenities?: { __typename: 'Icons', icon: string, name: Array<string>, id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null };
+export type HotelsPartsFragment = { __typename: 'Hotels', name: string, stars: number, location: string, mainStreet?: string | null, addressNumber?: string | null, secondaryStreet?: string | null, roomPrice: number, coverImage: string, gallery?: Array<string | null> | null, highlight?: boolean | null, contact?: Array<{ __typename: 'HotelsContact', type: string, value: string, tag?: string | null } | null> | null, socialMedia?: Array<{ __typename: 'HotelsSocialMedia', name?: string | null, url?: string | null } | null> | null, rooms?: Array<{ __typename: 'HotelsRooms', name?: string | null, description?: string | null, size?: number | null, occupancy?: string | null, images?: Array<string | null> | null, price?: string | null, amenities?: Array<{ __typename: 'HotelsRoomsAmenities', amenities?: { __typename: 'Icons', icon: string, name: Array<string>, id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } | null> | null, description_hotel?: Array<{ __typename: 'HotelsDescription_hotel', lang_hotel?: string | null, content_hotel?: string | null } | null> | null, amenities?: Array<{ __typename: 'HotelsAmenities', amenities?: { __typename: 'Icons', icon: string, name: Array<string>, id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null };
 
 export type IconsPartsFragment = { __typename: 'Icons', icon: string, name: Array<string> };
 
@@ -763,7 +760,7 @@ export type HotelsQueryVariables = Exact<{
 }>;
 
 
-export type HotelsQuery = { __typename?: 'Query', hotels: { __typename: 'Hotels', id: string, hotel_id: number, name: string, stars: number, location: string, mainStreet?: string | null, addressNumber?: string | null, secondaryStreet?: string | null, roomPrice: number, coverImage: string, gallery?: Array<string | null> | null, highlight?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, contact?: Array<{ __typename: 'HotelsContact', type: string, value: string, tag?: string | null } | null> | null, socialMedia?: Array<{ __typename: 'HotelsSocialMedia', name?: string | null, url?: string | null } | null> | null, rooms?: Array<{ __typename: 'HotelsRooms', name?: string | null, description?: string | null, size?: number | null, occupancy?: string | null, images?: Array<string | null> | null, price?: string | null, amenities?: Array<{ __typename: 'HotelsRoomsAmenities', amenities?: { __typename: 'Icons', icon: string, name: Array<string>, id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } | null> | null, description_hotel?: Array<{ __typename: 'HotelsDescription_hotel', lang_hotel?: string | null, content_hotel?: string | null } | null> | null, amenities?: Array<{ __typename: 'HotelsAmenities', amenities?: { __typename: 'Icons', icon: string, name: Array<string>, id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+export type HotelsQuery = { __typename?: 'Query', hotels: { __typename: 'Hotels', id: string, name: string, stars: number, location: string, mainStreet?: string | null, addressNumber?: string | null, secondaryStreet?: string | null, roomPrice: number, coverImage: string, gallery?: Array<string | null> | null, highlight?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, contact?: Array<{ __typename: 'HotelsContact', type: string, value: string, tag?: string | null } | null> | null, socialMedia?: Array<{ __typename: 'HotelsSocialMedia', name?: string | null, url?: string | null } | null> | null, rooms?: Array<{ __typename: 'HotelsRooms', name?: string | null, description?: string | null, size?: number | null, occupancy?: string | null, images?: Array<string | null> | null, price?: string | null, amenities?: Array<{ __typename: 'HotelsRoomsAmenities', amenities?: { __typename: 'Icons', icon: string, name: Array<string>, id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } | null> | null, description_hotel?: Array<{ __typename: 'HotelsDescription_hotel', lang_hotel?: string | null, content_hotel?: string | null } | null> | null, amenities?: Array<{ __typename: 'HotelsAmenities', amenities?: { __typename: 'Icons', icon: string, name: Array<string>, id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
 export type HotelsConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -775,7 +772,7 @@ export type HotelsConnectionQueryVariables = Exact<{
 }>;
 
 
-export type HotelsConnectionQuery = { __typename?: 'Query', hotelsConnection: { __typename?: 'HotelsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'HotelsConnectionEdges', cursor: string, node?: { __typename: 'Hotels', id: string, hotel_id: number, name: string, stars: number, location: string, mainStreet?: string | null, addressNumber?: string | null, secondaryStreet?: string | null, roomPrice: number, coverImage: string, gallery?: Array<string | null> | null, highlight?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, contact?: Array<{ __typename: 'HotelsContact', type: string, value: string, tag?: string | null } | null> | null, socialMedia?: Array<{ __typename: 'HotelsSocialMedia', name?: string | null, url?: string | null } | null> | null, rooms?: Array<{ __typename: 'HotelsRooms', name?: string | null, description?: string | null, size?: number | null, occupancy?: string | null, images?: Array<string | null> | null, price?: string | null, amenities?: Array<{ __typename: 'HotelsRoomsAmenities', amenities?: { __typename: 'Icons', icon: string, name: Array<string>, id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } | null> | null, description_hotel?: Array<{ __typename: 'HotelsDescription_hotel', lang_hotel?: string | null, content_hotel?: string | null } | null> | null, amenities?: Array<{ __typename: 'HotelsAmenities', amenities?: { __typename: 'Icons', icon: string, name: Array<string>, id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } | null } | null> | null } };
+export type HotelsConnectionQuery = { __typename?: 'Query', hotelsConnection: { __typename?: 'HotelsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'HotelsConnectionEdges', cursor: string, node?: { __typename: 'Hotels', id: string, name: string, stars: number, location: string, mainStreet?: string | null, addressNumber?: string | null, secondaryStreet?: string | null, roomPrice: number, coverImage: string, gallery?: Array<string | null> | null, highlight?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, contact?: Array<{ __typename: 'HotelsContact', type: string, value: string, tag?: string | null } | null> | null, socialMedia?: Array<{ __typename: 'HotelsSocialMedia', name?: string | null, url?: string | null } | null> | null, rooms?: Array<{ __typename: 'HotelsRooms', name?: string | null, description?: string | null, size?: number | null, occupancy?: string | null, images?: Array<string | null> | null, price?: string | null, amenities?: Array<{ __typename: 'HotelsRoomsAmenities', amenities?: { __typename: 'Icons', icon: string, name: Array<string>, id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } | null> | null, description_hotel?: Array<{ __typename: 'HotelsDescription_hotel', lang_hotel?: string | null, content_hotel?: string | null } | null> | null, amenities?: Array<{ __typename: 'HotelsAmenities', amenities?: { __typename: 'Icons', icon: string, name: Array<string>, id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } | null } | null> | null } };
 
 export type IconsQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
@@ -837,7 +834,6 @@ export type OffersConnectionQuery = { __typename?: 'Query', offersConnection: { 
 export const HotelsPartsFragmentDoc = gql`
     fragment HotelsParts on Hotels {
   __typename
-  hotel_id
   name
   stars
   location
