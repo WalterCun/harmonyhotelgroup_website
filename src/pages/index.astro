@@ -3,19 +3,20 @@ import Layout from "~/layouts/Layout.astro";
 
 import Hero from "~/components/sections/home/Hero.astro";
 import FeaturedHotels from "../components/sections/home/FeaturedHotels.astro";
-// import PopularDestinations from "../components/sections/home/PopularDestinations.astro";
+import PopularDestinations from "../components/sections/home/PopularDestinations.astro";
+import SpecialOffers from "../components/sections/home/SpecialOffers.astro";
+import Newsletter from "../components/sections/home/Newsletter.astro";
+import Testimonials from "../components/sections/home/Testimonials.astro";
+
 
 import { lang_es } from "lib/constants";
-// import Newsletter from "../components/sections/home/Newsletter.astro";
-// import SpecialOffers from "../components/sections/home/SpecialOffers.astro";
-// import Testimonials from "../components/sections/home/Testimonials.astro";
 ---
 
 <Layout lang={lang_es}>
   <Hero lang={lang_es} />
   <FeaturedHotels lang={lang_es}/>
-  <!--<PopularDestinations lang={lang_es}/>-->
-  <!--<SpecialOffers lang={lang_es}/>-->
+  <PopularDestinations lang={lang_es}/>
+  <SpecialOffers lang={lang_es}/>
   <!--<Testimonials lang={lang_es}/>-->
   <!--<Newsletter lang={lang_es}/>-->
 </Layout>

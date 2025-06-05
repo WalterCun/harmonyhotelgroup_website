@@ -3,10 +3,12 @@ import {Image} from "astro:assets";
 
 import {trans} from "~/utils/translations";
 import {Api} from "~/utils/tina";
-import {getImage, imagesHM2} from "../../../lib/constants";
+import {imagesHoteles} from "../../../lib/constants";
+import {getImage} from "../../../utils/tools";
 
 const api = new Api(true, 4);
 let hoteles: any[] = [];
+
 
 try {
     hoteles = await api.hotels();
@@ -19,7 +21,6 @@ interface Props {
     lang: string;
 }
 const {lang} = Astro.props;
-
 ---
 
 <section class="section bg-white dark:bg-neutral-900">
@@ -36,8 +37,10 @@ const {lang} = Astro.props;
                     <div class="card group hover:scale-[1.02] transition-transform duration-300 ease-out">
                         <div class="relative h-64 overflow-hidden">
                             {
-                                hotel.coverImage && (<Image src={getImage(imagesHM2, hotel.coverImage)} alt={hotel.name} widths={[240, 540, 720]}
-                                                         sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 720px`}/>)}
+                                hotel.coverImage && (
+                                            <Image src={getImage(imagesHoteles, hotel.coverImage)} alt={hotel.name}
+                                                   widths={[240, 540, 720]}
+                                                   sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 720px`}/>)}
                             <div class="absolute top-4 right-4 bg-white dark:bg-neutral-800 rounded-full py-1 px-3 text-sm font-semibold text-primary-500">
                                 5/5
                             </div>

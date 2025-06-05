@@ -1,83 +1,113 @@
 ---
-import { Image } from "astro:assets";
-import { Api } from "~/utils/tina";
-import { trans } from "../../../utils/translations";
+import {Image} from "astro:assets";
+import {Api} from "~/utils/tina";
+import {trans} from "../../../utils/translations";
+import type {OffersQuery} from "../../../../tina/__generated__/types";
+import {getImage} from "../../../utils/tools";
+import {imagesOffers} from "../../../lib/constants";
 
 const api = new Api(true, 4);
-let offers = [];
+let offers: OffersQuery['offers'][] = [];
+
+
 
 try {
     offers = await api.offers();
     console.log('Special offers loaded successfully:', offers.length);
 } catch (error) {
     console.error('Error loading offers:', error);
-    // Fallback to empty array if API call fails
+
 }
 
+// offers.map((item)=>{
+//     console.log(item.coverImage)
+//     console.log(getImage(imagesOffers,item.coverImage))
+//     console.log(offers.length)
+// })
+
 interface Props {
-	lang: string;
+    lang: string;
 }
-const { lang } = Astro.props;
+const {lang} = Astro.props;
 ---
 
 <section class="section bg-white dark:bg-neutral-900">
     <div class="container">
-        <div class="text-center mb-12">
-            <h2 class="mb-4">{trans(lang, "components.sections.home.special-offer.title")}</h2>
-            <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
-                {trans(lang, "components.sections.home.special-offer.subtitle")}
-            </p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {offers.map(offer => (
-                    <div class="card group hover:shadow-xl transition-all duration-300">
-                        <div class="relative">
-                            {offer.coverImage && (
-                                    <Image
-                                            src={offer.coverImage}
-                                            alt={offer.title}
-                                            width="100"
-                                            height="100"
-                                            class="w-full h-48 object-cover"
-                                    />)}
-                            <div class="absolute top-4 left-4 bg-primary-500 text-white py-1 px-3 rounded-full text-sm font-bold">
-                                {offer.discount} OFF
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <div class="flex flex-wrap gap-2 mb-3">
-                                {offer.tags?.map(item => (
-                                        <span class="text-xs font-semibold bg-secondary-100 dark:bg-secondary-900 text-secondary-800 dark:text-secondary-200 py-1 px-2 rounded-full">{item?.tag}</span>
-                                ))}
-                            </div>
-                            <h3 class="text-xl font-semibold mb-2">{offer.title}</h3>
-                            <p class="text-neutral-600 dark:text-neutral-400 mb-4">
-                                {offer.description_offers?.find(item => item?.lang_offer === lang)?.content_offer ||
-                                        trans(lang, "components.sections.home.special-offer.no-text")}
-                            </p>
-                            <div class="flex flex-row justify-between">
-                                <div class="flex flex-col justify-between items-center">
-                                    <p class="text-sm">
-                                        <span class="font-medium">{trans(lang, "components.sections.home.special-offer.expired")}</span>
-                                    </p>
-                                    <p class="text-sm">
-                                        {offer.expiration_date.split('T')[0]}
-                                    </p>
-
+        {offers.length > 0 ? (
+                <div class="text-center mb-12">
+                    <h2 class="mb-4">{trans(lang, "components.sections.home.special-offer.title")}</h2>
+                    <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
+                        {trans(lang, "components.sections.home.special-offer.subtitle")}
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {offers.map(offer => (
+                            <div class="card group hover:shadow-xl transition-all duration-300">
+                                <div class="relative">
+                                    {offer.coverImage && (
+                                            <Image
+                                                    src={getImage(imagesOffers, offer.coverImage, true)}
+                                                    alt={offer.title}
+                                                    width="1200"
+                                                    height="800"
+                                                    class="w-full h-48 object-cover"
+                                            />)}
+                                    <div class="absolute top-4 left-4 bg-primary-500 text-white py-1 px-3 rounded-full text-sm font-bold">
+                                        {offer.discount} OFF
+                                    </div>
                                 </div>
-                                <a href={`/offers/${offer.offer_id}`}
-                                   class="text-primary-500 font-medium hover:text-primary-600 transition-colors">
-                                    {trans(lang, "components.sections.home.special-offer.btn-details")}
-                                </a>
+                                <div class="p-6">
+                                    <div class="flex flex-wrap gap-2 mb-3">
+                                        {offer.tags?.map(item => (
+                                                <span class="text-xs font-semibold bg-secondary-100 dark:bg-secondary-900 text-secondary-800 dark:text-secondary-200 py-1 px-2 rounded-full">{item?.tag}</span>
+                                        ))}
+                                    </div>
+                                    <h3 class="text-xl font-semibold mb-2">{offer.title}</h3>
+                                    <p class="text-neutral-600 dark:text-neutral-400 mb-4">
+                                        {offer.description_offers?.find(item => item?.lang_offer === lang)?.content_offer ||
+                                            trans(lang, "components.sections.home.special-offer.no-text")}
+                                    </p>
+                                    <div class="flex flex-row justify-between">
+                                        <div class="flex flex-col justify-between items-center">
+                                            <p class="text-sm">
+                                                <span class="font-medium">{trans(lang, "components.sections.home.special-offer.expired")}</span>
+                                            </p>
+                                            <p class="text-sm">
+                                                {offer.expiration_date.split('T')[0]}
+                                            </p>
+
+                                        </div>
+                                        <a href={`/offers/${offer.offer_id}`}
+                                           class="text-primary-500 font-medium hover:text-primary-600 transition-colors">
+                                            {trans(lang, "components.sections.home.special-offer.btn-details")}
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                    ))}
+                </div>
+                <div class="text-center mt-12">
+                    <a href="/offers" class="btn btn-outline">
+                        View All Offers
+                    </a>
+                </div>
+        ) : (
+                <div class="py-16 text-center">
+                    <div class="bg-neutral-100 dark:bg-neutral-800 rounded-lg p-8 max-w-2xl mx-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-neutral-400 mx-auto mb-4"
+                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <h3 class="text-xl font-medium mb-4">No hay ofertas activas</h3>
+                        <p class="text-neutral-600 dark:text-neutral-400 mb-6">
+                            Suscríbete para recibir nuevas ofertas y promociones exclusivas.
+                        </p>
+                        <a href="/newsletter" class="btn btn-primary">
+                            Suscribirse
+                        </a>
                     </div>
-            ))}
-        </div>
-        <div class="text-center mt-12">
-            <a href="/offers" class="btn btn-outline">
-                View All Offers
-            </a>
-        </div>
+                </div>
+        )}
     </div>
 </section>

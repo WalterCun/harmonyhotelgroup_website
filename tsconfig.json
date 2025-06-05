@@ -7,7 +7,7 @@
 		"astro.config.mjs",
 		"tailwind.config.mjs"
 	],
-	"exclude": ["node_modules", "dist", ".vercel", ".vscode"],
+	"exclude": ["node_modules", "dist", ".vercel", ".vscode",".astro",".github",".idea","tmp"],
 	"compilerOptions": {
 		"baseUrl": "./",
 		"paths": {

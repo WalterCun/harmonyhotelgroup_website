@@ -1,4 +1,6 @@
 import {DEBUG} from "lib/constants/global.ts";
+import type {DestinationsQuery, HotelsQuery, OffersQuery} from "../../tina/__generated__/types.ts";
+
 
 /**
  * Lee todos los archivos JSON de una carpeta y devuelve sus contenidos.
@@ -16,10 +18,13 @@ export class Api {
 
     // ----------------------------------------------------------------------------------------------------------------
 
-    async hotels(filterLocation?: string): Promise<any> {
+    async hotels(filterLocation?: string): Promise<any[]> {
         try {
             // Obtenemos la lista de archivos dinámicamente
-            const hotelFiles: Record<string, any> = import.meta.glob('../data/hotels/*.json', {eager: true});
+            // @ts-ignore
+            const hotelFiles: Record<string, HotelsQuery['hotels']> = import.meta.glob('../data/hotels/*.json', {eager: true});
+
+            // DEBUG & console.info('hotelFiles', hotelFiles)
 
             if (Object.keys(hotelFiles).length === 0) {
                 !DEBUG && console.warn('⚠️ No se encontraron archivos en ../data/hotels');
@@ -38,19 +43,18 @@ export class Api {
 
                 // Retornar objeto con metadatos añadidos
                 return {
-                    _filename: fileName,
-                    id: hotelData.id || fileName,
-                    _path: filePath,
+                    id: fileName,
                     ...hotelData
                 };
 
             }).filter(Boolean); // Eliminamos valores nulos o undefined
 
+
             // Aplicar filtro por ubicación si se proporciona
             if (filterLocation) {
                 hoteles = hoteles.filter((hotel) => {
                         // biome-ignore lint/complexity/useOptionalChain: <explanation>
-                        if (hotel.location && hotel.location.toLowerCase().includes(filterLocation.toLowerCase())) {
+                        if (hotel?.location && hotel?.location.toLowerCase().includes(filterLocation.toLowerCase())) {
                             return true;
                         }
                     }
@@ -59,7 +63,7 @@ export class Api {
 
             // Filtrar solo hoteles destacados si this.destacado es true
             if (this.destacado) {
-                hoteles = hoteles.filter((hotel) => hotel.highlight === true);
+                hoteles = hoteles.filter((hotel) => hotel?.highlight === true);
             }
 
             // Aplicar límite si es necesario
@@ -67,6 +71,7 @@ export class Api {
                 hoteles = hoteles.slice(0, this.limit);
             }
 
+            // DEBUG & console.info('hoteles', hoteles)
             return hoteles;
         } catch (error) {
             console.error("❌ Error general obteniendo hoteles:", error);
@@ -76,98 +81,126 @@ export class Api {
 
     // ----------------------------------------------------------------------------------------------------------------
 
-    // async destinations(): Promise<DestinationsQuery["destinations"][]> {
-    //     try {
-    //         // Obtenemos la lista de archivos dinámicamente
-    //         const destinationFiles = await this.getFiles(this.destinationsDirectory);
-    //
-    //         if (destinationFiles.length === 0) {
-    //             console.warn(`⚠️ No se encontraron archivos en ${this.hotelsDirectory}`);
-    //             return [];
-    //         }
-    //
-    //         const destinationsPromises = destinationFiles.map((item) =>
-    //             client.queries
-    //                 .destinations({relativePath: item})
-    //                 .then((result) => result.data.destinations)
-    //                 .catch((err) => {
-    //                     console.error(`❌ Error procesando ${item}:`, err);
-    //                     return null;
-    //                 }),
-    //         );
-    //
-    //         const results = await Promise.all(destinationsPromises);
-    //
-    //         // Filtrar nulos por errores de parseo
-    //         let destinations = results.filter(
-    //             (destination): destination is DestinationsQuery["destinations"] =>
-    //                 destination !== null,
-    //         );
-    //
-    //         // Filtrar solo hoteles destacados si this.destacado es true
-    //         if (this.destacado) {
-    //             destinations = destinations.filter(
-    //                 (destinations) => destinations.highlight === true,
-    //             );
-    //         }
-    //
-    //         // Aplicar límite si es necesario
-    //         if (this.limit > 0) {
-    //             destinations = destinations.slice(0, this.limit);
-    //         }
-    //
-    //         return destinations;
-    //     } catch (error) {
-    //         console.error("❌ Error general obteniendo hoteles:", error);
-    //         return [];
-    //     }
-    // }
+    async destinations(filterLocation?: string): Promise<any[]> {
+        try {
+            // Obtenemos la lista de archivos dinámicamente
+            // @ts-ignore
+            const destinationsFiles: Record<string, DestinationsQuery['destinations']> = import.meta.glob('../data/destinations/*.json', {eager: true});
+
+            if (Object.keys(destinationsFiles).length === 0) {
+                !DEBUG && console.warn('⚠️ No se encontraron archivos en ../data/destinations');
+                return [];
+            }
+
+            let destinations = Object.entries(destinationsFiles).map(([filePath, fileContent]) => {
+                // Extraer el nombre del archivo (sin extensión) del path
+                const fileName = filePath.split('/').pop()?.replace('.json', '');
+                // Obtener los datos del hotel
+                // Si no hay datos, retornar null (se filtrará después)
+                if (!fileContent) return null;
+
+                // Crear una copia para no mutar el objeto original
+                const hotelData = {...fileContent};
+
+                // Retornar objeto con metadatos añadidos
+                return {
+                    _filename: fileName,
+                    _path: filePath,
+                    ...hotelData
+                };
+
+            }).filter(Boolean); // Eliminamos valores nulos o undefined
+
+            // Aplicar filtro por ubicación si se proporciona
+            if (filterLocation) {
+                destinations = destinations.filter((destination) => {
+                        // biome-ignore lint/complexity/useOptionalChain: <explanation>
+                        if (destination?.city && destination?.city.toLowerCase().includes(filterLocation.toLowerCase())) {
+                            return true;
+                        }
+                    }
+                );
+            }
+
+            // Filtrar solo hoteles destacados si this.destacado es true
+            if (this.destacado) {
+                destinations = destinations.filter((destinacion) => destinacion?.highlight === true);
+            }
+
+            // Aplicar límite si es necesario
+            if (this.limit > 0) {
+                destinations = destinations.slice(0, this.limit);
+            }
+
+            return destinations;
+        } catch (error: any) {
+            console.error("❌ Error general obteniendo hoteles:", error);
+            return [];
+        }
+    }
 
     // ----------------------------------------------------------------------------------------------------------------
 
     // private readonly offersDirectory: string = "src/data/offers";
 
-    // async offers(): Promise<OffersQuery["offers"][]> {
-    //     try {
-    //         const offersFiles = await this.getFiles(this.offersDirectory);
-    //
-    //         if (offersFiles.length === 0) {
-    //             console.warn(`⚠️ No se encontraron archivos en ${this.offersDirectory}`);
-    //             return [];
-    //         }
-    //
-    //         const offersPromises = offersFiles.map((item) => {
-    //             return client.queries
-    //                 .offers({relativePath: item})
-    //                 .then((result) => result.data.offers)
-    //                 .catch((err) => {
-    //                     console.error(`❌ Error procesando ${item}:`, err);
-    //                     return null;
-    //                 });
-    //         });
-    //
-    //         const results = await Promise.all(offersPromises);
-    //
-    //         let offers = results.filter(
-    //             (offer): offer is OffersQuery["offers"] => offer !== null,
-    //         );
-    //
-    //         offers = offers.filter(
-    //             (offer) =>
-    //                 offer.expiration_date !== null &&
-    //                 new Date(offer.expiration_date) >= new Date(),
-    //         );
-    //
-    //         if (this.limit > 0) {
-    //             offers = offers.slice(0, this.limit);
-    //         }
-    //
-    //         return offers;
-    //     } catch (error) {
-    //         console.error("❌ Error general leyendo Archivo:", error);
-    //         return [];
-    //     }
-    // }
+    async offers(filterLocation?: string): Promise<any[]> {
+        try {
+            // Obtenemos la lista de archivos dinámicamente
+            // @ts-ignore
+            const offersFiles: Record<string, OffersQuery['offers']> = import.meta.glob('../data/offers/*.json', {eager: true});
+
+            if (Object.keys(offersFiles).length === 0) {
+                !DEBUG && console.warn('⚠️ No se encontraron archivos en ../data/offers');
+                return [];
+            }
+
+            let offers: any = Object.entries(offersFiles).map(([filePath, fileContent]) => {
+                // Extraer el nombre del archivo (sin extensión) del path
+                const fileName = filePath.split('/').pop()?.replace('.json', '');
+                // Obtener los datos del hotel
+                // Si no hay datos, retornar null (se filtrará después)
+                if (!fileContent) return null;
+
+                // Crear una copia para no mutar el objeto original
+                const offersData = {...fileContent};
+
+                // Retornar objeto con metadatos añadidos
+                return {
+                    _filename: fileName,
+                    _path: filePath,
+                    ...offersData
+                };
+
+            }).filter(Boolean); // Eliminamos valores nulos o undefined
+
+            // Aplicar filtro por ubicación si se proporciona
+            if (filterLocation) {
+                offers = offers.filter((offer: any) => {
+                        // biome-ignore lint/complexity/useOptionalChain: <explanation>
+                        if (offer.location && offer.location.toLowerCase().includes(filterLocation.toLowerCase())) {
+                            return true;
+                        }
+                    }
+                );
+            }
+
+            offers = offers.filter(
+                (offer: any) =>
+                    offer.expiration_date !== null &&
+                    new Date(offer.expiration_date) >= new Date(),
+            );
+
+            // Aplicar límite si es necesario
+            if (this.limit > 0) {
+                offers = offers.slice(0, this.limit);
+            }
+
+            return offers
+        } catch (error) {
+            console.error("❌ Error general leyendo Archivo:", error);
+            return [];
+        }
+    }
 }
 
 // --------------------------------------------------------------------------------------------------------------------
