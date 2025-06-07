@@ -40,13 +40,11 @@
     {
       "name": "Individual",
       "size": 12,
-      "occupancy": "Min: 1, Max: 2",
-      "price": "",
-      "amenities": [
-        {
-          "amenities": "src/data/icons/iconWifi.json"
-        }
-      ]
+      "occupancy": {
+        "min": 1,
+        "max": 1
+      },
+      "price": ""
     }
   ],
   "roomPrice": 30,
@@ -54,6 +52,19 @@
   "gallery": [
     "/upload/hotels/HotelMajestic2/lobby1-2.jpg",
     "/upload/hotels/HotelMajestic2/lobby1-2.jpg"
+  ],
+  "description_hotel": [
+    {}
+  ],
+  "amenities": [
+    {
+      "general_services": [
+        "Restaurante"
+      ],
+      "extra_services": [
+        "Alquiler de autos"
+      ]
+    }
   ],
   "highlight": true
 }
