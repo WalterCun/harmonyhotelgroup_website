@@ -1,0 +1,16 @@
+---
+interface Props {
+    lang: string
+}
+
+const {lang} = Astro.props;
+---
+
+<a href="/" className="flex flex-col items-start group">
+    <span className="text-3xl font-bold text-primary group-hover:text-accent transition-colors">
+    Harmony
+    </span>
+    <span className="text-xs font-medium text-foreground/70 -mt-1 tracking-wider uppercase group-hover:text-accent/80 transition-colors">
+    Hotel Group
+    </span>
+</a>
