@@ -1,6 +1,5 @@
 // tina/config.ts
 import { defineConfig } from "tinacms";
-import "nanoid";
 var clientId = process.env.NEXT_PUBLIC_TINA_CLIENT_ID || "";
 var token = process.env.TINA_TOKEN || "";
 var isLocalMode = !clientId || !token;
@@ -32,6 +31,12 @@ var config_default = defineConfig({
         path: "src/data/hotels",
         format: "json",
         fields: [
+          {
+            type: "boolean",
+            name: "partner",
+            label: "Socio Estrategico",
+            required: false
+          },
           {
             type: "string",
             name: "name",
@@ -155,7 +160,7 @@ var config_default = defineConfig({
                 const name = item?.name || "Habitaci\xF3n";
                 const price = item?.price || "";
                 return {
-                  label: `${name} - ${price}`
+                  label: `${name}`
                 };
               }
             },
@@ -178,9 +183,29 @@ var config_default = defineConfig({
                 ]
               },
               {
-                type: "string",
-                name: "description",
-                label: "Descripcion de habitacion"
+                type: "object",
+                name: "description_room",
+                label: "Descripci\xF3n de Habitacion",
+                list: true,
+                ui: {
+                  itemProps: (item) => {
+                    const lang = item?.lang_room || "Idioma";
+                    return { label: `${lang}` };
+                  }
+                },
+                fields: [
+                  {
+                    type: "string",
+                    name: "lang_room",
+                    label: "Language",
+                    options: ["es", "en"]
+                  },
+                  {
+                    type: "string",
+                    name: "content_destination",
+                    label: "Description"
+                  }
+                ]
               },
               {
                 type: "number",
@@ -188,9 +213,21 @@ var config_default = defineConfig({
                 label: "Tama\xF1o de habitacion (m2)"
               },
               {
-                type: "string",
+                type: "object",
                 name: "occupancy",
-                label: "Ocupaci\xF3n min, max (Eje: Min: 1, Max: 2)"
+                label: "Ocupaci\xF3n Min/Max",
+                fields: [
+                  {
+                    type: "number",
+                    name: "min",
+                    label: "Min"
+                  },
+                  {
+                    type: "number",
+                    name: "max",
+                    label: "Max"
+                  }
+                ]
               },
               {
                 type: "image",
@@ -198,29 +235,24 @@ var config_default = defineConfig({
                 label: "Imagenes (La primera Imagen sera la portada)",
                 list: true
               },
+              // {
+              //     type: "string",
+              //     name: "price",
+              //     label: "Precio",
+              // },
               {
                 type: "string",
-                name: "price",
-                label: "Precio"
-              },
-              {
-                type: "object",
-                name: "amenities",
+                name: "room_services",
                 label: "Servicios de la Habitacion",
                 list: true,
-                ui: {
-                  itemProps: (item) => {
-                    const amenityName = item?.amenities || "Servicio";
-                    return { label: `${amenityName}` };
-                  }
-                },
-                fields: [
-                  {
-                    type: "reference",
-                    name: "amenities",
-                    label: "Servicios del Hotel",
-                    collections: ["icons"]
-                  }
+                options: [
+                  "Servicio a la habitaci\xF3n",
+                  "Minibar",
+                  "Caja fuerte",
+                  "Secador de pelo",
+                  "Plancha y tabla de planchar",
+                  "Almohadas adicionales",
+                  "Escritorio de trabajo"
                 ]
               }
             ]
@@ -259,7 +291,7 @@ var config_default = defineConfig({
                 type: "string",
                 name: "lang_hotel",
                 label: "Language",
-                options: ["es", "en", "fr"]
+                options: ["es", "en"]
               },
               {
                 type: "string",
@@ -275,16 +307,78 @@ var config_default = defineConfig({
             list: true,
             ui: {
               itemProps: (item) => {
-                const amenityName = item?.amenities || "Servicio";
-                return { label: `${amenityName}` };
+                return {
+                  label: `${item?.basic_services ? "> Servicio Basico" : ""} 
+                                ${item?.general_services ? "> Servicio General" : ""} 
+                                ${item?.extra_services ? "> Servicio Extra" : ""}
+                                ${item?.premium_services ? "> Servicio Premium" : ""}
+                                `
+                };
               }
             },
             fields: [
               {
-                type: "reference",
-                name: "amenities",
-                label: "Servicios del Hotel",
-                collections: ["icons"]
+                type: "string",
+                name: "basic_services",
+                label: "Servicios Basicos",
+                list: true,
+                options: [
+                  "Recepci\xF3n 24 horas",
+                  "Wifi gratuito",
+                  "Desayuno incluido",
+                  "Limpieza diaria",
+                  "Televisi\xF3n por cable",
+                  "Ba\xF1o privado",
+                  "Aire acondicionado o calefacci\xF3n",
+                  "Art\xEDculos de tocador"
+                ]
+              },
+              {
+                type: "string",
+                name: "general_services",
+                label: "Servicios Generales",
+                list: true,
+                options: [
+                  "Estacionamiento",
+                  "Restaurante",
+                  "Bar o cafeter\xEDa",
+                  "Gimnasio",
+                  "Piscina",
+                  "Spa o centro de bienestar",
+                  "Salas de reuniones o conferencias",
+                  "Ascensor"
+                ]
+              },
+              {
+                type: "string",
+                name: "extra_services",
+                label: "Servicios Extra",
+                list: true,
+                options: [
+                  "Transporte al aeropuerto",
+                  "Alquiler de autos",
+                  "Lavander\xEDa y tintorer\xEDa",
+                  "Servicio de conserjer\xEDa",
+                  "Actividades tur\xEDsticas o excursiones",
+                  "Guarder\xEDa o ni\xF1era",
+                  "Admisi\xF3n de mascotas",
+                  "Cambio de divisas"
+                ]
+              },
+              {
+                type: "string",
+                name: "premium_services",
+                label: "Servicios Premium",
+                list: true,
+                options: [
+                  "Check-in y check-out express o VIP",
+                  "Habitaciones con jacuzzi",
+                  "Tienda de regalos",
+                  "Club lounge o \xE1rea ejecutiva",
+                  "Terraza con vistas",
+                  "Servicios de spa personalizados",
+                  "Chef privado o cocina gourmet"
+                ]
               }
             ]
           },
@@ -292,28 +386,6 @@ var config_default = defineConfig({
             type: "boolean",
             name: "highlight",
             label: "Destacar"
-          }
-        ]
-      },
-      // COLLECTION AMENITIES
-      {
-        name: "icons",
-        label: "Icons",
-        path: "src/data/icons",
-        format: "json",
-        fields: [
-          {
-            type: "string",
-            name: "icon",
-            label: "Icon",
-            required: true
-          },
-          {
-            type: "string",
-            name: "name",
-            label: "Name",
-            required: true,
-            list: true
           }
         ]
       },
@@ -364,7 +436,7 @@ var config_default = defineConfig({
                 type: "string",
                 name: "lang_destination",
                 label: "Language",
-                options: ["es", "en", "fr"]
+                options: ["es", "en"]
               },
               {
                 type: "string",
@@ -446,7 +518,7 @@ var config_default = defineConfig({
                 type: "string",
                 name: "lang_offer",
                 label: "Language",
-                options: ["es", "en", "fr"]
+                options: ["es", "en"]
               },
               {
                 type: "string",

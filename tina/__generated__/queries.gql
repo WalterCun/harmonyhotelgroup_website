@@ -53,61 +53,6 @@ query hotelsConnection($before: String, $after: String, $first: Float, $last: Fl
   }
 }
 
-query icons($relativePath: String!) {
-  icons(relativePath: $relativePath) {
-    ... on Document {
-      _sys {
-        filename
-        basename
-        hasReferences
-        breadcrumbs
-        path
-        relativePath
-        extension
-      }
-      id
-    }
-    ...IconsParts
-  }
-}
-
-query iconsConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: IconsFilter) {
-  iconsConnection(
-    before: $before
-    after: $after
-    first: $first
-    last: $last
-    sort: $sort
-    filter: $filter
-  ) {
-    pageInfo {
-      hasPreviousPage
-      hasNextPage
-      startCursor
-      endCursor
-    }
-    totalCount
-    edges {
-      cursor
-      node {
-        ... on Document {
-          _sys {
-            filename
-            basename
-            hasReferences
-            breadcrumbs
-            path
-            relativePath
-            extension
-          }
-          id
-        }
-        ...IconsParts
-      }
-    }
-  }
-}
-
 query destinations($relativePath: String!) {
   destinations(relativePath: $relativePath) {
     ... on Document {

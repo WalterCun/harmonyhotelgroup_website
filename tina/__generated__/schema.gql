@@ -56,8 +56,6 @@ type Query {
   document(collection: String, relativePath: String): DocumentNode!
   hotels(relativePath: String): Hotels!
   hotelsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: HotelsFilter): HotelsConnection!
-  icons(relativePath: String): Icons!
-  iconsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: IconsFilter): IconsConnection!
   destinations(relativePath: String): Destinations!
   destinationsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: DestinationsFilter): DestinationsConnection!
   offers(relativePath: String): Offers!
@@ -66,7 +64,6 @@ type Query {
 
 input DocumentFilter {
   hotels: HotelsFilter
-  icons: IconsFilter
   destinations: DestinationsFilter
   offers: OffersFilter
 }
@@ -94,7 +91,7 @@ type Collection {
   documents(before: String, after: String, first: Float, last: Float, sort: String, filter: DocumentFilter, folder: String): DocumentConnection!
 }
 
-union DocumentNode = Hotels | Icons | Destinations | Offers | Folder
+union DocumentNode = Hotels | Destinations | Offers | Folder
 
 type HotelsContact {
   type: String!
@@ -107,20 +104,23 @@ type HotelsSocialMedia {
   url: String
 }
 
-union HotelsRoomsAmenitiesAmenities = Icons
+type HotelsRoomsDescription_room {
+  lang_room: String
+  content_destination: String
+}
 
-type HotelsRoomsAmenities {
-  amenities: HotelsRoomsAmenitiesAmenities
+type HotelsRoomsOccupancy {
+  min: Float
+  max: Float
 }
 
 type HotelsRooms {
   name: String
-  description: String
+  description_room: [HotelsRoomsDescription_room]
   size: Float
-  occupancy: String
+  occupancy: HotelsRoomsOccupancy
   images: [String]
-  price: String
-  amenities: [HotelsRoomsAmenities]
+  room_services: [String]
 }
 
 type HotelsDescription_hotel {
@@ -128,13 +128,15 @@ type HotelsDescription_hotel {
   content_hotel: String
 }
 
-union HotelsAmenitiesAmenities = Icons
-
 type HotelsAmenities {
-  amenities: HotelsAmenitiesAmenities
+  basic_services: [String]
+  general_services: [String]
+  extra_services: [String]
+  premium_services: [String]
 }
 
 type Hotels implements Node & Document {
+  partner: Boolean
   name: String!
   stars: Float!
   location: String!
@@ -153,6 +155,11 @@ type Hotels implements Node & Document {
   id: ID!
   _sys: SystemInfo!
   _values: JSON!
+}
+
+input BooleanFilter {
+  eq: Boolean
+  exists: Boolean
 }
 
 input StringFilter {
@@ -183,6 +190,16 @@ input HotelsSocialMediaFilter {
   url: StringFilter
 }
 
+input HotelsRoomsDescription_roomFilter {
+  lang_room: StringFilter
+  content_destination: StringFilter
+}
+
+input HotelsRoomsOccupancyFilter {
+  min: NumberFilter
+  max: NumberFilter
+}
+
 input ImageFilter {
   startsWith: String
   eq: String
@@ -190,22 +207,13 @@ input ImageFilter {
   in: [String]
 }
 
-input HotelsRoomsAmenitiesAmenitiesFilter {
-  icons: IconsFilter
-}
-
-input HotelsRoomsAmenitiesFilter {
-  amenities: HotelsRoomsAmenitiesAmenitiesFilter
-}
-
 input HotelsRoomsFilter {
   name: StringFilter
-  description: StringFilter
+  description_room: HotelsRoomsDescription_roomFilter
   size: NumberFilter
-  occupancy: StringFilter
+  occupancy: HotelsRoomsOccupancyFilter
   images: ImageFilter
-  price: StringFilter
-  amenities: HotelsRoomsAmenitiesFilter
+  room_services: StringFilter
 }
 
 input HotelsDescription_hotelFilter {
@@ -213,20 +221,15 @@ input HotelsDescription_hotelFilter {
   content_hotel: StringFilter
 }
 
-input HotelsAmenitiesAmenitiesFilter {
-  icons: IconsFilter
-}
-
 input HotelsAmenitiesFilter {
-  amenities: HotelsAmenitiesAmenitiesFilter
-}
-
-input BooleanFilter {
-  eq: Boolean
-  exists: Boolean
+  basic_services: StringFilter
+  general_services: StringFilter
+  extra_services: StringFilter
+  premium_services: StringFilter
 }
 
 input HotelsFilter {
+  partner: BooleanFilter
   name: StringFilter
   stars: NumberFilter
   location: StringFilter
@@ -253,30 +256,6 @@ type HotelsConnection implements Connection {
   pageInfo: PageInfo!
   totalCount: Float!
   edges: [HotelsConnectionEdges]
-}
-
-type Icons implements Node & Document {
-  icon: String!
-  name: [String!]!
-  id: ID!
-  _sys: SystemInfo!
-  _values: JSON!
-}
-
-input IconsFilter {
-  icon: StringFilter
-  name: StringFilter
-}
-
-type IconsConnectionEdges {
-  cursor: String!
-  node: Icons
-}
-
-type IconsConnection implements Connection {
-  pageInfo: PageInfo!
-  totalCount: Float!
-  edges: [IconsConnectionEdges]
 }
 
 type DestinationsDescription_destination {
@@ -401,8 +380,6 @@ type Mutation {
   createFolder(collection: String, relativePath: String!): DocumentNode!
   updateHotels(relativePath: String!, params: HotelsMutation!): Hotels!
   createHotels(relativePath: String!, params: HotelsMutation!): Hotels!
-  updateIcons(relativePath: String!, params: IconsMutation!): Icons!
-  createIcons(relativePath: String!, params: IconsMutation!): Icons!
   updateDestinations(relativePath: String!, params: DestinationsMutation!): Destinations!
   createDestinations(relativePath: String!, params: DestinationsMutation!): Destinations!
   updateOffers(relativePath: String!, params: OffersMutation!): Offers!
@@ -411,7 +388,6 @@ type Mutation {
 
 input DocumentUpdateMutation {
   hotels: HotelsMutation
-  icons: IconsMutation
   destinations: DestinationsMutation
   offers: OffersMutation
   relativePath: String
@@ -419,7 +395,6 @@ input DocumentUpdateMutation {
 
 input DocumentMutation {
   hotels: HotelsMutation
-  icons: IconsMutation
   destinations: DestinationsMutation
   offers: OffersMutation
 }
@@ -435,18 +410,23 @@ input HotelsSocialMediaMutation {
   url: String
 }
 
-input HotelsRoomsAmenitiesMutation {
-  amenities: String
+input HotelsRoomsDescription_roomMutation {
+  lang_room: String
+  content_destination: String
+}
+
+input HotelsRoomsOccupancyMutation {
+  min: Float
+  max: Float
 }
 
 input HotelsRoomsMutation {
   name: String
-  description: String
+  description_room: [HotelsRoomsDescription_roomMutation]
   size: Float
-  occupancy: String
+  occupancy: HotelsRoomsOccupancyMutation
   images: [String]
-  price: String
-  amenities: [HotelsRoomsAmenitiesMutation]
+  room_services: [String]
 }
 
 input HotelsDescription_hotelMutation {
@@ -455,10 +435,14 @@ input HotelsDescription_hotelMutation {
 }
 
 input HotelsAmenitiesMutation {
-  amenities: String
+  basic_services: [String]
+  general_services: [String]
+  extra_services: [String]
+  premium_services: [String]
 }
 
 input HotelsMutation {
+  partner: Boolean
   name: String
   stars: Float
   location: String
@@ -474,11 +458,6 @@ input HotelsMutation {
   description_hotel: [HotelsDescription_hotelMutation]
   amenities: [HotelsAmenitiesMutation]
   highlight: Boolean
-}
-
-input IconsMutation {
-  icon: String
-  name: [String]
 }
 
 input DestinationsDescription_destinationMutation {

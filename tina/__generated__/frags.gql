@@ -1,5 +1,6 @@
 fragment HotelsParts on Hotels {
   __typename
+  partner
   name
   stars
   location
@@ -20,33 +21,19 @@ fragment HotelsParts on Hotels {
   rooms {
     __typename
     name
-    description
-    size
-    occupancy
-    images
-    price
-    amenities {
+    description_room {
       __typename
-      amenities {
-        ... on Icons {
-          __typename
-          icon
-          name
-        }
-        ... on Document {
-          _sys {
-            filename
-            basename
-            hasReferences
-            breadcrumbs
-            path
-            relativePath
-            extension
-          }
-          id
-        }
-      }
+      lang_room
+      content_destination
     }
+    size
+    occupancy {
+      __typename
+      min
+      max
+    }
+    images
+    room_services
   }
   roomPrice
   coverImage
@@ -58,33 +45,12 @@ fragment HotelsParts on Hotels {
   }
   amenities {
     __typename
-    amenities {
-      ... on Icons {
-        __typename
-        icon
-        name
-      }
-      ... on Document {
-        _sys {
-          filename
-          basename
-          hasReferences
-          breadcrumbs
-          path
-          relativePath
-          extension
-        }
-        id
-      }
-    }
+    basic_services
+    general_services
+    extra_services
+    premium_services
   }
   highlight
-}
-
-fragment IconsParts on Icons {
-  __typename
-  icon
-  name
 }
 
 fragment DestinationsParts on Destinations {

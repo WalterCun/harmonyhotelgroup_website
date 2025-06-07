@@ -84,8 +84,6 @@ export type Query = {
   document: DocumentNode;
   hotels: Hotels;
   hotelsConnection: HotelsConnection;
-  icons: Icons;
-  iconsConnection: IconsConnection;
   destinations: Destinations;
   destinationsConnection: DestinationsConnection;
   offers: Offers;
@@ -129,21 +127,6 @@ export type QueryHotelsConnectionArgs = {
 };
 
 
-export type QueryIconsArgs = {
-  relativePath?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type QueryIconsConnectionArgs = {
-  before?: InputMaybe<Scalars['String']['input']>;
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Float']['input']>;
-  last?: InputMaybe<Scalars['Float']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-  filter?: InputMaybe<IconsFilter>;
-};
-
-
 export type QueryDestinationsArgs = {
   relativePath?: InputMaybe<Scalars['String']['input']>;
 };
@@ -175,7 +158,6 @@ export type QueryOffersConnectionArgs = {
 
 export type DocumentFilter = {
   hotels?: InputMaybe<HotelsFilter>;
-  icons?: InputMaybe<IconsFilter>;
   destinations?: InputMaybe<DestinationsFilter>;
   offers?: InputMaybe<OffersFilter>;
 };
@@ -217,7 +199,7 @@ export type CollectionDocumentsArgs = {
   folder?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type DocumentNode = Hotels | Icons | Destinations | Offers | Folder;
+export type DocumentNode = Hotels | Destinations | Offers | Folder;
 
 export type HotelsContact = {
   __typename?: 'HotelsContact';
@@ -232,22 +214,26 @@ export type HotelsSocialMedia = {
   url?: Maybe<Scalars['String']['output']>;
 };
 
-export type HotelsRoomsAmenitiesAmenities = Icons;
+export type HotelsRoomsDescription_Room = {
+  __typename?: 'HotelsRoomsDescription_room';
+  lang_room?: Maybe<Scalars['String']['output']>;
+  content_destination?: Maybe<Scalars['String']['output']>;
+};
 
-export type HotelsRoomsAmenities = {
-  __typename?: 'HotelsRoomsAmenities';
-  amenities?: Maybe<HotelsRoomsAmenitiesAmenities>;
+export type HotelsRoomsOccupancy = {
+  __typename?: 'HotelsRoomsOccupancy';
+  min?: Maybe<Scalars['Float']['output']>;
+  max?: Maybe<Scalars['Float']['output']>;
 };
 
 export type HotelsRooms = {
   __typename?: 'HotelsRooms';
   name?: Maybe<Scalars['String']['output']>;
-  description?: Maybe<Scalars['String']['output']>;
+  description_room?: Maybe<Array<Maybe<HotelsRoomsDescription_Room>>>;
   size?: Maybe<Scalars['Float']['output']>;
-  occupancy?: Maybe<Scalars['String']['output']>;
+  occupancy?: Maybe<HotelsRoomsOccupancy>;
   images?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
-  price?: Maybe<Scalars['String']['output']>;
-  amenities?: Maybe<Array<Maybe<HotelsRoomsAmenities>>>;
+  room_services?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
 };
 
 export type HotelsDescription_Hotel = {
@@ -256,15 +242,17 @@ export type HotelsDescription_Hotel = {
   content_hotel?: Maybe<Scalars['String']['output']>;
 };
 
-export type HotelsAmenitiesAmenities = Icons;
-
 export type HotelsAmenities = {
   __typename?: 'HotelsAmenities';
-  amenities?: Maybe<HotelsAmenitiesAmenities>;
+  basic_services?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  general_services?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  extra_services?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  premium_services?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
 };
 
 export type Hotels = Node & Document & {
   __typename?: 'Hotels';
+  partner?: Maybe<Scalars['Boolean']['output']>;
   name: Scalars['String']['output'];
   stars: Scalars['Float']['output'];
   location: Scalars['String']['output'];
@@ -283,6 +271,11 @@ export type Hotels = Node & Document & {
   id: Scalars['ID']['output'];
   _sys: SystemInfo;
   _values: Scalars['JSON']['output'];
+};
+
+export type BooleanFilter = {
+  eq?: InputMaybe<Scalars['Boolean']['input']>;
+  exists?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type StringFilter = {
@@ -313,6 +306,16 @@ export type HotelsSocialMediaFilter = {
   url?: InputMaybe<StringFilter>;
 };
 
+export type HotelsRoomsDescription_RoomFilter = {
+  lang_room?: InputMaybe<StringFilter>;
+  content_destination?: InputMaybe<StringFilter>;
+};
+
+export type HotelsRoomsOccupancyFilter = {
+  min?: InputMaybe<NumberFilter>;
+  max?: InputMaybe<NumberFilter>;
+};
+
 export type ImageFilter = {
   startsWith?: InputMaybe<Scalars['String']['input']>;
   eq?: InputMaybe<Scalars['String']['input']>;
@@ -320,22 +323,13 @@ export type ImageFilter = {
   in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
-export type HotelsRoomsAmenitiesAmenitiesFilter = {
-  icons?: InputMaybe<IconsFilter>;
-};
-
-export type HotelsRoomsAmenitiesFilter = {
-  amenities?: InputMaybe<HotelsRoomsAmenitiesAmenitiesFilter>;
-};
-
 export type HotelsRoomsFilter = {
   name?: InputMaybe<StringFilter>;
-  description?: InputMaybe<StringFilter>;
+  description_room?: InputMaybe<HotelsRoomsDescription_RoomFilter>;
   size?: InputMaybe<NumberFilter>;
-  occupancy?: InputMaybe<StringFilter>;
+  occupancy?: InputMaybe<HotelsRoomsOccupancyFilter>;
   images?: InputMaybe<ImageFilter>;
-  price?: InputMaybe<StringFilter>;
-  amenities?: InputMaybe<HotelsRoomsAmenitiesFilter>;
+  room_services?: InputMaybe<StringFilter>;
 };
 
 export type HotelsDescription_HotelFilter = {
@@ -343,20 +337,15 @@ export type HotelsDescription_HotelFilter = {
   content_hotel?: InputMaybe<StringFilter>;
 };
 
-export type HotelsAmenitiesAmenitiesFilter = {
-  icons?: InputMaybe<IconsFilter>;
-};
-
 export type HotelsAmenitiesFilter = {
-  amenities?: InputMaybe<HotelsAmenitiesAmenitiesFilter>;
-};
-
-export type BooleanFilter = {
-  eq?: InputMaybe<Scalars['Boolean']['input']>;
-  exists?: InputMaybe<Scalars['Boolean']['input']>;
+  basic_services?: InputMaybe<StringFilter>;
+  general_services?: InputMaybe<StringFilter>;
+  extra_services?: InputMaybe<StringFilter>;
+  premium_services?: InputMaybe<StringFilter>;
 };
 
 export type HotelsFilter = {
+  partner?: InputMaybe<BooleanFilter>;
   name?: InputMaybe<StringFilter>;
   stars?: InputMaybe<NumberFilter>;
   location?: InputMaybe<StringFilter>;
@@ -385,33 +374,6 @@ export type HotelsConnection = Connection & {
   pageInfo: PageInfo;
   totalCount: Scalars['Float']['output'];
   edges?: Maybe<Array<Maybe<HotelsConnectionEdges>>>;
-};
-
-export type Icons = Node & Document & {
-  __typename?: 'Icons';
-  icon: Scalars['String']['output'];
-  name: Array<Scalars['String']['output']>;
-  id: Scalars['ID']['output'];
-  _sys: SystemInfo;
-  _values: Scalars['JSON']['output'];
-};
-
-export type IconsFilter = {
-  icon?: InputMaybe<StringFilter>;
-  name?: InputMaybe<StringFilter>;
-};
-
-export type IconsConnectionEdges = {
-  __typename?: 'IconsConnectionEdges';
-  cursor: Scalars['String']['output'];
-  node?: Maybe<Icons>;
-};
-
-export type IconsConnection = Connection & {
-  __typename?: 'IconsConnection';
-  pageInfo: PageInfo;
-  totalCount: Scalars['Float']['output'];
-  edges?: Maybe<Array<Maybe<IconsConnectionEdges>>>;
 };
 
 export type DestinationsDescription_Destination = {
@@ -547,8 +509,6 @@ export type Mutation = {
   createFolder: DocumentNode;
   updateHotels: Hotels;
   createHotels: Hotels;
-  updateIcons: Icons;
-  createIcons: Icons;
   updateDestinations: Destinations;
   createDestinations: Destinations;
   updateOffers: Offers;
@@ -601,18 +561,6 @@ export type MutationCreateHotelsArgs = {
 };
 
 
-export type MutationUpdateIconsArgs = {
-  relativePath: Scalars['String']['input'];
-  params: IconsMutation;
-};
-
-
-export type MutationCreateIconsArgs = {
-  relativePath: Scalars['String']['input'];
-  params: IconsMutation;
-};
-
-
 export type MutationUpdateDestinationsArgs = {
   relativePath: Scalars['String']['input'];
   params: DestinationsMutation;
@@ -638,7 +586,6 @@ export type MutationCreateOffersArgs = {
 
 export type DocumentUpdateMutation = {
   hotels?: InputMaybe<HotelsMutation>;
-  icons?: InputMaybe<IconsMutation>;
   destinations?: InputMaybe<DestinationsMutation>;
   offers?: InputMaybe<OffersMutation>;
   relativePath?: InputMaybe<Scalars['String']['input']>;
@@ -646,7 +593,6 @@ export type DocumentUpdateMutation = {
 
 export type DocumentMutation = {
   hotels?: InputMaybe<HotelsMutation>;
-  icons?: InputMaybe<IconsMutation>;
   destinations?: InputMaybe<DestinationsMutation>;
   offers?: InputMaybe<OffersMutation>;
 };
@@ -662,18 +608,23 @@ export type HotelsSocialMediaMutation = {
   url?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type HotelsRoomsAmenitiesMutation = {
-  amenities?: InputMaybe<Scalars['String']['input']>;
+export type HotelsRoomsDescription_RoomMutation = {
+  lang_room?: InputMaybe<Scalars['String']['input']>;
+  content_destination?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type HotelsRoomsOccupancyMutation = {
+  min?: InputMaybe<Scalars['Float']['input']>;
+  max?: InputMaybe<Scalars['Float']['input']>;
 };
 
 export type HotelsRoomsMutation = {
   name?: InputMaybe<Scalars['String']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
+  description_room?: InputMaybe<Array<InputMaybe<HotelsRoomsDescription_RoomMutation>>>;
   size?: InputMaybe<Scalars['Float']['input']>;
-  occupancy?: InputMaybe<Scalars['String']['input']>;
+  occupancy?: InputMaybe<HotelsRoomsOccupancyMutation>;
   images?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  price?: InputMaybe<Scalars['String']['input']>;
-  amenities?: InputMaybe<Array<InputMaybe<HotelsRoomsAmenitiesMutation>>>;
+  room_services?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 export type HotelsDescription_HotelMutation = {
@@ -682,10 +633,14 @@ export type HotelsDescription_HotelMutation = {
 };
 
 export type HotelsAmenitiesMutation = {
-  amenities?: InputMaybe<Scalars['String']['input']>;
+  basic_services?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  general_services?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  extra_services?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  premium_services?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 export type HotelsMutation = {
+  partner?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   stars?: InputMaybe<Scalars['Float']['input']>;
   location?: InputMaybe<Scalars['String']['input']>;
@@ -701,11 +656,6 @@ export type HotelsMutation = {
   description_hotel?: InputMaybe<Array<InputMaybe<HotelsDescription_HotelMutation>>>;
   amenities?: InputMaybe<Array<InputMaybe<HotelsAmenitiesMutation>>>;
   highlight?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type IconsMutation = {
-  icon?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 export type DestinationsDescription_DestinationMutation = {
@@ -747,9 +697,7 @@ export type OffersMutation = {
   tags?: InputMaybe<Array<InputMaybe<OffersTagsMutation>>>;
 };
 
-export type HotelsPartsFragment = { __typename: 'Hotels', name: string, stars: number, location: string, mainStreet?: string | null, addressNumber?: string | null, secondaryStreet?: string | null, roomPrice: number, coverImage: string, gallery?: Array<string | null> | null, highlight?: boolean | null, contact?: Array<{ __typename: 'HotelsContact', type: string, value: string, tag?: string | null } | null> | null, socialMedia?: Array<{ __typename: 'HotelsSocialMedia', name?: string | null, url?: string | null } | null> | null, rooms?: Array<{ __typename: 'HotelsRooms', name?: string | null, description?: string | null, size?: number | null, occupancy?: string | null, images?: Array<string | null> | null, price?: string | null, amenities?: Array<{ __typename: 'HotelsRoomsAmenities', amenities?: { __typename: 'Icons', icon: string, name: Array<string>, id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } | null> | null, description_hotel?: Array<{ __typename: 'HotelsDescription_hotel', lang_hotel?: string | null, content_hotel?: string | null } | null> | null, amenities?: Array<{ __typename: 'HotelsAmenities', amenities?: { __typename: 'Icons', icon: string, name: Array<string>, id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null };
-
-export type IconsPartsFragment = { __typename: 'Icons', icon: string, name: Array<string> };
+export type HotelsPartsFragment = { __typename: 'Hotels', partner?: boolean | null, name: string, stars: number, location: string, mainStreet?: string | null, addressNumber?: string | null, secondaryStreet?: string | null, roomPrice: number, coverImage: string, gallery?: Array<string | null> | null, highlight?: boolean | null, contact?: Array<{ __typename: 'HotelsContact', type: string, value: string, tag?: string | null } | null> | null, socialMedia?: Array<{ __typename: 'HotelsSocialMedia', name?: string | null, url?: string | null } | null> | null, rooms?: Array<{ __typename: 'HotelsRooms', name?: string | null, size?: number | null, images?: Array<string | null> | null, room_services?: Array<string | null> | null, description_room?: Array<{ __typename: 'HotelsRoomsDescription_room', lang_room?: string | null, content_destination?: string | null } | null> | null, occupancy?: { __typename: 'HotelsRoomsOccupancy', min?: number | null, max?: number | null } | null } | null> | null, description_hotel?: Array<{ __typename: 'HotelsDescription_hotel', lang_hotel?: string | null, content_hotel?: string | null } | null> | null, amenities?: Array<{ __typename: 'HotelsAmenities', basic_services?: Array<string | null> | null, general_services?: Array<string | null> | null, extra_services?: Array<string | null> | null, premium_services?: Array<string | null> | null } | null> | null };
 
 export type DestinationsPartsFragment = { __typename: 'Destinations', destination_id: number, name: string, country: string, city: string, coverImage: string, highlight?: boolean | null, description_destination?: Array<{ __typename: 'DestinationsDescription_destination', lang_destination?: string | null, content_destination?: string | null } | null> | null, tags?: Array<{ __typename: 'DestinationsTags', tag?: string | null } | null> | null };
 
@@ -760,7 +708,7 @@ export type HotelsQueryVariables = Exact<{
 }>;
 
 
-export type HotelsQuery = { __typename?: 'Query', hotels: { __typename: 'Hotels', id: string, name: string, stars: number, location: string, mainStreet?: string | null, addressNumber?: string | null, secondaryStreet?: string | null, roomPrice: number, coverImage: string, gallery?: Array<string | null> | null, highlight?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, contact?: Array<{ __typename: 'HotelsContact', type: string, value: string, tag?: string | null } | null> | null, socialMedia?: Array<{ __typename: 'HotelsSocialMedia', name?: string | null, url?: string | null } | null> | null, rooms?: Array<{ __typename: 'HotelsRooms', name?: string | null, description?: string | null, size?: number | null, occupancy?: string | null, images?: Array<string | null> | null, price?: string | null, amenities?: Array<{ __typename: 'HotelsRoomsAmenities', amenities?: { __typename: 'Icons', icon: string, name: Array<string>, id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } | null> | null, description_hotel?: Array<{ __typename: 'HotelsDescription_hotel', lang_hotel?: string | null, content_hotel?: string | null } | null> | null, amenities?: Array<{ __typename: 'HotelsAmenities', amenities?: { __typename: 'Icons', icon: string, name: Array<string>, id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+export type HotelsQuery = { __typename?: 'Query', hotels: { __typename: 'Hotels', id: string, partner?: boolean | null, name: string, stars: number, location: string, mainStreet?: string | null, addressNumber?: string | null, secondaryStreet?: string | null, roomPrice: number, coverImage: string, gallery?: Array<string | null> | null, highlight?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, contact?: Array<{ __typename: 'HotelsContact', type: string, value: string, tag?: string | null } | null> | null, socialMedia?: Array<{ __typename: 'HotelsSocialMedia', name?: string | null, url?: string | null } | null> | null, rooms?: Array<{ __typename: 'HotelsRooms', name?: string | null, size?: number | null, images?: Array<string | null> | null, room_services?: Array<string | null> | null, description_room?: Array<{ __typename: 'HotelsRoomsDescription_room', lang_room?: string | null, content_destination?: string | null } | null> | null, occupancy?: { __typename: 'HotelsRoomsOccupancy', min?: number | null, max?: number | null } | null } | null> | null, description_hotel?: Array<{ __typename: 'HotelsDescription_hotel', lang_hotel?: string | null, content_hotel?: string | null } | null> | null, amenities?: Array<{ __typename: 'HotelsAmenities', basic_services?: Array<string | null> | null, general_services?: Array<string | null> | null, extra_services?: Array<string | null> | null, premium_services?: Array<string | null> | null } | null> | null } };
 
 export type HotelsConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -772,26 +720,7 @@ export type HotelsConnectionQueryVariables = Exact<{
 }>;
 
 
-export type HotelsConnectionQuery = { __typename?: 'Query', hotelsConnection: { __typename?: 'HotelsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'HotelsConnectionEdges', cursor: string, node?: { __typename: 'Hotels', id: string, name: string, stars: number, location: string, mainStreet?: string | null, addressNumber?: string | null, secondaryStreet?: string | null, roomPrice: number, coverImage: string, gallery?: Array<string | null> | null, highlight?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, contact?: Array<{ __typename: 'HotelsContact', type: string, value: string, tag?: string | null } | null> | null, socialMedia?: Array<{ __typename: 'HotelsSocialMedia', name?: string | null, url?: string | null } | null> | null, rooms?: Array<{ __typename: 'HotelsRooms', name?: string | null, description?: string | null, size?: number | null, occupancy?: string | null, images?: Array<string | null> | null, price?: string | null, amenities?: Array<{ __typename: 'HotelsRoomsAmenities', amenities?: { __typename: 'Icons', icon: string, name: Array<string>, id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } | null> | null, description_hotel?: Array<{ __typename: 'HotelsDescription_hotel', lang_hotel?: string | null, content_hotel?: string | null } | null> | null, amenities?: Array<{ __typename: 'HotelsAmenities', amenities?: { __typename: 'Icons', icon: string, name: Array<string>, id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } | null } | null> | null } };
-
-export type IconsQueryVariables = Exact<{
-  relativePath: Scalars['String']['input'];
-}>;
-
-
-export type IconsQuery = { __typename?: 'Query', icons: { __typename: 'Icons', id: string, icon: string, name: Array<string>, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
-
-export type IconsConnectionQueryVariables = Exact<{
-  before?: InputMaybe<Scalars['String']['input']>;
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Float']['input']>;
-  last?: InputMaybe<Scalars['Float']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-  filter?: InputMaybe<IconsFilter>;
-}>;
-
-
-export type IconsConnectionQuery = { __typename?: 'Query', iconsConnection: { __typename?: 'IconsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'IconsConnectionEdges', cursor: string, node?: { __typename: 'Icons', id: string, icon: string, name: Array<string>, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+export type HotelsConnectionQuery = { __typename?: 'Query', hotelsConnection: { __typename?: 'HotelsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'HotelsConnectionEdges', cursor: string, node?: { __typename: 'Hotels', id: string, partner?: boolean | null, name: string, stars: number, location: string, mainStreet?: string | null, addressNumber?: string | null, secondaryStreet?: string | null, roomPrice: number, coverImage: string, gallery?: Array<string | null> | null, highlight?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, contact?: Array<{ __typename: 'HotelsContact', type: string, value: string, tag?: string | null } | null> | null, socialMedia?: Array<{ __typename: 'HotelsSocialMedia', name?: string | null, url?: string | null } | null> | null, rooms?: Array<{ __typename: 'HotelsRooms', name?: string | null, size?: number | null, images?: Array<string | null> | null, room_services?: Array<string | null> | null, description_room?: Array<{ __typename: 'HotelsRoomsDescription_room', lang_room?: string | null, content_destination?: string | null } | null> | null, occupancy?: { __typename: 'HotelsRoomsOccupancy', min?: number | null, max?: number | null } | null } | null> | null, description_hotel?: Array<{ __typename: 'HotelsDescription_hotel', lang_hotel?: string | null, content_hotel?: string | null } | null> | null, amenities?: Array<{ __typename: 'HotelsAmenities', basic_services?: Array<string | null> | null, general_services?: Array<string | null> | null, extra_services?: Array<string | null> | null, premium_services?: Array<string | null> | null } | null> | null } | null } | null> | null } };
 
 export type DestinationsQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
@@ -834,6 +763,7 @@ export type OffersConnectionQuery = { __typename?: 'Query', offersConnection: { 
 export const HotelsPartsFragmentDoc = gql`
     fragment HotelsParts on Hotels {
   __typename
+  partner
   name
   stars
   location
@@ -854,33 +784,19 @@ export const HotelsPartsFragmentDoc = gql`
   rooms {
     __typename
     name
-    description
-    size
-    occupancy
-    images
-    price
-    amenities {
+    description_room {
       __typename
-      amenities {
-        ... on Icons {
-          __typename
-          icon
-          name
-        }
-        ... on Document {
-          _sys {
-            filename
-            basename
-            hasReferences
-            breadcrumbs
-            path
-            relativePath
-            extension
-          }
-          id
-        }
-      }
+      lang_room
+      content_destination
     }
+    size
+    occupancy {
+      __typename
+      min
+      max
+    }
+    images
+    room_services
   }
   roomPrice
   coverImage
@@ -892,34 +808,12 @@ export const HotelsPartsFragmentDoc = gql`
   }
   amenities {
     __typename
-    amenities {
-      ... on Icons {
-        __typename
-        icon
-        name
-      }
-      ... on Document {
-        _sys {
-          filename
-          basename
-          hasReferences
-          breadcrumbs
-          path
-          relativePath
-          extension
-        }
-        id
-      }
-    }
+    basic_services
+    general_services
+    extra_services
+    premium_services
   }
   highlight
-}
-    `;
-export const IconsPartsFragmentDoc = gql`
-    fragment IconsParts on Icons {
-  __typename
-  icon
-  name
 }
     `;
 export const DestinationsPartsFragmentDoc = gql`
@@ -1018,63 +912,6 @@ export const HotelsConnectionDocument = gql`
   }
 }
     ${HotelsPartsFragmentDoc}`;
-export const IconsDocument = gql`
-    query icons($relativePath: String!) {
-  icons(relativePath: $relativePath) {
-    ... on Document {
-      _sys {
-        filename
-        basename
-        hasReferences
-        breadcrumbs
-        path
-        relativePath
-        extension
-      }
-      id
-    }
-    ...IconsParts
-  }
-}
-    ${IconsPartsFragmentDoc}`;
-export const IconsConnectionDocument = gql`
-    query iconsConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: IconsFilter) {
-  iconsConnection(
-    before: $before
-    after: $after
-    first: $first
-    last: $last
-    sort: $sort
-    filter: $filter
-  ) {
-    pageInfo {
-      hasPreviousPage
-      hasNextPage
-      startCursor
-      endCursor
-    }
-    totalCount
-    edges {
-      cursor
-      node {
-        ... on Document {
-          _sys {
-            filename
-            basename
-            hasReferences
-            breadcrumbs
-            path
-            relativePath
-            extension
-          }
-          id
-        }
-        ...IconsParts
-      }
-    }
-  }
-}
-    ${IconsPartsFragmentDoc}`;
 export const DestinationsDocument = gql`
     query destinations($relativePath: String!) {
   destinations(relativePath: $relativePath) {
@@ -1197,12 +1034,6 @@ export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) 
       },
     hotelsConnection(variables?: HotelsConnectionQueryVariables, options?: C): Promise<{data: HotelsConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: HotelsConnectionQueryVariables, query: string}> {
         return requester<{data: HotelsConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: HotelsConnectionQueryVariables, query: string}, HotelsConnectionQueryVariables>(HotelsConnectionDocument, variables, options);
-      },
-    icons(variables: IconsQueryVariables, options?: C): Promise<{data: IconsQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: IconsQueryVariables, query: string}> {
-        return requester<{data: IconsQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: IconsQueryVariables, query: string}, IconsQueryVariables>(IconsDocument, variables, options);
-      },
-    iconsConnection(variables?: IconsConnectionQueryVariables, options?: C): Promise<{data: IconsConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: IconsConnectionQueryVariables, query: string}> {
-        return requester<{data: IconsConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: IconsConnectionQueryVariables, query: string}, IconsConnectionQueryVariables>(IconsConnectionDocument, variables, options);
       },
     destinations(variables: DestinationsQueryVariables, options?: C): Promise<{data: DestinationsQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: DestinationsQueryVariables, query: string}> {
         return requester<{data: DestinationsQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: DestinationsQueryVariables, query: string}, DestinationsQueryVariables>(DestinationsDocument, variables, options);
