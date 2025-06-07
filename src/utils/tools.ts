@@ -1,7 +1,7 @@
 import type {ImageMetadata} from "astro";
 // @ts-ignore
 import Default from '../assets/img/default.png';
-import {createLogger, type Logger} from '../utils/logs.ts'
+import {createLogger, type Logger} from '../utils'
 
 type ImageLoader = () => Promise<{ default: ImageMetadata }>;
 type ImageCollection = Record<string, ImageLoader>;
