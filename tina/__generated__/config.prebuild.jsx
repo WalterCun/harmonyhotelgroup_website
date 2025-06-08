@@ -52,7 +52,7 @@ var config_default = defineConfig({
           {
             type: "string",
             name: "location",
-            label: "Ubicaci\xF3n (Ciudad, Pa\xEDs)*",
+            label: "Ubicaci\xF3n (Ciudad,Provincia, Pa\xEDs)*",
             required: true
           },
           {
@@ -308,10 +308,10 @@ var config_default = defineConfig({
             ui: {
               itemProps: (item) => {
                 return {
-                  label: `${item?.basic_services ? "> Servicio Basico" : ""} 
-                                ${item?.general_services ? "> Servicio General" : ""} 
-                                ${item?.extra_services ? "> Servicio Extra" : ""}
-                                ${item?.premium_services ? "> Servicio Premium" : ""}
+                  label: `${item?.basic_services ? "> Servicio Basico" : "."}
+                                ${item?.general_services ? "> Servicio General" : "."}
+                                ${item?.extra_services ? "> Servicio Extra" : "."}
+                                ${item?.premium_services ? "> Servicio Premium" : ".    "}
                                 `
                 };
               }
@@ -323,14 +323,16 @@ var config_default = defineConfig({
                 label: "Servicios Basicos",
                 list: true,
                 options: [
-                  "Recepci\xF3n 24 horas",
-                  "Wifi gratuito",
-                  "Desayuno incluido",
-                  "Limpieza diaria",
-                  "Televisi\xF3n por cable",
-                  "Ba\xF1o privado",
-                  "Aire acondicionado o calefacci\xF3n",
-                  "Art\xEDculos de tocador"
+                  { label: "Recepci\xF3n 24 horas", value: "24h_reception" },
+                  { label: "Wifi gratuito", value: "free_wifi" },
+                  { label: "Desayuno incluido", value: "breakfast_included" },
+                  { label: "Limpieza diaria", value: "daily_cleaning" },
+                  { label: "Televisi\xF3n por cable", value: "cable_tv" },
+                  { label: "Televisi\xF3n Streaming", value: "streaming_tv" },
+                  { label: "Ba\xF1o privado", value: "bathroom" },
+                  { label: "Aire acondicionado", value: "air_conditioning" },
+                  { label: "Calefacci\xF3n", value: "heating" },
+                  { label: "Tocador / Coqueta", value: "dressing_table" }
                 ]
               },
               {
@@ -339,14 +341,14 @@ var config_default = defineConfig({
                 label: "Servicios Generales",
                 list: true,
                 options: [
-                  "Estacionamiento",
-                  "Restaurante",
-                  "Bar o cafeter\xEDa",
-                  "Gimnasio",
-                  "Piscina",
-                  "Spa o centro de bienestar",
-                  "Salas de reuniones o conferencias",
-                  "Ascensor"
+                  { label: "Estacionamiento", value: "parking" },
+                  { label: "Restaurante", value: "restaurant" },
+                  { label: "Bar o cafeter\xEDa", value: "cafe_bar" },
+                  { label: "Gimnasio", value: "gym" },
+                  { label: "Piscina", value: "pool" },
+                  { label: "Spa o centro de bienestar", value: "spa_wellness" },
+                  { label: "Salas de reuniones o conferencias", value: "meeting_rooms" },
+                  { label: "Ascensor", value: "elevator" }
                 ]
               },
               {
@@ -355,14 +357,14 @@ var config_default = defineConfig({
                 label: "Servicios Extra",
                 list: true,
                 options: [
-                  "Transporte al aeropuerto",
-                  "Alquiler de autos",
-                  "Lavander\xEDa y tintorer\xEDa",
-                  "Servicio de conserjer\xEDa",
-                  "Actividades tur\xEDsticas o excursiones",
-                  "Guarder\xEDa o ni\xF1era",
-                  "Admisi\xF3n de mascotas",
-                  "Cambio de divisas"
+                  { label: "Transporte al aeropuerto", value: "airport_shuttle" },
+                  { label: "Alquiler de autos", value: "car_rental" },
+                  { label: "Lavander\xEDa y tintorer\xEDa", value: "laundry_service" },
+                  { label: "Servicio de conserjer\xEDa", value: "concierge_service" },
+                  { label: "Actividades tur\xEDsticas o excursiones", value: "tourist_activities" },
+                  { label: "Guarder\xEDa o ni\xF1era", value: "childcare" },
+                  { label: "Admisi\xF3n de mascotas", value: "pet_friendly" },
+                  { label: "Cambio de divisas", value: "currency_exchange" }
                 ]
               },
               {
@@ -371,13 +373,25 @@ var config_default = defineConfig({
                 label: "Servicios Premium",
                 list: true,
                 options: [
-                  "Check-in y check-out express o VIP",
-                  "Habitaciones con jacuzzi",
-                  "Tienda de regalos",
-                  "Club lounge o \xE1rea ejecutiva",
-                  "Terraza con vistas",
-                  "Servicios de spa personalizados",
-                  "Chef privado o cocina gourmet"
+                  {
+                    label: "Check-in y check-out express o VIP / Express or VIP check-in and check-out",
+                    value: "express_checkin"
+                  },
+                  { label: "Habitaciones con jacuzzi / Rooms with jacuzzi", value: "jacuzzi_rooms" },
+                  { label: "Tienda de regalos / Gift shop", value: "gift_shop" },
+                  {
+                    label: "Club lounge o \xE1rea ejecutiva / Club lounge or executive area",
+                    value: "executive_lounge"
+                  },
+                  { label: "Terraza con vistas / Terrace with views", value: "rooftop_terrace" },
+                  {
+                    label: "Servicios de spa personalizados / Custom spa services",
+                    value: "custom_spa_services"
+                  },
+                  {
+                    label: "Chef privado o cocina gourmet / Private chef or gourmet cuisine",
+                    value: "private_chef"
+                  }
                 ]
               }
             ]
@@ -397,27 +411,20 @@ var config_default = defineConfig({
         format: "json",
         fields: [
           {
-            type: "number",
-            name: "destination_id",
-            label: "ID",
-            required: true
+            type: "boolean",
+            name: "partner",
+            label: "Patrocinador"
           },
           {
             type: "string",
             name: "name",
-            label: "Name",
+            label: "Name*",
             required: true
           },
           {
             type: "string",
-            name: "country",
-            label: "Country",
-            required: true
-          },
-          {
-            type: "string",
-            name: "city",
-            label: "City",
+            name: "location",
+            label: "Localizacion (Ejem: Ciudad, Provincia, Pais)*",
             required: true
           },
           {
@@ -428,7 +435,7 @@ var config_default = defineConfig({
             ui: {
               itemProps: (item) => {
                 const lang = item?.lang_destination || "Idioma";
-                return { label: `${lang}` };
+                return { label: `${lang} - ${item.content_destination}` };
               }
             },
             fields: [
@@ -445,22 +452,136 @@ var config_default = defineConfig({
               }
             ]
           },
+          // {
+          //     type: "string",
+          //     name: "tags",
+          //     label: "Key Translation Tag",
+          //     list: true,
+          //     // ui: {
+          //     //     itemProps: (item) => {
+          //     //         const tag = item?.tag || "Etiqueta";
+          //     //         return {label: `${tag}`};
+          //     //     },
+          //     // },
+          //     // fields: [
+          //     //     {
+          //     //         type: "string",
+          //     //         name: "tag",
+          //     //         label: "Key Translation Tag",
+          //     //         list:true,
+          //     //         options:[
+          //     //             {label:"Dentro del Azuay", value:"in_azuay"}
+          //     //         ]
+          //     //     },
+          //     // ],
+          //     options: [
+          //         // Opciones existentes
+          //         {label: "Ubicado dentro del Azuay", value: "in_azuay"},
+          //         {label: "Centro Histórico", value: "historic_center"},
+          //
+          //
+          //
+          //         // Opciones por características geográficas
+          //         {label: "Zona montañosa", value: "mountains"},
+          //         {label: "Ríos y cascadas", value: "rivers_waterfalls"},
+          //         {label: "Parque nacional", value: "national_park"},
+          //         {label: "Mirador panorámico", value: "scenic_viewpoint"},
+          //
+          //
+          //
+          //
+          //
+          //
+          //
+          //
+          //     ]
+          // },
           {
             type: "object",
             name: "tags",
-            label: "Tags",
+            label: "Etiquetas (Key Translation)",
             list: true,
-            ui: {
-              itemProps: (item) => {
-                const tag = item?.tag || "Etiqueta";
-                return { label: `${tag}` };
-              }
-            },
+            // ui: {
+            //     itemProps: (item) => {
+            //         // Accedemos de forma segura, con un valor por defecto
+            //         return {
+            //             label: `${item?.basic_services ? '> Servicio Basico' : '.'}
+            //         ${item?.general_services ? '> Servicio General' : '.'}
+            //         ${item?.extra_services ? '> Servicio Extra' : '.'}
+            //         ${item?.premium_services ? '> Servicio Premium' : '.    '}
+            //         `
+            //         };
+            //     },
+            // },
             fields: [
               {
                 type: "string",
-                name: "tag",
-                label: "Tag"
+                name: "experience",
+                label: "Servicios Basicos",
+                list: true,
+                options: [
+                  // Opciones por tipo de experiencia
+                  { label: "Aventura al aire libre", value: "outdoor_adventure" },
+                  { label: "Patrimonio Cultural", value: "cultural_heritage" },
+                  { label: "Experiencia gastron\xF3mica", value: "culinary_experience" },
+                  { label: "Artesan\xEDa local", value: "local_crafts" }
+                ]
+              },
+              {
+                type: "string",
+                name: "activities",
+                label: "Opciones por actividades",
+                list: true,
+                options: [
+                  { label: "Senderismo", value: "hiking" },
+                  { label: "Ciclismo", value: "cycling" },
+                  { label: "Observaci\xF3n de aves", value: "birdwatching" },
+                  { label: "Aguas termales", value: "hot_springs" },
+                  { label: "Compras de artesan\xEDas", value: "craft_shopping" }
+                ]
+              },
+              {
+                type: "string",
+                name: "culture",
+                label: "Aspectos culturales",
+                list: true,
+                options: [
+                  { label: "Museo o galer\xEDa", value: "museum_gallery" },
+                  { label: "Arquitectura colonial", value: "colonial_architecture" },
+                  { label: "Festivales tradicionales", value: "traditional_festivals" },
+                  { label: "Sitio arqueol\xF3gico", value: "archaeological_site" }
+                ]
+              },
+              {
+                type: "string",
+                name: "accessibility",
+                label: "Accesibilidad y comodidades",
+                list: true,
+                options: [
+                  { label: "Accesible para discapacitados", value: "wheelchair_accessible" },
+                  { label: "Apto para familias", value: "family_friendly" },
+                  { label: "Transporte p\xFAblico cercano", value: "public_transport" }
+                ]
+              },
+              {
+                type: "string",
+                name: "temporality",
+                label: "Temporalidad",
+                list: true,
+                options: [
+                  { label: "Mejor en verano", value: "best_summer" },
+                  { label: "Atractivo todo el a\xF1o", value: "year_round" }
+                ]
+              },
+              {
+                type: "string",
+                name: "popular",
+                label: "Popularidad",
+                list: true,
+                options: [
+                  { label: "Destino poco conocido", value: "hidden_gem" },
+                  { label: "Atracci\xF3n principal", value: "main_attraction" }
+                ]
               }
             ]
           },

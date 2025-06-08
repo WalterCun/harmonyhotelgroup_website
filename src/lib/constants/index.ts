@@ -14,3 +14,4 @@ export * from "./contact";
 export * from './hotelsImages.ts'
 export * from './destinationsImages.ts'
 export * from './offersImages.ts'
+export * from './global.ts'

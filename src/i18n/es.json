@@ -100,7 +100,54 @@
 					"description": "Descubra nuestras propiedades más populares, conocidas por su servicio excepcional, sus impresionantes ubicaciones y sus servicios de primera clase.",
 					"night": "la noche",
 					"btn-details": "Mas Detalles",
-					"btn-all-hotels": "Ver todos los hoteles"
+					"btn-all-hotels": "Ver todos los hoteles",
+                    "partner": "Socio Estrategico",
+                    "tags": {
+                        "more": "más",
+                        "basic_services": {
+                            "24h_reception": "Recepción 24 horas",
+                            "free_wifi": "Wifi gratuito",
+                            "breakfast_included": "Desayuno incluido",
+                            "daily_cleaning": "Limpieza diaria",
+                            "cable_tv": "Televisión por cable",
+                            "streaming_tv": "Televisión Streaming",
+                            "bathroom": "Baño privado",
+                            "air_conditioning": "Aire acondicionado",
+                            "heating": "Calefacción",
+                            "dressing_table": "Tocador / Coqueta"
+                        },
+                        "general_services": {
+                            "parking": "Estacionamiento",
+                            "restaurant": "Restaurante",
+                            "cafe_bar": "Bar o cafetería",
+                            "gym": "Gimnasio",
+                            "pool": "Piscina",
+                            "spa_wellness": "Spa o centro de bienestar",
+                            "meeting_rooms": "Salas de reuniones o conferencias",
+                            "elevator": "Ascensor"
+
+                        },
+                        "extra_services": {
+                            "airport_shuttle": "Transporte al aeropuerto",
+                            "car_rental": "Alquiler de autos",
+                            "laundry_service": "Lavandería y tintorería",
+                            "concierge_service": "Servicio de conserjería",
+                            "tourist_activities": "Actividades turísticas o excursiones",
+                            "childcare": "Guardería o niñera",
+                            "pet_friendly": "Admisión de mascotas",
+                            "currency_exchange": "Cambio de divisas"
+
+                        },
+                        "premium_services": {
+                            "express_checkin": "Check-in y check-out express o VIP / Express or VIP check-in and check-out",
+                            "jacuzzi_rooms": "Habitaciones con jacuzzi / Rooms with jacuzzi",
+                            "gift_shop": "Tienda de regalos / Gift shop",
+                            "executive_lounge": "Club lounge o área ejecutiva / Club lounge or executive area",
+                            "rooftop_terrace": "Terraza con vistas / Terrace with views",
+                            "custom_spa_services": "Servicios de spa personalizados / Custom spa services",
+                            "private_chef": "Chef privado o cocina gourmet / Private chef or gourmet cuisine"
+                        }
+                    }
 				},
 				"popular-destination": {
 					"title": "Destinos Populares",

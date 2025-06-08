@@ -1,6 +1,8 @@
-import {DEBUG} from "lib/constants/global.ts";
 import type {DestinationsQuery, HotelsQuery, OffersQuery} from "../../tina/__generated__/types.ts";
+import {createLogger} from "utils/logger.ts";
+import {DEBUG} from "lib/constants/global.ts";
 
+const logger = createLogger(false, "tina.ts")
 
 /**
  * Lee todos los archivos JSON de una carpeta y devuelve sus contenidos.
@@ -24,10 +26,10 @@ export class Api {
             // @ts-ignore
             const hotelFiles: Record<string, HotelsQuery['hotels']> = import.meta.glob('../data/hotels/*.json', {eager: true});
 
-            // DEBUG & console.info('hotelFiles', hotelFiles)
+            // logger.info('hotelFiles', hotelFiles)
 
             if (Object.keys(hotelFiles).length === 0) {
-                !DEBUG && console.warn('⚠️ No se encontraron archivos en ../data/hotels');
+                logger.warn('⚠️ No se encontraron archivos en ../data/hotels');
                 return [];
             }
 
@@ -43,7 +45,8 @@ export class Api {
 
                 // Retornar objeto con metadatos añadidos
                 return {
-                    id: fileName,
+                    _filename: fileName,
+                    _path: filePath,
                     ...hotelData
                 };
 
@@ -71,10 +74,10 @@ export class Api {
                 hoteles = hoteles.slice(0, this.limit);
             }
 
-            // DEBUG & console.info('hoteles', hoteles)
+            // logger.info('hoteles', hoteles)
             return hoteles;
         } catch (error) {
-            console.error("❌ Error general obteniendo hoteles:", error);
+            logger.error("❌ Error general obteniendo hoteles:", error);
             return [];
         }
     }
@@ -88,7 +91,7 @@ export class Api {
             const destinationsFiles: Record<string, DestinationsQuery['destinations']> = import.meta.glob('../data/destinations/*.json', {eager: true});
 
             if (Object.keys(destinationsFiles).length === 0) {
-                !DEBUG && console.warn('⚠️ No se encontraron archivos en ../data/destinations');
+                logger.warn('⚠️ No se encontraron archivos en ../data/destinations');
                 return [];
             }
 
@@ -134,7 +137,7 @@ export class Api {
 
             return destinations;
         } catch (error: any) {
-            console.error("❌ Error general obteniendo hoteles:", error);
+            logger.error("❌ Error general obteniendo hoteles:", error);
             return [];
         }
     }
@@ -150,7 +153,7 @@ export class Api {
             const offersFiles: Record<string, OffersQuery['offers']> = import.meta.glob('../data/offers/*.json', {eager: true});
 
             if (Object.keys(offersFiles).length === 0) {
-                !DEBUG && console.warn('⚠️ No se encontraron archivos en ../data/offers');
+                logger.warn('⚠️ No se encontraron archivos en ../data/offers');
                 return [];
             }
 
@@ -197,7 +200,7 @@ export class Api {
 
             return offers
         } catch (error) {
-            console.error("❌ Error general leyendo Archivo:", error);
+            logger.error("❌ Error general leyendo Archivo:", error);
             return [];
         }
     }

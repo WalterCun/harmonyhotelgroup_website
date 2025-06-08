@@ -264,14 +264,18 @@ type DestinationsDescription_destination {
 }
 
 type DestinationsTags {
-  tag: String
+  experience: [String]
+  activities: [String]
+  culture: [String]
+  accessibility: [String]
+  temporality: [String]
+  popular: [String]
 }
 
 type Destinations implements Node & Document {
-  destination_id: Float!
+  partner: Boolean
   name: String!
-  country: String!
-  city: String!
+  location: String!
   description_destination: [DestinationsDescription_destination]
   tags: [DestinationsTags]
   coverImage: String!
@@ -287,14 +291,18 @@ input DestinationsDescription_destinationFilter {
 }
 
 input DestinationsTagsFilter {
-  tag: StringFilter
+  experience: StringFilter
+  activities: StringFilter
+  culture: StringFilter
+  accessibility: StringFilter
+  temporality: StringFilter
+  popular: StringFilter
 }
 
 input DestinationsFilter {
-  destination_id: NumberFilter
+  partner: BooleanFilter
   name: StringFilter
-  country: StringFilter
-  city: StringFilter
+  location: StringFilter
   description_destination: DestinationsDescription_destinationFilter
   tags: DestinationsTagsFilter
   coverImage: ImageFilter
@@ -466,14 +474,18 @@ input DestinationsDescription_destinationMutation {
 }
 
 input DestinationsTagsMutation {
-  tag: String
+  experience: [String]
+  activities: [String]
+  culture: [String]
+  accessibility: [String]
+  temporality: [String]
+  popular: [String]
 }
 
 input DestinationsMutation {
-  destination_id: Float
+  partner: Boolean
   name: String
-  country: String
-  city: String
+  location: String
   description_destination: [DestinationsDescription_destinationMutation]
   tags: [DestinationsTagsMutation]
   coverImage: String

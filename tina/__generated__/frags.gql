@@ -55,10 +55,9 @@ fragment HotelsParts on Hotels {
 
 fragment DestinationsParts on Destinations {
   __typename
-  destination_id
+  partner
   name
-  country
-  city
+  location
   description_destination {
     __typename
     lang_destination
@@ -66,7 +65,12 @@ fragment DestinationsParts on Destinations {
   }
   tags {
     __typename
-    tag
+    experience
+    activities
+    culture
+    accessibility
+    temporality
+    popular
   }
   coverImage
   highlight

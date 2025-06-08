@@ -1,9 +1,12 @@
 {
   "destination_id": 1,
-  "name": "Chorro de Giron",
   "country": "Ecuador",
   "city": "Giron",
+  "name": "Chorro de Giron",
+  "location": "Giron, Azuay,Ecuador",
+  "tags": [
+    "in_azuay"
+  ],
   "coverImage": "/upload/destinations/chorroGiron/cascadaGiron1.webp",
   "highlight": true
 }
-

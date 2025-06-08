@@ -384,15 +384,19 @@ export type DestinationsDescription_Destination = {
 
 export type DestinationsTags = {
   __typename?: 'DestinationsTags';
-  tag?: Maybe<Scalars['String']['output']>;
+  experience?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  activities?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  culture?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  accessibility?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  temporality?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  popular?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
 };
 
 export type Destinations = Node & Document & {
   __typename?: 'Destinations';
-  destination_id: Scalars['Float']['output'];
+  partner?: Maybe<Scalars['Boolean']['output']>;
   name: Scalars['String']['output'];
-  country: Scalars['String']['output'];
-  city: Scalars['String']['output'];
+  location: Scalars['String']['output'];
   description_destination?: Maybe<Array<Maybe<DestinationsDescription_Destination>>>;
   tags?: Maybe<Array<Maybe<DestinationsTags>>>;
   coverImage: Scalars['String']['output'];
@@ -408,14 +412,18 @@ export type DestinationsDescription_DestinationFilter = {
 };
 
 export type DestinationsTagsFilter = {
-  tag?: InputMaybe<StringFilter>;
+  experience?: InputMaybe<StringFilter>;
+  activities?: InputMaybe<StringFilter>;
+  culture?: InputMaybe<StringFilter>;
+  accessibility?: InputMaybe<StringFilter>;
+  temporality?: InputMaybe<StringFilter>;
+  popular?: InputMaybe<StringFilter>;
 };
 
 export type DestinationsFilter = {
-  destination_id?: InputMaybe<NumberFilter>;
+  partner?: InputMaybe<BooleanFilter>;
   name?: InputMaybe<StringFilter>;
-  country?: InputMaybe<StringFilter>;
-  city?: InputMaybe<StringFilter>;
+  location?: InputMaybe<StringFilter>;
   description_destination?: InputMaybe<DestinationsDescription_DestinationFilter>;
   tags?: InputMaybe<DestinationsTagsFilter>;
   coverImage?: InputMaybe<ImageFilter>;
@@ -664,14 +672,18 @@ export type DestinationsDescription_DestinationMutation = {
 };
 
 export type DestinationsTagsMutation = {
-  tag?: InputMaybe<Scalars['String']['input']>;
+  experience?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  activities?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  culture?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  accessibility?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  temporality?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  popular?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 export type DestinationsMutation = {
-  destination_id?: InputMaybe<Scalars['Float']['input']>;
+  partner?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  country?: InputMaybe<Scalars['String']['input']>;
-  city?: InputMaybe<Scalars['String']['input']>;
+  location?: InputMaybe<Scalars['String']['input']>;
   description_destination?: InputMaybe<Array<InputMaybe<DestinationsDescription_DestinationMutation>>>;
   tags?: InputMaybe<Array<InputMaybe<DestinationsTagsMutation>>>;
   coverImage?: InputMaybe<Scalars['String']['input']>;
@@ -699,7 +711,7 @@ export type OffersMutation = {
 
 export type HotelsPartsFragment = { __typename: 'Hotels', partner?: boolean | null, name: string, stars: number, location: string, mainStreet?: string | null, addressNumber?: string | null, secondaryStreet?: string | null, roomPrice: number, coverImage: string, gallery?: Array<string | null> | null, highlight?: boolean | null, contact?: Array<{ __typename: 'HotelsContact', type: string, value: string, tag?: string | null } | null> | null, socialMedia?: Array<{ __typename: 'HotelsSocialMedia', name?: string | null, url?: string | null } | null> | null, rooms?: Array<{ __typename: 'HotelsRooms', name?: string | null, size?: number | null, images?: Array<string | null> | null, room_services?: Array<string | null> | null, description_room?: Array<{ __typename: 'HotelsRoomsDescription_room', lang_room?: string | null, content_destination?: string | null } | null> | null, occupancy?: { __typename: 'HotelsRoomsOccupancy', min?: number | null, max?: number | null } | null } | null> | null, description_hotel?: Array<{ __typename: 'HotelsDescription_hotel', lang_hotel?: string | null, content_hotel?: string | null } | null> | null, amenities?: Array<{ __typename: 'HotelsAmenities', basic_services?: Array<string | null> | null, general_services?: Array<string | null> | null, extra_services?: Array<string | null> | null, premium_services?: Array<string | null> | null } | null> | null };
 
-export type DestinationsPartsFragment = { __typename: 'Destinations', destination_id: number, name: string, country: string, city: string, coverImage: string, highlight?: boolean | null, description_destination?: Array<{ __typename: 'DestinationsDescription_destination', lang_destination?: string | null, content_destination?: string | null } | null> | null, tags?: Array<{ __typename: 'DestinationsTags', tag?: string | null } | null> | null };
+export type DestinationsPartsFragment = { __typename: 'Destinations', partner?: boolean | null, name: string, location: string, coverImage: string, highlight?: boolean | null, description_destination?: Array<{ __typename: 'DestinationsDescription_destination', lang_destination?: string | null, content_destination?: string | null } | null> | null, tags?: Array<{ __typename: 'DestinationsTags', experience?: Array<string | null> | null, activities?: Array<string | null> | null, culture?: Array<string | null> | null, accessibility?: Array<string | null> | null, temporality?: Array<string | null> | null, popular?: Array<string | null> | null } | null> | null };
 
 export type OffersPartsFragment = { __typename: 'Offers', offer_id: number, title: string, coverImage: string, expiration_date: string, discount: string, description_offers?: Array<{ __typename: 'OffersDescription_offers', lang_offer?: string | null, content_offer?: string | null } | null> | null, tags?: Array<{ __typename: 'OffersTags', tag?: string | null } | null> | null };
 
@@ -727,7 +739,7 @@ export type DestinationsQueryVariables = Exact<{
 }>;
 
 
-export type DestinationsQuery = { __typename?: 'Query', destinations: { __typename: 'Destinations', id: string, destination_id: number, name: string, country: string, city: string, coverImage: string, highlight?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, description_destination?: Array<{ __typename: 'DestinationsDescription_destination', lang_destination?: string | null, content_destination?: string | null } | null> | null, tags?: Array<{ __typename: 'DestinationsTags', tag?: string | null } | null> | null } };
+export type DestinationsQuery = { __typename?: 'Query', destinations: { __typename: 'Destinations', id: string, partner?: boolean | null, name: string, location: string, coverImage: string, highlight?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, description_destination?: Array<{ __typename: 'DestinationsDescription_destination', lang_destination?: string | null, content_destination?: string | null } | null> | null, tags?: Array<{ __typename: 'DestinationsTags', experience?: Array<string | null> | null, activities?: Array<string | null> | null, culture?: Array<string | null> | null, accessibility?: Array<string | null> | null, temporality?: Array<string | null> | null, popular?: Array<string | null> | null } | null> | null } };
 
 export type DestinationsConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -739,7 +751,7 @@ export type DestinationsConnectionQueryVariables = Exact<{
 }>;
 
 
-export type DestinationsConnectionQuery = { __typename?: 'Query', destinationsConnection: { __typename?: 'DestinationsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'DestinationsConnectionEdges', cursor: string, node?: { __typename: 'Destinations', id: string, destination_id: number, name: string, country: string, city: string, coverImage: string, highlight?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, description_destination?: Array<{ __typename: 'DestinationsDescription_destination', lang_destination?: string | null, content_destination?: string | null } | null> | null, tags?: Array<{ __typename: 'DestinationsTags', tag?: string | null } | null> | null } | null } | null> | null } };
+export type DestinationsConnectionQuery = { __typename?: 'Query', destinationsConnection: { __typename?: 'DestinationsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'DestinationsConnectionEdges', cursor: string, node?: { __typename: 'Destinations', id: string, partner?: boolean | null, name: string, location: string, coverImage: string, highlight?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, description_destination?: Array<{ __typename: 'DestinationsDescription_destination', lang_destination?: string | null, content_destination?: string | null } | null> | null, tags?: Array<{ __typename: 'DestinationsTags', experience?: Array<string | null> | null, activities?: Array<string | null> | null, culture?: Array<string | null> | null, accessibility?: Array<string | null> | null, temporality?: Array<string | null> | null, popular?: Array<string | null> | null } | null> | null } | null } | null> | null } };
 
 export type OffersQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
@@ -819,10 +831,9 @@ export const HotelsPartsFragmentDoc = gql`
 export const DestinationsPartsFragmentDoc = gql`
     fragment DestinationsParts on Destinations {
   __typename
-  destination_id
+  partner
   name
-  country
-  city
+  location
   description_destination {
     __typename
     lang_destination
@@ -830,7 +841,12 @@ export const DestinationsPartsFragmentDoc = gql`
   }
   tags {
     __typename
-    tag
+    experience
+    activities
+    culture
+    accessibility
+    temporality
+    popular
   }
   coverImage
   highlight
