@@ -1,5 +1,7 @@
 interface ImportMetaEnv {
 	readonly PUBLIC_WHATSAPP_NUMBER: string;
+	readonly PUBLIC_DEBUG: string
+	readonly PUBLIC_DEBUG_PRINT:string
 }
 
 interface ImportMeta {
