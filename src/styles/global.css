@@ -13,18 +13,18 @@
   /* biome-ignore lint/correctness/noUnknownProperty: <explanation> */
   default: true;
   /* biome-ignore lint/correctness/noUnknownProperty: <explanation> */
-    prefersdark: false;
+  prefersdark: false;
   /* set as default dark mode (prefers-color-scheme:dark) */
   color-scheme: light;
   /* color of browser-provided UI */
 
-  --color-base-100: oklch(98% 0.02 240);
-  --color-base-200: oklch(95% 0.03 240);
-  --color-base-300: oklch(92% 0.04 240);
+  --color-base-100: oklch(1 0 none);
+  --color-base-200: oklch(1 0 none);
+  --color-base-300: oklch(1 0 none);
   --color-base-content: oklch(20% 0.05 240);
-  --color-primary: #d4af37;
+  --color-primary: oklch(0.7665 0.1387 91.06);
   --color-primary-content: oklch(98% 0.01 240);
-  --color-secondary: #008080;
+  --color-secondary: oklch(0.5431 0.0927 194.77);
   --color-secondary-content: oklch(98% 0.01 200);
   --color-accent: oklch(65% 0.25 160);
   --color-accent-content: oklch(98% 0.01 160);
