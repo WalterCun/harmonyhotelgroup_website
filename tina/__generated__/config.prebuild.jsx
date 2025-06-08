@@ -234,11 +234,6 @@ var config_default = defineConfig({
                 label: "Imagenes (La primera Imagen sera la portada)",
                 list: true
               },
-              // {
-              //     type: "string",
-              //     name: "price",
-              //     label: "Precio",
-              // },
               {
                 type: "string",
                 name: "room_services",
