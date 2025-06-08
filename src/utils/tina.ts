@@ -118,7 +118,7 @@ export class Api {
             if (filterLocation) {
                 destinations = destinations.filter((destination) => {
                         // biome-ignore lint/complexity/useOptionalChain: <explanation>
-                        if (destination?.city && destination?.city.toLowerCase().includes(filterLocation.toLowerCase())) {
+                        if (destination?.location && destination?.location.toLowerCase().includes(filterLocation.toLowerCase())) {
                             return true;
                         }
                     }
