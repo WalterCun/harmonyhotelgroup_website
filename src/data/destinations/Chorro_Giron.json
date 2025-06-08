@@ -5,7 +5,26 @@
   "name": "Chorro de Giron",
   "location": "Giron, Azuay,Ecuador",
   "tags": [
-    "in_azuay"
+    {
+      "experience": [
+        "outdoor_adventure"
+      ],
+      "activities": [
+        "extreme_games",
+        "hiking"
+      ],
+      "geographics": [
+        "in_azuay",
+        "rivers_waterfalls",
+        "scenic_viewpoint"
+      ],
+      "temporality": [
+        "year_round"
+      ],
+      "popular": [
+        "main_attraction"
+      ]
+    }
   ],
   "coverImage": "/upload/destinations/chorroGiron/cascadaGiron1.webp",
   "highlight": true

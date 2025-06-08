@@ -67,6 +67,7 @@ fragment DestinationsParts on Destinations {
     __typename
     experience
     activities
+    geographics
     culture
     accessibility
     temporality

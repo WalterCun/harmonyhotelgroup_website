@@ -266,6 +266,7 @@ type DestinationsDescription_destination {
 type DestinationsTags {
   experience: [String]
   activities: [String]
+  geographics: [String]
   culture: [String]
   accessibility: [String]
   temporality: [String]
@@ -293,6 +294,7 @@ input DestinationsDescription_destinationFilter {
 input DestinationsTagsFilter {
   experience: StringFilter
   activities: StringFilter
+  geographics: StringFilter
   culture: StringFilter
   accessibility: StringFilter
   temporality: StringFilter
@@ -476,6 +478,7 @@ input DestinationsDescription_destinationMutation {
 input DestinationsTagsMutation {
   experience: [String]
   activities: [String]
+  geographics: [String]
   culture: [String]
   accessibility: [String]
   temporality: [String]

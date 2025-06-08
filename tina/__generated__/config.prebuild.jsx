@@ -52,7 +52,7 @@ var config_default = defineConfig({
           {
             type: "string",
             name: "location",
-            label: "Ubicaci\xF3n (Ciudad,Provincia, Pa\xEDs)*",
+            label: "Ubicaci\xF3n (Ciudad, Provincia, Pa\xEDs)*",
             required: true
           },
           {
@@ -158,7 +158,6 @@ var config_default = defineConfig({
             ui: {
               itemProps: (item) => {
                 const name = item?.name || "Habitaci\xF3n";
-                const price = item?.price || "";
                 return {
                   label: `${name}`
                 };
@@ -452,75 +451,32 @@ var config_default = defineConfig({
               }
             ]
           },
-          // {
-          //     type: "string",
-          //     name: "tags",
-          //     label: "Key Translation Tag",
-          //     list: true,
-          //     // ui: {
-          //     //     itemProps: (item) => {
-          //     //         const tag = item?.tag || "Etiqueta";
-          //     //         return {label: `${tag}`};
-          //     //     },
-          //     // },
-          //     // fields: [
-          //     //     {
-          //     //         type: "string",
-          //     //         name: "tag",
-          //     //         label: "Key Translation Tag",
-          //     //         list:true,
-          //     //         options:[
-          //     //             {label:"Dentro del Azuay", value:"in_azuay"}
-          //     //         ]
-          //     //     },
-          //     // ],
-          //     options: [
-          //         // Opciones existentes
-          //         {label: "Ubicado dentro del Azuay", value: "in_azuay"},
-          //         {label: "Centro Histórico", value: "historic_center"},
-          //
-          //
-          //
-          //         // Opciones por características geográficas
-          //         {label: "Zona montañosa", value: "mountains"},
-          //         {label: "Ríos y cascadas", value: "rivers_waterfalls"},
-          //         {label: "Parque nacional", value: "national_park"},
-          //         {label: "Mirador panorámico", value: "scenic_viewpoint"},
-          //
-          //
-          //
-          //
-          //
-          //
-          //
-          //
-          //     ]
-          // },
           {
             type: "object",
             name: "tags",
             label: "Etiquetas (Key Translation)",
             list: true,
-            // ui: {
-            //     itemProps: (item) => {
-            //         // Accedemos de forma segura, con un valor por defecto
-            //         return {
-            //             label: `${item?.basic_services ? '> Servicio Basico' : '.'}
-            //         ${item?.general_services ? '> Servicio General' : '.'}
-            //         ${item?.extra_services ? '> Servicio Extra' : '.'}
-            //         ${item?.premium_services ? '> Servicio Premium' : '.    '}
-            //         `
-            //         };
-            //     },
-            // },
+            ui: {
+              itemProps: (item) => {
+                return {
+                  label: `${item?.experience ? "> Tag Experiencia" : ""}
+                                ${item?.activities ? "> Tag Actividades" : ""}
+                                ${item?.geographics ? "> Tag Geografia" : ""}
+                                ${item?.culture ? "> Tag Cultura" : ""}
+                                ${item?.accessibility ? "> Tag Accesibilidad" : ""}
+                                ${item?.temporality ? "> Tag Temporada" : ""}
+                                ${item?.popular ? "> Tag Popular" : ""}
+                                `
+                };
+              }
+            },
             fields: [
               {
                 type: "string",
                 name: "experience",
-                label: "Servicios Basicos",
+                label: "Opciones por tipo de experiencia",
                 list: true,
                 options: [
-                  // Opciones por tipo de experiencia
                   { label: "Aventura al aire libre", value: "outdoor_adventure" },
                   { label: "Patrimonio Cultural", value: "cultural_heritage" },
                   { label: "Experiencia gastron\xF3mica", value: "culinary_experience" },
@@ -533,11 +489,27 @@ var config_default = defineConfig({
                 label: "Opciones por actividades",
                 list: true,
                 options: [
+                  { label: "Juegos Extremos", value: "extreme_games" },
                   { label: "Senderismo", value: "hiking" },
                   { label: "Ciclismo", value: "cycling" },
                   { label: "Observaci\xF3n de aves", value: "birdwatching" },
                   { label: "Aguas termales", value: "hot_springs" },
                   { label: "Compras de artesan\xEDas", value: "craft_shopping" }
+                ]
+              },
+              {
+                type: "string",
+                name: "geographics",
+                label: "Opciones por caracter\xEDsticas geogr\xE1ficas",
+                list: true,
+                options: [
+                  { label: "Ubicado dentro del Azuay", value: "in_azuay" },
+                  { label: "Centro Hist\xF3rico", value: "historic_center" },
+                  { label: "Fuera del Centro", value: "outside_historic_center" },
+                  { label: "Zona monta\xF1osa", value: "mountains" },
+                  { label: "R\xEDos y cascadas", value: "rivers_waterfalls" },
+                  { label: "Parque nacional", value: "national_park" },
+                  { label: "Mirador panor\xE1mico", value: "scenic_viewpoint" }
                 ]
               },
               {
