@@ -2,7 +2,7 @@
 import {Image} from "astro:assets";
 import {Icon} from "astro-icon/components"
 
-import {trans} from "~/utils/translations";
+import {trans, processTagElements} from "~/utils/translations";
 import {Api} from "~/utils/tina";
 import {imagesHoteles} from "../../../lib/constants";
 import {getImage} from "../../../utils";
@@ -95,24 +95,26 @@ const {lang} = Astro.props;
                                     <div class="card-actions justify-start">
                                         {
                                                 hotel.amenities && hotel.amenities.map((element: any) => {
-                                                    const tags = Object.keys(element);
-                                                    const visibleTags = tags.slice(0, 3);
-                                                    const hiddenTags = tags.slice(3);
+                                                    const processedTags = processTagElements(
+                                                            element,
+                                                            lang,
+                                                            'components.sections.home.featured-hotels.tags'
+                                                    );
+
+                                                    const visibleTags = processedTags.slice(0, 3);
+                                                    const hiddenTags = processedTags.slice(3);
 
                                                     return (
                                                             <>
-                                                                {/* Mostrar los primeros 3 tags */}
-                                                                {visibleTags.map((k) => (
+                                                                {visibleTags.map((tag) => (
                                                                         <div class="badge badge-outline font-bold bg-gray-200 text-xs">
-                                                                            {trans(lang, `components.sections.home.featured-hotels.tags.${k}.${element[k]}`)}
+                                                                            {tag.value}
                                                                         </div>
                                                                 ))}
-
-                                                                {/* Mostrar cuántos tags adicionales hay si existen */}
                                                                 {hiddenTags.length > 0 && (
                                                                         <div class="badge badge-outline font-bold text-xs">
                                                                             +{hiddenTags.length}
-                                                                            {trans(lang, 'components.sections.home.featured-hotels.tags.more')}
+                                                                            {trans(lang, 'components.sections.home.more')}
                                                                         </div>
                                                                 )}
                                                             </>

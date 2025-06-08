@@ -95,6 +95,7 @@
 		},
 		"sections": {
 			"home": {
+                "more": "más",
 				"featured-hotels": {
 					"title": "Hoteles destacados",
 					"description": "Descubra nuestras propiedades más populares, conocidas por su servicio excepcional, sus impresionantes ubicaciones y sus servicios de primera clase.",
@@ -103,7 +104,6 @@
 					"btn-all-hotels": "Ver todos los hoteles",
                     "partner": "Socio Estrategico",
                     "tags": {
-                        "more": "más",
                         "basic_services": {
                             "24h_reception": "Recepción 24 horas",
                             "free_wifi": "Wifi gratuito",
@@ -153,7 +153,52 @@
 					"title": "Destinos Populares",
 					"subtitle": "Explore nuestros destinos más solicitados y encuentre su próxima aventura inolvidable.",
 					"no-text": "No hay texto",
-					"btn-all-destination": "Ver todos los destinos"
+					"btn-all-destination": "Ver todos los destinos",
+                    "tags": {
+                        "experience": {
+                            "outdoor_adventure": "Aventura al aire libre",
+                            "cultural_heritage": "Patrimonio Cultural",
+                            "culinary_experience": "Experiencia gastronómica",
+                            "local_crafts": "Artesanía local"
+                        },
+                        "activities": {
+                            "extreme_games": "Juegos Extremos",
+                            "hiking": "Senderismo",
+                            "cycling": "Ciclismo",
+                            "birdwatching": "Observación de aves",
+                            "hot_springs": "Aguas termales",
+                            "craft_shopping": "Compras de artesanías"
+                        },
+                        "geographics": {
+                            "in_azuay": "Ubicado dentro del Azuay",
+                            "historic_center": "Centro Histórico",
+                            "outside_historic_center": "Fuera del Centro",
+                            "mountains": "Zona montañosa",
+                            "rivers_waterfalls": "Ríos y cascadas",
+                            "national_park": "Parque nacional",
+                            "scenic_viewpoint": "Mirador panorámico"
+                        },
+                        "culture": {
+                            "museum_gallery": "Museo o galería",
+                            "colonial_architecture": "Arquitectura colonial",
+                            "traditional_festivals": "Festivales tradicionales",
+                            "archaeological_site": "Sitio arqueológico"
+                        },
+                        "accessibility": {
+                            "wheelchair_accessible": "Accesible para discapacitados",
+                            "family_friendly": "Apto para familias",
+                            "public_transport": "Transporte público cercano"
+                        },
+                        "temporality": {
+                            "best_summer": "Mejor en verano",
+                            "year_round": "Atractivo todo el año"
+                        },
+                        "popular": {
+                            "hidden_gem": "Destino poco conocido",
+                            "main_attraction": "Atracción principal"
+                        }
+
+                    }
 				},
 				"special-offer": {
 					"title": "Ofertas Especiales",

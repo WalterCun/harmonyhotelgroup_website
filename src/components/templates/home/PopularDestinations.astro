@@ -1,10 +1,9 @@
 ---
 import {Image} from "astro:assets";
-import {trans, Api, getImage} from "~/utils";
+import {trans, Api, getImage, processTagElements} from "~/utils";
 import {DEBUG, imagesDestinations} from "lib/constants";
 import type {DestinationsQuery} from "../../../../tina/__generated__/types";
 import Button from "../../core/ui/Button.astro";
-import {imagesHoteles} from "../../../lib/constants";
 import {Icon} from "astro-icon/components";
 
 const api = new Api(true, 4);
@@ -61,72 +60,54 @@ const {lang} = Astro.props;
                                         {destination.name}
                                     </h2>
                                     <p class="text-neutral-600 dark:text-neutral-400">
-            <span class="inline-flex items-center">
-                <Icon name="location" class="w-4 h-4 mr-1 text-primary"/>
-                {destination.location}
-            </span>
+                                        <span class="inline-flex items-center">
+                                            <Icon name="location" class="w-4 h-4 mr-1 text-primary"/>
+                                            {destination.location}
+                                        </span>
                                     </p>
-                                    <div class="rating p-0 m-0 mt-2">
-                                        {destination.stars && (
-                                                Array.from({length: 5},
-                                                        (_, index) => (
-                                                                index == (destination.stars - 1) ?
-                                                                        <div class="mask mask-star size-5 bg-primary"
-                                                                             aria-label={`${index + 1} star`}
-                                                                             aria-current="true"
-                                                                        /> :
-                                                                        <div class="mask mask-star size-5 bg-primary"
-                                                                             aria-label={`${index + 1} star`}
-                                                                        />
-                                                        ),
-                                                )
-                                        )}
-                                    </div>
                                 </div>
 
                                 <!-- Sección media: flexible y puede estar vacía -->
                                 <div class="flex-grow">
                                     <div class="card-actions justify-start">
                                         {
-                                                destination.amenities && destination.amenities.map((element: any) => {
-                                                    const tags = Object.keys(element);
-                                                    const visibleTags = tags.slice(0, 3);
-                                                    const hiddenTags = tags.slice(3);
+                                                destination.tags && destination.tags.map((element: any) => {
+                                                    // Procesar los tags con nuestra nueva función
+
+                                                    const processedTags = processTagElements(
+                                                            element,
+                                                            lang,
+                                                            'components.sections.home.popular-destination.tags'
+                                                    );
+
+                                                    // Dividir en visibles y ocultos
+                                                    const visibleTags = processedTags.slice(0, 3);
+                                                    const hiddenTags = processedTags.slice(3);
 
                                                     return (
                                                             <>
-                                                                {/* Mostrar los primeros 3 tags */}
-                                                                {visibleTags.map((k) => (
+                                                                {visibleTags.map((tag) => (
                                                                         <div class="badge badge-outline font-bold bg-gray-200 text-xs">
-                                                                            {trans(lang, `components.sections.home.featured-hotels.tags.${k}.${element[k]}`)}
+                                                                            {tag.value}
                                                                         </div>
                                                                 ))}
-
-                                                                {/* Mostrar cuántos tags adicionales hay si existen */}
                                                                 {hiddenTags.length > 0 && (
                                                                         <div class="badge badge-outline font-bold text-xs">
                                                                             +{hiddenTags.length}
-                                                                            {trans(lang, 'components.sections.home.featured-hotels.tags.more')}
+                                                                            {trans(lang, 'components.sections.home.more')}
                                                                         </div>
                                                                 )}
                                                             </>
                                                     );
                                                 })
                                         }
+
                                     </div>
                                 </div>
 
                                 <!-- Sección inferior fija: siempre al final -->
                                 <div class="card-actions justify-between mt-auto pt-4">
-                                    <div>
-            <span class="text-xl font-bold">
-                ${destination.roomPrice}
-            </span>
-                                        <span class="text-neutral-600 dark:text-neutral-400">
-                {trans(lang, "components.sections.home.featured-hotels.night",)}
-            </span>
-                                    </div>
-                                    <a href={`/hotels/${destination.hotel_id}`} class="btn btn-primary py-2 px-4">
+                                    <a href={`/hotels/${destination.id}`} class="btn btn-primary py-2 px-4">
                                         {trans(lang, "components.sections.home.featured-hotels.btn-details",)}
                                     </a>
                                 </div>

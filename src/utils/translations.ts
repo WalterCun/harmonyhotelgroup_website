@@ -175,3 +175,35 @@ export function setLanguage(langCode: string): void {
 		}
 	});
 }
+
+// ---------------------------------------------------------------------------------------------------
+
+// Función para procesar etiquetas y obtener las traducciones correctas
+export const processTagElements = (element: any, lang: string, translationPrefix: string) => {
+    const result: { key: string; value: string; }[] = [];
+
+    // Si el elemento no existe, retornamos un array vacío
+    if (!element) return result;
+
+    for (const key in element) {
+        // Si el valor es un array (lista)
+        if (Array.isArray(element[key])) {
+            // Para cada valor en la lista, añadimos una traducción individual
+            // biome-ignore lint/complexity/noForEach: <explanation>
+                        element[key].forEach((value: string) => {
+                result.push({
+                    key: `${translationPrefix}.${key}.${value}`,
+                    value: trans(lang, `${translationPrefix}.${key}.${value}`)
+                });
+            });
+        } else {
+            // Si es un valor simple, añadimos directamente la traducción
+            result.push({
+                key: `${translationPrefix}.${key}.${element[key]}`,
+                value: trans(lang, `${translationPrefix}.${key}.${element[key]}`)
+            });
+        }
+    }
+
+    return result;
+};
