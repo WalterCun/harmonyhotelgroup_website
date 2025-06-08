@@ -7,14 +7,14 @@ import {
   roomOptions,
   groupRoomTypeOptions,
   vehicleTypeOptions,
-} from "../../lib/constants";
-import { Api } from "../../utils/tina";
-import DateRangeField from "./DateRangeField.astro";
+} from "../../../lib/constants";
+import { Api } from "../../../utils";
 import { Icon } from "astro-icon/components";
-import DropDownField from "./DropDownField.astro";
-import GridLayout from "../../layouts/GridLayout.astro";
-import CheckField from "./CheckField.astro";
-import Button from "../ui/Button.astro";
+import DateRangeField from "../../atoms/forms/DateRangeFieldForm.astro";
+import DropDownField from "../../atoms/forms/DropDownFieldForm.astro";
+import CheckField from "../../atoms/forms/CheckField.astro";
+import GridLayout from "../../../layouts/GridLayout.astro";
+import Button from '../../core/ui/Button.astro'
 
 const api = new Api();
 
@@ -512,7 +512,7 @@ const { lang } = Astro.props;
     createWhatsAppLink,
     formatWhatsAppMessage,
     whatsappNumber,
-  } from "../../lib/constants";
+  } from "../../../lib/constants";
 
   document.addEventListener("DOMContentLoaded", async (): Promise<void> => {
     const form: HTMLFormElement = document.getElementById(
@@ -722,20 +722,20 @@ const { lang } = Astro.props;
       });
     }
 
-    function updateChildIcon(input: HTMLInputElement, index: Number) {
-      console.log("input", input, "index", index);
-      const value = parseInt(input.value) || 0;
-      const iconElement = document.getElementById(`child-icon-${index}`);
-
-      if (iconElement) {
-        // Cambiar el nombre del icono basado en el valor
-        if (value > 11) {
-          iconElement.setAttribute("name", "child"); // Icono para niños mayores
-        } else {
-          iconElement.setAttribute("name", "baby"); // Icono para bebés/niños pequeños
-        }
-      }
-    }
+    // function updateChildIcon(input: HTMLInputElement, index: Number) {
+    //   console.log("input", input, "index", index);
+    //   const value = parseInt(input.value) || 0;
+    //   const iconElement = document.getElementById(`child-icon-${index}`);
+    //
+    //   if (iconElement) {
+    //     // Cambiar el nombre del icono basado en el valor
+    //     if (value > 11) {
+    //       iconElement.setAttribute("name", "child"); // Icono para niños mayores
+    //     } else {
+    //       iconElement.setAttribute("name", "baby"); // Icono para bebés/niños pequeños
+    //     }
+    //   }
+    // }
 
     // Handle form submission
     async function handleSubmit(event: Event): Promise<void> {

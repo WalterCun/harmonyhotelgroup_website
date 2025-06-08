@@ -1,6 +1,6 @@
 ---
 import { trans } from "../../utils";
-import ContactForm from "../forms/ContactForm.astro";
+import ContactForm from "../templates/forms/ContactForm.astro";
 import SocialLinks from "./SocialLinks.astro";
 
 interface Props {
@@ -11,7 +11,7 @@ const { lang } = Astro.props;
 
 const quickLinks = [
   {
-    label: trans(lang, "components.common.navigation.url.about-us"),
+    label: trans(lang, "components.global.navigation.url.about-us"),
     href: "/about",
   },
   {

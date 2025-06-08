@@ -92,46 +92,47 @@ export const structUrl = (
 	return `${url.origin}${newPathname}`;
 };
 
+// Caché global de traducciones que persiste entre llamadas
+const translationCache: Record<string, Record<string, string>> = {};
+
 
 export const trans = (
 	lang:string,
 	key: string,
 	params?: Record<string, string | number>,
 ): string => {
-	const translationCache: Record<string, Record<string, string>> = {};
 	// Cachear las traducciones para evitar búsquedas repetidas
 	if (!translationCache[lang]) {
 		translationCache[lang] = {};
 	}
 
-	// Verificar si la traducción ya está en caché
-	const cacheKey = `${key}${params ? JSON.stringify(params) : ""}`;
-	if (translationCache[lang][cacheKey]) {
+    // Crear clave de caché
+    const cacheKey = `${key}${params ? JSON.stringify(params) : ""}`;
+
+    // Verificar si la traducción ya está en caché
+    if (translationCache[lang][cacheKey]) {
 		return translationCache[lang][cacheKey];
 	}
 
 	// Obtener el objeto de traducción para el idioma especificado
 	const translations = TranslationData[lang] || TranslationData.es;
 
-	// Si el idioma no existe, devolver el valor por defecto
-	// if (!translations) {
-	//     console.warn(`Idioma no soportado: ${lang}`);
-	//     return trans(defaultLanguage.code, key, params);
-	// }
+    // Acceder a traducciones anidadas usando notación de corchetes
+    const keys = key.split(".");
+	let result: TranslationObject | undefined = translations;
 
-	// ------------------------------------------------------------------------------
-	// Usar un enfoque directo para acceder a traducciones anidadas
-	const keys = key.split(".");
-	// console.log('keys',keys)
-	let result = translations;
+    for (const k of keys) {
+        if (result && typeof result === 'object') {
+            result = result[k]; // Usar notación de corchetes en lugar de .get()
+        } else {
+            result = undefined;
+            break;
+        }
+    }
 
-	for (const k of keys) {
-		result = result[k];
-	}
-
-	if (result === null || result === undefined) {
+    if (result === null || result === undefined) {
 		// En producción, usar directamente el idioma predeterminado sin recursión
-		return key; // Fallback simple
+		return key;
 	}
 
 	let translation = String(result);

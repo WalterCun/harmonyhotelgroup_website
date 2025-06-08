@@ -1,9 +1,9 @@
 ---
 import {Image} from "astro:assets";
 import {Api} from "~/utils/tina";
-import {trans} from "../../../utils/translations";
+import {trans} from "../../../utils";
 import type {OffersQuery} from "../../../../tina/__generated__/types";
-import {getImage} from "../../../utils/tools";
+import {getImage} from "../../../utils";
 import {imagesOffers} from "../../../lib/constants";
 
 const api = new Api(true, 4);

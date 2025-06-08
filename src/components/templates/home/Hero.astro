@@ -1,8 +1,8 @@
 ---
 import { trans } from "~/utils/translations";
 import ImageFull from "../../core/imagen/ImageFull.astro";
-import Button from "../../ui/Button.astro";
-import ReservationForm from "../../forms/ReservationForm.astro";
+import Button from "../../core/ui/Button.astro";
+import ReservationForm from "../../templates/forms/ReservationForm.astro";
 
 interface Props {
   lang: string;
@@ -81,7 +81,7 @@ const heroImage = heroImages[Math.floor(Math.random() * heroImages.length)];
 
         <Button
           href="/offers"
-          variant="outline"
+          variant="outline-solid"
           class="bg-white text-primary border-primary hover:bg-neutral-100 shadow-lg"
         >
           {trans(lang, "home.hero.btn.view-offers")}
