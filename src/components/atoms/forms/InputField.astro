@@ -1,0 +1,33 @@
+---
+import { Icon } from "astro-icon/components";
+import { trans } from "~/utils/translations";
+
+interface Props {
+    _id: string;
+    iconName: string;
+    lang: string;
+    keyTitle: string;
+    placeholder?: string;
+    min?: number;
+    value?: number;
+}
+
+const { lang, _id, iconName, keyTitle, placeholder, min = 0, value = 0 } = Astro.props;
+---
+
+<div>
+    <label for={_id} class="flex flex-start p-1 text-sm font-medium text-foreground/80">
+        <Icon name={iconName} class="mr-2 h-4 w-4 text-primary" />
+        {trans(lang, keyTitle)}
+    </label>
+    <input
+        type="number"
+        id={_id}
+        name={_id}
+        placeholder={placeholder || "e.g. 3"}
+        min={min}
+        value={value}
+        class="h-9 text-sm w-full border rounded-md px-3 focus:ring-3 focus:ring-primary/50"
+    />
+    <div id=`${_id}-error` class="text-xs mt-0.5 text-red-500 hidden"></div>
+</div>

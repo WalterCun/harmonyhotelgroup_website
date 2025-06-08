@@ -1,0 +1,30 @@
+---
+import {cn} from "~/utils";
+interface Props {
+    lang?: string;
+    class?: string;
+    backgroundColor?: 'white' | 'neutral';
+}
+
+const {
+    lang,
+    class: className,
+    backgroundColor = 'white',
+    ...rest
+} = Astro.props;
+
+const bgColorClasses = {
+    white: 'bg-white dark:bg-neutral-900',
+    neutral: 'bg-neutral-50 dark:bg-neutral-800'
+};
+
+// Combinar clases
+const classes = cn(
+        className,
+        bgColorClasses[backgroundColor]
+);
+---
+
+<div class={classes} {...rest}>
+    <slot/>
+</div>

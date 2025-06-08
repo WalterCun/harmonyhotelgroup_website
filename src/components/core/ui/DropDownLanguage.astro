@@ -46,6 +46,7 @@ const currentLanguage = LANGUAGES[lang] || LANGUAGES.es;
         })}
     </div>
 </div>
+
 <script>
     import {setLanguage} from "~/utils/translations";
 
@@ -86,7 +87,6 @@ const currentLanguage = LANGUAGES[lang] || LANGUAGES.es;
         // Ejecutar al cargar la página
         highlightCurrentLanguage();
 
-
         // Toggle dropdown
         languageToggle?.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -109,7 +109,6 @@ const currentLanguage = LANGUAGES[lang] || LANGUAGES.es;
                 }
             });
         });
-
 
         // Close dropdown when clicking outside
         document.addEventListener('click', () => {

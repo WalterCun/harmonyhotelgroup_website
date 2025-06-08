@@ -1,0 +1,26 @@
+---
+import {Icon} from "astro-icon/components";
+import {trans} from "../../../utils";
+
+interface Props {
+    _id:string
+    idContainer?:string
+    name:string
+    iconName:string
+    lblTitle:string
+}
+
+const {_id, idContainer,lblTitle,iconName,name} = Astro.props;
+---
+
+<div id={idContainer} class="lg:col-span-1">
+    <label for={_id} class="flex items-center text-sm font-medium text-foreground/80 mb-0.5">
+        <Icon name={iconName} class="mr-2 h-4 w-4 text-primary"/>
+        {lblTitle}
+    </label>
+    <select id={_id} name={name}
+            class="select w-full">
+        <slot />
+    </select>
+    <div id=`${_id}-error` class="text-xs mt-0.5 text-red-500 hidden"></div>
+</div>

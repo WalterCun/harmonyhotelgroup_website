@@ -1,14 +1,23 @@
 ---
-export const partial = true;
+import type {HTMLAttributes} from 'astro/types';
+import {cn} from "~/utils";
 
-interface Props {
-	href: string;
-	label: string;
+export interface Props extends HTMLAttributes<'li'> {
+    href: string;
+    label: string;
+    class?: string;
 }
 
-const { href, label } = Astro.props;
+const {href, label,
+    class: className = '',
+    ...rest} = Astro.props;
+
+const classes = cn(
+        className
+)
+
 ---
-<li>
+<li class={classes} {...rest}>
     <a href={href}
        class="text-neutral-700 dark:text-neutral-300 hover:text-primary-500 dark:hover:text-primary-400 font-medium transition-colors duration-200">
         {label}
