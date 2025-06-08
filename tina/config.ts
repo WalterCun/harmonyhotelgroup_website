@@ -65,7 +65,7 @@ export default defineConfig({
                     {
                         type: "string",
                         name: "location",
-                        label: "Ubicación (Ciudad,Provincia, País)*",
+                        label: "Ubicación (Ciudad, Provincia, País)*",
                         required: true,
                     },
                     {
@@ -171,7 +171,6 @@ export default defineConfig({
                         ui: {
                             itemProps: (item) => {
                                 const name = item?.name || "Habitación";
-                                const price = item?.price || "";
                                 return {
                                     label: `${name}`,
                                 };
@@ -467,77 +466,33 @@ export default defineConfig({
                             },
                         ],
                     },
-                    // {
-                    //     type: "string",
-                    //     name: "tags",
-                    //     label: "Key Translation Tag",
-                    //     list: true,
-                    //     // ui: {
-                    //     //     itemProps: (item) => {
-                    //     //         const tag = item?.tag || "Etiqueta";
-                    //     //         return {label: `${tag}`};
-                    //     //     },
-                    //     // },
-                    //     // fields: [
-                    //     //     {
-                    //     //         type: "string",
-                    //     //         name: "tag",
-                    //     //         label: "Key Translation Tag",
-                    //     //         list:true,
-                    //     //         options:[
-                    //     //             {label:"Dentro del Azuay", value:"in_azuay"}
-                    //     //         ]
-                    //     //     },
-                    //     // ],
-                    //     options: [
-                    //         // Opciones existentes
-                    //         {label: "Ubicado dentro del Azuay", value: "in_azuay"},
-                    //         {label: "Centro Histórico", value: "historic_center"},
-                    //
-                    //
-                    //
-                    //         // Opciones por características geográficas
-                    //         {label: "Zona montañosa", value: "mountains"},
-                    //         {label: "Ríos y cascadas", value: "rivers_waterfalls"},
-                    //         {label: "Parque nacional", value: "national_park"},
-                    //         {label: "Mirador panorámico", value: "scenic_viewpoint"},
-                    //
-                    //
-                    //
-                    //
-                    //
-
-                    //
-
-                    //
-                    //
-                    //     ]
-                    // },
                     {
                         type: "object",
                         name: "tags",
                         label: "Etiquetas (Key Translation)",
                         list: true,
-                        // ui: {
-                        //     itemProps: (item) => {
-                        //         // Accedemos de forma segura, con un valor por defecto
-                        //         return {
-                        //             label: `${item?.basic_services ? '> Servicio Basico' : '.'}
-                        //         ${item?.general_services ? '> Servicio General' : '.'}
-                        //         ${item?.extra_services ? '> Servicio Extra' : '.'}
-                        //         ${item?.premium_services ? '> Servicio Premium' : '.    '}
-                        //         `
-                        //         };
-                        //     },
-                        // },
+                        ui: {
+                            itemProps: (item) => {
+                                // Accedemos de forma segura, con un valor por defecto
+                                return {
+                                    label: `${item?.experience ? '> Tag Experiencia' : ''}
+                                ${item?.activities ? '> Tag Actividades' : ''}
+                                ${item?.geographics ? '> Tag Geografia' : ''}
+                                ${item?.culture ? '> Tag Cultura' : ''}
+                                ${item?.accessibility ? '> Tag Accesibilidad' : ''}
+                                ${item?.temporality ? '> Tag Temporada' : ''}
+                                ${item?.popular ? '> Tag Popular' : ''}
+                                `
+                                };
+                            },
+                        },
                         fields: [
                             {
                                 type: "string",
                                 name: "experience",
-                                label: "Servicios Basicos",
+                                label: "Opciones por tipo de experiencia",
                                 list: true,
                                 options: [
-                                    // Opciones por tipo de experiencia
                                     {label: "Aventura al aire libre", value: "outdoor_adventure"},
                                     {label: "Patrimonio Cultural", value: "cultural_heritage"},
                                     {label: "Experiencia gastronómica", value: "culinary_experience"},
@@ -550,11 +505,27 @@ export default defineConfig({
                                 label: "Opciones por actividades",
                                 list: true,
                                 options: [
+                                    {label: "Juegos Extremos", value: "extreme_games"},
                                     {label: "Senderismo", value: "hiking"},
                                     {label: "Ciclismo", value: "cycling"},
                                     {label: "Observación de aves", value: "birdwatching"},
                                     {label: "Aguas termales", value: "hot_springs"},
                                     {label: "Compras de artesanías", value: "craft_shopping"},
+                                ]
+                            },
+                            {
+                                type: "string",
+                                name: "geographics",
+                                label: "Opciones por características geográficas",
+                                list: true,
+                                options: [
+                                    {label: "Ubicado dentro del Azuay", value: "in_azuay"},
+                                    {label: "Centro Histórico", value: "historic_center"},
+                                    {label: "Fuera del Centro", value: "outside_historic_center"},
+                                    {label: "Zona montañosa", value: "mountains"},
+                                    {label: "Ríos y cascadas", value: "rivers_waterfalls"},
+                                    {label: "Parque nacional", value: "national_park"},
+                                    {label: "Mirador panorámico", value: "scenic_viewpoint"},
                                 ]
                             },
                             {
