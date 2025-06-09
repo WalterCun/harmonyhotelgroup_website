@@ -18,7 +18,8 @@
 		"astro": "^5.7.5",
 		"astro-icon": "^1.1.5",
 		"flatpickr": "^4.6.13",
-		"mailgun": "^0.5.0",
+		"form-data": "^4.0.3",
+		"mailgun.js": "^12.0.2",
 		"tinacms": "^2.7.5"
 	},
 	"devDependencies": {

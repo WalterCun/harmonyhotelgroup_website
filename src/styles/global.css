@@ -40,7 +40,7 @@
   --color-error-content: oklch(98% 0.01 30);
 
   /* border radius */
-  --radius-selector: 1rem;
+  --radius-selector: 0.5rem;
   --radius-field: 0.25rem;
   --radius-box: 0.5rem;
 

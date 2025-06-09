@@ -3,26 +3,45 @@
 	"include": [
 		"src/**/*",
 		"env.d.ts",
-
+		".astro/types.d.ts",
 		"astro.config.mjs",
-		"tailwind.config.mjs"
+		"tailwind.config.mjs",
 	],
-	"exclude": ["node_modules", "dist", ".vercel", ".vscode",".astro",".github",".idea","tmp"],
+	"exclude": ["node_modules", "**/node_modules/*", ".vscode", "dist"],
 	"compilerOptions": {
 		"baseUrl": "./",
 		"paths": {
-			"~/*": ["src/*"],
-			"lib/*": ["src/lib/*"],
-			"utils/*": ["src/utils/*"],
-
-			"data/*": ["src/data/*"],
-			"i18n/*": ["src/i18n/*"],
-			"icons/*": ["src/icons/*"],
-
-			"atoms/*": ["src/components/atoms/*"],
-			"core/*": ["src/components/core/*"],
-			"globals/*": ["src/components/globals/*"],
-			"templates/*": ["src/components/templates/*"]
-		}
+			"~/*": [
+				"src/*"
+			],
+			"lib/*": [
+				"src/lib/*"
+			],
+			"utils/*": [
+				"src/utils/*"
+			],
+			"data/*": [
+				"src/data/*"
+			],
+			"i18n/*": [
+				"src/i18n/*"
+			],
+			"icons/*": [
+				"src/icons/*"
+			],
+			"atoms/*": [
+				"src/components/atoms/*"
+			],
+			"core/*": [
+				"src/components/core/*"
+			],
+			"globals/*": [
+				"src/components/globals/*"
+			],
+			"templates/*": [
+				"src/components/templates/*"
+			]
+		},
+		"typeRoots": ["./types"]
 	}
 }

@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-icon/components";
 import { trans } from "../../../utils";
 interface Props {
   lang: string;
@@ -12,22 +13,92 @@ const { lang } = Astro.props;
 >
   {trans(lang, "components.forms.contact.title")}
 </h3>
-<form id="contact-form" class="space-y-3">
-  <div class="flex flex-col">
-    <label for="email">{trans(lang, "components.forms.contact.lbl.email")}</label>
+<form id="contact-form" class="">
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend"
+      >{trans(lang, "components.forms.contact.lbl.email")}</legend
+    >
     <input
       id="email"
+      name="email"
+      class="input"
       type="email"
       placeholder={trans(lang, "components.forms.contact.placeholder.input")}
-      class="input"
       required
-      name="email"
     />
-  </div>
-  <div class="flex flex-col">
-    <label for="message">{trans(lang, "components.forms.contact.lbl.descripcion")}</label>
-    <textarea id="message" placeholder={trans(lang, "components.forms.contact.placeholder.textarea")} rows="3" class="input" name="message"
-    ></textarea>
-  </div>
-  <button type="submit" class="btn btn-primary">{trans(lang, "components.forms.contact.btn.text")}</button>
+  </fieldset>
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend"
+      >{trans(lang, "components.forms.contact.lbl.descripcion")}</legend
+    >
+    <textarea
+      class="textarea h-24"
+      id="message"
+      placeholder={trans(lang, "components.forms.contact.placeholder.textarea")}
+      minlength="10"
+      required
+      name="message"></textarea>
+  </fieldset>
+  <button type="submit" class="btn btn-primary min-w-[10rem]">
+    <p>
+      {trans(lang, "components.forms.contact.btn.text")}
+    </p>
+    <i class="icon hidden">
+      <Icon name="spinner" class="w-4 h-4 ml-2" />
+    </i>
+  </button>
 </form>
+
+<script>
+  import { actions } from "astro:actions";
+  const form: HTMLFormElement = document.getElementById(
+    "contact-form"
+  ) as HTMLFormElement;
+  const spinner = form.querySelector(".icon");
+  const button = form.querySelector("button");
+  const btnText = form.querySelector("button p");
+
+  type ValidationContactFormResult = {
+    data?: {
+      status?: boolean;
+      [key: string]: any;
+    };
+    [key: string]: any;
+  };
+
+  async function handleSubmit(event: Event): Promise<void> {
+    event.preventDefault();
+    const formData = new FormData(form);
+
+    spinner?.classList.remove("hidden");
+    btnText?.classList.add("hidden");
+    button && (button.disabled = true);
+
+    try {
+      const result = (await actions.validationContactForm(
+        formData
+      )) as ValidationContactFormResult;
+      console.log("result", result);
+      if (result.data?.status) {
+        if (btnText && button) {
+          btnText.textContent = "Mensaje Enviado";
+          button.disabled = true;
+        }
+      } else {
+        if (btnText && button) {
+          btnText.textContent = "Error al enviar";
+          button.disabled = false;
+        }
+      }
+    } catch (error) {
+      console.error("Error processing form:", error);
+    } finally {
+      spinner?.classList.add("hidden");
+      btnText?.classList.remove("hidden");
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    form.addEventListener("submit", handleSubmit);
+  });
+</script>
