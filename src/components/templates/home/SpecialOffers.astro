@@ -1,29 +1,24 @@
 ---
 import {Image} from "astro:assets";
-import {Api} from "~/utils/tina";
-import {trans} from "../../../utils";
 import type {OffersQuery} from "../../../../tina/__generated__/types";
-import {getImage} from "../../../utils";
-import {imagesOffers} from "../../../lib/constants";
+
+import {Api} from "~/utils/tina";
+import {getImage,trans} from "~/utils";
+import {imagesOffers} from "lib/constants";
+import {createLogger} from "utils/logger";
+
+const logger = createLogger(true, 'special.offers')
 
 const api = new Api(true, 4);
 let offers: OffersQuery['offers'][] = [];
 
-
-
 try {
     offers = await api.offers();
-    console.log('Special offers loaded successfully:', offers.length);
+    logger.log('Special offers loaded successfully:', offers.length);
 } catch (error) {
-    console.error('Error loading offers:', error);
+    logger.error('Error loading offers:', error);
 
 }
-
-// offers.map((item)=>{
-//     console.log(item.coverImage)
-//     console.log(getImage(imagesOffers,item.coverImage))
-//     console.log(offers.length)
-// })
 
 interface Props {
     lang: string;
@@ -31,7 +26,7 @@ interface Props {
 const {lang} = Astro.props;
 ---
 
-<section class="section bg-white dark:bg-neutral-900">
+<section class="flex justify-center pt-10 pb-10 bg-white dark:bg-neutral-800">
     <div class="container">
         {offers.length > 0 ? (
                 <div class="text-center mb-12">
@@ -65,7 +60,7 @@ const {lang} = Astro.props;
                                     <h3 class="text-xl font-semibold mb-2">{offer.title}</h3>
                                     <p class="text-neutral-600 dark:text-neutral-400 mb-4">
                                         {offer.description_offers?.find(item => item?.lang_offer === lang)?.content_offer ||
-                                            trans(lang, "components.sections.home.special-offer.no-text")}
+                                                trans(lang, "components.sections.home.special-offer.no-text")}
                                     </p>
                                     <div class="flex flex-row justify-between">
                                         <div class="flex flex-col justify-between items-center">

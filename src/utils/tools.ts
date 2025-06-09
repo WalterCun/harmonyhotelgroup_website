@@ -89,68 +89,6 @@ async function loadImageSafely(
     }
 }
 
-
-// export const getImage = (
-//     listImages: ImageCollection,
-//     key: string,
-//     defaultImage = true,
-//     debugConsole = false
-// ): Promise<{ default: ImageMetadata }> => {
-//
-//     debugConsole && console.log('listImages', listImages)
-//     debugConsole && console.log('key', key)
-//
-//
-//     // Buscar la clave que coincide con el nombre de imagen proporcionado
-//     const result = Object.keys(listImages).find(imgKey => {
-//             // console.log("imgKey",imgKey)
-//             return imgKey.toLowerCase().includes(key.toLowerCase())
-//         }
-//     );
-//
-//     debugConsole && console.log('result', result)
-//     // Si no se encuentra ninguna coincidencia, usar una imagen por defecto
-//
-//     if (!result) {
-//         debugConsole && console.log('!result', !result)
-//
-//         if (!defaultImage) {
-//             const firstKey = Object.keys(listImages)[0];
-//             debugConsole && console.log('firstKey', !firstKey)
-//
-//             const fallbackFn = listImages[firstKey];
-//             debugConsole && console.log('fallbackFn', fallbackFn)
-//
-//             // Verificar que la entrada sea realmente una función
-//             if (typeof fallbackFn !== 'function') {
-//                 console.error(`El valor de listImages["${firstKey}"] no es una función`, fallbackFn);
-//                 return Promise.resolve(Default);
-//             }
-//
-//             // Si todo está bien, ejecutar la función fallback
-//             return fallbackFn()
-//         }
-//
-//         // Si no hay imágenes disponibles
-//         if (Object.keys(listImages).length === 0 || defaultImage) {
-//             console.warn("No hay ninguna imagen disponible en listImages");
-//             return Promise.resolve(Default);
-//         }
-//
-//     }
-//
-//     const selectedFn = listImages[result];
-//
-//     // Validar que también sea una función (por si acaso)
-//     if (typeof selectedFn !== 'function') {
-//         console.error(`El valor de listImages["${result}"] no es una función`, selectedFn);
-//         return Promise.resolve(Default);
-//     }
-//
-//     // @ts-ignore
-//     return selectedFn().then(img => img.default);
-// };
-
 /**
  * Busca y carga una imagen por clave en una colección de imágenes.
  * Si no encuentra la imagen, puede devolver una imagen predeterminada o la primera disponible.

@@ -2,8 +2,15 @@
   "destination_id": 1,
   "country": "Ecuador",
   "city": "Giron",
+  "partner": true,
   "name": "Chorro de Giron",
-  "location": "Giron, Azuay,Ecuador",
+  "location": "Giron, Azuay, Ecuador",
+  "description_destination": [
+    {
+      "lang_destination": "es",
+      "content_destination": "Esto es una prueba de contexto de un destino para poder refinar todo el texto que puede conllevar Esto es una prueba de contexto de un destino para poder refinar todo el texto que puede conllevar Esto es una prueba de contexto de un destino para poder refinar todo el texto que puede conllevar"
+    }
+  ],
   "tags": [
     {
       "experience": [

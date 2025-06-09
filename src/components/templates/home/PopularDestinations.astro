@@ -1,20 +1,24 @@
 ---
 import {Image} from "astro:assets";
-import {trans, Api, getImage} from "~/utils";
-import {DEBUG, imagesDestinations} from "lib/constants";
+import {Icon} from "astro-icon/components";
+
+import {trans, Api, getImage, processTagElements} from "~/utils";
+import {imagesDestinations} from "lib/constants";
 import type {DestinationsQuery} from "../../../../tina/__generated__/types";
 import Button from "../../core/ui/Button.astro";
-import {imagesHoteles} from "../../../lib/constants";
-import {Icon} from "astro-icon/components";
+import {createLogger} from "../../../utils/logger";
+
+const logger = createLogger(false, 'popular.destinations')
+
 
 const api = new Api(true, 4);
 let destinations: DestinationsQuery['destinations'][] = [];
 
 try {
     destinations = await api.destinations();
-    DEBUG && console.log('Popular destinations loaded successfully:', destinations.length);
+    logger.log('Popular destinations loaded successfully:', destinations.length);
 } catch (error) {
-    DEBUG && console.error('Error loading destinations:', error);
+    logger.error('Error loading destinations:', error);
 }
 
 interface Props {
@@ -33,145 +37,107 @@ const {lang} = Astro.props;
                 {trans(lang, "components.sections.home.popular-destination.subtitle")}
             </p>
         </div>
-        <!--<div class="grid grid-cols-1 md:grid-cols-3 gap-8">-->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
             {destinations.map(destination => (
-                    <div class="card hover:shadow-xl transition-all duration-300">
+                    <div class="card bg-base-100 w-auto shadow-sm hover:shadow-xl transition-all duration-300">
+                        <figure class="relative">
+                            {destination.coverImage && (
+                                    <Image
+                                            src={getImage(imagesDestinations, destination.coverImage)}
+                                            alt={destination.name}
+                                            width={600}
+                                            height={400}
+                                    />
+                            )}
+                            {destination.partner && (
+                                    <div class="badge badge-primary absolute top-4 right-4 text-black font-semibold">
+                                        <Icon name="partnership"/>
+                                        {trans(lang, 'components.sections.home.popular-destination.partner')}
+                                    </div>
+                            )}
+                        </figure>
                         <div class="card-body flex flex-col">
-                            <figure class="relative">
-                                {destination.coverImage && (
-                                        <Image
-                                                src={getImage(imagesDestinations, destination.coverImage)}
-                                                alt={destination.name}
-                                                width={600}
-                                                height={400}
-                                        />
-                                )}
-                                {destination.partner && (
-                                        <div class="badge badge-primary absolute top-4 right-4 text-black font-semibold">
-                                            <Icon name="shield"/>
-                                            {trans(lang, 'components.sections.home.featured-hotels.partner')}
-                                        </div>
-                                )}
-                            </figure>
-                            <div class="card-body flex flex-col">
-                                <!-- Sección superior fija: siempre visible -->
-                                <div class="mb-4">
-                                    <h2 class="card-title text-primary font-bold">
-                                        {destination.name}
-                                    </h2>
-                                    <p class="text-neutral-600 dark:text-neutral-400">
-            <span class="inline-flex items-center">
-                <Icon name="location" class="w-4 h-4 mr-1 text-primary"/>
-                {destination.location}
-            </span>
-                                    </p>
-                                    <div class="rating p-0 m-0 mt-2">
-                                        {destination.stars && (
-                                                Array.from({length: 5},
-                                                        (_, index) => (
-                                                                index == (destination.stars - 1) ?
-                                                                        <div class="mask mask-star size-5 bg-primary"
-                                                                             aria-label={`${index + 1} star`}
-                                                                             aria-current="true"
-                                                                        /> :
-                                                                        <div class="mask mask-star size-5 bg-primary"
-                                                                             aria-label={`${index + 1} star`}
-                                                                        />
-                                                        ),
-                                                )
-                                        )}
-                                    </div>
-                                </div>
+                            <!-- Sección superior fija: siempre visible -->
+                            <div class="mb-4">
+                                <h2 class="card-title text-primary font-bold">
+                                    {destination.name}
+                                </h2>
+                                <p class="text-neutral-600 dark:text-neutral-400">
+                                        <span class="inline-flex items-center">
+                                            <Icon name="location" class="w-4 h-4 mr-1 text-primary"/>
+                                            {destination.location}
+                                        </span>
+                                </p>
+                                <p class="description-container relative overflow-hidden">
+                                    {destination?.description_destination?.map((element: any, index: number) => {
+                                        if (element["lang_destination"] === lang) {
+                                            const content = element["content_destination"];
+                                            const maxLength = 150; // Ajusta este valor según necesites
 
-                                <!-- Sección media: flexible y puede estar vacía -->
-                                <div class="flex-grow">
-                                    <div class="card-actions justify-start">
-                                        {
-                                                destination.amenities && destination.amenities.map((element: any) => {
-                                                    const tags = Object.keys(element);
-                                                    const visibleTags = tags.slice(0, 3);
-                                                    const hiddenTags = tags.slice(3);
-
-                                                    return (
-                                                            <>
-                                                                {/* Mostrar los primeros 3 tags */}
-                                                                {visibleTags.map((k) => (
-                                                                        <div class="badge badge-outline font-bold bg-gray-200 text-xs">
-                                                                            {trans(lang, `components.sections.home.featured-hotels.tags.${k}.${element[k]}`)}
-                                                                        </div>
-                                                                ))}
-
-                                                                {/* Mostrar cuántos tags adicionales hay si existen */}
-                                                                {hiddenTags.length > 0 && (
-                                                                        <div class="badge badge-outline font-bold text-xs">
-                                                                            +{hiddenTags.length}
-                                                                            {trans(lang, 'components.sections.home.featured-hotels.tags.more')}
-                                                                        </div>
-                                                                )}
-                                                            </>
-                                                    );
-                                                })
+                                            return (
+                                                    <span class="block relative">
+                                                        {content.length > maxLength ? (
+                                                                <>
+                                                                    {content.substring(0, maxLength)}
+                                                                    <span class="inline-block fade-out">...</span>
+                                                                </>
+                                                        ) : content}
+                                                    </span>
+                                            );
+                                        } else {
+                                            return <span>falta informacion</span>;
                                         }
-                                    </div>
-                                </div>
+                                    })}
+                                </p>
+                            </div>
 
-                                <!-- Sección inferior fija: siempre al final -->
-                                <div class="card-actions justify-between mt-auto pt-4">
-                                    <div>
-            <span class="text-xl font-bold">
-                ${destination.roomPrice}
-            </span>
-                                        <span class="text-neutral-600 dark:text-neutral-400">
-                {trans(lang, "components.sections.home.featured-hotels.night",)}
-            </span>
-                                    </div>
-                                    <a href={`/hotels/${destination.hotel_id}`} class="btn btn-primary py-2 px-4">
-                                        {trans(lang, "components.sections.home.featured-hotels.btn-details",)}
-                                    </a>
+                            <!-- Sección media: flexible y puede estar vacía -->
+                            <div class="flex-grow">
+                                <div class="card-actions justify-start">
+                                    {
+                                            destination.tags && destination.tags.map((element: any) => {
+                                                // Procesar los tags con nuestra nueva función
+
+                                                const processedTags = processTagElements(
+                                                        element,
+                                                        lang,
+                                                        'components.sections.home.popular-destination.tags'
+                                                );
+
+                                                // Dividir en visibles y ocultos
+
+                                                const visibleTags = processedTags.slice(0, 3);
+                                                const hiddenTags = processedTags.slice(3);
+
+                                                return (
+                                                        <>
+                                                            {visibleTags.map((tag) => (
+                                                                    <div class="badge badge-outline font-bold bg-gray-200 text-xs">
+                                                                        {tag.value}
+                                                                    </div>
+                                                            ))}
+                                                            {hiddenTags.length > 0 && (
+                                                                    <div class="badge badge-outline font-bold text-xs">
+                                                                        +{hiddenTags.length}
+                                                                        {trans(lang, 'components.sections.home.more')}
+                                                                    </div>
+                                                            )}
+                                                        </>
+                                                );
+                                            })
+                                    }
                                 </div>
+                            </div>
+
+                            <!-- Sección inferior fija: siempre al final -->
+                            <div class="card-actions justify-between mt-auto pt-4">
+                                <a href={`/hotels/${destination.id}`} class="btn btn-primary py-2 px-4 w-full">
+                                    <Icon name="search" class="size-5"></Icon>
+                                    {trans(lang, "components.sections.home.popular-destination.btn-details",)}
+                                </a>
                             </div>
                         </div>
                     </div>
-                    <!--<div class="card hover:shadow-xl transition-all duration-300">-->
-                    <!--    <div class="relative">-->
-                    <!--        &lt;!&ndash;class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"&ndash;&gt;-->
-                    <!--        {destination.coverImage &&-->
-                    <!--                (-->
-                    <!--                        <Image-->
-                    <!--                                src={getImage(imagesDestinations, destination.coverImage)}-->
-                    <!--                                alt={destination.name}-->
-                    <!--                                width={928}-->
-                    <!--                                height={548}-->
-                    <!--                                class="w-full h-48 object-cover"-->
-                    <!--                        />)}-->
-                    <!--        <div class="absolute inset-0 bg-linear-to-t from-black/80 to-transparent"></div>-->
-                    <!--        <div class="absolute bottom-0 left-0 p-6 text-white">-->
-                    <!--            <h3 class="text-xl font-semibold mb-1">{destination.name}</h3>-->
-                    <!--            <p class="text-sm">{destination.city}, {destination.country}</p>-->
-                    <!--        </div>-->
-                    <!--    </div>-->
-                    <!--    <div class="p-6">-->
-                    <!--        <div class="flex flex-wrap gap-2 mb-3">-->
-                    <!--            {destination.tags?.map(item => (-->
-                    <!--                    <span class="text-xs font-semibold bg-secondary-100 dark:bg-secondary-900 text-secondary-800 dark:text-secondary-200 py-1 px-2 rounded-full">{item?.tag}</span>-->
-                    <!--            ))}-->
-                    <!--        </div>-->
-
-                    <!--        &lt;!&ndash;<h3 class="text-xl font-semibold mb-2">{offer.title}</h3>&ndash;&gt;-->
-                    <!--        <p class="text-neutral-600 dark:text-neutral-400 mb-4">-->
-                    <!--            {destination.description_destination?.find(item => item?.lang_destination === lang)?.content_destination ||-->
-                    <!--                    trans(lang, "components.sections.home.special-offer.no-text")}-->
-                    <!--        </p>-->
-                    <!--        <div class="flex flex-row justify-between">-->
-                    <!--            <div></div>-->
-                    <!--            <a href={`/destinations/${destination.destination_id}`}-->
-                    <!--               class="text-primary-500 font-medium hover:text-primary-600 transition-colors">-->
-                    <!--                {trans(lang, "components.sections.home.special-offer.btn-details")}-->
-                    <!--            </a>-->
-                    <!--        </div>-->
-                    <!--    </div>-->
-                    <!--</div>-->
             ))}
         </div>
         <div class="text-center mt-12">
@@ -181,3 +147,29 @@ const {lang} = Astro.props;
         </div>
     </div>
 </section>
+
+<style>
+    .description-container {
+        max-height: 4.5rem; /* ~3 líneas de texto */
+    }
+
+    .fade-out {
+        position: relative;
+        margin-left: 4px;
+    }
+
+    .fade-out::before {
+        content: "";
+        position: absolute;
+        right: 100%;
+        top: 0;
+        width: 50px;
+        height: 100%;
+        background: linear-gradient(to right, transparent, var(--tw-bg-opacity, 1) * rgb(255 255 255) 90%);
+    }
+
+    :global(.dark) .fade-out::before {
+        background: linear-gradient(to right, transparent, var(--tw-bg-opacity, 1) * rgb(31 41 55) 90%);
+    }
+</style>
+
