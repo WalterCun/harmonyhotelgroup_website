@@ -451,20 +451,22 @@ export type OffersDescription_Offers = {
   content_offer?: Maybe<Scalars['String']['output']>;
 };
 
-export type OffersTags = {
-  __typename?: 'OffersTags';
-  tag?: Maybe<Scalars['String']['output']>;
+export type OffersDiscount_Label = {
+  __typename?: 'OffersDiscount_label';
+  lang_discount?: Maybe<Scalars['String']['output']>;
+  content_discount?: Maybe<Scalars['String']['output']>;
 };
 
 export type Offers = Node & Document & {
   __typename?: 'Offers';
-  offer_id: Scalars['Float']['output'];
   title: Scalars['String']['output'];
   coverImage: Scalars['String']['output'];
   description_offers?: Maybe<Array<Maybe<OffersDescription_Offers>>>;
   expiration_date: Scalars['String']['output'];
   discount: Scalars['String']['output'];
-  tags?: Maybe<Array<Maybe<OffersTags>>>;
+  discount_label: Array<OffersDiscount_Label>;
+  price_adult: Scalars['Float']['output'];
+  price_child: Scalars['Float']['output'];
   id: Scalars['ID']['output'];
   _sys: SystemInfo;
   _values: Scalars['JSON']['output'];
@@ -483,18 +485,20 @@ export type DatetimeFilter = {
   in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
-export type OffersTagsFilter = {
-  tag?: InputMaybe<StringFilter>;
+export type OffersDiscount_LabelFilter = {
+  lang_discount?: InputMaybe<StringFilter>;
+  content_discount?: InputMaybe<StringFilter>;
 };
 
 export type OffersFilter = {
-  offer_id?: InputMaybe<NumberFilter>;
   title?: InputMaybe<StringFilter>;
   coverImage?: InputMaybe<ImageFilter>;
   description_offers?: InputMaybe<OffersDescription_OffersFilter>;
   expiration_date?: InputMaybe<DatetimeFilter>;
   discount?: InputMaybe<StringFilter>;
-  tags?: InputMaybe<OffersTagsFilter>;
+  discount_label?: InputMaybe<OffersDiscount_LabelFilter>;
+  price_adult?: InputMaybe<NumberFilter>;
+  price_child?: InputMaybe<NumberFilter>;
 };
 
 export type OffersConnectionEdges = {
@@ -698,25 +702,27 @@ export type OffersDescription_OffersMutation = {
   content_offer?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type OffersTagsMutation = {
-  tag?: InputMaybe<Scalars['String']['input']>;
+export type OffersDiscount_LabelMutation = {
+  lang_discount?: InputMaybe<Scalars['String']['input']>;
+  content_discount?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type OffersMutation = {
-  offer_id?: InputMaybe<Scalars['Float']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
   coverImage?: InputMaybe<Scalars['String']['input']>;
   description_offers?: InputMaybe<Array<InputMaybe<OffersDescription_OffersMutation>>>;
   expiration_date?: InputMaybe<Scalars['String']['input']>;
   discount?: InputMaybe<Scalars['String']['input']>;
-  tags?: InputMaybe<Array<InputMaybe<OffersTagsMutation>>>;
+  discount_label?: InputMaybe<Array<InputMaybe<OffersDiscount_LabelMutation>>>;
+  price_adult?: InputMaybe<Scalars['Float']['input']>;
+  price_child?: InputMaybe<Scalars['Float']['input']>;
 };
 
 export type HotelsPartsFragment = { __typename: 'Hotels', partner?: boolean | null, name: string, stars: number, location: string, mainStreet?: string | null, addressNumber?: string | null, secondaryStreet?: string | null, roomPrice: number, coverImage: string, gallery?: Array<string | null> | null, highlight?: boolean | null, contact?: Array<{ __typename: 'HotelsContact', type: string, value: string, tag?: string | null } | null> | null, socialMedia?: Array<{ __typename: 'HotelsSocialMedia', name?: string | null, url?: string | null } | null> | null, rooms?: Array<{ __typename: 'HotelsRooms', name?: string | null, size?: number | null, images?: Array<string | null> | null, room_services?: Array<string | null> | null, description_room?: Array<{ __typename: 'HotelsRoomsDescription_room', lang_room?: string | null, content_destination?: string | null } | null> | null, occupancy?: { __typename: 'HotelsRoomsOccupancy', min?: number | null, max?: number | null } | null } | null> | null, description_hotel?: Array<{ __typename: 'HotelsDescription_hotel', lang_hotel?: string | null, content_hotel?: string | null } | null> | null, amenities?: Array<{ __typename: 'HotelsAmenities', basic_services?: Array<string | null> | null, general_services?: Array<string | null> | null, extra_services?: Array<string | null> | null, premium_services?: Array<string | null> | null } | null> | null };
 
 export type DestinationsPartsFragment = { __typename: 'Destinations', partner?: boolean | null, name: string, location: string, coverImage: string, highlight?: boolean | null, description_destination?: Array<{ __typename: 'DestinationsDescription_destination', lang_destination?: string | null, content_destination?: string | null } | null> | null, tags?: Array<{ __typename: 'DestinationsTags', experience?: Array<string | null> | null, activities?: Array<string | null> | null, geographics?: Array<string | null> | null, culture?: Array<string | null> | null, accessibility?: Array<string | null> | null, temporality?: Array<string | null> | null, popular?: Array<string | null> | null } | null> | null };
 
-export type OffersPartsFragment = { __typename: 'Offers', offer_id: number, title: string, coverImage: string, expiration_date: string, discount: string, description_offers?: Array<{ __typename: 'OffersDescription_offers', lang_offer?: string | null, content_offer?: string | null } | null> | null, tags?: Array<{ __typename: 'OffersTags', tag?: string | null } | null> | null };
+export type OffersPartsFragment = { __typename: 'Offers', title: string, coverImage: string, expiration_date: string, discount: string, price_adult: number, price_child: number, description_offers?: Array<{ __typename: 'OffersDescription_offers', lang_offer?: string | null, content_offer?: string | null } | null> | null, discount_label: Array<{ __typename: 'OffersDiscount_label', lang_discount?: string | null, content_discount?: string | null }> };
 
 export type HotelsQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
@@ -761,7 +767,7 @@ export type OffersQueryVariables = Exact<{
 }>;
 
 
-export type OffersQuery = { __typename?: 'Query', offers: { __typename: 'Offers', id: string, offer_id: number, title: string, coverImage: string, expiration_date: string, discount: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, description_offers?: Array<{ __typename: 'OffersDescription_offers', lang_offer?: string | null, content_offer?: string | null } | null> | null, tags?: Array<{ __typename: 'OffersTags', tag?: string | null } | null> | null } };
+export type OffersQuery = { __typename?: 'Query', offers: { __typename: 'Offers', id: string, title: string, coverImage: string, expiration_date: string, discount: string, price_adult: number, price_child: number, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, description_offers?: Array<{ __typename: 'OffersDescription_offers', lang_offer?: string | null, content_offer?: string | null } | null> | null, discount_label: Array<{ __typename: 'OffersDiscount_label', lang_discount?: string | null, content_discount?: string | null }> } };
 
 export type OffersConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -773,7 +779,7 @@ export type OffersConnectionQueryVariables = Exact<{
 }>;
 
 
-export type OffersConnectionQuery = { __typename?: 'Query', offersConnection: { __typename?: 'OffersConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'OffersConnectionEdges', cursor: string, node?: { __typename: 'Offers', id: string, offer_id: number, title: string, coverImage: string, expiration_date: string, discount: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, description_offers?: Array<{ __typename: 'OffersDescription_offers', lang_offer?: string | null, content_offer?: string | null } | null> | null, tags?: Array<{ __typename: 'OffersTags', tag?: string | null } | null> | null } | null } | null> | null } };
+export type OffersConnectionQuery = { __typename?: 'Query', offersConnection: { __typename?: 'OffersConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'OffersConnectionEdges', cursor: string, node?: { __typename: 'Offers', id: string, title: string, coverImage: string, expiration_date: string, discount: string, price_adult: number, price_child: number, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, description_offers?: Array<{ __typename: 'OffersDescription_offers', lang_offer?: string | null, content_offer?: string | null } | null> | null, discount_label: Array<{ __typename: 'OffersDiscount_label', lang_discount?: string | null, content_discount?: string | null }> } | null } | null> | null } };
 
 export const HotelsPartsFragmentDoc = gql`
     fragment HotelsParts on Hotels {
@@ -859,7 +865,6 @@ export const DestinationsPartsFragmentDoc = gql`
 export const OffersPartsFragmentDoc = gql`
     fragment OffersParts on Offers {
   __typename
-  offer_id
   title
   coverImage
   description_offers {
@@ -869,10 +874,13 @@ export const OffersPartsFragmentDoc = gql`
   }
   expiration_date
   discount
-  tags {
+  discount_label {
     __typename
-    tag
+    lang_discount
+    content_discount
   }
+  price_adult
+  price_child
 }
     `;
 export const HotelsDocument = gql`

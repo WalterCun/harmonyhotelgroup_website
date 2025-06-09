@@ -1,15 +1,20 @@
 import {defineConfig} from "tinacms";
 
 // Verificar y utilizar las variables de entorno, o usar valores de respaldo para desarrollo local
+// @ts-ignore
 const clientId = process.env.NEXT_PUBLIC_TINA_CLIENT_ID || "";
+// @ts-ignore
 const token = process.env.TINA_TOKEN || "";
 
 // Modo de desarrollo local si no hay credenciales
 const isLocalMode = !clientId || !token;
 
 const branch =
+    // @ts-ignore
     process.env.GITHUB_BRANCH ||
+    // @ts-ignore
     process.env.VERCEL_GIT_COMMIT_REF ||
+    // @ts-ignore
     process.env.HEAD ||
     "main";
 
@@ -589,12 +594,6 @@ export default defineConfig({
                 format: "json",
                 fields: [
                     {
-                        type: "number",
-                        name: "offer_id",
-                        label: "ID*",
-                        required: true,
-                    },
-                    {
                         type: "string",
                         name: "title",
                         label: "Title*",
@@ -645,23 +644,55 @@ export default defineConfig({
                     },
                     {
                         type: "object",
-                        name: "tags",
-                        label: "Tags",
+                        name: "discount_label",
+                        label: "Descripcion del Descuento",
+                        required: true,
                         list: true,
-                        ui: {
-                            itemProps: (item) => {
-                                const tag = item?.tag || "Etiqueta";
-                                return {label: `${tag}`};
-                            },
-                        },
                         fields: [
                             {
                                 type: "string",
-                                name: "tag",
-                                label: "Tag",
+                                name: "lang_discount",
+                                label: "Language",
+                                options: ["es", "en"],
+                            },
+                            {
+                                type: "string",
+                                name: "content_discount",
+                                label: "Content",
                             },
                         ],
                     },
+                    {
+                        type:"number",
+                        name:"price_adult",
+                        label:"Precio Adulto desde:",
+                        required:true
+                    },
+                    {
+                        type:"number",
+                        name:"price_child",
+                        label:"Precio Niños desde:",
+                        required:true
+                    }
+                    // {
+                    //     type: "object",
+                    //     name: "tags",
+                    //     label: "Tags",
+                    //     list: true,
+                    //     ui: {
+                    //         itemProps: (item) => {
+                    //             const tag = item?.tag || "Etiqueta";
+                    //             return {label: `${tag}`};
+                    //         },
+                    //     },
+                    //     fields: [
+                    //         {
+                    //             type: "string",
+                    //             name: "tag",
+                    //             label: "Tag",
+                    //         },
+                    //     ],
+                    // },
                 ],
             },
         ],

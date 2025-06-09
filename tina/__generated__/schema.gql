@@ -327,18 +327,20 @@ type OffersDescription_offers {
   content_offer: String
 }
 
-type OffersTags {
-  tag: String
+type OffersDiscount_label {
+  lang_discount: String
+  content_discount: String
 }
 
 type Offers implements Node & Document {
-  offer_id: Float!
   title: String!
   coverImage: String!
   description_offers: [OffersDescription_offers]
   expiration_date: String!
   discount: String!
-  tags: [OffersTags]
+  discount_label: [OffersDiscount_label!]!
+  price_adult: Float!
+  price_child: Float!
   id: ID!
   _sys: SystemInfo!
   _values: JSON!
@@ -357,18 +359,20 @@ input DatetimeFilter {
   in: [String]
 }
 
-input OffersTagsFilter {
-  tag: StringFilter
+input OffersDiscount_labelFilter {
+  lang_discount: StringFilter
+  content_discount: StringFilter
 }
 
 input OffersFilter {
-  offer_id: NumberFilter
   title: StringFilter
   coverImage: ImageFilter
   description_offers: OffersDescription_offersFilter
   expiration_date: DatetimeFilter
   discount: StringFilter
-  tags: OffersTagsFilter
+  discount_label: OffersDiscount_labelFilter
+  price_adult: NumberFilter
+  price_child: NumberFilter
 }
 
 type OffersConnectionEdges {
@@ -500,18 +504,20 @@ input OffersDescription_offersMutation {
   content_offer: String
 }
 
-input OffersTagsMutation {
-  tag: String
+input OffersDiscount_labelMutation {
+  lang_discount: String
+  content_discount: String
 }
 
 input OffersMutation {
-  offer_id: Float
   title: String
   coverImage: String
   description_offers: [OffersDescription_offersMutation]
   expiration_date: String
   discount: String
-  tags: [OffersTagsMutation]
+  discount_label: [OffersDiscount_labelMutation]
+  price_adult: Float
+  price_child: Float
 }
 
 schema {
