@@ -1,8 +1,7 @@
-import type {ImageMetadata} from "astro";
+import type { ImageMetadata } from "astro";
 // @ts-ignore
-import Default from '../assets/img/default.png';
-import {createLogger} from "utils/logger.ts";
-import {DEBUG} from "lib/constants/global.ts";
+import Default from "../assets/img/default.png";
+import { createLogger } from "utils/logger.ts";
 
 const logger = createLogger(false, "tools.ts");
 
@@ -26,31 +25,33 @@ export function range(start: number, end: number) {
  */
 export async function getGeolocation() {
     try {
-        const respuesta = await fetch('http://ip-api.com/json');
+        const respuesta = await fetch("http://ip-api.com/json");
 
         if (!respuesta.ok) {
-            throw new Error(`Error al obtener geolocalización: ${respuesta.status}`);
+            throw new Error(
+                `Error al obtener geolocalización: ${respuesta.status}`,
+            );
         }
 
         const datos = await respuesta.json();
 
         // Extraer solo los campos necesarios
-        const {country, countryCode, regionName, city} = datos;
+        const { country, countryCode, regionName, city } = datos;
 
         return {
             country,
             countryCode,
             regionName,
-            city
+            city,
         };
     } catch (error) {
-        logger.error('Error al obtener datos de geolocalización:', error);
+        logger.error("Error al obtener datos de geolocalización:", error);
         // Puedes devolver valores por defecto o null en caso de error
         return {
             country: null,
             countryCode: null,
             regionName: null,
-            city: null
+            city: null,
         };
     }
 }
@@ -60,9 +61,12 @@ export async function getGeolocation() {
 /**
  * Busca una clave en la colección de imágenes que coincida con la clave proporcionada
  */
-function findMatchingImageKey(listImages: ImageCollection, key: string): string | undefined {
-    return Object.keys(listImages).find(imgKey =>
-        imgKey.toLowerCase().includes(key.toLowerCase())
+function findMatchingImageKey(
+    listImages: ImageCollection,
+    key: string,
+): string | undefined {
+    return Object.keys(listImages).find((imgKey) =>
+        imgKey.toLowerCase().includes(key.toLowerCase()),
     );
 }
 
@@ -72,20 +76,23 @@ function findMatchingImageKey(listImages: ImageCollection, key: string): string 
 async function loadImageSafely(
     listImages: ImageCollection,
     key: string,
-): Promise<{ default:ImageMetadata }> {
+): Promise<{ default: ImageMetadata }> {
     const imageLoader = listImages[key];
 
     // Validar que sea una función
-    if (typeof imageLoader !== 'function') {
-        logger.error(`El valor de listImages["${key}"] no es una función`, imageLoader);
-        return Default;
+    if (typeof imageLoader !== "function") {
+        logger.error(
+            `El valor de listImages["${key}"] no es una función`,
+            imageLoader,
+        );
+        return Promise.resolve({ default: Default });
     }
 
     try {
         return await imageLoader();
     } catch (error) {
         logger.error(`Error al cargar la imagen "${key}"`, error);
-        return Default;
+        return Promise.resolve({ default: Default });
     }
 }
 
@@ -97,15 +104,14 @@ export const getImage = async (
     listImages: ImageCollection,
     key: string,
     useDefaultOnFailure = true,
-    enableDebugLogs = false
-): Promise<{ default:ImageMetadata }> => {
-
-    logger.log('listImages', listImages);
-    logger.log('key', key);
+    enableDebugLogs = false,
+): Promise<{ default: ImageMetadata }> => {
+    logger.log("listImages", listImages);
+    logger.log("key", key);
 
     // Buscar la imagen por clave
     const matchingKey = findMatchingImageKey(listImages, key);
-    logger.log('matchingKey', matchingKey);
+    logger.log("matchingKey", matchingKey);
 
     // Si encontramos una coincidencia, cargar esa imagen
     if (matchingKey) {
@@ -116,12 +122,11 @@ export const getImage = async (
     if (!useDefaultOnFailure && Object.keys(listImages).length > 0) {
         // Usar la primera imagen disponible
         const firstKey = Object.keys(listImages)[0];
-        logger.log('fallback to firstKey', firstKey);
+        logger.log("fallback to firstKey", firstKey);
         return loadImageSafely(listImages, firstKey);
     }
 
     // Usar la imagen predeterminada en caso de error o si se solicitó explícitamente
     logger.warn("No hay ninguna imagen disponible que coincida con la clave");
-    return Default;
+    return Promise.resolve({ default: Default });
 };
-
