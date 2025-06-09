@@ -1,6 +1,5 @@
 ---
 import { Image } from "astro:assets";
-import type { OffersQuery } from "../../../../tina/__generated__/types";
 
 import { Api } from "~/utils/tina";
 import { getImage, trans } from "~/utils";
@@ -10,17 +9,17 @@ import { createLogger } from "utils/logger";
 const logger = createLogger(true, "special.offers");
 
 const api = new Api(true, 4);
-let offers: OffersQuery["offers"][] = [];
+let offers: any[] = [];
 
 try {
-  offers = await api.offers();
-  logger.log("Special offers loaded successfully:", offers.length);
+    offers = await api.offers();
+    logger.log("Special offers loaded successfully:", offers.length);
 } catch (error) {
-  logger.error("Error loading offers:", error);
+    logger.error("Error loading offers:", error);
 }
 
 interface Props {
-  lang: string;
+    lang: string;
 }
 const { lang } = Astro.props;
 ---
@@ -37,7 +36,7 @@ const { lang } = Astro.props;
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
                     {offers.map(offer => (
                             <div class="card bg-base-100 w-auto shadow-sm hover:shadow-xl transition-all duration-300">
-                                <div class="relative">
+                                <figure class="relative">
                                     {offer.coverImage && (
                                             <Image
                                                     src={getImage(imagesOffers, offer.coverImage, true)}
@@ -49,37 +48,37 @@ const { lang } = Astro.props;
                                     <div class="absolute top-4 left-4 bg-primary-500 text-white py-1 px-3 rounded-full text-sm font-bold">
                                         {offer.discount}
                                     </div>
-                                </div>
-                                <div class="card-body flex flex-col">
-                                    <h2 class="card-title text-primary font-bold">
-                                        {offer.title}
-                                    </h2>
-                                    <p class="text-neutral-600 dark:text-neutral-400">
-                                        {offer.description_offers?.find(item => item?.lang_offer === lang)?.content_offer ||
-                                                trans(lang, "components.sections.home.special-offer.no-text")}
-                                    </p>
-                                    <div class="flex flex-row justify-between">
-                                        <div class="flex flex-col justify-between items-center">
-                                            <p class="text-sm">
-                                                <span class="font-medium">{trans(lang, "components.sections.home.special-offer.expired")}</span>
-                                            </p>
-                                            <p class="text-sm">
-                                                {offer.expiration_date.split('T')[0]}
-                                            </p>
+                                </figure>
+                            </div>
+                            <div class="card-body flex flex-col">
+                                <h2 class="card-title text-primary font-bold">
+                                    {offer.title}
+                                </h2>
+                                <p class="text-neutral-600 dark:text-neutral-400">
+                                    {offer.description_offers?.find((item: {lang_offer: string, content_offer: string}) => item?.lang_offer === lang)?.content_offer ||
+                                        trans(lang, "components.sections.home.special-offer.no-text")}
+                                </p>
+                                <div class="flex flex-row justify-between">
+                                    <div class="flex flex-col justify-between items-center">
+                                        <p class="text-sm">
+                                            <span class="font-medium">{trans(lang, "components.sections.home.special-offer.expired")}</span>
+                                        </p>
+                                        <p class="text-sm">
+                                            {offer.expiration_date.split('T')[0]}
+                                        </p>
 
-                                        </div>
-                                        <a href={`/offers/${offer.id}`}
-                                           class="btn btn-primary">
-                                            {trans(lang, "components.sections.home.special-offer.btn-details")}
-                                        </a>
                                     </div>
+                                    <a href={`/offers/${offer.id}`}
+                                       class="btn btn-outline hover:text-primary-600 transition-colors">
+                                        {trans(lang, "components.sections.home.special-offer.btn-details")}
+                                    </a>
                                 </div>
                             </div>
                     ))}
                 </div>
                 <div class="text-center mt-12">
-                    <a href="/offers" class="btn btn-outline btn-primary">
-                        View All Offers
+                    <a href="/offers" class="btn btn-outline hover:text-primary-600 transition-colors">
+                        Explorar todas las ofertas
                     </a>
                 </div>
         ) : (

@@ -5,8 +5,7 @@ import { Icon } from "astro-icon/components";
 import { trans, processTagElements } from "~/utils/translations";
 import { Api } from "~/utils/tina";
 import { imagesHoteles } from "../../../lib/constants";
-import { getImage } from "../../../utils";
-import { createLogger } from "../../../utils/logger";
+import { getImage, createLogger } from "../../../utils";
 
 const api = new Api(true, 4);
 let hoteles: any[] = [];
@@ -14,14 +13,14 @@ let hoteles: any[] = [];
 const logger = createLogger(false, "featured.hotels");
 
 try {
-  hoteles = await api.hotels();
-  logger.log("Featured hotels loaded successfully:", hoteles.length);
+    hoteles = await api.hotels();
+    logger.log("Featured hotels loaded successfully:", hoteles.length);
 } catch (error) {
-  logger.error("Error loading featured hotels:", error);
+    logger.error("Error loading featured hotels:", error);
 }
 
 interface Props {
-  lang: string;
+    lang: string;
 }
 
 const { lang } = Astro.props;
@@ -41,7 +40,7 @@ const { lang } = Astro.props;
             {
                 hoteles.map((hotel) => (
                         <div class="card bg-base-100 w-auto shadow-sm hover:shadow-xl transition-all duration-300">
-                            <figure class="relative h-52">
+                            <figure class="relative h-72">
                                 {hotel.coverImage && (
                                         <Image
                                                 src={getImage(imagesHoteles, hotel.coverImage,)}
@@ -70,18 +69,18 @@ const { lang } = Astro.props;
                                     </p>
                                     <div class="rating p-0 m-0 mt-2">
                                         {hotel.stars && (
-                                                Array.from({length: 5},
-                                                        (_, index) => (
-                                                                index == (hotel.stars - 1) ?
-                                                                        <div class="mask mask-star size-5 bg-primary"
-                                                                             aria-label={`${index + 1} star`}
-                                                                             aria-current="true"
-                                                                        /> :
-                                                                        <div class="mask mask-star size-5 bg-primary"
-                                                                             aria-label={`${index + 1} star`}
-                                                                        />
-                                                        ),
-                                                )
+                                            Array.from({length: 5},
+                                                (_, index) => (
+                                                    index == (hotel.stars - 1) ?
+                                                            <div class="mask mask-star size-5 bg-primary"
+                                                                 aria-label={`${index + 1} star`}
+                                                                 aria-current="true"
+                                                            /> :
+                                                            <div class="mask mask-star size-5 bg-primary"
+                                                                 aria-label={`${index + 1} star`}
+                                                            />
+                                                ),
+                                            )
                                         )}
                                     </div>
                                 </div>
@@ -89,32 +88,32 @@ const { lang } = Astro.props;
                                 <div class="flex-grow">
                                     <div class="card-actions justify-start">
                                         {
-                                                hotel.amenities && hotel.amenities.map((element: any) => {
-                                                    const processedTags = processTagElements(
-                                                            element,
-                                                            lang,
-                                                            'components.sections.home.featured-hotels.tags'
-                                                    );
+                                            hotel.amenities && hotel.amenities.map((element: any) => {
+                                                const processedTags = processTagElements(
+                                                    element,
+                                                    lang,
+                                                    'components.sections.home.featured-hotels.tags'
+                                                );
 
-                                                    const visibleTags = processedTags.slice(0, 3);
-                                                    const hiddenTags = processedTags.slice(3);
+                                                const visibleTags = processedTags.slice(0, 3);
+                                                const hiddenTags = processedTags.slice(3);
 
-                                                    return (
-                                                            <>
-                                                                {visibleTags.map((tag) => (
-                                                                        <div class="badge badge-outline">
-                                                                            {tag.value}
-                                                                        </div>
-                                                                ))}
-                                                                {hiddenTags.length > 0 && (
-                                                                        <div class="badge badge-outline font-bold text-xs">
-                                                                            +{hiddenTags.length}
-                                                                            {trans(lang, 'components.sections.home.more')}
-                                                                        </div>
-                                                                )}
-                                                            </>
-                                                    );
-                                                })
+                                                return (
+                                                        <>
+                                                            {visibleTags.map((tag) => (
+                                                                    <div class="badge badge-outline">
+                                                                        {tag.value}
+                                                                    </div>
+                                                            ))}
+                                                            {hiddenTags.length > 0 && (
+                                                                    <div class="badge badge-outline font-bold text-xs">
+                                                                        +{hiddenTags.length}
+                                                                        {trans(lang, 'components.sections.home.more')}
+                                                                    </div>
+                                                            )}
+                                                        </>
+                                                );
+                                            })
                                         }
                                     </div>
                                 </div>
@@ -122,12 +121,12 @@ const { lang } = Astro.props;
                                 <!-- Sección inferior fija: siempre al final -->
                                 <div class="card-actions justify-between mt-auto pt-4">
                                     <div>
-            <span class="text-xl font-bold">
-                ${hotel.roomPrice}
-            </span>
+                                        <span class="text-xl font-bold">
+                                            ${hotel.roomPrice}
+                                        </span>
                                         <span class="text-neutral-600 dark:text-neutral-400">
-                {trans(lang, "components.sections.home.featured-hotels.night",)}
-            </span>
+                                            {trans(lang, "components.sections.home.featured-hotels.night",)}
+                                        </span>
                                     </div>
                                     <a href={`/hotels/${hotel.hotel_id}`} class="btn btn-primary py-2 px-4">
                                         {trans(lang, "components.sections.home.featured-hotels.btn-details",)}

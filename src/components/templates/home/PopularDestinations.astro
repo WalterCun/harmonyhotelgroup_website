@@ -4,13 +4,12 @@ import { Icon } from "astro-icon/components";
 
 import { trans, Api, getImage, processTagElements } from "~/utils";
 import { imagesDestinations } from "lib/constants";
-import type { DestinationsQuery } from "../../../../tina/__generated__/types";
-import { createLogger } from "../../../utils/logger";
+import { createLogger } from "../../../utils";
 
 const logger = createLogger(false, "popular.destinations");
 
 const api = new Api(true, 4);
-let destinations: DestinationsQuery["destinations"][] = [];
+let destinations: any[] = [];
 
 try {
   destinations = await api.destinations();
@@ -66,8 +65,8 @@ const { lang } = Astro.props;
                                             {destination.location}
                                         </span>
                                 </p>
-                                <p class="description-container relative overflow-hidden">
-                                    {destination?.description_destination?.map((element: any, index: number) => {
+                                <p class="relative overflow-hidden">
+                                    {destination?.description_destination?.map((element: any, _: number) => {
                                         if (element["lang_destination"] === lang) {
                                             const content = element["content_destination"];
                                             const maxLength = 150; // Ajusta este valor según necesites
@@ -92,34 +91,34 @@ const { lang } = Astro.props;
                             <div class="flex-grow">
                                 <div class="card-actions justify-start">
                                     {
-                                            destination.tags && destination.tags.map((element: any) => {
-                                                // Procesar los tags con nuestra nueva función
+                                        destination.tags && destination.tags.map((element: any) => {
+                                            // Procesar los tags con nuestra nueva función
 
-                                                const processedTags = processTagElements(
-                                                        element,
-                                                        lang,
-                                                        'components.sections.home.popular-destination.tags'
-                                                );
+                                            const processedTags = processTagElements(
+                                                element,
+                                                lang,
+                                                'components.sections.home.popular-destination.tags'
+                                            );
 
-                                                const visibleTags = processedTags.slice(0, 3);
-                                                const hiddenTags = processedTags.slice(3);
+                                            const visibleTags = processedTags.slice(0, 3);
+                                            const hiddenTags = processedTags.slice(3);
 
-                                                return (
-                                                        <>
-                                                            {visibleTags.map((tag) => (
-                                                                    <div class="badge badge-outline">
-                                                                        {tag.value}
-                                                                    </div>
-                                                            ))}
-                                                            {hiddenTags.length > 0 && (
-                                                                    <div class="badge badge-outline bg-black text-white">
-                                                                        +{hiddenTags.length}
-                                                                        {trans(lang, 'components.sections.home.more')}
-                                                                    </div>
-                                                            )}
-                                                        </>
-                                                );
-                                            })
+                                            return (
+                                                    <>
+                                                        {visibleTags.map((tag) => (
+                                                                <div class="badge badge-outline">
+                                                                    {tag.value}
+                                                                </div>
+                                                        ))}
+                                                        {hiddenTags.length > 0 && (
+                                                                <div class="badge badge-outline bg-black text-white">
+                                                                    +{hiddenTags.length}
+                                                                    {trans(lang, 'components.sections.home.more')}
+                                                                </div>
+                                                        )}
+                                                    </>
+                                            );
+                                        })
                                     }
                                 </div>
                             </div>
@@ -142,29 +141,4 @@ const { lang } = Astro.props;
         </div>
     </div>
 </section>
-
-<style>
-    .description-container {
-        max-height: 4.5rem; /* ~3 líneas de texto */
-    }
-
-    .fade-out {
-        position: relative;
-        margin-left: 4px;
-    }
-
-    .fade-out::before {
-        content: "";
-        position: absolute;
-        right: 100%;
-        top: 0;
-        width: 50px;
-        height: 100%;
-        background: linear-gradient(to right, transparent, var(--tw-bg-opacity, 1) * rgb(255 255 255) 90%);
-    }
-
-    :global(.dark) .fade-out::before {
-        background: linear-gradient(to right, transparent, var(--tw-bg-opacity, 1) * rgb(31 41 55) 90%);
-    }
-</style>
 
