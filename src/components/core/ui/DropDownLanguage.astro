@@ -1,10 +1,13 @@
 ---
 import { Image } from "astro:assets";
 import { LANGUAGES, structUrl, trans } from "~/utils/translations";
+import {createLogger} from "~/utils";
 
 interface Props {
 	lang: string;
 }
+
+const logger = createLogger(true, 'dropdown-language')
 
 const { lang } = Astro.props;
 const currentLanguage = LANGUAGES[lang] || LANGUAGES.es;

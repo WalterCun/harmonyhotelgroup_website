@@ -34,7 +34,7 @@ const { lang } = Astro.props;
                         {trans(lang, "components.sections.home.special-offer.subtitle")}
                     </p>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
                     {offers.map(offer => (
                             <div class="card bg-base-100 w-auto shadow-sm hover:shadow-xl transition-all duration-300">
                                 <div class="relative">
@@ -42,22 +42,24 @@ const { lang } = Astro.props;
                                             <Image
                                                     src={getImage(imagesOffers, offer.coverImage, true)}
                                                     alt={offer.title}
-                                                    width="1200"
-                                                    height="800"
+                                                    width={600}
+                                                    height={400}
                                                     class="w-full h-48 object-cover"
                                             />)}
                                     <div class="absolute top-4 left-4 bg-primary-500 text-white py-1 px-3 rounded-full text-sm font-bold">
-                                        {offer.discount} OFF
+                                        {offer.discount}
                                     </div>
-                                </div>
-                                <div class="p-6">
-                                    <div class="flex flex-wrap gap-2 mb-3">
-                                        {offer.tags?.map(item => (
-                                                <span class="text-xs font-semibold bg-secondary-100 dark:bg-secondary-900 text-secondary-800 dark:text-secondary-200 py-1 px-2 rounded-full">{item?.tag}</span>
-                                        ))}
-                                    </div>
-                                    <h3 class="text-xl font-semibold mb-2">{offer.title}</h3>
-                                    <p class="text-neutral-600 dark:text-neutral-400 mb-4">
+                                </figure>
+                                <div class="card-body flex flex-col">
+                                    <!--<div class="flex flex-wrap gap-2 mb-3">-->
+                                    <!--    {offer.tags?.map(item => (-->
+                                    <!--            <span class="text-xs font-semibold bg-secondary-100 dark:bg-secondary-900 text-secondary-800 dark:text-secondary-200 py-1 px-2 rounded-full">{item?.tag}</span>-->
+                                    <!--    ))}-->
+                                    <!--</div>-->
+                                    <h2 class="card-title text-primary font-bold">
+                                        {offer.title}
+                                    </h2>
+                                    <p class="text-neutral-600 dark:text-neutral-400">
                                         {offer.description_offers?.find(item => item?.lang_offer === lang)?.content_offer ||
                                                 trans(lang, "components.sections.home.special-offer.no-text")}
                                     </p>
@@ -74,7 +76,7 @@ const { lang } = Astro.props;
                                         <a href={`/offers/${offer.offer_id}`}
                                            class="btn btn-primary">
                                             {trans(lang, "components.sections.home.special-offer.btn-details")}
-                                        </a>
+                                        </Button>
                                     </div>
                                 </div>
                             </div>

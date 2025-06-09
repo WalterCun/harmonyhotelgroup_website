@@ -5,7 +5,7 @@
 		"env.d.ts",
 		".astro/types.d.ts",
 		"astro.config.mjs",
-		"tailwind.config.mjs",
+		"tailwind.config.mjs"
 	],
 	"exclude": ["node_modules", "**/node_modules/*", ".vscode", "dist"],
 	"compilerOptions": {

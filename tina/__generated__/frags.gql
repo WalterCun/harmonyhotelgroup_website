@@ -79,7 +79,6 @@ fragment DestinationsParts on Destinations {
 
 fragment OffersParts on Offers {
   __typename
-  offer_id
   title
   coverImage
   description_offers {
@@ -89,8 +88,11 @@ fragment OffersParts on Offers {
   }
   expiration_date
   discount
-  tags {
+  discount_label {
     __typename
-    tag
+    lang_discount
+    content_discount
   }
+  price_adult
+  price_child
 }
