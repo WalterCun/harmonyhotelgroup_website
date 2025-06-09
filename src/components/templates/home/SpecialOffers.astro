@@ -49,13 +49,8 @@ const { lang } = Astro.props;
                                     <div class="absolute top-4 left-4 bg-primary-500 text-white py-1 px-3 rounded-full text-sm font-bold">
                                         {offer.discount}
                                     </div>
-                                </figure>
+                                </div>
                                 <div class="card-body flex flex-col">
-                                    <!--<div class="flex flex-wrap gap-2 mb-3">-->
-                                    <!--    {offer.tags?.map(item => (-->
-                                    <!--            <span class="text-xs font-semibold bg-secondary-100 dark:bg-secondary-900 text-secondary-800 dark:text-secondary-200 py-1 px-2 rounded-full">{item?.tag}</span>-->
-                                    <!--    ))}-->
-                                    <!--</div>-->
                                     <h2 class="card-title text-primary font-bold">
                                         {offer.title}
                                     </h2>
@@ -73,10 +68,10 @@ const { lang } = Astro.props;
                                             </p>
 
                                         </div>
-                                        <a href={`/offers/${offer.offer_id}`}
+                                        <a href={`/offers/${offer.id}`}
                                            class="btn btn-primary">
                                             {trans(lang, "components.sections.home.special-offer.btn-details")}
-                                        </Button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
