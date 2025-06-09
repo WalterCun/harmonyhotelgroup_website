@@ -1,34 +1,32 @@
 ---
-import {Image} from "astro:assets";
-import {Icon} from "astro-icon/components";
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
 
-import {trans, Api, getImage, processTagElements} from "~/utils";
-import {imagesDestinations} from "lib/constants";
-import type {DestinationsQuery} from "../../../../tina/__generated__/types";
-import Button from "../../core/ui/Button.astro";
-import {createLogger} from "../../../utils/logger";
+import { trans, Api, getImage, processTagElements } from "~/utils";
+import { imagesDestinations } from "lib/constants";
+import type { DestinationsQuery } from "../../../../tina/__generated__/types";
+import { createLogger } from "../../../utils/logger";
 
-const logger = createLogger(false, 'popular.destinations')
-
+const logger = createLogger(false, "popular.destinations");
 
 const api = new Api(true, 4);
-let destinations: DestinationsQuery['destinations'][] = [];
+let destinations: DestinationsQuery["destinations"][] = [];
 
 try {
-    destinations = await api.destinations();
-    logger.log('Popular destinations loaded successfully:', destinations.length);
+  destinations = await api.destinations();
+  logger.log("Popular destinations loaded successfully:", destinations.length);
 } catch (error) {
-    logger.error('Error loading destinations:', error);
+  logger.error("Error loading destinations:", error);
 }
 
 interface Props {
-    lang: string;
+  lang: string;
 }
 
-const {lang} = Astro.props;
+const { lang } = Astro.props;
 ---
 
-<section class="flex justify-center pt-10 pb-10 bg-neutral-200 dark:bg-neutral-800">
+<section class="flex justify-center pt-10 pb-10 bg-neutral-100/20 dark:bg-neutral-800">
     <div class="container">
         <div class="text-center mb-12">
             <h2 class="mb-4 text-center text-2xl font-bold text-primary">
@@ -91,7 +89,6 @@ const {lang} = Astro.props;
                                 </p>
                             </div>
 
-                            <!-- Sección media: flexible y puede estar vacía -->
                             <div class="flex-grow">
                                 <div class="card-actions justify-start">
                                     {
@@ -104,20 +101,18 @@ const {lang} = Astro.props;
                                                         'components.sections.home.popular-destination.tags'
                                                 );
 
-                                                // Dividir en visibles y ocultos
-
                                                 const visibleTags = processedTags.slice(0, 3);
                                                 const hiddenTags = processedTags.slice(3);
 
                                                 return (
                                                         <>
                                                             {visibleTags.map((tag) => (
-                                                                    <div class="badge badge-outline font-bold bg-gray-200 text-xs">
+                                                                    <div class="badge badge-outline">
                                                                         {tag.value}
                                                                     </div>
                                                             ))}
                                                             {hiddenTags.length > 0 && (
-                                                                    <div class="badge badge-outline font-bold text-xs">
+                                                                    <div class="badge badge-outline bg-black text-white">
                                                                         +{hiddenTags.length}
                                                                         {trans(lang, 'components.sections.home.more')}
                                                                     </div>
@@ -141,9 +136,9 @@ const {lang} = Astro.props;
             ))}
         </div>
         <div class="text-center mt-12">
-            <Button href="/destinations" class="btn btn-outline">
+            <a href="/destinations" class="btn btn-outline btn-primary">
                 {trans(lang, "components.sections.home.popular-destination.btn-all-destination")}
-            </Button>
+            </a>
         </div>
     </div>
 </section>

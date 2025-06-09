@@ -1,43 +1,42 @@
 ---
-import {Image} from "astro:assets";
-import type {OffersQuery} from "../../../../tina/__generated__/types";
+import { Image } from "astro:assets";
+import type { OffersQuery } from "../../../../tina/__generated__/types";
 
-import {Api} from "~/utils/tina";
-import {getImage,trans} from "~/utils";
-import {imagesOffers} from "lib/constants";
-import {createLogger} from "utils/logger";
+import { Api } from "~/utils/tina";
+import { getImage, trans } from "~/utils";
+import { imagesOffers } from "lib/constants";
+import { createLogger } from "utils/logger";
 
-const logger = createLogger(true, 'special.offers')
+const logger = createLogger(true, "special.offers");
 
 const api = new Api(true, 4);
-let offers: OffersQuery['offers'][] = [];
+let offers: OffersQuery["offers"][] = [];
 
 try {
-    offers = await api.offers();
-    logger.log('Special offers loaded successfully:', offers.length);
+  offers = await api.offers();
+  logger.log("Special offers loaded successfully:", offers.length);
 } catch (error) {
-    logger.error('Error loading offers:', error);
-
+  logger.error("Error loading offers:", error);
 }
 
 interface Props {
-    lang: string;
+  lang: string;
 }
-const {lang} = Astro.props;
+const { lang } = Astro.props;
 ---
 
 <section class="flex justify-center pt-10 pb-10 bg-white dark:bg-neutral-800">
     <div class="container">
         {offers.length > 0 ? (
                 <div class="text-center mb-12">
-                    <h2 class="mb-4">{trans(lang, "components.sections.home.special-offer.title")}</h2>
+                    <h2 class="mb-4 text-center text-2xl font-bold text-primary">{trans(lang, "components.sections.home.special-offer.title")}</h2>
                     <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
                         {trans(lang, "components.sections.home.special-offer.subtitle")}
                     </p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {offers.map(offer => (
-                            <div class="card group hover:shadow-xl transition-all duration-300">
+                            <div class="card bg-base-100 w-auto shadow-sm hover:shadow-xl transition-all duration-300">
                                 <div class="relative">
                                     {offer.coverImage && (
                                             <Image
@@ -73,7 +72,7 @@ const {lang} = Astro.props;
 
                                         </div>
                                         <a href={`/offers/${offer.offer_id}`}
-                                           class="text-primary-500 font-medium hover:text-primary-600 transition-colors">
+                                           class="btn btn-primary">
                                             {trans(lang, "components.sections.home.special-offer.btn-details")}
                                         </a>
                                     </div>
@@ -82,7 +81,7 @@ const {lang} = Astro.props;
                     ))}
                 </div>
                 <div class="text-center mt-12">
-                    <a href="/offers" class="btn btn-outline">
+                    <a href="/offers" class="btn btn-outline btn-primary">
                         View All Offers
                     </a>
                 </div>

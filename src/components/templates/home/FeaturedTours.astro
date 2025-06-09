@@ -6,7 +6,7 @@ import { getFeaturedTours } from "@utils/api";
 const featuredTours = await getFeaturedTours(3);
 
 interface Props {
-	lang: string;
+  lang: string;
 }
 
 const { lang } = Astro.props;
@@ -15,66 +15,87 @@ const { lang } = Astro.props;
 <section class="py-16 bg-harmony-white-200 dark:bg-harmony-black-800">
   <div class="container mx-auto px-4">
     <div class="text-center mb-12">
-      <h2 class="text-3xl md:text-4xl font-serif font-bold text-harmony-black-800 dark:text-white mb-4">
+      <h2
+        class="text-3xl md:text-4xl font-serif font-bold text-harmony-black-800 dark:text-white mb-4"
+      >
         Tours Exclusivos
       </h2>
-      <p class="text-lg text-harmony-black-600 dark:text-harmony-white-600 max-w-3xl mx-auto">
-        Explore Cuenca y sus alrededores con nuestros tours guiados, diseñados para mostrarle lo mejor de la región.
+      <p
+        class="text-lg text-harmony-black-600 dark:text-harmony-white-600 max-w-3xl mx-auto"
+      >
+        Explore Cuenca y sus alrededores con nuestros tours guiados, diseñados
+        para mostrarle lo mejor de la región.
       </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      {featuredTours.map(tour => (
-        <div class="bg-white dark:bg-harmony-black-700 rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
-          <div class="h-48 overflow-hidden">
-            <img 
-              src={tour.image.replace('/src', '')} 
-              alt={tour.name}
-              class="w-full h-full object-cover transform transition-transform duration-500 hover:scale-110"
-            />
-          </div>
-          <div class="p-6">
-            <div class="flex justify-between items-start mb-3">
-              <h3 class="text-xl font-serif font-semibold text-harmony-black-800 dark:text-white">{tour.name}</h3>
-              <span class="bg-harmony-gold-100 dark:bg-harmony-gold-900 text-harmony-gold-700 dark:text-harmony-gold-300 px-2 py-1 rounded text-sm font-medium">
-                {tour.duration}
-              </span>
+      {
+        featuredTours.map((tour) => (
+          <div class="bg-white dark:bg-harmony-black-700 rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
+            <div class="h-48 overflow-hidden">
+              <img
+                src={tour.image.replace("/src", "")}
+                alt={tour.name}
+                class="w-full h-full object-cover transform transition-transform duration-500 hover:scale-110"
+              />
             </div>
-            <p class="text-harmony-black-700 dark:text-harmony-white-700 mb-4 line-clamp-3">{tour.description}</p>
-            <div class="flex flex-wrap gap-2 mb-4">
-              {tour.highlights.slice(0, 2).map(highlight => (
-                <span class="bg-harmony-gold-100 dark:bg-harmony-gold-900 text-harmony-gold-700 dark:text-harmony-gold-300 px-2 py-1 rounded-full text-xs">
-                  {highlight}
+            <div class="p-6">
+              <div class="flex justify-between items-start mb-3">
+                <h3 class="text-xl font-serif font-semibold text-harmony-black-800 dark:text-white">
+                  {tour.name}
+                </h3>
+                <span class="bg-harmony-gold-100 dark:bg-harmony-gold-900 text-harmony-gold-700 dark:text-harmony-gold-300 px-2 py-1 rounded text-sm font-medium">
+                  {tour.duration}
                 </span>
-              ))}
-              {tour.highlights.length > 2 && (
-                <span class="bg-harmony-gold-100 dark:bg-harmony-gold-900 text-harmony-gold-700 dark:text-harmony-gold-300 px-2 py-1 rounded-full text-xs">
-                  +{tour.highlights.length - 2} más
+              </div>
+              <p class="text-harmony-black-700 dark:text-harmony-white-700 mb-4 line-clamp-3">
+                {tour.description}
+              </p>
+              <div class="flex flex-wrap gap-2 mb-4">
+                {tour.highlights.slice(0, 2).map((highlight) => (
+                  <span class="bg-harmony-gold-100 dark:bg-harmony-gold-900 text-harmony-gold-700 dark:text-harmony-gold-300 px-2 py-1 rounded-full text-xs">
+                    {highlight}
+                  </span>
+                ))}
+                {tour.highlights.length > 2 && (
+                  <span class="bg-harmony-gold-100 dark:bg-harmony-gold-900 text-harmony-gold-700 dark:text-harmony-gold-300 px-2 py-1 rounded-full text-xs">
+                    +{tour.highlights.length - 2} más
+                  </span>
+                )}
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-harmony-gold-600 font-bold">
+                  ${tour.price} USD / persona
                 </span>
-              )}
-            </div>
-            <div class="flex justify-between items-center">
-              <span class="text-harmony-gold-600 font-bold">${tour.price} USD / persona</span>
-              <a 
-                href={`/tours#tour-${tour.id}`}
-                class="inline-flex items-center px-4 py-2 bg-harmony-black-700 text-white rounded hover:bg-harmony-black-800 transition-colors"
-              >
-                Ver detalles
-              </a>
+                <a
+                  href={`/tours#tour-${tour.id}`}
+                  class="inline-flex items-center px-4 py-2 bg-harmony-black-700 text-white rounded hover:bg-harmony-black-800 transition-colors"
+                >
+                  Ver detalles
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
     </div>
 
     <div class="text-center mt-12">
-      <a 
-        href="/tours" 
+      <a
+        href="/tours"
         class="inline-flex items-center px-6 py-3 bg-harmony-gold-600 text-white rounded-md hover:bg-harmony-gold-700 transition-colors"
       >
         <span>Mostrar más</span>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 ml-2"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+            clip-rule="evenodd"></path>
         </svg>
       </a>
     </div>

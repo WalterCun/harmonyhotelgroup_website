@@ -1,31 +1,30 @@
 ---
-import {Image} from "astro:assets";
-import {Icon} from "astro-icon/components"
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
 
-import {trans, processTagElements} from "~/utils/translations";
-import {Api} from "~/utils/tina";
-import {imagesHoteles} from "../../../lib/constants";
-import {getImage} from "../../../utils";
-import {createLogger} from "../../../utils/logger";
-import Button from "../../core/ui/Button.astro";
+import { trans, processTagElements } from "~/utils/translations";
+import { Api } from "~/utils/tina";
+import { imagesHoteles } from "../../../lib/constants";
+import { getImage } from "../../../utils";
+import { createLogger } from "../../../utils/logger";
 
 const api = new Api(true, 4);
 let hoteles: any[] = [];
 
-const logger = createLogger(false, 'featured.hotels')
+const logger = createLogger(false, "featured.hotels");
 
 try {
-    hoteles = await api.hotels();
-    logger.log("Featured hotels loaded successfully:", hoteles.length);
+  hoteles = await api.hotels();
+  logger.log("Featured hotels loaded successfully:", hoteles.length);
 } catch (error) {
-    logger.error("Error loading featured hotels:", error);
+  logger.error("Error loading featured hotels:", error);
 }
 
 interface Props {
-    lang: string;
+  lang: string;
 }
 
-const {lang} = Astro.props;
+const { lang } = Astro.props;
 ---
 
 <section class="flex justify-center pt-10 pb-10 bg-white dark:bg-neutral-900">
@@ -60,7 +59,6 @@ const {lang} = Astro.props;
                                 )}
                             </figure>
                             <div class="card-body flex flex-col">
-                                <!-- Sección superior fija: siempre visible -->
                                 <div class="mb-4">
                                     <h2 class="card-title text-primary font-bold">
                                         {hotel.name}
@@ -89,7 +87,6 @@ const {lang} = Astro.props;
                                     </div>
                                 </div>
 
-                                <!-- Sección media: flexible y puede estar vacía -->
                                 <div class="flex-grow">
                                     <div class="card-actions justify-start">
                                         {
@@ -106,7 +103,7 @@ const {lang} = Astro.props;
                                                     return (
                                                             <>
                                                                 {visibleTags.map((tag) => (
-                                                                        <div class="badge badge-outline font-bold bg-gray-200 text-xs">
+                                                                        <div class="badge badge-outline">
                                                                             {tag.value}
                                                                         </div>
                                                                 ))}
@@ -143,9 +140,9 @@ const {lang} = Astro.props;
             }
         </div>
         <div class="text-center mt-12">
-            <Button href="/hotels" class="btn btn-outline">
+            <a href="/hotels" class="btn btn-outline btn-primary">
                 {trans(lang, "components.sections.home.featured-hotels.btn-all-hotels")}
-            </Button>
+            </a>
         </div>
     </div>
 </section>

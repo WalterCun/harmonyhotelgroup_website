@@ -1,6 +1,6 @@
 ---
 interface Props {
-	lang: string;
+  lang: string;
 }
 
 const { lang } = Astro.props;
@@ -11,9 +11,10 @@ const { lang } = Astro.props;
     <div class="max-w-3xl mx-auto text-center">
       <h2 class="text-3xl md:text-4xl font-semibold mb-4">Stay Updated</h2>
       <p class="mb-8 text-lg opacity-90">
-        Subscribe to our newsletter for exclusive offers, travel inspiration, and updates on our newest properties.
+        Subscribe to our newsletter for exclusive offers, travel inspiration,
+        and updates on our newest properties.
       </p>
-      
+
       <form class="max-w-md mx-auto">
         <div class="flex flex-col sm:flex-row gap-3">
           <label>
@@ -24,7 +25,10 @@ const { lang } = Astro.props;
               required
             />
           </label>
-          <button type="submit" class="btn bg-white text-primary-600 hover:bg-neutral-100 py-3">
+          <button
+            type="submit"
+            class="btn bg-white text-primary-600 hover:bg-neutral-100 py-3"
+          >
             Subscribe
           </button>
         </div>
