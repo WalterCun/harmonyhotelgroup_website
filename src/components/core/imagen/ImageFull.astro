@@ -1,29 +1,16 @@
 ---
 import { Image } from "astro:assets";
-import type { ImageMetadata } from "astro";
-
-// Tipos mejorados y simplificados
-type ImageSource = string | ImageMetadata | Promise<{ default: ImageMetadata }>;
 
 // Constantes para valores predeterminados
-const DEFAULT_IMAGE_URL = "https://placehold.co/1920x1080.png";
-const DEFAULT_IMAGE_WIDTH = 1920;
-const DEFAULT_IMAGE_HEIGHT = 1080;
-const DEFAULT_IMAGE_QUALITY = 90;
-
-// Props con nombres más descriptivos y tipos mejorados
-interface HeroImageProps {
-  lang?: string;
-  src?: ImageSource;
-  alt?: string;
-  overlayOpacity?: number;
-}
+const DEFAULT_IMAGE_URL: string = "https://placehold.co/1920x1080.png";
+const DEFAULT_IMAGE_WIDTH: number = 1920;
+const DEFAULT_IMAGE_HEIGHT: number = 1080;
+const DEFAULT_IMAGE_QUALITY: number = 90;
 
 const {
-  lang,
-  src = DEFAULT_IMAGE_URL,
-  alt = "No alt applied",
-  overlayOpacity = 40,
+    src = DEFAULT_IMAGE_URL,
+    alt = "No alt applied",
+    overlayOpacity = 40,
 } = Astro.props;
 
 // Helper para crear el estilo de overlay dinámicamente
