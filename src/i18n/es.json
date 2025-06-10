@@ -1,107 +1,107 @@
 {
-	"components": {
-		"common": {
-			"navigation": {
-				"url": {
-					"hotel": "Hoteles",
-					"destinations": "Destinos",
-					"offers": "Ofertas",
-					"blog": "Blog",
-					"contact": "Contacto",
-					"about-us": "Sobre Nosotros",
-					"privacy-policy": "Politicas de Privacidad",
-					"terms-of-service": "Terminos de Servicio",
-					"faq-booking": "Reservas",
-					"faq-cancellation-policy": "Politicas de Cancelacion",
-					"faq-loyalty-program": "Programa de Lealtad",
-					"faq-payment-methods": "Metodos de Pago"
-				}
-			},
-			"footer": {
-				"title": "Harmony Hotel Group",
-				"subtitle": "Experimente el lujo y el confort en nuestros hoteles y resorts premium de todo el mundo. Descubra estancias inolvidables con un servicio excepcional.",
-				"quick-links": "Enlaces Rapidos"
-			}
-		},
-		"forms": {
-			"reservation": {
-				"title": "Realiza tu Reserva",
-				"subtitle": "Reserva tu estancia de forma rápida y sencilla.",
-				"label-child": "Edad del niño {{year}}",
-				"input-child": "{{year}} año{{s}}",
-				"child-less-ages": "Menos de {{year}} año",
-				"child-ages": "{{year}} año{{s}}",
-				"lbl": {
-					"country": "Ciudad",
-					"checkin-checkout": "Fecha Ingreso - Salida",
-					"adult": "Adulto{{s}}",
-					"rooms": "Habitaciones",
-					"group": "Detalles de Reserva de Grupo",
-					"group-adult": "N° Adultos",
-					"group-children-5": "N° Niños < 5 años",
-					"group-children-12": "N° Niños < 12 años",
-					"children-item": "Niño {{index}}"
-				},
-				"placeholder": {
-					"country": "Selecciona la ciudad",
-					"checkin-checkout": "Selecciona un rango de fecha",
-					"adult": "Adulto{{s}}",
-					"rooms": "Habitacion{{s}}",
-					"group-shared-beds": "Camas Compartidas",
-					"group-shared-rooms": "Habitaciones Compartidas",
-					"group-independent-rooms": "Habitaciones Independientes",
-					"child-age": "Edad < 17 años",
-					"group-type-vehicle": "Tipo de vehiculo",
-					"group-type-novehicle": "Sin Vehiculo",
-					"group-type-buseta": "Buseta",
-					"group-type-van": "Furgoneta",
-					"group-type-fleet": "Flota Vehicular",
-					"group-type-cooperativa": "Cooperativa de Transporte",
-					"group-type-bus": "Bus",
-					"group-type-multiple-options": "Varias Opciones",
-					"group-type-others": "Otros"
-				},
-				"group": "Grupo",
-				"child": "Niño{{s}}",
-				"nochildren": "Sin Niños",
-				"breakfast": "Desayuno",
-				"parking": "Parqueadero",
-				"btn": {
-					"reservations":"Reserva con un Asesor"
-				}
-			},
-			"contact": {
-				"title": "Contactanos",
-				"lbl": {
-					"email": "Correo Electronico:",
-					"descripcion": "Mensaje:"
-				},
-				"placeholder": {
-					"input": "Ingrese correo",
-					"textarea": "Escriba su mensaje"
-				},
-				"btn": {
-					"text": "Contactar"
-				}
-			},
-			"errors": {
-				"city":"Debe seleccionar una opcion para continuar..."
-			}
-		},
-		"ui": {
-			"dropdown": {
-				"languagedropdown": "Selecciona el Idioma"
-			}
-		},
-		"sections": {
-			"home": {
+    "components": {
+        "common": {
+            "navigation": {
+                "url": {
+                    "hotel": "Hoteles",
+                    "destinations": "Destinos",
+                    "offers": "Ofertas",
+                    "blog": "Blog",
+                    "contact": "Contacto",
+                    "about-us": "Sobre Nosotros",
+                    "privacy-policy": "Politicas de Privacidad",
+                    "terms-of-service": "Terminos de Servicio",
+                    "faq-booking": "Reservas",
+                    "faq-cancellation-policy": "Politicas de Cancelacion",
+                    "faq-loyalty-program": "Programa de Lealtad",
+                    "faq-payment-methods": "Metodos de Pago"
+                }
+            },
+            "footer": {
+                "title": "Harmony Hotel Group",
+                "subtitle": "Experimente el lujo y el confort en nuestros hoteles y resorts premium de todo el mundo. Descubra estancias inolvidables con un servicio excepcional.",
+                "quick-links": "Enlaces Rapidos"
+            }
+        },
+        "forms": {
+            "reservation": {
+                "title": "Realiza tu Reserva",
+                "subtitle": "Reserva tu estancia de forma rápida y sencilla.",
+                "label-child": "Edad del niño {{year}}",
+                "input-child": "{{year}} año{{s}}",
+                "child-less-ages": "Menos de {{year}} año",
+                "child-ages": "{{year}} año{{s}}",
+                "lbl": {
+                    "country": "Ciudad",
+                    "checkin-checkout": "Fecha Ingreso - Salida",
+                    "adult": "Adulto{{s}}",
+                    "rooms": "Habitaciones",
+                    "group": "Detalles de Reserva de Grupo",
+                    "group-adult": "N° Adultos",
+                    "group-children-5": "N° Niños < 5 años",
+                    "group-children-12": "N° Niños < 12 años",
+                    "children-item": "Niño {{index}}"
+                },
+                "placeholder": {
+                    "country": "Selecciona la ciudad",
+                    "checkin-checkout": "Selecciona un rango de fecha",
+                    "adult": "Adulto{{s}}",
+                    "rooms": "Habitacion{{s}}",
+                    "group-shared-beds": "Camas Compartidas",
+                    "group-shared-rooms": "Habitaciones Compartidas",
+                    "group-independent-rooms": "Habitaciones Independientes",
+                    "child-age": "Edad < 17 años",
+                    "group-type-vehicle": "Tipo de vehiculo",
+                    "group-type-novehicle": "Sin Vehiculo",
+                    "group-type-buseta": "Buseta",
+                    "group-type-van": "Furgoneta",
+                    "group-type-fleet": "Flota Vehicular",
+                    "group-type-cooperativa": "Cooperativa de Transporte",
+                    "group-type-bus": "Bus",
+                    "group-type-multiple-options": "Varias Opciones",
+                    "group-type-others": "Otros"
+                },
+                "group": "Grupo",
+                "child": "Niño{{s}}",
+                "nochildren": "Sin Niños",
+                "breakfast": "Desayuno",
+                "parking": "Parqueadero",
+                "btn": {
+                    "reservations": "Reserva con un Asesor"
+                }
+            },
+            "contact": {
+                "title": "Contactanos",
+                "lbl": {
+                    "email": "Correo Electronico:",
+                    "descripcion": "Mensaje:"
+                },
+                "placeholder": {
+                    "input": "Ingrese correo",
+                    "textarea": "Escriba su mensaje"
+                },
+                "btn": {
+                    "text": "Contactar"
+                }
+            },
+            "errors": {
+                "city": "Debe seleccionar una opcion para continuar..."
+            }
+        },
+        "ui": {
+            "dropdown": {
+                "languagedropdown": "Selecciona el Idioma"
+            }
+        },
+        "sections": {
+            "home": {
                 "more": "más",
-				"featured-hotels": {
-					"title": "Hoteles destacados",
-					"description": "Descubra nuestras propiedades más populares, conocidas por su servicio excepcional, sus impresionantes ubicaciones y sus servicios de primera clase.",
-					"night": "la noche",
-					"btn-details": "Mas Detalles",
-					"btn-all-hotels": "Ver todos los hoteles",
+                "featured-hotels": {
+                    "title": "Hoteles destacados",
+                    "description": "Descubra nuestras propiedades más populares, conocidas por su servicio excepcional, sus impresionantes ubicaciones y sus servicios de primera clase.",
+                    "night": "la noche",
+                    "btn-details": "Mas Detalles",
+                    "btn-all-hotels": "Ver todos los hoteles",
                     "partner": "Socio Estrategico",
                     "tags": {
                         "basic_services": {
@@ -125,7 +125,6 @@
                             "spa_wellness": "Spa o centro de bienestar",
                             "meeting_rooms": "Salas de reuniones o conferencias",
                             "elevator": "Ascensor"
-
                         },
                         "extra_services": {
                             "airport_shuttle": "Transporte al aeropuerto",
@@ -136,7 +135,6 @@
                             "childcare": "Guardería o niñera",
                             "pet_friendly": "Admisión de mascotas",
                             "currency_exchange": "Cambio de divisas"
-
                         },
                         "premium_services": {
                             "express_checkin": "Check-in y check-out express o VIP / Express or VIP check-in and check-out",
@@ -148,14 +146,14 @@
                             "private_chef": "Chef privado o cocina gourmet / Private chef or gourmet cuisine"
                         }
                     }
-				},
-				"popular-destination": {
-					"title": "Destinos Populares",
-					"subtitle": "Explore nuestros destinos más solicitados y encuentre su próxima aventura inolvidable.",
+                },
+                "popular-destination": {
+                    "title": "Destinos Populares",
+                    "subtitle": "Explore nuestros destinos más solicitados y encuentre su próxima aventura inolvidable.",
                     "partner": "Patrocinador",
                     "no-text": "No hay texto",
                     "btn-details": "Explorar Destino",
-					"btn-all-destination": "Ver todos los destinos",
+                    "btn-all-destination": "Ver todos los destinos",
                     "tags": {
                         "experience": {
                             "outdoor_adventure": "Aventura al aire libre",
@@ -199,51 +197,54 @@
                             "hidden_gem": "Destino poco conocido",
                             "main_attraction": "Atracción principal"
                         }
-
                     }
-				},
-				"special-offer": {
-					"title": "Ofertas Especiales",
-					"subtitle": "Aproveche nuestras promociones exclusivas y disfrute de ventajas adicionales con su estancia.",
-					"expired": "Valido hasta",
-					"btn-details": "Ver Detalles",
-					"no-text": "No hay texto"
-				}
-			}
-		}
-	},
-	"home": {
-		"hero": {
-			"title": "Experiencia nueva cada dia",
-			"subtitle": "Descubra un confort incomparable y un servicio impecable en nuestros selectos hoteles y resorts de todo el mundo. del mundo.",
-			"btn": {
-				"view-hotels": "Ver nuestros Hoteles",
-				"view-offers": "Ofertas Especiales"
-			}
-		}
-	},
-	"layouts": {
-		"layout": {
-			"meta": {
-				"title": "Harmony Hotel Group",
-				"description": "Experimente el lujo y el confort con Harmony Hotel Group. Reserve su estancia perfecta en nuestros hoteles de todo el Ecuador."
-			}
-		}
-	},
-	"404": {
-		"title-page": "Error 404",
-		"title": "404",
-		"subtitle": "Página no encontrada",
-		"description": "Parece que la página que estás buscando no existe o ha sido movida.\nNuestro equipo está en la búsqueda, pero mientras tanto...\nParece que la página que estás buscando no existe o ha sido movida.\nNuestro equipo está en la búsqueda, pero mientras tanto...",
-		"btn-home": "Volver al inicio",
-		"btn-contact": "Contactar con nosotros"
-	},
-	"500": {
-		"title-page": "Error 500",
-		"title": "500",
-		"subtitle": "Error del Servidor",
-		"description": "Lo sentimos, algo salió mal en nuestros servidores. Este error no es culpa tuya.\nNuestro equipo técnico ya está trabajando para resolver el problema.",
-		"btn-home": "Volver al inicio",
-		"btn-contact": "Reportar el Problema"
-	}
+                },
+                "special-offer": {
+                    "title": "Ofertas Especiales",
+                    "subtitle": "Aproveche nuestras promociones exclusivas y disfrute de ventajas adicionales con su estancia.",
+                    "expired": "Valido hasta",
+                    "btn-details": "Ver Detalles",
+                    "btn-all-offers": "Explorar todas las ofertas",
+                    "no-offers": "No hay ofertas activas",
+                    "btn-suscription": "Suscríbete para recibir nuevas ofertas y promociones exclusivas.",
+                    "no-text": "No hay texto",
+                    "suscription": "Suscribirse"
+                }
+            }
+        }
+    },
+    "home": {
+        "hero": {
+            "title": "Experiencia nueva cada dia",
+            "subtitle": "Descubra un confort incomparable y un servicio impecable en nuestros selectos hoteles y resorts de todo el mundo. del mundo.",
+            "btn": {
+                "view-hotels": "Ver nuestros Hoteles",
+                "view-offers": "Ofertas Especiales"
+            }
+        }
+    },
+    "layouts": {
+        "layout": {
+            "meta": {
+                "title": "Harmony Hotel Group",
+                "description": "Experimente el lujo y el confort con Harmony Hotel Group. Reserve su estancia perfecta en nuestros hoteles de todo el Ecuador."
+            }
+        }
+    },
+    "404": {
+        "title-page": "Error 404",
+        "title": "404",
+        "subtitle": "Página no encontrada",
+        "description": "Parece que la página que estás buscando no existe o ha sido movida.\nNuestro equipo está en la búsqueda, pero mientras tanto...\nParece que la página que estás buscando no existe o ha sido movida.\nNuestro equipo está en la búsqueda, pero mientras tanto...",
+        "btn-home": "Volver al inicio",
+        "btn-contact": "Contactar con nosotros"
+    },
+    "500": {
+        "title-page": "Error 500",
+        "title": "500",
+        "subtitle": "Error del Servidor",
+        "description": "Lo sentimos, algo salió mal en nuestros servidores. Este error no es culpa tuya.\nNuestro equipo técnico ya está trabajando para resolver el problema.",
+        "btn-home": "Volver al inicio",
+        "btn-contact": "Reportar el Problema"
+    }
 }
