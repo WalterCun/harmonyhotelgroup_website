@@ -68,4 +68,20 @@ const hotels = defineCollection({
   }),
 });
 
-export const collections = { hotels };
+const destinations = defineCollection({
+  loader: glob({
+    pattern: "**/*.json",
+    base: "./src/data/destinations",
+    generateId: ({ entry }) => entry.replace(/\.json$/, ""),
+  }),
+  schema: z.object({
+    name: z.string().min(2).max(100),
+    location: z.string().min(2).max(100),
+    mainStreet: z.string().min(2).max(100),
+    addressNumber: z.string().min(1).max(10).optional(),
+  }),
+});
+
+// const offers = defineCollection([]);
+
+export const collections = { hotels, destinations };
