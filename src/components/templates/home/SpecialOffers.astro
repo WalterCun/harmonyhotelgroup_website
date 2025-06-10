@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
 
 import { Api } from "~/utils/tina";
 import { getImage, trans } from "~/utils";
@@ -33,7 +34,7 @@ const { lang } = Astro.props;
                         {trans(lang, "components.sections.home.special-offer.subtitle")}
                     </p>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
                     {offers.map(offer => (
                             <div class="card bg-base-100 w-auto shadow-sm hover:shadow-xl transition-all duration-300">
                                 <figure class="relative">
@@ -45,11 +46,12 @@ const { lang } = Astro.props;
                                                     height={400}
                                                     class="w-full h-48 object-cover"
                                             />)}
-                                    <div class="absolute top-4 left-4 bg-primary-500 text-white py-1 px-3 rounded-full text-sm font-bold">
+                                    <div class="absolute top-4 left-4 bg-primary text-white py-1 px-3 rounded-full text-sm font-bold">
                                         {offer.discount}
+                                        {offer.discount_label?.find((item: {lang_discount:string, content_discount:string}) => item?.lang_discount === lang)?.content_discount ||
+                                            trans(lang, "components.sections.home.special-offer.no-text")}
                                     </div>
                                 </figure>
-                            </div>
                             <div class="card-body flex flex-col">
                                 <h2 class="card-title text-primary font-bold">
                                     {offer.title}
@@ -69,16 +71,19 @@ const { lang } = Astro.props;
 
                                     </div>
                                     <a href={`/offers/${offer.id}`}
-                                       class="btn btn-outline hover:text-primary-600 transition-colors">
+                                       class="btn btn-primary hover:text-primary-600 transition-colors">
+                                        <Icon name="find-offers"></Icon>
                                         {trans(lang, "components.sections.home.special-offer.btn-details")}
                                     </a>
                                 </div>
                             </div>
+                            </div>
                     ))}
                 </div>
                 <div class="text-center mt-12">
-                    <a href="/offers" class="btn btn-outline hover:text-primary-600 transition-colors">
-                        Explorar todas las ofertas
+                    <a href="/offers" class="btn btn-outline btn-primary hover:text-primary-600 transition-colors">
+                        <Icon name="offers"></Icon>
+                        {trans(lang, "components.sections.home.special-offer.btn-all-offers")}
                     </a>
                 </div>
         ) : (
@@ -89,12 +94,14 @@ const { lang } = Astro.props;
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        <h3 class="text-xl font-medium mb-4">No hay ofertas activas</h3>
+                        <h3 class="text-xl font-medium mb-4">
+                            {trans(lang, "components.sections.home.special-offer.no-offers")}
+                        </h3>
                         <p class="text-neutral-600 dark:text-neutral-400 mb-6">
-                            Suscríbete para recibir nuevas ofertas y promociones exclusivas.
+                            {trans(lang, "components.sections.home.special-offer.btn-suscription")}
                         </p>
                         <a href="/newsletter" class="btn btn-primary">
-                            Suscribirse
+                            {trans(lang, "components.sections.home.special-offer.suscription")}
                         </a>
                     </div>
                 </div>

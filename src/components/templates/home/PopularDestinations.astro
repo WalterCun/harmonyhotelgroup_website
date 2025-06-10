@@ -12,14 +12,17 @@ const api = new Api(true, 4);
 let destinations: any[] = [];
 
 try {
-  destinations = await api.destinations();
-  logger.log("Popular destinations loaded successfully:", destinations.length);
+    destinations = await api.destinations();
+    logger.log(
+        "Popular destinations loaded successfully:",
+        destinations.length,
+    );
 } catch (error) {
-  logger.error("Error loading destinations:", error);
+    logger.error("Error loading destinations:", error);
 }
 
 interface Props {
-  lang: string;
+    lang: string;
 }
 
 const { lang } = Astro.props;
@@ -136,6 +139,7 @@ const { lang } = Astro.props;
         </div>
         <div class="text-center mt-12">
             <a href="/destinations" class="btn btn-outline btn-primary">
+                <Icon name="destination-line"></Icon>
                 {trans(lang, "components.sections.home.popular-destination.btn-all-destination")}
             </a>
         </div>
