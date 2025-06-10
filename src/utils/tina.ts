@@ -18,14 +18,11 @@ export class Api {
 
   // ----------------------------------------------------------------------------------------------------------------
 
-  async hotels(filterLocation?: string): Promise<any[]> {
+  async getHotels(filterLocation?: string): Promise<any[]> {
     try {
-      // Obtenemos la lista de archivos dinámicamente
       // @ts-ignore
       const hotelFiles: Record<string, HotelsQuery["hotels"]> =
         import.meta.glob("../data/hotels/*.json", { eager: true });
-
-      // logger.info('hotelFiles', hotelFiles)
 
       if (Object.keys(hotelFiles).length === 0) {
         logger.warn("⚠️ No se encontraron archivos en ../data/hotels");

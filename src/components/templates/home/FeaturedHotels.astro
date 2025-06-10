@@ -2,25 +2,14 @@
 import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 
-import { trans, processTagElements } from "~/utils/translations";
-import { Api } from "~/utils/tina";
-import { imagesHoteles } from "../../../lib/constants";
-import { getImage, createLogger } from "../../../utils";
+import { processTagElements, trans } from "~/utils/translations";
 
-const api = new Api(true, 4);
-let hoteles: any[] = [];
+import { getCollection } from "astro:content";
 
-const logger = createLogger(false, "featured.hotels");
-
-try {
-    hoteles = await api.hotels();
-    logger.log("Featured hotels loaded successfully:", hoteles.length);
-} catch (error) {
-    logger.error("Error loading featured hotels:", error);
-}
+const hotels = await getCollection("hotels");
 
 interface Props {
-    lang: string;
+  lang: string;
 }
 
 const { lang } = Astro.props;
@@ -38,18 +27,18 @@ const { lang } = Astro.props;
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {
-                hoteles.map((hotel) => (
+                hotels.map((hotel) => (
                         <div class="card bg-base-100 w-auto shadow-sm hover:shadow-xl transition-all duration-300">
                             <figure class="relative h-72">
-                                {hotel.coverImage && (
+                                {hotel.data.coverImage && (
                                         <Image
-                                                src={getImage(imagesHoteles, hotel.coverImage,)}
-                                                alt={hotel.name}
-                                                width={928}
-                                                height={548}
+                                            src={hotel.data.coverImage}
+                                            alt={hotel.data.name}
+                                            width={928}
+                                            height={548}
                                         />
                                 )}
-                                {hotel.partner && (
+                                {hotel.data.partner && (
                                         <div class="badge badge-primary absolute top-4 right-4 text-black font-semibold">
                                             <Icon name="shield"/>
                                             {trans(lang, 'components.sections.home.featured-hotels.partner')}
@@ -59,20 +48,20 @@ const { lang } = Astro.props;
                             <div class="card-body flex flex-col">
                                 <div class="mb-4">
                                     <h2 class="card-title text-primary font-bold">
-                                        {hotel.name}
+                                        {hotel.data.name}
                                     </h2>
                                     <p class="text-neutral-600 dark:text-neutral-400">
                                         <span class="inline-flex items-center">
                                             <Icon name="location" class="w-4 h-4 mr-1 text-primary"/>
-                                            {hotel.location}
+                                            {hotel.data.location}
                                         </span>
                                     </p>
                                     <div class="rating p-0 m-0 mt-2">
-                                        {hotel.stars && (
+                                        {hotel.data.stars && (
                                             Array.from({length: 5},
                                                 (_, index) => (
-                                                    index == (hotel.stars - 1) ?
-                                                            <div class="mask mask-star size-5 bg-primary"
+                                                    index == (hotel.data.stars - 1) ?
+                                                        <div class="mask mask-star size-5 bg-primary"
                                                                  aria-label={`${index + 1} star`}
                                                                  aria-current="true"
                                                             /> :
@@ -88,7 +77,7 @@ const { lang } = Astro.props;
                                 <div class="flex-grow">
                                     <div class="card-actions justify-start">
                                         {
-                                            hotel.amenities && hotel.amenities.map((element: any) => {
+                                            hotel.data.amenities && hotel.data.amenities.map((element: any) => {
                                                 const processedTags = processTagElements(
                                                     element,
                                                     lang,
@@ -118,17 +107,16 @@ const { lang } = Astro.props;
                                     </div>
                                 </div>
 
-                                <!-- Sección inferior fija: siempre al final -->
                                 <div class="card-actions justify-between mt-auto pt-4">
                                     <div>
                                         <span class="text-xl font-bold">
-                                            ${hotel.roomPrice}
+                                            ${hotel.data.roomPrice}
                                         </span>
                                         <span class="text-neutral-600 dark:text-neutral-400">
                                             {trans(lang, "components.sections.home.featured-hotels.night",)}
                                         </span>
                                     </div>
-                                    <a href={`/hotels/${hotel.hotel_id}`} class="btn btn-primary py-2 px-4">
+                                    <a href={`/hotels/${hotel.id}`} class="btn btn-primary py-2 px-4">
                                         <Icon name="detail"></Icon>
                                         {trans(lang, "components.sections.home.featured-hotels.btn-details",)}
                                     </a>

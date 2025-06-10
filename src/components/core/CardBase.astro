@@ -1,13 +1,13 @@
 ---
-import {Image} from "astro:assets";
-import Badge from "./Badge.astro";
+import { Image } from "astro:assets";
 import Button from "../ui/Button.astro";
+import Badge from "./Badge.astro";
 
 interface Props {
-    lang: string
+  lang: string;
 }
 
-const {lang} = Astro.props;
+const { lang } = Astro.props;
 ---
 
 <div className="bg-card rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-primary/20 flex flex-col">

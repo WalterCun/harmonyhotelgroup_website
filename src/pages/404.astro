@@ -1,10 +1,10 @@
 ---
 import { lang_es } from "lib/constants";
-import Layout from "~/components/core/layouts/Layout.astro";
 import { trans } from "utils/translations";
+import Layout from "~/components/core/layouts/Layout.astro";
 
 interface Props {
-	lang: string;
+  lang: string;
 }
 
 // const quickLinks = [
@@ -20,7 +20,7 @@ interface Props {
 
 const { lang = lang_es } = Astro.props;
 
-import search from '../assets/gifs/search.gif'
+import search from "../assets/gifs/search.gif";
 ---
 
 <Layout lang={lang} title={trans(lang, "404.title-page")}>

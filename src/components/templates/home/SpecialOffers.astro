@@ -2,10 +2,10 @@
 import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 
-import { Api } from "~/utils/tina";
-import { getImage, trans } from "~/utils";
 import { imagesOffers } from "lib/constants";
 import { createLogger } from "utils/logger";
+import { getImage, trans } from "~/utils";
+import { Api } from "~/utils/tina";
 
 const logger = createLogger(true, "special.offers");
 
@@ -13,14 +13,14 @@ const api = new Api(true, 4);
 let offers: any[] = [];
 
 try {
-    offers = await api.offers();
-    logger.log("Special offers loaded successfully:", offers.length);
+  offers = await api.offers();
+  logger.log("Special offers loaded successfully:", offers.length);
 } catch (error) {
-    logger.error("Error loading offers:", error);
+  logger.error("Error loading offers:", error);
 }
 
 interface Props {
-    lang: string;
+  lang: string;
 }
 const { lang } = Astro.props;
 ---

@@ -3,104 +3,104 @@ import { lang_en } from "lib/constants";
 import Layout from "~/layouts/Layout.astro";
 
 const offers = [
-	{
-		id: 1,
-		title: "Summer Escape Package",
-		description:
-			"Enjoy 25% off your stay, complimentary breakfast for two daily, and a welcome amenity upon arrival. Minimum stay of 3 nights required.",
-		longDescription:
-			"Make the most of your summer getaway with our exclusive Summer Escape Package. Enjoy significant savings on our best available rates, start each day with a delicious breakfast, and receive a special welcome gift to enhance your stay. Perfect for couples or families looking to create unforgettable summer memories.",
-		discount: "25%",
-		validity: "May 15 - Sep 30, 2025",
-		hotels: [
-			"Harmony Grand Plaza",
-			"Harmony Beachfront Resort",
-			"Harmony Lakeside Retreat",
-		],
-		tags: ["Limited Time", "Popular"],
-		bookByDate: "April 30, 2025",
-		image:
-			"https://images.pexels.com/photos/2373201/pexels-photo-2373201.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-	},
-	{
-		id: 2,
-		title: "Weekend Retreat",
-		description:
-			"Book a two-night weekend stay and receive a free spa treatment or $100 dining credit per person.",
-		longDescription:
-			"Turn your weekend into a rejuvenating escape with our Weekend Retreat offer. Stay with us for two nights over any weekend and choose between indulging in a relaxing spa treatment or enjoying a delicious meal at one of our acclaimed restaurants. This offer is designed to help you make the most of your valuable weekend time.",
-		discount: "Free Spa",
-		validity: "All Year, 2025",
-		hotels: ["All Harmony Hotels"],
-		tags: ["Weekends"],
-		bookByDate: "Ongoing",
-		image:
-			"https://images.pexels.com/photos/1743165/pexels-photo-1743165.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-	},
-	{
-		id: 3,
-		title: "Extended Stay Offer",
-		description:
-			"Stay 5 nights or more and save 30% on your entire booking, plus receive complimentary airport transfers.",
-		longDescription:
-			"The longer you stay, the more you save with our Extended Stay Offer. Enjoy substantial savings on our best available rates and eliminate the hassle of airport transportation with our complimentary transfer service. This offer is perfect for those looking to immerse themselves in the destination and enjoy a more leisurely pace of travel.",
-		discount: "30%",
-		validity: "Jan 1 - Dec 31, 2025",
-		hotels: ["All Harmony Hotels"],
-		tags: ["Long Stay"],
-		bookByDate: "Ongoing",
-		image:
-			"https://images.pexels.com/photos/2029698/pexels-photo-2029698.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-	},
-	{
-		id: 4,
-		title: "Early Bird Special",
-		description:
-			"Book 60 days in advance and save 20% on our best available rates across all room types.",
-		longDescription:
-			"Plan ahead and save with our Early Bird Special. By confirming your reservation at least 60 days before arrival, you'll enjoy significant savings on any room category. This offer provides excellent value for those who like to plan their travels well in advance.",
-		discount: "20%",
-		validity: "Jan 1 - Dec 31, 2025",
-		hotels: ["All Harmony Hotels"],
-		tags: ["Advance Booking"],
-		bookByDate: "60 days prior to arrival",
-		image:
-			"https://images.pexels.com/photos/1268855/pexels-photo-1268855.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-	},
-	{
-		id: 5,
-		title: "Family Fun Package",
-		description:
-			"Children under 12 stay and eat free. Includes welcome amenities for kids and access to children's activities.",
-		longDescription:
-			"Create lasting family memories with our Family Fun Package. We've designed this offer to make family travel both enjoyable and affordable. Children under 12 stay in their parents' room at no additional charge and enjoy complimentary meals from the children's menu. Special welcome gifts and engaging activities will make your little ones feel especially welcome.",
-		discount: "Kids Stay Free",
-		validity: "School Holidays, 2025",
-		hotels: [
-			"Harmony Beachfront Resort",
-			"Harmony Lakeside Retreat",
-			"Harmony Mountain Lodge",
-		],
-		tags: ["Family", "Popular"],
-		bookByDate: "30 days prior to arrival",
-		image:
-			"https://images.pexels.com/photos/1024960/pexels-photo-1024960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-	},
-	{
-		id: 6,
-		title: "Honeymoon Bliss",
-		description:
-			"Celebrate your love with a romantic package including champagne, daily breakfast in bed, and a couple's spa treatment.",
-		longDescription:
-			"Begin your married life in perfect harmony with our specially curated Honeymoon Bliss package. Toast to your future with champagne upon arrival, indulge in the luxury of breakfast in bed, and experience ultimate relaxation with a couple's spa treatment. We'll ensure your honeymoon is as special and unique as your relationship.",
-		discount: "Romantic Extras",
-		validity: "Jan 1 - Dec 31, 2025",
-		hotels: ["All Harmony Hotels"],
-		tags: ["Romantic", "Couples"],
-		bookByDate: "Ongoing",
-		image:
-			"https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-	},
+  {
+    id: 1,
+    title: "Summer Escape Package",
+    description:
+      "Enjoy 25% off your stay, complimentary breakfast for two daily, and a welcome amenity upon arrival. Minimum stay of 3 nights required.",
+    longDescription:
+      "Make the most of your summer getaway with our exclusive Summer Escape Package. Enjoy significant savings on our best available rates, start each day with a delicious breakfast, and receive a special welcome gift to enhance your stay. Perfect for couples or families looking to create unforgettable summer memories.",
+    discount: "25%",
+    validity: "May 15 - Sep 30, 2025",
+    hotels: [
+      "Harmony Grand Plaza",
+      "Harmony Beachfront Resort",
+      "Harmony Lakeside Retreat",
+    ],
+    tags: ["Limited Time", "Popular"],
+    bookByDate: "April 30, 2025",
+    image:
+      "https://images.pexels.com/photos/2373201/pexels-photo-2373201.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+  },
+  {
+    id: 2,
+    title: "Weekend Retreat",
+    description:
+      "Book a two-night weekend stay and receive a free spa treatment or $100 dining credit per person.",
+    longDescription:
+      "Turn your weekend into a rejuvenating escape with our Weekend Retreat offer. Stay with us for two nights over any weekend and choose between indulging in a relaxing spa treatment or enjoying a delicious meal at one of our acclaimed restaurants. This offer is designed to help you make the most of your valuable weekend time.",
+    discount: "Free Spa",
+    validity: "All Year, 2025",
+    hotels: ["All Harmony Hotels"],
+    tags: ["Weekends"],
+    bookByDate: "Ongoing",
+    image:
+      "https://images.pexels.com/photos/1743165/pexels-photo-1743165.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+  },
+  {
+    id: 3,
+    title: "Extended Stay Offer",
+    description:
+      "Stay 5 nights or more and save 30% on your entire booking, plus receive complimentary airport transfers.",
+    longDescription:
+      "The longer you stay, the more you save with our Extended Stay Offer. Enjoy substantial savings on our best available rates and eliminate the hassle of airport transportation with our complimentary transfer service. This offer is perfect for those looking to immerse themselves in the destination and enjoy a more leisurely pace of travel.",
+    discount: "30%",
+    validity: "Jan 1 - Dec 31, 2025",
+    hotels: ["All Harmony Hotels"],
+    tags: ["Long Stay"],
+    bookByDate: "Ongoing",
+    image:
+      "https://images.pexels.com/photos/2029698/pexels-photo-2029698.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+  },
+  {
+    id: 4,
+    title: "Early Bird Special",
+    description:
+      "Book 60 days in advance and save 20% on our best available rates across all room types.",
+    longDescription:
+      "Plan ahead and save with our Early Bird Special. By confirming your reservation at least 60 days before arrival, you'll enjoy significant savings on any room category. This offer provides excellent value for those who like to plan their travels well in advance.",
+    discount: "20%",
+    validity: "Jan 1 - Dec 31, 2025",
+    hotels: ["All Harmony Hotels"],
+    tags: ["Advance Booking"],
+    bookByDate: "60 days prior to arrival",
+    image:
+      "https://images.pexels.com/photos/1268855/pexels-photo-1268855.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+  },
+  {
+    id: 5,
+    title: "Family Fun Package",
+    description:
+      "Children under 12 stay and eat free. Includes welcome amenities for kids and access to children's activities.",
+    longDescription:
+      "Create lasting family memories with our Family Fun Package. We've designed this offer to make family travel both enjoyable and affordable. Children under 12 stay in their parents' room at no additional charge and enjoy complimentary meals from the children's menu. Special welcome gifts and engaging activities will make your little ones feel especially welcome.",
+    discount: "Kids Stay Free",
+    validity: "School Holidays, 2025",
+    hotels: [
+      "Harmony Beachfront Resort",
+      "Harmony Lakeside Retreat",
+      "Harmony Mountain Lodge",
+    ],
+    tags: ["Family", "Popular"],
+    bookByDate: "30 days prior to arrival",
+    image:
+      "https://images.pexels.com/photos/1024960/pexels-photo-1024960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+  },
+  {
+    id: 6,
+    title: "Honeymoon Bliss",
+    description:
+      "Celebrate your love with a romantic package including champagne, daily breakfast in bed, and a couple's spa treatment.",
+    longDescription:
+      "Begin your married life in perfect harmony with our specially curated Honeymoon Bliss package. Toast to your future with champagne upon arrival, indulge in the luxury of breakfast in bed, and experience ultimate relaxation with a couple's spa treatment. We'll ensure your honeymoon is as special and unique as your relationship.",
+    discount: "Romantic Extras",
+    validity: "Jan 1 - Dec 31, 2025",
+    hotels: ["All Harmony Hotels"],
+    tags: ["Romantic", "Couples"],
+    bookByDate: "Ongoing",
+    image:
+      "https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+  },
 ];
 ---
 

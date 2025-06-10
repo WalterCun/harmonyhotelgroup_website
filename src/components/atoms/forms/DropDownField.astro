@@ -1,16 +1,16 @@
 ---
-import {Icon} from "astro-icon/components";
-import {trans} from "../../../utils";
+import { Icon } from "astro-icon/components";
+import { trans } from "../../../utils";
 
 interface Props {
-    _id:string
-    idContainer?:string
-    name:string
-    iconName:string
-    lblTitle:string
+  _id: string;
+  idContainer?: string;
+  name: string;
+  iconName: string;
+  lblTitle: string;
 }
 
-const {_id, idContainer,lblTitle,iconName,name} = Astro.props;
+const { _id, idContainer, lblTitle, iconName, name } = Astro.props;
 ---
 
 <div id={idContainer} class="lg:col-span-1">

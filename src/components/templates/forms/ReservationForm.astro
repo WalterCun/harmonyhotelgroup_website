@@ -1,24 +1,24 @@
 ---
-import { trans } from "~/utils/translations";
+import { Icon } from "astro-icon/components";
+import CheckField from "atoms/forms/CheckField.astro";
+import DateRangeField from "atoms/forms/DateRangeField.astro";
+import DropDownField from "atoms/forms/DropDownField.astro";
+import InputField from "atoms/forms/InputField.astro";
+import GridLayout from "core/layouts/GridLayout.astro";
 import {
   type CityOption,
   adultOptions,
   childrenOptions,
-  roomOptions,
   groupRoomTypeOptions,
+  roomOptions,
   vehicleTypeOptions,
 } from "lib/constants";
 import { Api } from "~/utils";
-import { Icon } from "astro-icon/components";
-import DateRangeField from "atoms/forms/DateRangeField.astro";
-import DropDownField from "atoms/forms/DropDownField.astro";
-import CheckField from "atoms/forms/CheckField.astro";
-import InputField from "atoms/forms/InputField.astro";
-import GridLayout from "core/layouts/GridLayout.astro";
+import { trans } from "~/utils/translations";
 
 const api = new Api();
 
-let hotels = await api.hotels();
+let hotels = await api.getHotels();
 const uniqueCities: CityOption[] = [
   ...new Set(hotels.map((hotel) => hotel.location).filter(Boolean)),
 ];

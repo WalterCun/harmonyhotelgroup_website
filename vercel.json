@@ -1,15 +1,15 @@
 {
-	"version": 2,
-	"buildCommand": "pnpm build",
-	"outputDirectory": "dist",
-	"framework": "astro",
-	"github": {
-		"enabled": true,
-		"silent": false
-	},
-	"git": {
-		"deploymentEnabled": {
-			"dev": false
-		}
-	}
+  "version": 2,
+  "buildCommand": "pnpm build",
+  "outputDirectory": "dist",
+  "framework": "astro",
+  "github": {
+    "enabled": true,
+    "silent": false
+  },
+  "git": {
+    "deploymentEnabled": {
+      "dev": false
+    }
+  }
 }

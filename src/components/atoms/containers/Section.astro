@@ -1,15 +1,15 @@
 ---
 interface Props {
-    lang?: string;
-    class?: string;
-    backgroundColor?: 'white' | 'neutral';
+  lang?: string;
+  class?: string;
+  backgroundColor?: "white" | "neutral";
 }
 
-const {lang, class: className, backgroundColor = 'white'} = Astro.props;
+const { lang, class: className, backgroundColor = "white" } = Astro.props;
 
 const bgColorClasses = {
-    white: 'bg-white dark:bg-neutral-900',
-    neutral: 'bg-neutral-50 dark:bg-neutral-800'
+  white: "bg-white dark:bg-neutral-900",
+  neutral: "bg-neutral-50 dark:bg-neutral-800",
 };
 ---
 <section class:list={[

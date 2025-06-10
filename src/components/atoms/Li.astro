@@ -1,21 +1,16 @@
 ---
-import type {HTMLAttributes} from 'astro/types';
-import {cn} from "~/utils";
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "~/utils";
 
-export interface Props extends HTMLAttributes<'li'> {
-    href: string;
-    label: string;
-    class?: string;
+export interface Props extends HTMLAttributes<"li"> {
+  href: string;
+  label: string;
+  class?: string;
 }
 
-const {href, label,
-    class: className = '',
-    ...rest} = Astro.props;
+const { href, label, class: className = "", ...rest } = Astro.props;
 
-const classes = cn(
-        className
-)
-
+const classes = cn(className);
 ---
 <li class={classes} {...rest}>
     <a href={href}

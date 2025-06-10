@@ -60,18 +60,10 @@
   ],
   "amenities": [
     {
-      "basic_services": [
-        "dressing_table"
-      ],
-      "general_services": [
-        "parking"
-      ],
-      "extra_services": [
-        "airport_shuttle"
-      ],
-      "premium_services": [
-        "express_checkin"
-      ]
+      "basic_services": ["dressing_table"],
+      "general_services": ["parking"],
+      "extra_services": ["airport_shuttle"],
+      "premium_services": ["express_checkin"]
     }
   ],
   "highlight": true

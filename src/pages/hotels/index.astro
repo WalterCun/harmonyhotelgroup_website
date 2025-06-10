@@ -1,17 +1,17 @@
 ---
-import {lang_es} from "lib/constants";
+import { lang_es } from "lib/constants";
+import { Api } from "~/utils/tina";
 import Layout from "../../components/core/layouts/Layout.astro";
-import {Api} from "~/utils/tina";
 
 const api = new Api(false, -1);
 let hotels = [];
 
 try {
-    hotels = await api.hotels();
-    console.log('All hotels loaded successfully:', hotels.length);
+  hotels = await api.getHotels();
+  console.log("All hotels loaded successfully:", hotels.length);
 } catch (error) {
-    console.error('Error loading hotels:', error);
-    // Fallback to empty array if API call fails
+  console.error("Error loading hotels:", error);
+  // Fallback to empty array if API call fails
 }
 ---
 

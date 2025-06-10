@@ -6,7 +6,7 @@ import { Api } from "~/utils/tina";
 import { imageUrl } from "../../utils/tina";
 
 interface Props {
-	lang: string;
+  lang: string;
 }
 
 const { id } = Astro.params;
@@ -17,15 +17,15 @@ let hoteles = [];
 let hotel = null;
 
 try {
-    hoteles = await api.hotels();
-    hotel = hoteles.find((item) => item.hotel_id === Number(id));
+  hoteles = await api.getHotels();
+  hotel = hoteles.find((item) => item.hotel_id === Number(id));
 
-    if (!hotel) {
-        console.error(`Hotel with ID ${id} not found`);
-    }
+  if (!hotel) {
+    console.error(`Hotel with ID ${id} not found`);
+  }
 } catch (error) {
-    console.error('Error loading hotels:', error);
-    // Fallback to empty array if API call fails
+  console.error("Error loading hotels:", error);
+  // Fallback to empty array if API call fails
 }
 ---
 

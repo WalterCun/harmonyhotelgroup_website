@@ -2,8 +2,8 @@
 import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 
-import { trans, Api, getImage, processTagElements } from "~/utils";
 import { imagesDestinations } from "lib/constants";
+import { Api, getImage, processTagElements, trans } from "~/utils";
 import { createLogger } from "../../../utils";
 
 const logger = createLogger(false, "popular.destinations");
@@ -12,17 +12,14 @@ const api = new Api(true, 4);
 let destinations: any[] = [];
 
 try {
-    destinations = await api.destinations();
-    logger.log(
-        "Popular destinations loaded successfully:",
-        destinations.length,
-    );
+  destinations = await api.destinations();
+  logger.log("Popular destinations loaded successfully:", destinations.length);
 } catch (error) {
-    logger.error("Error loading destinations:", error);
+  logger.error("Error loading destinations:", error);
 }
 
 interface Props {
-    lang: string;
+  lang: string;
 }
 
 const { lang } = Astro.props;

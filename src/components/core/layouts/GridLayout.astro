@@ -1,14 +1,21 @@
 ---
 interface Props {
-    cols: number
-    col_sm?: number
-    col_md?: number
-    col_lg?: number
-    space_x: number
-    space_y: number
+  cols: number;
+  col_sm?: number;
+  col_md?: number;
+  col_lg?: number;
+  space_x: number;
+  space_y: number;
 }
 
-const {cols = 1, col_sm, col_md, col_lg, space_x = 2.5, space_y = 3} = Astro.props;
+const {
+  cols = 1,
+  col_sm,
+  col_md,
+  col_lg,
+  space_x = 2.5,
+  space_y = 3,
+} = Astro.props;
 ---
 <div class=`grid grid-cols-${cols} ${col_sm ? "sm:grid-cols-" + col_sm : ""} ${col_md ? "sm:grid-cols-" + col_md : ""} ${col_lg ? "lg:grid-cols-" + col_lg : ""} gap-x-${space_x} gap-y-${space_y}`>
     <slot/>

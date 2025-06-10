@@ -1,15 +1,15 @@
 ---
-import Hhg from "../globals/svg/logos/Hhg.astro";
 import CurrencySwitcher from "../core/ui/DropDownCurrency.astro";
 import LanguageSwitcher from "../core/ui/DropDownLanguage.astro";
-import ThemeToggle from "./ThemeToggle.astro";
+import Hhg from "../globals/svg/logos/Hhg.astro";
 import Navigation from "./Navigation.astro";
+import ThemeToggle from "./ThemeToggle.astro";
 
 interface Props {
-    lang: string;
+  lang: string;
 }
 
-const {lang} = Astro.props;
+const { lang } = Astro.props;
 ---
 <header class="w-full bg-white dark:bg-neutral-900 shadow-xs sticky top-0 z-50 transition-colors duration-300">
     <div class="container flex h-20 items-center justify-between max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

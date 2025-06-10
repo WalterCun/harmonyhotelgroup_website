@@ -3,32 +3,32 @@ import { getRelativeLocaleUrl } from "astro:i18n";
 import { trans } from "~/utils/translations";
 
 interface Props {
-	lang: string;
+  lang: string;
 }
 
 const { lang } = Astro.props;
 
 const navItems = [
-	{
-		label: trans(lang, "components.common.navigation.url.hotel"),
-		href: "/hotels",
-	},
-	{
-		label: trans(lang, "components.common.navigation.url.destinations"),
-		href: "/destinations",
-	},
-	{
-		label: trans(lang, "components.common.navigation.url.offers"),
-		href: "/offers",
-	},
-	{
-		label: trans(lang, "components.common.navigation.url.blog"),
-		href: "/blog",
-	},
-	{
-		label: trans(lang, "components.common.navigation.url.contact"),
-		href: "/contact",
-	},
+  {
+    label: trans(lang, "components.common.navigation.url.hotel"),
+    href: "/hotels",
+  },
+  {
+    label: trans(lang, "components.common.navigation.url.destinations"),
+    href: "/destinations",
+  },
+  {
+    label: trans(lang, "components.common.navigation.url.offers"),
+    href: "/offers",
+  },
+  {
+    label: trans(lang, "components.common.navigation.url.blog"),
+    href: "/blog",
+  },
+  {
+    label: trans(lang, "components.common.navigation.url.contact"),
+    href: "/contact",
+  },
 ];
 ---
 

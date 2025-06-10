@@ -1,29 +1,29 @@
 ---
 import {
-	facebookUrl,
-	instagramUrl,
-	linkedinUrl,
-	tiktokUrl,
-	twitterUrl,
-	whatsappUrl,
-	youtubeUrl,
+  facebookUrl,
+  instagramUrl,
+  linkedinUrl,
+  tiktokUrl,
+  twitterUrl,
+  whatsappUrl,
+  youtubeUrl,
 } from "~/lib/constants";
 import Tiktok from "../svg/logos/Tiktok.astro";
 import Whatsapp from "../svg/logos/Whatsapp.astro";
 interface SocialLink {
-	platform: string;
-	url?: string | null;
-	icon: string;
+  platform: string;
+  url?: string | null;
+  icon: string;
 }
 
 const socialLinks: SocialLink[] = [
-	{ platform: "facebook", url: facebookUrl, icon: "facebook" },
-	{ platform: "twitter", url: twitterUrl, icon: "twitter" },
-	{ platform: "instagram", url: instagramUrl, icon: "instagram" },
-	{ platform: "linkedin", url: linkedinUrl, icon: "linkedin" },
-	{ platform: "youtube", url: youtubeUrl, icon: "youtube" },
-	{ platform: "tiktok", url: tiktokUrl, icon: "tiktok" },
-	{ platform: "whatsapp", url: whatsappUrl, icon: "whatsapp" },
+  { platform: "facebook", url: facebookUrl, icon: "facebook" },
+  { platform: "twitter", url: twitterUrl, icon: "twitter" },
+  { platform: "instagram", url: instagramUrl, icon: "instagram" },
+  { platform: "linkedin", url: linkedinUrl, icon: "linkedin" },
+  { platform: "youtube", url: youtubeUrl, icon: "youtube" },
+  { platform: "tiktok", url: tiktokUrl, icon: "tiktok" },
+  { platform: "whatsapp", url: whatsappUrl, icon: "whatsapp" },
 ];
 
 // Filtrar solo los enlaces que tienen una URL válida

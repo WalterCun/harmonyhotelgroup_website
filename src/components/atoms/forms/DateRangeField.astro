@@ -1,16 +1,16 @@
 ---
-import {Icon} from "astro-icon/components"
-import {trans} from "~/utils/translations";
-import {cn} from "~/utils";
+import { Icon } from "astro-icon/components";
+import { cn } from "~/utils";
+import { trans } from "~/utils/translations";
 
 interface Props {
-    lang: string,
-    lblTitle?: string,
-    placeholder?: string,
-    className?: string
+  lang: string;
+  lblTitle?: string;
+  placeholder?: string;
+  className?: string;
 }
 
-const {lang, lblTitle, placeholder, className} = Astro.props;
+const { lang, lblTitle, placeholder, className } = Astro.props;
 ---
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">

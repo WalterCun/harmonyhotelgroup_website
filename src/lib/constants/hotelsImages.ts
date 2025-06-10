@@ -1,4 +1,4 @@
-import type {ImageMetadata} from "astro";
+import type { ImageMetadata } from "astro";
 // Images Hotel Majestic 2
 // @ts-ignore
 // const imagesHM2 = import.meta.glob<{
@@ -11,11 +11,10 @@ import type {ImageMetadata} from "astro";
 //     default: ImageMetadata
 // }>('/src/assets/upload/hotels/HotelEnsuenos*.{jpeg,jpg,png,gif}') //, { eager: true })
 
-
 // Imágenes Hotel Majestic 2
 export const imagesHoteles = import.meta.glob<{
-    default: ImageMetadata
-}>('/src/assets/upload/hotels/**/*.{jpeg,jpg,png,gif,webp}');
+  default: ImageMetadata;
+}>("/src/assets/upload/hotels/**/*.{jpeg,jpg,png,gif,webp}");
 
 // // Imágenes Hotel Ensueños
 // const imagesHE = import.meta.glob<{

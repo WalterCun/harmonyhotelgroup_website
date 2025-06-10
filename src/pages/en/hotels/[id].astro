@@ -3,98 +3,98 @@ import Layout from "~/layouts/Layout.astro";
 import { bookingFormState } from "~/stores/bookingStore";
 
 export async function getStaticPaths() {
-	const hotels = {
-		1: {
-			id: 1,
-			name: "Harmony Grand Plaza",
-			location: "New York, USA",
-			description:
-				"Experience luxury reimagined in the heart of Manhattan. The Harmony Grand Plaza combines timeless elegance with modern sophistication, offering unparalleled views of the city skyline and Central Park.",
-			theme: {
-				primary: "#D4AF37",
-				secondary: "#1B4D89",
-				accent: "#A67C00",
-			},
-			logo: "https://example.com/grand-plaza-logo.png",
-			gallery: [
-				"https://images.pexels.com/photos/2034335/pexels-photo-2034335.jpeg",
-				"https://images.pexels.com/photos/3225531/pexels-photo-3225531.jpeg",
-				"https://images.pexels.com/photos/1743165/pexels-photo-1743165.jpeg",
-			],
-			amenities: [
-				{ name: "Free WiFi", icon: "wifi" },
-				{ name: "Pool", icon: "pool" },
-				{ name: "Spa", icon: "spa" },
-				{ name: "Restaurant", icon: "restaurant" },
-				{ name: "Fitness Center", icon: "fitness" },
-				{ name: "Room Service", icon: "room-service" },
-			],
-			rooms: [
-				{
-					id: "deluxe",
-					name: "Deluxe Room",
-					description: "Spacious room with city views",
-					size: "40m²",
-					occupancy: "2 Adults + 1 Child",
-					price: 350,
-					amenities: ["King Bed", "City View", "Mini Bar", "Work Desk"],
-					images: [
-						"https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg",
-						"https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg",
-					],
-				},
-				{
-					id: "suite",
-					name: "Executive Suite",
-					description: "Luxury suite with separate living area",
-					size: "65m²",
-					occupancy: "2 Adults + 2 Children",
-					price: 550,
-					amenities: ["King Bed", "Living Room", "Kitchenette", "Park View"],
-					images: [
-						"https://images.pexels.com/photos/262048/pexels-photo-262048.jpeg",
-						"https://images.pexels.com/photos/271619/pexels-photo-271619.jpeg",
-					],
-				},
-			],
-		},
-		// Add more hotels here
-	};
+  const hotels = {
+    1: {
+      id: 1,
+      name: "Harmony Grand Plaza",
+      location: "New York, USA",
+      description:
+        "Experience luxury reimagined in the heart of Manhattan. The Harmony Grand Plaza combines timeless elegance with modern sophistication, offering unparalleled views of the city skyline and Central Park.",
+      theme: {
+        primary: "#D4AF37",
+        secondary: "#1B4D89",
+        accent: "#A67C00",
+      },
+      logo: "https://example.com/grand-plaza-logo.png",
+      gallery: [
+        "https://images.pexels.com/photos/2034335/pexels-photo-2034335.jpeg",
+        "https://images.pexels.com/photos/3225531/pexels-photo-3225531.jpeg",
+        "https://images.pexels.com/photos/1743165/pexels-photo-1743165.jpeg",
+      ],
+      amenities: [
+        { name: "Free WiFi", icon: "wifi" },
+        { name: "Pool", icon: "pool" },
+        { name: "Spa", icon: "spa" },
+        { name: "Restaurant", icon: "restaurant" },
+        { name: "Fitness Center", icon: "fitness" },
+        { name: "Room Service", icon: "room-service" },
+      ],
+      rooms: [
+        {
+          id: "deluxe",
+          name: "Deluxe Room",
+          description: "Spacious room with city views",
+          size: "40m²",
+          occupancy: "2 Adults + 1 Child",
+          price: 350,
+          amenities: ["King Bed", "City View", "Mini Bar", "Work Desk"],
+          images: [
+            "https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg",
+            "https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg",
+          ],
+        },
+        {
+          id: "suite",
+          name: "Executive Suite",
+          description: "Luxury suite with separate living area",
+          size: "65m²",
+          occupancy: "2 Adults + 2 Children",
+          price: 550,
+          amenities: ["King Bed", "Living Room", "Kitchenette", "Park View"],
+          images: [
+            "https://images.pexels.com/photos/262048/pexels-photo-262048.jpeg",
+            "https://images.pexels.com/photos/271619/pexels-photo-271619.jpeg",
+          ],
+        },
+      ],
+    },
+    // Add more hotels here
+  };
 
-	return Object.entries(hotels).map(([id, hotel]) => ({
-		params: { id },
-		props: { hotel },
-	}));
+  return Object.entries(hotels).map(([id, hotel]) => ({
+    params: { id },
+    props: { hotel },
+  }));
 }
 
 interface Props {
-	lang: string;
-	hotel: {
-		id: number;
-		name: string;
-		location: string;
-		description: string;
-		theme: {
-			primary: string;
-			secondary: string;
-			accent: string;
-		};
-		logo: string;
-		gallery: [string];
-		amenities: [{ name: string; icon: string }];
-		rooms: [
-			{
-				id: string;
-				name: string;
-				description: string;
-				size: string;
-				occupancy: string;
-				price: number;
-				amenities: [string];
-				images: [string];
-			},
-		];
-	};
+  lang: string;
+  hotel: {
+    id: number;
+    name: string;
+    location: string;
+    description: string;
+    theme: {
+      primary: string;
+      secondary: string;
+      accent: string;
+    };
+    logo: string;
+    gallery: [string];
+    amenities: [{ name: string; icon: string }];
+    rooms: [
+      {
+        id: string;
+        name: string;
+        description: string;
+        size: string;
+        occupancy: string;
+        price: number;
+        amenities: [string];
+        images: [string];
+      },
+    ];
+  };
 }
 
 const { lang, hotel } = Astro.props;
