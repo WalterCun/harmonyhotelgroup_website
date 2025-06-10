@@ -1,0 +1,67 @@
+{
+    "name": "Hotel Ensueños by HHG",
+    "stars": 3,
+    "location": "Cuenca, Ecuador",
+    "mainStreet": "Gran Colombia",
+    "addressNumber": "182",
+    "secondaryStreet": "Manuel Vega",
+    "contact": [
+        {
+            "type": "Cellphone",
+            "value": "+593996146471",
+            "tag": "Gerencia"
+        },
+        {
+            "type": "Cellphone",
+            "value": "+593996146471",
+            "tag": "Recepción"
+        },
+        {
+            "type": "Email",
+            "value": "reservas@hotelensueños.com",
+            "tag": "Reservaciones"
+        }
+    ],
+    "socialMedia": [
+        {
+            "name": "Tiktok",
+            "url": "https://www.tiktok.com/@hotelensuenoscuenca"
+        },
+        {
+            "name": "Instagram",
+            "url": "https://www.instagram.com/hotelensuenoscuenca/"
+        },
+        {
+            "name": "Facebook",
+            "url": "https://www.facebook.com/hotelensuenoscuenca"
+        }
+    ],
+    "rooms": [
+        {
+            "name": "Individual",
+            "size": 12,
+            "occupancy": {
+                "min": 1,
+                "max": 1
+            }
+        }
+    ],
+    "roomPrice": 30,
+    "coverImage": "/upload/hotels/HotelEnsuenos/portada2.jpg",
+    "gallery": ["/upload/hotels/HotelEnsuenos/portada.jpg"],
+    "description_hotel": [
+        {
+            "lang_hotel": "es",
+            "content_hotel": "descripcion de informacion del contenido del hotel en idioma español"
+        }
+    ],
+    "amenities": [
+        {
+            "basic_services": ["dressing_table"],
+            "general_services": ["parking"],
+            "extra_services": ["airport_shuttle"],
+            "premium_services": ["express_checkin"]
+        }
+    ],
+    "highlight": true
+}
