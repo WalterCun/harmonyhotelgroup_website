@@ -3,8 +3,6 @@ import { z } from "astro:content";
 import { glob } from "astro/loaders";
 
 const hotels = defineCollection({
-  /* Retrieve all JSON files in your authors directory while retaining
-   * uppercase letters in the ID. */
   loader: glob({
     pattern: "**/*.json",
     base: "./src/data/hotels",

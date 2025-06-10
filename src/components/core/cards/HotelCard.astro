@@ -1,0 +1,144 @@
+---
+import { Image } from "astro:assets";
+import { processTagElements, trans } from "~/utils/translations";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  coverImage: string;
+  name: string;
+  location: string;
+  stars: number;
+  amenities: Array<{
+    basic_services: string[];
+    general_services: string[];
+    extra_services: string[];
+    premium_services: string[];
+  }>;
+  roomPrice: number;
+  id: string;
+  partner: boolean | undefined;
+  lang: string;
+}
+
+const {
+  coverImage,
+  name,
+  location,
+  stars,
+  amenities,
+  roomPrice,
+  id,
+  lang,
+  partner,
+} = Astro.props as Props;
+
+const decodedSrc = decodeURIComponent(coverImage);
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/upload/**/*.{jpeg,jpg,png,gif,webp}"
+);
+
+if (!images[`/src/assets${decodedSrc}`]) {
+  throw new Error(
+    `"${coverImage}" does not exist in glob: "src/assets/*.{jpeg,jpg,png,gif}"`
+  );
+}
+---
+
+<div
+  class="card bg-base-100 w-auto shadow-sm hover:shadow-xl transition-all duration-300"
+>
+  <figure class="relative h-72">
+    {
+      coverImage && (
+        <Image src={images[`/src/assets${decodedSrc}`]()} alt={name} width={928} height={548} />
+      )
+    }
+    {
+      partner && (
+        <div class="badge badge-primary absolute top-4 right-4 text-black font-semibold">
+          <Icon name="shield" />
+          {trans(lang, "components.sections.home.featured-hotels.partner")}
+        </div>
+      )
+    }
+  </figure>
+  <div class="card-body flex flex-col">
+    <div class="mb-4">
+      <h2 class="card-title text-primary font-bold">
+        {name}
+      </h2>
+      <p class="text-neutral-600 dark:text-neutral-400">
+        <span class="inline-flex items-center">
+          <Icon name="location" class="w-4 h-4 mr-1 text-primary" />
+          {location}
+        </span>
+      </p>
+      <div class="rating p-0 m-0 mt-2">
+        {
+          stars &&
+            Array.from({ length: 5 }, (_, index) =>
+              index == stars - 1 ? (
+                <div
+                  class="mask mask-star size-5 bg-primary"
+                  aria-label={`${index + 1} star`}
+                  aria-current="true"
+                />
+              ) : (
+                <div
+                  class="mask mask-star size-5 bg-primary"
+                  aria-label={`${index + 1} star`}
+                />
+              )
+            )
+        }
+      </div>
+    </div>
+
+    <div class="flex-grow">
+      <div class="card-actions justify-start">
+        {
+          amenities &&
+            amenities.map((element: any) => {
+              const processedTags = processTagElements(
+                element,
+                lang,
+                "components.sections.home.featured-hotels.tags"
+              );
+
+              const visibleTags = processedTags.slice(0, 3);
+              const hiddenTags = processedTags.slice(3);
+
+              return (
+                <>
+                  {visibleTags.map((tag) => (
+                    <div class="badge badge-outline">{tag.value}</div>
+                  ))}
+                  {hiddenTags.length > 0 && (
+                    <div class="badge badge-outline font-bold text-xs">
+                      +{hiddenTags.length}
+                      {trans(lang, "components.sections.home.more")}
+                    </div>
+                  )}
+                </>
+              );
+            })
+        }
+      </div>
+    </div>
+
+    <div class="card-actions justify-between mt-auto pt-4">
+      <div>
+        <span class="text-xl font-bold">
+          ${roomPrice}
+        </span>
+        <span class="text-neutral-600 dark:text-neutral-400">
+          {trans(lang, "components.sections.home.featured-hotels.night")}
+        </span>
+      </div>
+      <a href={`/hotels/${id}`} class="btn btn-primary py-2 px-4">
+        <Icon name="detail" />
+        {trans(lang, "components.sections.home.featured-hotels.btn-details")}
+      </a>
+    </div>
+  </div>
+</div>

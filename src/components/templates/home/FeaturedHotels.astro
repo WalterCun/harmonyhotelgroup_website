@@ -1,10 +1,10 @@
 ---
-import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 
-import { processTagElements, trans } from "~/utils/translations";
+import { trans } from "~/utils/translations";
 
 import { getCollection } from "astro:content";
+import HotelCard from "~/components/core/cards/HotelCard.astro";
 
 const hotels = await getCollection("hotels");
 
@@ -16,121 +16,50 @@ const { lang } = Astro.props;
 ---
 
 <section class="flex justify-center pt-10 pb-10 bg-white dark:bg-neutral-900">
-    <div class="container">
-        <div class="text-center mb-12">
-            <h2 class="mb-4 text-center text-2xl font-bold text-primary">
-                {trans(lang, "components.sections.home.featured-hotels.title")}
-            </h2>
-            <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
-                {trans(lang, "components.sections.home.featured-hotels.description")}
-            </p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {
-                hotels.map((hotel) => (
-                        <div class="card bg-base-100 w-auto shadow-sm hover:shadow-xl transition-all duration-300">
-                            <figure class="relative h-72">
-                                {hotel.data.coverImage && (
-                                        <Image
-                                            src={hotel.data.coverImage}
-                                            alt={hotel.data.name}
-                                            width={928}
-                                            height={548}
-                                        />
-                                )}
-                                {hotel.data.partner && (
-                                        <div class="badge badge-primary absolute top-4 right-4 text-black font-semibold">
-                                            <Icon name="shield"/>
-                                            {trans(lang, 'components.sections.home.featured-hotels.partner')}
-                                        </div>
-                                )}
-                            </figure>
-                            <div class="card-body flex flex-col">
-                                <div class="mb-4">
-                                    <h2 class="card-title text-primary font-bold">
-                                        {hotel.data.name}
-                                    </h2>
-                                    <p class="text-neutral-600 dark:text-neutral-400">
-                                        <span class="inline-flex items-center">
-                                            <Icon name="location" class="w-4 h-4 mr-1 text-primary"/>
-                                            {hotel.data.location}
-                                        </span>
-                                    </p>
-                                    <div class="rating p-0 m-0 mt-2">
-                                        {hotel.data.stars && (
-                                            Array.from({length: 5},
-                                                (_, index) => (
-                                                    index == (hotel.data.stars - 1) ?
-                                                        <div class="mask mask-star size-5 bg-primary"
-                                                                 aria-label={`${index + 1} star`}
-                                                                 aria-current="true"
-                                                            /> :
-                                                            <div class="mask mask-star size-5 bg-primary"
-                                                                 aria-label={`${index + 1} star`}
-                                                            />
-                                                ),
-                                            )
-                                        )}
-                                    </div>
-                                </div>
-
-                                <div class="flex-grow">
-                                    <div class="card-actions justify-start">
-                                        {
-                                            hotel.data.amenities && hotel.data.amenities.map((element: any) => {
-                                                const processedTags = processTagElements(
-                                                    element,
-                                                    lang,
-                                                    'components.sections.home.featured-hotels.tags'
-                                                );
-
-                                                const visibleTags = processedTags.slice(0, 3);
-                                                const hiddenTags = processedTags.slice(3);
-
-                                                return (
-                                                        <>
-                                                            {visibleTags.map((tag) => (
-                                                                    <div class="badge badge-outline">
-                                                                        {tag.value}
-                                                                    </div>
-                                                            ))}
-                                                            {hiddenTags.length > 0 && (
-                                                                    <div class="badge badge-outline font-bold text-xs">
-                                                                        +{hiddenTags.length}
-                                                                        {trans(lang, 'components.sections.home.more')}
-                                                                    </div>
-                                                            )}
-                                                        </>
-                                                );
-                                            })
-                                        }
-                                    </div>
-                                </div>
-
-                                <div class="card-actions justify-between mt-auto pt-4">
-                                    <div>
-                                        <span class="text-xl font-bold">
-                                            ${hotel.data.roomPrice}
-                                        </span>
-                                        <span class="text-neutral-600 dark:text-neutral-400">
-                                            {trans(lang, "components.sections.home.featured-hotels.night",)}
-                                        </span>
-                                    </div>
-                                    <a href={`/hotels/${hotel.id}`} class="btn btn-primary py-2 px-4">
-                                        <Icon name="detail"></Icon>
-                                        {trans(lang, "components.sections.home.featured-hotels.btn-details",)}
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                ))
-            }
-        </div>
-        <div class="text-center mt-12">
-            <a href="/hotels" class="btn btn-outline btn-primary">
-                <Icon name="find-hotel"></Icon>
-                {trans(lang, "components.sections.home.featured-hotels.btn-all-hotels")}
-            </a>
-        </div>
+  <div class="container">
+    <div class="text-center mb-12">
+      <h2 class="mb-4 text-center text-2xl font-bold text-primary">
+        {trans(lang, "components.sections.home.featured-hotels.title")}
+      </h2>
+      <p
+        class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto"
+      >
+        {trans(lang, "components.sections.home.featured-hotels.description")}
+      </p>
     </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {
+        hotels.map((hotel) => {
+          const {
+            coverImage,
+            roomPrice,
+            partner,
+            name,
+            amenities,
+            stars,
+            location,
+          } = hotel.data;
+          return (
+            <HotelCard
+              id={hotel.id}
+              coverImage={coverImage}
+              location={location}
+              name={name}
+              stars={stars}
+              amenities={amenities}
+              roomPrice={roomPrice}
+              partner={partner}
+              lang={lang}
+            />
+          );
+        })
+      }
+    </div>
+    <div class="text-center mt-12">
+      <a href="/hotels" class="btn btn-outline btn-primary">
+        <Icon name="find-hotel" />
+        {trans(lang, "components.sections.home.featured-hotels.btn-all-hotels")}
+      </a>
+    </div>
+  </div>
 </section>
