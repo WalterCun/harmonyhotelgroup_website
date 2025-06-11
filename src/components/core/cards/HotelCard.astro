@@ -1,7 +1,10 @@
 ---
-import { Image } from "astro:assets";
-import { processTagElements, trans } from "~/utils/translations";
 import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+
+import { processTagElements, trans } from "~/utils/translations";
+import Card from "../../atoms/card/Card.astro";
+import { resolveImage } from "../../../utils";
 
 interface Props {
   coverImage: string;
@@ -31,26 +34,13 @@ const {
   lang,
   partner,
 } = Astro.props as Props;
-
-const decodedSrc = decodeURIComponent(coverImage);
-const images = import.meta.glob<{ default: ImageMetadata }>(
-  "/src/assets/upload/**/*.{jpeg,jpg,png,gif,webp}"
-);
-
-if (!images[`/src/assets${decodedSrc}`]) {
-  throw new Error(
-    `"${coverImage}" does not exist in glob: "src/assets/*.{jpeg,jpg,png,gif}"`
-  );
-}
 ---
 
-<div
-  class="card bg-base-100 w-auto shadow-sm hover:shadow-xl transition-all duration-300"
->
+<Card>
   <figure class="relative h-72">
     {
       coverImage && (
-        <Image src={images[`/src/assets${decodedSrc}`]()} alt={name} width={928} height={548} />
+        <Image src={resolveImage(coverImage)} alt={name} width={928} height={548} />
       )
     }
     {
@@ -141,4 +131,4 @@ if (!images[`/src/assets${decodedSrc}`]) {
       </a>
     </div>
   </div>
-</div>
+</Card>

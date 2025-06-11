@@ -1,0 +1,230 @@
+---
+import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+
+import { processTagElements, trans } from "~/utils/translations";
+import Card from "../../atoms/card/Card.astro";
+import { resolveImage } from "../../../utils";
+
+interface Props {
+  id: string;
+  partner?: boolean | undefined;
+  name: string;
+  location: string;
+  description_destination?: Array<{
+    lang_destination: string;
+    content_destination: string;
+  }>;
+  tags?: Array<{
+    experience?: string[];
+    activities?: string[];
+    geographics?: string[];
+    culture?: string[];
+    accessibility?: string[];
+    temporality?: string[];
+    popular?: string[];
+  }>;
+  coverImage: string;
+  lang: string;
+}
+
+const {
+  id,
+  partner,
+  name,
+  location,
+  description_destination,
+  tags,
+  coverImage,
+  lang,
+} = Astro.props as Props;
+---
+<Card>
+  {/*
+  <div class="card bg-base-100 w-auto shadow-sm hover:shadow-xl transition-all duration-300">
+                        <figure class="relative">
+                            {destination.data.coverImage && (
+                                    <Image
+                                            src={destination.data.coverImage}
+                                            alt={destination.data.name}
+                                            width={600}
+                                            height={400}
+                                    />
+                            )}
+                            {destination.data.partner && (
+                                    <div class="badge badge-primary absolute top-4 right-4 text-black font-semibold">
+                                        <Icon name="partnership"/>
+                                        {trans(lang, 'components.sections.home.popular-destination.partner')}
+                                    </div>
+                            )}
+                        </figure>
+                        <div class="card-body flex flex-col">
+                            <!-- Sección superior fija: siempre visible -->
+                            <div class="mb-4">
+                                <h2 class="card-title text-primary font-bold">
+                                    {destination.data.name}
+                                </h2>
+                                <p class="text-neutral-600 dark:text-neutral-400">
+                                        <span class="inline-flex items-center">
+                                            <Icon name="location" class="w-4 h-4 mr-1 text-primary"/>
+                                            {destination.data.location}
+                                        </span>
+                                </p>
+                                <p class="relative overflow-hidden">
+                                    {destination?.data.description_destination?.map((element: any, _: number) => {
+                                        if (element["lang_destination"] === lang) {
+                                            const content = element["content_destination"];
+                                            const maxLength = 150; // Ajusta este valor según necesites
+
+                                            return (
+                                                    <span class="block relative">
+                                                        {content.length > maxLength ? (
+                                                                <>
+                                                                    {content.substring(0, maxLength)}
+                                                                    <span class="inline-block fade-out">...</span>
+                                                                </>
+                                                        ) : content}
+                                                    </span>
+                                            );
+                                        } else {
+                                            return <span>falta informacion</span>;
+                                        }
+                                    })}
+                                </p>
+                            </div>
+
+                            <div class="flex-grow">
+                                <div class="card-actions justify-start">
+                                    {
+                                        destination.data.tags && destination.data.tags.map((element: any) => {
+                                            // Procesar los tags con nuestra nueva función
+
+                                            const processedTags = processTagElements(
+                                                element,
+                                                lang,
+                                                'components.sections.home.popular-destination.tags'
+                                            );
+
+                                            const visibleTags = processedTags.slice(0, 3);
+                                            const hiddenTags = processedTags.slice(3);
+
+                                            return (
+                                                    <>
+                                                        {visibleTags.map((tag) => (
+                                                                <div class="badge badge-outline">
+                                                                    {tag.value}
+                                                                </div>
+                                                        ))}
+                                                        {hiddenTags.length > 0 && (
+                                                                <div class="badge badge-outline bg-black text-white">
+                                                                    +{hiddenTags.length}
+                                                                    {trans(lang, 'components.sections.home.more')}
+                                                                </div>
+                                                        )}
+                                                    </>
+                                            );
+                                        })
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- Sección inferior fija: siempre al final -->
+                            <div class="card-actions justify-between mt-auto pt-4">
+                                <a href={`/hotels/${destination.id}`} class="btn btn-primary py-2 px-4 w-full">
+                                    <Icon name="search" class="size-5"></Icon>
+                                    {trans(lang, "components.sections.home.popular-destination.btn-details",)}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+  */}
+  <figure class="relative h-72">
+    {
+      coverImage && (
+        <Image src={resolveImage(coverImage)} alt={name} width={928} height={548} />
+      )
+    }
+    {
+      partner && (
+        <div class="badge badge-primary absolute top-4 right-4 text-black font-semibold">
+          <Icon name="partnership" />
+          {trans(lang, "components.sections.home.popular-destination.partner")}
+        </div>
+      )
+    }
+  </figure>
+  <div class="card-body flex flex-col">
+    <!-- Sección superior fija: siempre visible -->
+    <div class="mb-4">
+      <h2 class="card-title text-primary font-bold">
+        {name}
+      </h2>
+      <p class="text-neutral-600 dark:text-neutral-400">
+        <span class="inline-flex items-center">
+            <Icon name="location" class="w-4 h-4 mr-1 text-primary"/>
+          {location}
+        </span>
+      </p>
+      <p class="relative overflow-hidden">
+        {description_destination?.map((element: any, _: number) => {
+          if (element["lang_destination"] === lang) {
+            const content = element["content_destination"];
+            const maxLength = 150; // Ajusta este valor según necesites
+            return (
+                <span class="block relative">
+                    {content.length > maxLength ? (
+                        <>
+                          {content.substring(0, maxLength)}
+                          <span class="inline-block fade-out">...</span>
+                        </>
+                    ) : content}
+                </span>
+            );
+          } else {
+            return <span>falta informacion</span>;
+          }
+        })}
+      </p>
+    </div>
+    <div class="card-actions justify-start">
+      {
+          tags && tags.map((element: any) => {
+            // Procesar los tags con nuestra nueva función
+
+            const processedTags = processTagElements(
+                element,
+                lang,
+                'components.sections.home.popular-destination.tags'
+            );
+
+            const visibleTags = processedTags.slice(0, 3);
+            const hiddenTags = processedTags.slice(3);
+
+            return (
+                <>
+                  {visibleTags.map((tag) => (
+                      <div class="badge badge-outline">
+                        {tag.value}
+                      </div>
+                  ))}
+                  {hiddenTags.length > 0 && (
+                      <div class="badge badge-outline bg-black text-white">
+                        +{hiddenTags.length}
+                        {trans(lang, 'components.sections.home.more')}
+                      </div>
+                  )}
+                </>
+            );
+          })
+      }
+    </div>
+  </div>
+  <!-- Sección inferior fija: siempre al final -->
+  <div class="card-actions justify-between mt-auto pt-4">
+        <a href={`/hotels/${id}`} class="btn btn-primary py-2 px-4 w-full">
+          <Icon name="search" class="size-5"></Icon>
+          {trans(lang, "components.sections.home.popular-destination.btn-details",)}
+        </a>
+    </div>
+</Card>
+
