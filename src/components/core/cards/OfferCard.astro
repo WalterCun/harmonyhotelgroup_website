@@ -1,0 +1,102 @@
+---
+import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+
+import { trans } from "~/utils/translations";
+import Card from "../../atoms/card/Card.astro";
+import { resolveImage } from "../../../utils";
+import TruncatedText from "../../atoms/text/TruncatedText.astro";
+
+interface Props {
+  id: string;
+  title: string;
+  coverImage: string;
+  description_offers?: Array<{
+    lang_offer: string;
+    content_offer: string;
+  }>;
+  expiration_date: string;
+  discount: string;
+  discount_label?: Array<{
+    lang_discount: string;
+    content_discount: string;
+  }>;
+  price_adult: number;
+  price_child: number;
+  lang: string;
+}
+
+const {
+  id,
+  title,
+  coverImage,
+  description_offers,
+  expiration_date,
+  discount,
+  discount_label,
+  price_adult,
+  price_child,
+  lang,
+} = Astro.props as Props;
+---
+
+<Card>
+  <div class="card bg-base-100 w-auto shadow-sm hover:shadow-xl transition-all duration-300">
+    <figure class="relative">
+      {coverImage && (
+          <Image
+              src={resolveImage(coverImage)}
+              alt={title}
+              width={600}
+              height={400}
+              class="w-full h-48 object-cover"
+          />)}
+      <div class="absolute top-4 left-4 bg-primary text-white py-1 px-3 rounded-full text-sm font-bold">
+        {discount}&nbsp;
+        {discount_label?.find((item) => item?.lang_discount === lang)?.content_discount ||
+            trans(lang, "components.sections.home.special-offer.no-text")}
+      </div>
+    </figure>
+    <div class="card-body flex flex-col">
+      <h2 class="card-title text-primary font-bold">
+        {title}
+      </h2>
+      <TruncatedText
+          text={description_offers?.find((item) => item?.lang_offer === lang)?.content_offer ||          trans(lang, "components.sections.home.special-offer.no-text")}
+      />
+      <div class="flex flex-row justify-between">
+        <Icon name="adult" class="size-5 text-primary"></Icon>:
+        <p class="font-bold">&nbsp;&nbsp;${price_adult}</p>
+      </div>
+      <div class="flex flex-row justify-between">
+        <Icon name="child" class="size-5 text-primary"></Icon>:
+        <p class="font-bold">&nbsp;&nbsp;${price_child}</p>
+      </div>
+      <div class="flex flex-row justify-between">
+        <div class="flex flex-col justify-between items-center">
+          <p class="text-sm">
+            <span class="font-medium">{trans(lang, "components.sections.home.special-offer.expired")}</span>
+          </p>
+          <p class="text-sm">
+            {expiration_date.split('T')[0]}
+          </p>
+        </div>
+        <a href={`/offers/${id}`}
+           class="btn btn-primary hover:text-primary-600 transition-colors">
+          <Icon name="find-offers"></Icon>
+          {trans(lang, "components.sections.home.special-offer.btn-details")}
+        </a>
+      </div>
+    </div>
+  </div>
+</Card>
+
+
+<style>
+  .text-ellipsis {
+    width: auto;/* Establece un ancho para el contenedor */
+    height: 150px;
+    overflow: clip;
+    text-overflow: ellipsis; /* Muestra puntos suspensivos al final del texto */
+  }
+</style>

@@ -15,10 +15,12 @@ import {
 } from "lib/constants";
 import { trans } from "~/utils/translations";
 import { getCollection } from "astro:content";
+import { getCollection } from "astro:content";
 
 
 const hotels = await getCollection("hotels");
 const uniqueCities: CityOption[] = [
+  ...new Set(hotels.map((hotel) => hotel.data.location)),
   ...new Set(hotels.map((hotel) => hotel.data.location)),
 ];
 

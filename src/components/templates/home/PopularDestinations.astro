@@ -1,18 +1,19 @@
 ---
-import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
+import { getCollection } from "astro:content";
 
-import { imagesDestinations } from "lib/constants";
-import { Api, getImage, processTagElements, trans } from "~/utils";
+import { trans } from "~/utils";
 import { createLogger } from "../../../utils";
+import DestinationCard from "../../core/cards/DestinationCard.astro";
 
 const logger = createLogger(false, "popular.destinations");
 
-const api = new Api(true, 4);
-let destinations: any[] = [];
+let destinations = await getCollection("destinations");
 
 try {
-  destinations = await api.destinations();
+  destinations = destinations
+    .sort((a, b) => a.data.name.localeCompare(b.data.name))
+    .slice(0, 4);
   logger.log("Popular destinations loaded successfully:", destinations.length);
 } catch (error) {
   logger.error("Error loading destinations:", error);
@@ -35,104 +36,29 @@ const { lang } = Astro.props;
             </p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
-            {destinations.map(destination => (
-                    <div class="card bg-base-100 w-auto shadow-sm hover:shadow-xl transition-all duration-300">
-                        <figure class="relative">
-                            {destination.coverImage && (
-                                    <Image
-                                            src={getImage(imagesDestinations, destination.coverImage)}
-                                            alt={destination.name}
-                                            width={600}
-                                            height={400}
-                                    />
-                            )}
-                            {destination.partner && (
-                                    <div class="badge badge-primary absolute top-4 right-4 text-black font-semibold">
-                                        <Icon name="partnership"/>
-                                        {trans(lang, 'components.sections.home.popular-destination.partner')}
-                                    </div>
-                            )}
-                        </figure>
-                        <div class="card-body flex flex-col">
-                            <!-- Sección superior fija: siempre visible -->
-                            <div class="mb-4">
-                                <h2 class="card-title text-primary font-bold">
-                                    {destination.name}
-                                </h2>
-                                <p class="text-neutral-600 dark:text-neutral-400">
-                                        <span class="inline-flex items-center">
-                                            <Icon name="location" class="w-4 h-4 mr-1 text-primary"/>
-                                            {destination.location}
-                                        </span>
-                                </p>
-                                <p class="relative overflow-hidden">
-                                    {destination?.description_destination?.map((element: any, _: number) => {
-                                        if (element["lang_destination"] === lang) {
-                                            const content = element["content_destination"];
-                                            const maxLength = 150; // Ajusta este valor según necesites
+            {destinations.map(destination => {
 
-                                            return (
-                                                    <span class="block relative">
-                                                        {content.length > maxLength ? (
-                                                                <>
-                                                                    {content.substring(0, maxLength)}
-                                                                    <span class="inline-block fade-out">...</span>
-                                                                </>
-                                                        ) : content}
-                                                    </span>
-                                            );
-                                        } else {
-                                            return <span>falta informacion</span>;
-                                        }
-                                    })}
-                                </p>
-                            </div>
-
-                            <div class="flex-grow">
-                                <div class="card-actions justify-start">
-                                    {
-                                        destination.tags && destination.tags.map((element: any) => {
-                                            // Procesar los tags con nuestra nueva función
-
-                                            const processedTags = processTagElements(
-                                                element,
-                                                lang,
-                                                'components.sections.home.popular-destination.tags'
-                                            );
-
-                                            const visibleTags = processedTags.slice(0, 3);
-                                            const hiddenTags = processedTags.slice(3);
-
-                                            return (
-                                                    <>
-                                                        {visibleTags.map((tag) => (
-                                                                <div class="badge badge-outline">
-                                                                    {tag.value}
-                                                                </div>
-                                                        ))}
-                                                        {hiddenTags.length > 0 && (
-                                                                <div class="badge badge-outline bg-black text-white">
-                                                                    +{hiddenTags.length}
-                                                                    {trans(lang, 'components.sections.home.more')}
-                                                                </div>
-                                                        )}
-                                                    </>
-                                            );
-                                        })
-                                    }
-                                </div>
-                            </div>
-
-                            <!-- Sección inferior fija: siempre al final -->
-                            <div class="card-actions justify-between mt-auto pt-4">
-                                <a href={`/hotels/${destination.id}`} class="btn btn-primary py-2 px-4 w-full">
-                                    <Icon name="search" class="size-5"></Icon>
-                                    {trans(lang, "components.sections.home.popular-destination.btn-details",)}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-            ))}
+                const {
+                    partner,
+                    name,
+                    location,
+                    description_destination,
+                    tags,
+                    coverImage,
+                } = destination.data;
+                return (
+                        <DestinationCard
+                        id={destination.id}
+                        partner={partner}
+                        name={name}
+                        location={location}
+                        description_destination={description_destination}
+                        tags={tags}
+                        coverImage={coverImage}
+                        lang={lang}
+                        />
+                )
+            })}
         </div>
         <div class="text-center mt-12">
             <a href="/destinations" class="btn btn-outline btn-primary">
