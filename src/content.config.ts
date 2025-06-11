@@ -75,13 +75,63 @@ const destinations = defineCollection({
     generateId: ({ entry }) => entry.replace(/\.json$/, ""),
   }),
   schema: z.object({
+    partner: z.boolean().optional(),
     name: z.string().min(2).max(100),
     location: z.string().min(2).max(100),
-    mainStreet: z.string().min(2).max(100),
-    addressNumber: z.string().min(1).max(10).optional(),
+    description_destination: z
+      .array(
+        z.object({
+          lang_destination: z.string().min(2).max(100),
+          content_destination: z.string().min(2),
+        }),
+      )
+      .optional(),
+    tags: z
+      .array(
+        z.object({
+          experience: z.array(z.string().min(2).max(100)).optional(),
+          activities: z.array(z.string().min(2).max(100)).optional(),
+          geographics: z.array(z.string().min(2).max(100)).optional(),
+          culture: z.array(z.string().min(2).max(100)).optional(),
+          accessibility: z.array(z.string().min(2).max(100)).optional(),
+          temporality: z.array(z.string().min(2).max(100)).optional(),
+          popular: z.array(z.string().min(2).max(100)).optional(),
+        }),
+      )
+      .optional(),
+    coverImage: z.string().min(2).max(200),
+    highlight: z.boolean().optional(),
   }),
 });
 
-// const offers = defineCollection([]);
+const offers = defineCollection({
+  loader: glob({
+    pattern: "**/*.json",
+    base: "./src/data/offers",
+    generateId: ({ entry }) => entry.replace(/\.json$/, ""),
+  }),
+  schema: z.object({
+    title: z.string().min(2).max(100),
+    coverImage: z.string().min(2).max(100),
+    description_offers: z
+      .array(
+        z.object({
+          lang_offer: z.string().min(2).max(100),
+          content_offer: z.string().min(2),
+        }),
+      )
+      .optional(),
+    expiration_date: z.string(),
+    discount: z.string().min(1).max(100),
+    discount_label: z.array(
+      z.object({
+        lang_discount: z.string().min(2).max(100),
+        content_discount: z.string().min(2).max(100),
+      }),
+    ),
+    price_adult: z.number().min(1),
+    price_child: z.number().min(1),
+  }),
+});
 
-export const collections = { hotels, destinations };
+export const collections = { hotels, destinations, offers };
