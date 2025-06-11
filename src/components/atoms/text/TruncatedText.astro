@@ -1,6 +1,4 @@
 ---
-import TruncatedTextReact from "../effect/TruncatedTextReact";
-
 interface Props {
   text: string;
   maxLines?: number;
@@ -14,12 +12,84 @@ const {
   readMoreText = "Leer más",
   className = "",
 } = Astro.props;
+
+// Creamos un objeto con clases para los diferentes números de líneas
+const lineClampClasses: Record<number, string> = {
+  1: "line-clamp-1",
+  2: "line-clamp-2",
+  3: "line-clamp-3",
+  4: "line-clamp-4",
+  5: "line-clamp-5",
+  6: "line-clamp-6",
+};
+
+// Seleccionamos la clase adecuada según maxLines, con fallback a line-clamp-4
+const lineClampClass = lineClampClasses[maxLines] || "line-clamp-4";
 ---
 
-<TruncatedTextReact
-        text={text}
-        maxLines={maxLines}
-        readMoreText={readMoreText}
-        className={className}
-        client:load
-/>
+<div class={className} id="truncated-text-container">
+    <p
+            class={`relative ${lineClampClass} overflow-hidden`}
+            id="truncated-text"
+    >
+        {text}
+        <span
+                class="inline-block ml-1 text-blue-500 cursor-pointer hover:underline"
+                id="read-more-btn"
+                role="button"
+                tabindex="0"
+        >
+      {readMoreText}
+    </span>
+    </p>
+    <button
+            id="read-less-btn"
+            class="mt-2 text-sm text-blue-500 hover:underline hidden"
+            type="button"
+    >
+        Mostrar menos
+    </button>
+</div>
+
+<script>
+    // Función para inicializar el componente
+    function initTruncatedText() {
+        const container = document.getElementById('truncated-text-container');
+        const textElement = document.getElementById('truncated-text');
+        const readMoreBtn = document.getElementById('read-more-btn');
+        const readLessBtn = document.getElementById('read-less-btn');
+
+        if (!container || !textElement || !readMoreBtn || !readLessBtn) return;
+
+        readMoreBtn.addEventListener('click', () => {
+            // Expandir el texto
+            textElement.classList.remove('line-clamp-1', 'line-clamp-2', 'line-clamp-3', 'line-clamp-4', 'line-clamp-5', 'line-clamp-6', 'overflow-hidden');
+            readMoreBtn.classList.add('hidden');
+            readLessBtn.classList.remove('hidden');
+        });
+
+        readMoreBtn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                textElement.classList.remove('line-clamp-1', 'line-clamp-2', 'line-clamp-3', 'line-clamp-4', 'line-clamp-5', 'line-clamp-6', 'overflow-hidden');
+                readMoreBtn.classList.add('hidden');
+                readLessBtn.classList.remove('hidden');
+            }
+        });
+
+        readLessBtn.addEventListener('click', () => {
+            // Colapsar el texto
+            const lineClampClass = Array.from(textElement.classList)
+                .find(cls => cls.startsWith('line-clamp-')) || 'line-clamp-4';
+
+            textElement.classList.add(lineClampClass, 'overflow-hidden');
+            readMoreBtn.classList.remove('hidden');
+            readLessBtn.classList.add('hidden');
+        });
+    }
+
+    // Inicializar cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', initTruncatedText);
+
+    // También inicializar cuando ocurre una navegación en Astro
+    document.addEventListener('astro:page-load', initTruncatedText);
+</script>
