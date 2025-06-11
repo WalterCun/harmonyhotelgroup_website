@@ -1,9 +1,7 @@
 ---
 import { lang_es } from "lib/constants";
-import { Api } from "~/utils/tina";
 import Layout from "../../components/core/layouts/Layout.astro";
 
-const api = new Api(false, -1);
 let hotels = [];
 
 try {
@@ -75,7 +73,7 @@ try {
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {hotels.map(hotel => (
+                {/*{hotels.map(hotel => (
                         <div class="card group hover:shadow-xl transition-all duration-300">
                             <div class="relative h-64 overflow-hidden">
                                 <img
@@ -126,7 +124,7 @@ try {
                                 </div>
                             </div>
                         </div>
-                ))}
+                ))}*/}
             </div>
         </div>
     </section>
