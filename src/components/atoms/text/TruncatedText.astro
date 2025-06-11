@@ -1,0 +1,25 @@
+---
+import TruncatedTextReact from "../effect/TruncatedTextReact";
+
+interface Props {
+  text: string;
+  maxLines?: number;
+  readMoreText?: string;
+  className?: string;
+}
+
+const {
+  text,
+  maxLines = 4,
+  readMoreText = "Leer más",
+  className = "",
+} = Astro.props;
+---
+
+<TruncatedTextReact
+        text={text}
+        maxLines={maxLines}
+        readMoreText={readMoreText}
+        className={className}
+        client:load
+/>
