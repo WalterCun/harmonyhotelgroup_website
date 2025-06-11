@@ -26,9 +26,6 @@ importers:
       mailgun.js:
         specifier: ^12.0.2
         version: 12.0.2
-      tinacms:
-        specifier: ^2.7.5
-        version: 2.7.8(@types/react@19.1.6)(abstract-level@1.0.4)(immer@10.1.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(scheduler@0.26.0)(sucrase@3.35.0)(typescript@5.8.3)
     devDependencies:
       '@astrojs/check':
         specifier: ^0.9.4
@@ -87,6 +84,9 @@ importers:
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@4.1.8)
+      tinacms:
+        specifier: ^2.7.5
+        version: 2.7.8(@types/react@19.1.6)(abstract-level@1.0.4)(immer@10.1.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(scheduler@0.26.0)(sucrase@3.35.0)(typescript@5.8.3)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
