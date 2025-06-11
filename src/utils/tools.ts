@@ -5,9 +5,6 @@ import Default from "../assets/img/default.png";
 
 const logger = createLogger(false, "tools.ts");
 
-type ImageLoader = () => Promise<{ default: ImageMetadata }>;
-type ImageCollection = Record<string, ImageLoader>;
-
 // Funcion para crear un array de numeros
 export function range(start: number, end: number) {
   const result = [];
@@ -57,74 +54,47 @@ export async function getGeolocation() {
 // --------------------------------------------------------------------------------------------------------------------
 
 /**
- * Busca una clave en la colección de imágenes que coincida con la clave proporcionada
+ * Resuelve una ruta de imagen y devuelve sus metadatos.
+ * Si la imagen no existe, puede devolver una imagen predeterminada o lanzar un error.
+ *
+ * @param imagePath - Ruta relativa de la imagen a resolver
+ * @param fallbackToDefault - Si se debe usar la imagen predeterminada cuando no se encuentra la solicitada
+ * @returns Promesa que resuelve a los metadatos de la imagen
  */
-function findMatchingImageKey(
-  listImages: ImageCollection,
-  key: string,
-): string | undefined {
-  return Object.keys(listImages).find((imgKey) =>
-    imgKey.toLowerCase().includes(key.toLowerCase()),
+export const resolveImage = async (
+  imagePath: string,
+  fallbackToDefault = true,
+): Promise<{ default: ImageMetadata }> => {
+  // Constantes para rutas y patrones
+  const ASSETS_BASE_PATH = "/src/assets";
+
+  // Decodificar la ruta de la imagen para manejar caracteres especiales en URLs
+  const decodedPath = decodeURIComponent(imagePath);
+  const fullImagePath = `${ASSETS_BASE_PATH}${decodedPath}`;
+
+  // Cargar todas las imágenes disponibles
+  const availableImages = import.meta.glob<{ default: ImageMetadata }>(
+    "/src/assets/upload/**/*.{jpeg,jpg,png,gif,webp}",
   );
-}
 
-/**
- * Carga una imagen de forma segura, manejando errores y validaciones
- */
-async function loadImageSafely(
-  listImages: ImageCollection,
-  key: string,
-): Promise<{ default: ImageMetadata }> {
-  const imageLoader = listImages[key];
+  // Verificar si la imagen solicitada existe
+  const imageExists = fullImagePath in availableImages;
 
-  // Validar que sea una función
-  if (typeof imageLoader !== "function") {
-    logger.error(
-      `El valor de listImages["${key}"] no es una función`,
-      imageLoader,
+  if (imageExists) {
+    // Caso 1: La imagen existe, cargarla y devolverla
+    return availableImages[fullImagePath]();
+    // biome-ignore lint/style/noUselessElse: <explanation>
+  } else if (fallbackToDefault) {
+    // Caso 2: La imagen no existe pero se permite usar la predeterminada
+    logger.warn(
+      `No se encontró la imagen: ${imagePath}. Usando imagen predeterminada.`,
     );
     return Promise.resolve({ default: Default });
+    // biome-ignore lint/style/noUselessElse: <explanation>
+  } else {
+    // Caso 3: La imagen no existe y no se permite usar la predeterminada
+    throw new Error(
+      `La imagen "${imagePath}" no existe en el patrón: "/src/assets/upload/**/*.{jpeg,jpg,png,gif,webp}"`,
+    );
   }
-
-  try {
-    return await imageLoader();
-  } catch (error) {
-    logger.error(`Error al cargar la imagen "${key}"`, error);
-    return Promise.resolve({ default: Default });
-  }
-}
-
-/**
- * Busca y carga una imagen por clave en una colección de imágenes.
- * Si no encuentra la imagen, puede devolver una imagen predeterminada o la primera disponible.
- */
-export const getImage = async (
-  listImages: ImageCollection,
-  key: string,
-  useDefaultOnFailure = true,
-  enableDebugLogs = false,
-): Promise<{ default: ImageMetadata }> => {
-  logger.log("listImages", listImages);
-  logger.log("key", key);
-
-  // Buscar la imagen por clave
-  const matchingKey = findMatchingImageKey(listImages, key);
-  logger.log("matchingKey", matchingKey);
-
-  // Si encontramos una coincidencia, cargar esa imagen
-  if (matchingKey) {
-    return loadImageSafely(listImages, matchingKey);
-  }
-
-  // Manejar el caso cuando no hay coincidencia
-  if (!useDefaultOnFailure && Object.keys(listImages).length > 0) {
-    // Usar la primera imagen disponible
-    const firstKey = Object.keys(listImages)[0];
-    logger.log("fallback to firstKey", firstKey);
-    return loadImageSafely(listImages, firstKey);
-  }
-
-  // Usar la imagen predeterminada en caso de error o si se solicitó explícitamente
-  logger.warn("No hay ninguna imagen disponible que coincida con la clave");
-  return Promise.resolve({ default: Default });
 };
