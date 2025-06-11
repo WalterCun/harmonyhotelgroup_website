@@ -1,19 +1,20 @@
 ---
-import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 
-import { imagesOffers } from "lib/constants";
 import { createLogger } from "utils/logger";
-import { getImage, trans } from "~/utils";
-import { Api } from "~/utils/tina";
+import { trans } from "~/utils";
+import { getCollection } from "astro:content";
+import OfferCard from "../../core/cards/OfferCard.astro";
 
 const logger = createLogger(true, "special.offers");
 
-const api = new Api(true, 4);
-let offers: any[] = [];
+let offers = await getCollection("offers");
 
 try {
-  offers = await api.offers();
+  offers = offers
+    .sort((a, b) => a.data.title.localeCompare(b.data.title))
+    .slice(0, 4);
+
   logger.log("Special offers loaded successfully:", offers.length);
 } catch (error) {
   logger.error("Error loading offers:", error);
@@ -35,50 +36,23 @@ const { lang } = Astro.props;
                     </p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                    {offers.map(offer => (
-                            <div class="card bg-base-100 w-auto shadow-sm hover:shadow-xl transition-all duration-300">
-                                <figure class="relative">
-                                    {offer.coverImage && (
-                                            <Image
-                                                    src={getImage(imagesOffers, offer.coverImage, true)}
-                                                    alt={offer.title}
-                                                    width={600}
-                                                    height={400}
-                                                    class="w-full h-48 object-cover"
-                                            />)}
-                                    <div class="absolute top-4 left-4 bg-primary text-white py-1 px-3 rounded-full text-sm font-bold">
-                                        {offer.discount}
-                                        {offer.discount_label?.find((item: {lang_discount:string, content_discount:string}) => item?.lang_discount === lang)?.content_discount ||
-                                            trans(lang, "components.sections.home.special-offer.no-text")}
-                                    </div>
-                                </figure>
-                            <div class="card-body flex flex-col">
-                                <h2 class="card-title text-primary font-bold">
-                                    {offer.title}
-                                </h2>
-                                <p class="text-neutral-600 dark:text-neutral-400">
-                                    {offer.description_offers?.find((item: {lang_offer: string, content_offer: string}) => item?.lang_offer === lang)?.content_offer ||
-                                        trans(lang, "components.sections.home.special-offer.no-text")}
-                                </p>
-                                <div class="flex flex-row justify-between">
-                                    <div class="flex flex-col justify-between items-center">
-                                        <p class="text-sm">
-                                            <span class="font-medium">{trans(lang, "components.sections.home.special-offer.expired")}</span>
-                                        </p>
-                                        <p class="text-sm">
-                                            {offer.expiration_date.split('T')[0]}
-                                        </p>
+                    {offers.map(offer => {
+                        const {title,coverImage,description_offers,expiration_date,discount,discount_label,price_adult,price_child} = offer.data
 
-                                    </div>
-                                    <a href={`/offers/${offer.id}`}
-                                       class="btn btn-primary hover:text-primary-600 transition-colors">
-                                        <Icon name="find-offers"></Icon>
-                                        {trans(lang, "components.sections.home.special-offer.btn-details")}
-                                    </a>
-                                </div>
-                            </div>
-                            </div>
-                    ))}
+                        return (<OfferCard
+                                id={offer.id}
+                                title={title}
+                                coverImage={coverImage}
+                                description_offers={description_offers}
+                                expiration_date={expiration_date}
+                                discount={discount}
+                                discount_label={discount_label}
+                                price_adult={price_adult}
+                                price_child={price_child}
+                                lang={lang}
+                        />)
+                    }
+                    )}
                 </div>
                 <div class="text-center mt-12">
                     <a href="/offers" class="btn btn-outline btn-primary hover:text-primary-600 transition-colors">

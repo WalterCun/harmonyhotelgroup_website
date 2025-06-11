@@ -6,7 +6,10 @@ import { trans } from "~/utils/translations";
 import { getCollection } from "astro:content";
 import HotelCard from "~/components/core/cards/HotelCard.astro";
 
-const hotels = await getCollection("hotels");
+const hotels = (await getCollection("hotels"))
+  .sort((a, b) => a.data.name.localeCompare(b.data.name))
+  .sort((a, b) => (b.data.partner === true ? -1 : 1))
+  .slice(0, 4);
 
 interface Props {
   lang: string;
