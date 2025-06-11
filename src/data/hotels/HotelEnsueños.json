@@ -47,8 +47,8 @@
     }
   ],
   "roomPrice": 30,
-  "coverImage": "/upload/hotels/HotelEnsuenos/portada2.jpg",
-  "gallery": ["/upload/hotels/HotelEnsuenos/portada.jpg"],
+  "coverImage": "/upload/hotels/HotelEnsuenos/portada2.webp",
+  "gallery": ["/upload/hotels/HotelEnsuenos/portada.webp"],
   "description_hotel": [
     {
       "lang_hotel": "es",
