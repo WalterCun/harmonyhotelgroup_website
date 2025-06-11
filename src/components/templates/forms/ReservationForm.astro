@@ -13,21 +13,21 @@ import {
   roomOptions,
   vehicleTypeOptions,
 } from "lib/constants";
-import { Api } from "~/utils";
 import { trans } from "~/utils/translations";
+import { getCollection } from "astro:content";
 
-const api = new Api();
 
-let hotels = await api.getHotels();
+const hotels = await getCollection("hotels");
 const uniqueCities: CityOption[] = [
-  ...new Set(hotels.map((hotel) => hotel.location).filter(Boolean)),
+  ...new Set(hotels.map((hotel) => hotel.data.location)),
 ];
 
 // ---------------------------------------------------------------------------------------------------------
 
-interface Props {
-  lang: string;
+export interface Fields {
+  city: string[]
 }
+
 
 const { lang } = Astro.props;
 ---
@@ -134,7 +134,7 @@ const { lang } = Astro.props;
                 {trans(
                   lang,
                   "components.forms.reservation.placeholder.rooms",
-                  parseInt(option) !== 1 ? { s: "es" } : { s: "" }
+                  parseInt(option) !== 1 ? { s: "es" } : { s: "" },
                 )}
               </option>
             ))
@@ -167,7 +167,7 @@ const { lang } = Astro.props;
             max="17"
             placeholder={trans(
               lang,
-              "components.forms.reservation.placeholder.child-age"
+              "components.forms.reservation.placeholder.child-age",
             )}
             class="input"
           />
@@ -218,11 +218,7 @@ const { lang } = Astro.props;
               <Icon name="bed" class="mr-1.5 h-4 w-4 text-primary" />
               {trans(lang, "components.forms.reservation.lbl.rooms")}
             </label>
-            <select
-              id="groupRooms"
-              name="groupRooms"
-              class="input"
-            >
+            <select id="groupRooms" name="groupRooms" class="input">
               {
                 groupRoomTypeOptions.map((option) => (
                   <option
@@ -290,7 +286,7 @@ const { lang } = Astro.props;
               {
                 trans(
                   lang,
-                  "components.forms.reservation.placeholder.group-type-vehicle"
+                  "components.forms.reservation.placeholder.group-type-vehicle",
                 )
               }
             </label>
@@ -303,7 +299,11 @@ const { lang } = Astro.props;
         </div>
       </div>
 
-      <button id="booking-form-submit" type="submit" class="btn btn-primary w-full">
+      <button
+        id="booking-form-submit"
+        type="submit"
+        class="btn btn-primary w-full"
+      >
         <Icon name="hotel" class="mr-1.5 h-4 w-4" />
         {trans(lang, "components.forms.reservation.btn.reservations")}
       </button>
@@ -321,50 +321,50 @@ const { lang } = Astro.props;
 
   document.addEventListener("DOMContentLoaded", async (): Promise<void> => {
     const form: HTMLFormElement = document.getElementById(
-      "booking-form"
+      "booking-form",
     ) as HTMLFormElement;
 
     // const geolocation = await getGeolocation()
 
     const adultsSelect: HTMLSelectElement = document.getElementById(
-      "adults"
+      "adults",
     ) as HTMLSelectElement;
 
     const childrenSelect: HTMLSelectElement = document.getElementById(
-      "children"
+      "children",
     ) as HTMLSelectElement;
     const childrenAgesContainer: HTMLElement = document.getElementById(
-      "children-ages"
+      "children-ages",
     ) as HTMLElement;
 
     const childrenWrapper: HTMLElement = document.getElementById(
-      "children-wrapper"
+      "children-wrapper",
     ) as HTMLElement;
 
     const roomsWrapper: HTMLElement = document.getElementById(
-      "rooms-wrapper"
+      "rooms-wrapper",
     ) as HTMLElement;
     const groupDetails: HTMLElement = document.getElementById(
-      "group-details"
+      "group-details",
     ) as HTMLElement;
     const groupAdultsInput: HTMLInputElement = document.getElementById(
-      "groupAdults"
+      "groupAdults",
     ) as HTMLInputElement;
     const groupChildrenUnder5Input: HTMLInputElement = document.getElementById(
-      "groupChildrenUnder5"
+      "groupChildrenUnder5",
     ) as HTMLInputElement;
     const groupChildrenUnder12Input: HTMLInputElement = document.getElementById(
-      "groupChildrenUnder12"
+      "groupChildrenUnder12",
     ) as HTMLInputElement;
 
     const parkingWrapper: HTMLElement = document.getElementById(
-      "parking-wrapper"
+      "parking-wrapper",
     ) as HTMLElement;
     const vehicleWrapper: HTMLElement = document.getElementById(
-      "vehicle-wrapper"
+      "vehicle-wrapper",
     ) as HTMLElement;
     const vehicleTypeSelect: HTMLSelectElement = document.getElementById(
-      "largeGroupVehicleType"
+      "largeGroupVehicleType",
     ) as HTMLSelectElement;
 
     // Error message elements
@@ -380,11 +380,11 @@ const { lang } = Astro.props;
       groupAdults: document.getElementById("groupAdults-error"),
       groupChildrenUnder5: document.getElementById("groupChildrenUnder5-error"),
       groupChildrenUnder12: document.getElementById(
-        "groupChildrenUnder12-error"
+        "groupChildrenUnder12-error",
       ),
       groupRooms: document.getElementById("groupRooms-error"),
       largeGroupVehicleType: document.getElementById(
-        "largeGroupVehicleType-error"
+        "largeGroupVehicleType-error",
       ),
       dateRange: document.getElementById("date-range-error"),
     };
@@ -427,11 +427,11 @@ const { lang } = Astro.props;
       const groupAdults: number = parseInt(groupAdultsInput.value || "0", 10);
       const groupChildrenUnder5: number = parseInt(
         groupChildrenUnder5Input.value || "0",
-        10
+        10,
       );
       const groupChildrenUnder12: number = parseInt(
         groupChildrenUnder12Input.value || "0",
-        10
+        10,
       );
       const totalPeopleAdult: number = groupAdults + groupChildrenUnder12;
       const totalPeople: number =
@@ -461,14 +461,14 @@ const { lang } = Astro.props;
 
       // Obtener la plantilla
       const template: HTMLTemplateElement | null = document.getElementById(
-        "child-age-template"
+        "child-age-template",
       ) as HTMLTemplateElement;
 
       if (template) {
         for (let i: number = 0; i < childCount; i++) {
           // Clonar la plantilla
           const clone: DocumentFragment = template.content.cloneNode(
-            true
+            true,
           ) as DocumentFragment;
 
           // Actualizar los atributos y contenidos específicos
@@ -479,7 +479,7 @@ const { lang } = Astro.props;
             // Reemplazar el texto {index} en la etiqueta
             label.textContent = label.textContent!.replace(
               "...",
-              String(i + 1)
+              String(i + 1),
             );
           }
           // console.log("label", label);
@@ -554,21 +554,35 @@ const { lang } = Astro.props;
       if (isGroup && !groupAdultsInput.value) {
         showError(
           "groupAdults",
-          "Por favor ingresa el número de adultos para el grupo"
+          "Por favor ingresa el número de adultos para el grupo",
         );
         return; // Detener el envío si falta información requerida
       }
 
-      const formData: FormData = new FormData(form);
-
+      const formData = new FormData(form);
       try {
-        const result = await actions.validationForm(formData);
+        const result = await actions.validationForm(formData) as {
+          error?: {
+            issues: Array<{
+              path: string[];
+              message?: string;
+              reason?: string;
+            }>;
+          };
+          data?: {
+            message?: string;
+            form: Record<string, unknown>;
+          };
+        };
+        
         if (result.error) {
+          console.log(result);
           // Si hay errores de validación, mostrarlos
-          result.error.issues.forEach((issue: any) => {
+          result.error.issues.forEach((issue) => {
             // Mostrar error para cada campo
             issue.path.forEach((field: string) => {
-              showError(field, issue.message || issue.reason);
+              const errorMessage = issue.message || issue.reason || 'Error de validación';
+              showError(field, errorMessage);
             });
           });
         } else if (result.data) {
@@ -587,7 +601,7 @@ const { lang } = Astro.props;
 
           createWhatsAppLink({
             phoneNumber: whatsappNumber,
-            message: formatWhatsAppMessage(result.data.form),
+            message: formatWhatsAppMessage(formData),
           });
 
           // Opcional: limpiar el formulario después de un envío exitoso

@@ -3,7 +3,7 @@ import { DateUtils } from "~/utils/calculator.ts";
 
 export const whatsappNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER;
 
-interface FormData {
+interface ReservationFormData {
   city: string;
   checkin?: string;
   checkout?: string;
@@ -25,31 +25,32 @@ interface FormData {
  * @returns mensaje formateado
  */
 export function formatWhatsAppMessage(formData: FormData): string {
-  const checkin = `${formData.checkin}` || "Fechas no especificadas";
-  const chekout = `${formData.checkout}` || "Fechas no especificadas";
+  
+  const checkin = `${formData.get("checkin")}` || "Fechas no especificadas";
+  const chekout = `${formData.get("checkout")}` || "Fechas no especificadas";
 
-  let message = `Hola! Me interesa hacer una reserva en ${formData.city}\n\n`;
+  let message = `Hola! Me interesa hacer una reserva en ${formData.get("city")}\n\n`;
   message += `Fechas Ingreso: ${checkin}\n`;
   message += `Fechas Salida: ${chekout}\n`;
   message += `N° Noches: ${DateUtils.differenceDays(checkin, chekout)}\n\n`;
 
-  if (formData.adults === "Group") {
+  if (formData.get("adults") === "Group") {
     message += "** Grupo **\n";
-    message += `Adultos: ${formData.groupAdults} \n`;
-    if (formData.groupChildrenUnder5)
-      message += `Niños menores de 5 años: ${formData.groupChildrenUnder5}\n`;
-    if (formData.groupChildrenUnder12)
-      message += `Niños menores de 12 años: ${formData.groupChildrenUnder12}\n`;
-    message += `${formData.groupRooms}\n`;
-    message += formData.breakfast ? "Desayuno incluido\n" : "Sin desayuno\n";
-    if (formData.largeGroupVehicleType)
-      message += `Tipo de vehículo: ${formData.largeGroupVehicleType}\n`;
+    message += `Adultos: ${formData.get("groupAdults")} \n`;
+    if (formData.get("groupChildrenUnder5"))
+      message += `Niños menores de 5 años: ${formData.get("groupChildrenUnder5")}\n`;
+    if (formData.get("groupChildrenUnder12"))
+      message += `Niños menores de 12 años: ${formData.get("groupChildrenUnder12")}\n`;
+    message += `${formData.get("groupRooms")}\n`;
+    message += formData.get("breakfast") ? "Desayuno incluido\n" : "Sin desayuno\n";
+    if (formData.get("largeGroupVehicleType"))
+      message += `Tipo de vehículo: ${formData.get("largeGroupVehicleType")}\n`;
   } else {
-    message += `${formData.adults} adultos\n`;
-    if (formData.children) message += `${formData.children} niños\n`;
-    message += `${formData.rooms} habitaciones\n\n`;
-    message += formData.breakfast ? "Desayuno incluido\n" : "Sin desayuno\n";
-    if (formData.parking) message += "Reserva para vehiculo\n";
+    message += `${formData.get("adults")} adultos\n`;
+    if (formData.get("children")) message += `${formData.get("children")} niños\n`;
+    message += `${formData.get("rooms")} habitaciones\n\n`;
+    message += formData.get("breakfast") ? "Desayuno incluido\n" : "Sin desayuno\n";
+    if (formData.get("parking")) message += "Reserva para vehiculo\n";
   }
 
   return message;
