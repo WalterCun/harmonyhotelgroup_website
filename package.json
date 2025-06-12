@@ -9,9 +9,7 @@
     "audit": "tinacms audit",
     "tina-clean": "tinacms audit --clean",
     "build": "astro build",
-    "build:preview": "cross-env NODE_ENV=development && astro build",
-    "preview": "astro preview",
-    "preview:local": "set NODE_ENV=development && astro build && node dist/server/entry.mjs",
+    "preview": "astro build && node dist/server/entry.mjs",
     "lint": "biome lint --write .",
     "lint:fix": "biome check --write .",
     "lint:ci": "biome lint --write . --allow-warnings"
@@ -38,7 +36,6 @@
     "@vercel/speed-insights": "^1.2.0",
     "autoprefixer": "^10.4.21",
     "clsx": "^2.1.1",
-    "cross-env": "^7.0.3",
     "daisyui": "^5.0.43",
     "postcss": "^8.5.3",
     "react": "^19.1.0",
