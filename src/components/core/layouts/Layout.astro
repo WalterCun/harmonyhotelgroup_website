@@ -2,70 +2,55 @@
 import Analytics from "@vercel/analytics/astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import Footer from "~/components/globals/Footer.astro";
-import Header from "~/components/globals/Header.astro";
+import StaticNavBar from "~/components/globals/StaticNavBar.astro";
 import "~/styles/global.css";
 import { trans } from "~/utils/translations";
 
 interface Props {
-  lang: string;
-  title?: string;
+    lang: string;
+    title?: string;
 }
 
 const { lang, title = "" } = Astro.props;
 ---
+
 <html lang={lang}>
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
-    <meta name="generator" content={Astro.generator}/>
-    <meta name="description" content={trans(lang, "layouts.layout.meta.description")}/>
-    <title>{`${trans(lang,'layouts.layout.meta.title')}`} {title ?  '| ${title}' : ''}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
-          rel="stylesheet">
-    <!-- <Analytics /> -->
-    <!-- Script to handle theme -->
-    <script is:inline>
-        // 1. Tema
-        const theme = localStorage.getItem('theme') || 'light';
-        document.documentElement.classList.add(theme);
-        document.documentElement.setAttribute('data-theme', theme);
-    </script>
-
-
-
-</head>
-<body class="min-h-screen flex flex-col bg-neutral-50 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-100 transition-colors duration-300">
-<Header lang={lang}/>
-    <main class="grow">
-        <slot/>
-    </main>
-<Footer lang={lang}/>
-
-<!-- Script to handle theme toggle -->
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const themeToggle = document.getElementById('theme-toggle');
-        if (themeToggle) {
-            themeToggle.addEventListener('click', () => {
-                const isDark = document.documentElement.classList.contains('dark');
-                if (isDark) {
-                    document.documentElement.classList.remove('dark');
-                    document.documentElement.classList.add('light');
-                    document.documentElement.setAttribute('data-theme', 'light');
-                    localStorage.setItem('theme', 'light');
-                } else {
-                    document.documentElement.classList.remove('light');
-                    document.documentElement.classList.add('dark');
-                    document.documentElement.setAttribute('data-theme', 'dark');
-                    localStorage.setItem('theme', 'dark');
-                }
-            });
-        }
-    });
-</script>
-<!-- <SpeedInsights /> -->
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="generator" content={Astro.generator} />
+        <meta
+            name="description"
+            content={trans(lang, "layouts.layout.meta.description")}
+        />
+        <title>
+            {`${trans(lang, "layouts.layout.meta.title")}`}
+            {title ? "| ${title}" : ""}
+        </title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+            rel="stylesheet"
+        />
+        <!-- <Analytics /> -->
+        <!-- Script to handle theme -->
+        <script is:inline>
+            // 1. Tema
+            const theme = localStorage.getItem("theme") || "light";
+            document.documentElement.classList.add(theme);
+            document.documentElement.setAttribute("data-theme", theme);
+        </script>
+    </head>
+    <body
+        class=""
+    >
+        <StaticNavBar lang={lang} />
+        <main class="grow">
+            <slot />
+        </main>
+        <Footer lang={lang} />
+        <!-- <SpeedInsights /> -->
+    </body>
 </html>

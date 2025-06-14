@@ -11,19 +11,19 @@ const { lang } = Astro.props;
 ---
 
 <div class="relative">
-    <button id="currency-toggle" class="flex items-center text-neutral-700 dark:text-neutral-300 hover:text-primary-500 dark:hover:text-primary-400">
+    <button id="currency-toggle" class="flex items-center text-neutral-700 hover:text-primary-500">
         <span id="current-currency">USD</span>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 ml-1">
             <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
         </svg>
     </button>
 
-    <div id="currency-dropdown" class="absolute top-full right-0 mt-2 w-32 bg-white dark:bg-neutral-800 shadow-lg rounded-md py-1 z-10 hidden">
+    <div id="currency-dropdown" class="absolute top-full right-0 mt-2 w-32 bg-white shadow-lg rounded-md py-1 z-10 hidden">
         {currencies.map(currency => (
                 <button
                         data-currency-code={currency.code}
                         data-currency-symbol={currency.symbol}
-                        class="w-full text-left px-4 py-2 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700"
+                        class="w-full text-left px-4 py-2 text-neutral-700 hover:bg-neutral-100"
                 >
                     <span class="mr-2">{currency.symbol}</span>{currency.label}
                 </button>

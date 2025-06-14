@@ -1,0 +1,97 @@
+---
+import Container from "../core/layouts/Container.astro";
+import CurrencySwitcher from "../core/ui/DropDownCurrency.astro";
+import LanguageSwitcher from "../core/ui/DropDownLanguage.astro";
+import Hhg from "../globals/svg/logos/Hhg.astro";
+import Navigation from "./Navigation.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+
+interface Props {
+    lang: string;
+}
+
+const { lang } = Astro.props;
+---
+
+<nav
+    class="w-full bg-trarensparent fixed z-10"
+>
+    <Container>
+        <div
+            class="container flex h-20 items-center justify-between max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+        >
+            {/* Column 1: Logo */}
+            <div class="flex flex-col items-start group">
+                <!-- Logo visible solo en móvil -->
+                <div class="block size-28">
+                    <a href="/">
+                        <Hhg />
+                    </a>
+                </div>
+                <!--Logo visible en escritorio-->
+                <!-- <a href="/" class="block lg:flex">
+                <div class="brand-logo flex flex-col items-center">
+                    <h2 class="text-primary-500 font-serif font-bold">Harmony</h2>
+                    <h5 class="text-neutral-800 dark:text-neutral-200 font-serif font-medium">Hotel Group</h5>
+                </div>
+            </a> -->
+            </div>
+
+            <!--Menu y opciones de navegacion-->
+            <Navigation lang={lang} />
+
+            {/* Column 3: Action Buttons */}
+            <div class="shrink-0 flex items-center space-x-1 md:space-x-2">
+                <LanguageSwitcher lang={lang} />
+                <CurrencySwitcher lang={lang} />
+                <!--<a href="/login"-->
+                <!--   class="text-neutral-700 dark:text-neutral-300 hover:text-primary-500 dark:hover:text-primary-400">-->
+                <!--    Login </a>-->
+            </div>
+        </div>
+    </Container>
+</nav>
+
+<style>
+    .main-navigation :global(svg) {
+        width: 120px;
+        height: auto;
+    }
+
+    .animated-text {
+        font-size: 1.5rem;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(
+            90deg,
+            rgba(212, 175, 55, 1) 0%,
+            rgba(255, 215, 0, 1) 25%,
+            rgba(212, 175, 55, 1) 50%,
+            rgba(255, 215, 0, 1) 75%,
+            rgba(212, 175, 55, 1) 100%
+        );
+        background-size: 200% auto;
+        background-clip: text;
+        -webkit-background-clip: text;
+        animation: gradient 3s linear infinite;
+    }
+
+    .animated-text span.text-primary-500 {
+        position: relative;
+        z-index: 1;
+    }
+
+    @keyframes gradient {
+        0% {
+            background-position: 0 center;
+        }
+        100% {
+            background-position: 200% center;
+        }
+    }
+
+    /* Modo oscuro */
+    :global(.dark) .animated-text span.text-neutral-800 {
+        color: rgba(248, 249, 250, 1);
+    }
+</style>

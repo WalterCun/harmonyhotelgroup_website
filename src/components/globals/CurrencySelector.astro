@@ -1,5 +1,5 @@
 ---
-import { CURRENCIES } from "@/lib/constants";
+import { CURRENCIES } from "lib/constants";
 
 interface Props {
   class?: string;
@@ -31,7 +31,7 @@ const { class: className = "" } = Astro.props;
 
   // Initialize the currency selector when the DOM is loaded
   document.addEventListener('DOMContentLoaded', () => {
-    const selector = document.getElementById('currency-selector');
+    const selector = document.getElementById('currency-selector') as HTMLSelectElement;
     if (!selector) return;
 
     // Set initial value from the currency API
