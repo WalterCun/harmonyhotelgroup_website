@@ -11,7 +11,6 @@ export * from "./social-media";
 // Contact Media
 export * from "./contact";
 // Images
-export * from "./hotelsImages.ts";
-export * from "./destinationsImages.ts";
-export * from "./offersImages.ts";
+export * from "./images.ts";
+// constantes globales
 export * from "./global.ts";
