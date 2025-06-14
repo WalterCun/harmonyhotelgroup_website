@@ -1,0 +1,583 @@
+---
+import { Image } from "astro:assets";
+import { resolveImage, createLogger } from "~/utils";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  images: string[];
+  id?: string;
+  maxHeight?: string;
+  thumbnailPosition?: "bottom" | "top" | "left" | "right";
+  thumbnailSize?: number;
+}
+
+const logger = createLogger(false, "GallerySwiper2");
+
+const {
+  images,
+  id = "gallery-swiper",
+  maxHeight = "75vh", // Altura máxima por defecto
+  thumbnailPosition = "bottom", // Posición por defecto
+  thumbnailSize = 80, // Tamaño de las miniaturas por defecto
+} = Astro.props;
+
+const hasImages = images && images.length > 0;
+logger.info(`Número de imágenes: ${images?.length || 0}`);
+
+// Resolver todas las imágenes de forma asíncrona
+let resolvedImages: ({ default: ImageMetadata } | null)[] = [];
+if (hasImages) {
+  try {
+    resolvedImages = await Promise.all(
+      images.map(async (img) => {
+        try {
+          return await resolveImage(img);
+        } catch (err) {
+          logger.error(`Error al resolver imagen ${img}:`, err);
+          return null;
+        }
+      }),
+    );
+    resolvedImages = resolvedImages.filter((img) => img !== null);
+    logger.info(`Imágenes resueltas: ${resolvedImages.length}`);
+  } catch (error) {
+    logger.error("Error al resolver imágenes:", error);
+  }
+}
+
+// Calcular las dimensiones de las miniaturas basadas en la posición
+const isVertical =
+  thumbnailPosition === "left" || thumbnailPosition === "right";
+const thumbWidth = isVertical ? thumbnailSize : thumbnailSize * 1.33; // Relación 4:3
+const thumbHeight = isVertical ? thumbnailSize * 0.75 : thumbnailSize * 0.75; // Relación 4:3
+
+// Clase CSS para la posición de las miniaturas
+const containerClass = `gallery-layout-${thumbnailPosition}`;
+---
+
+<div class={`gallery-container ${containerClass}`} id={id}>
+    {hasImages && resolvedImages.length > 0 ? (
+            <>
+                {/* Layout con miniaturas y visor principal */}
+                <div class="gallery-layout">
+                    {/* Miniaturas (arriba/izquierda) */}
+                    {(thumbnailPosition === "top" || thumbnailPosition === "left") && resolvedImages.length > 1 && (
+                            <div class="thumbnails-container" id={`${id}-thumbnails`}>
+                                {resolvedImages.map((img, index) => (
+                                        <div
+                                                class={`thumbnail ${index === 0 ? 'active' : ''}`}
+                                                data-index={index}
+                                                role="button"
+                                                tabindex="0"
+                                        >
+                                            {img && img.default && (
+                                                    <Image
+                                                            src={img.default}
+                                                            alt={`Miniatura ${index + 1}`}
+                                                            width={thumbWidth}
+                                                            height={thumbHeight}
+                                                            class="w-full h-full object-cover"
+                                                    />
+                                            )}
+                                        </div>
+                                ))}
+                            </div>
+                    )}
+
+                    {/* Visor principal */}
+                    <div class="gallery-wrapper">
+                        {resolvedImages.map((img, index) => (
+                                <div class={`gallery-slide ${index === 0 ? 'active' : ''}`} data-index={index}>
+                                    {img && img.default && (
+                                            <Image
+                                                    src={img.default}
+                                                    alt={`Imagen ${index + 1}`}
+                                                    width={1200}
+                                                    height={800}
+                                                    class="w-full h-full object-cover"
+                                            />
+                                    )}
+                                </div>
+                        ))}
+
+                        {resolvedImages.length > 1 && (
+                                <>
+                                    <div class="gallery-buttons">
+                                        <button
+                                                class="gallery-button"
+                                                id={`${id}-prev`}
+                                                aria-label="Imagen anterior"
+                                        >
+                                            &larr;
+                                        </button>
+                                        <button
+                                                class="gallery-button"
+                                                id={`${id}-next`}
+                                                aria-label="Imagen siguiente"
+                                        >
+                                            &rarr;
+                                        </button>
+                                    </div>
+                                    <div class="gallery-indicators" id={`${id}-indicators`}>
+                                        {resolvedImages.map((_, index) => (
+                                                <span
+                                                        class={`indicator ${index === 0 ? "active" : ""}`}
+                                                        data-index={index}
+                                                        aria-label={`Ir a la imagen ${index + 1}`}
+                                                ></span>
+                                        ))}
+                                    </div>
+                                </>
+                        )}
+                    </div>
+
+                    {/* Miniaturas (abajo/derecha) */}
+                    {(thumbnailPosition === "bottom" || thumbnailPosition === "right") && resolvedImages.length > 1 && (
+                            <div class="thumbnails-container" id={`${id}-thumbnails`}>
+                                {resolvedImages.map((img, index) => (
+                                        <div
+                                                class={`thumbnail ${index === 0 ? 'active' : ''}`}
+                                                data-index={index}
+                                                role="button"
+                                                tabindex="0"
+                                        >
+                                            {img && img.default && (
+                                                    <Image
+                                                            src={img.default}
+                                                            alt={`Miniatura ${index + 1}`}
+                                                            width={thumbWidth}
+                                                            height={thumbHeight}
+                                                            class="w-full h-full object-cover"
+                                                    />
+                                            )}
+                                        </div>
+                                ))}
+                            </div>
+                    )}
+                </div>
+            </>
+    ) : (
+            <div class="gallery-empty">No hay imágenes disponibles</div>
+    )}
+</div>
+
+<style define:vars={{ maxHeight, thumbnailSize: `${thumbnailSize}px`, thumbWidth: `${thumbWidth}px`, thumbHeight: `${thumbHeight}px` }}>
+    .gallery-container {
+        position: relative;
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        max-height: var(--maxHeight);
+        overflow: hidden;
+        margin: auto;
+    }
+
+    /* Layouts para diferentes posiciones de miniaturas */
+    .gallery-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        height: 100%;
+    }
+
+    /* Thumbnails abajo (default) */
+    .gallery-layout-bottom .gallery-layout {
+        flex-direction: column;
+    }
+
+    /* Thumbnails arriba */
+    .gallery-layout-top .gallery-layout {
+        flex-direction: column-reverse;
+    }
+
+    /* Thumbnails a la izquierda */
+    .gallery-layout-left .gallery-layout {
+        flex-direction: row;
+    }
+
+    /* Thumbnails a la derecha */
+    .gallery-layout-right .gallery-layout {
+        flex-direction: row-reverse;
+    }
+
+    /* Contenedor del visor principal */
+    .gallery-wrapper {
+        aspect-ratio: 16/9;
+        position: relative;
+        overflow: hidden;
+        border-radius: 0.5rem;
+        max-height: var(--maxHeight);
+        flex-grow: 1;
+    }
+
+    /* Estilos para cada slide */
+    .gallery-slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.5s ease;
+    }
+
+    .gallery-slide.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .gallery-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* Botones de navegación */
+    .gallery-buttons {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        transform: translateY(-50%);
+        z-index: 10;
+        padding: 0 1rem;
+    }
+
+    .gallery-button {
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .gallery-button:hover {
+        background: rgba(0, 0, 0, 0.7);
+    }
+
+    /* Indicadores (puntos) */
+    .gallery-indicators {
+        position: absolute;
+        bottom: 1rem;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        z-index: 10;
+    }
+
+    .indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .indicator.active {
+        background: white;
+    }
+
+    .gallery-empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        background: #f5f5f5;
+        color: #666;
+        font-size: 1.2rem;
+        min-height: 300px;
+    }
+
+    /* Estilos para las miniaturas */
+    /* Horizontal (arriba/abajo) */
+    .gallery-layout-bottom .thumbnails-container,
+    .gallery-layout-top .thumbnails-container {
+        display: flex;
+        overflow-x: auto;
+        gap: 0.5rem;
+        padding: 0.5rem 0;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+    }
+
+    /* Vertical (izquierda/derecha) */
+    .gallery-layout-left .thumbnails-container,
+    .gallery-layout-right .thumbnails-container {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        gap: 0.5rem;
+        padding: 0 0.5rem;
+        max-height: var(--maxHeight);
+        width: calc(var(--thumbWidth) + 1rem);
+        scrollbar-width: thin;
+        scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+    }
+
+    /* Scrollbar para miniaturas */
+    .thumbnails-container::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    .thumbnails-container::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .thumbnails-container::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.3);
+        border-radius: 6px;
+    }
+
+    /* Miniaturas individuales */
+    .gallery-layout-bottom .thumbnail,
+    .gallery-layout-top .thumbnail {
+        flex: 0 0 auto;
+        width: var(--thumbWidth);
+        height: var(--thumbHeight);
+        border-radius: 0.25rem;
+        overflow: hidden;
+        cursor: pointer;
+        opacity: 0.6;
+        transition: opacity 0.3s, transform 0.2s;
+        border: 2px solid transparent;
+    }
+
+    .gallery-layout-left .thumbnail,
+    .gallery-layout-right .thumbnail {
+        flex: 0 0 auto;
+        width: var(--thumbWidth);
+        height: var(--thumbHeight);
+        border-radius: 0.25rem;
+        overflow: hidden;
+        cursor: pointer;
+        opacity: 0.6;
+        transition: opacity 0.3s, transform 0.2s;
+        border: 2px solid transparent;
+    }
+
+    /* Efectos hover */
+    .gallery-layout-bottom .thumbnail:hover,
+    .gallery-layout-top .thumbnail:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+    }
+
+    .gallery-layout-left .thumbnail:hover,
+    .gallery-layout-right .thumbnail:hover {
+        opacity: 0.9;
+        transform: translateX(-2px);
+    }
+
+    .thumbnail.active {
+        opacity: 1;
+        border-color: var(--primary, #1d4ed8);
+    }
+
+    .thumbnail img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+        .gallery-wrapper {
+            aspect-ratio: 4/3;
+        }
+
+        /* Cambiar a layout vertical en móviles si las miniaturas están a los lados */
+        .gallery-layout-left .gallery-layout,
+        .gallery-layout-right .gallery-layout {
+            flex-direction: column;
+        }
+
+        .gallery-layout-left .thumbnails-container,
+        .gallery-layout-right .thumbnails-container {
+            flex-direction: row;
+            width: 100%;
+            max-height: none;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0.5rem 0;
+        }
+
+        .gallery-layout-left .thumbnail,
+        .gallery-layout-right .thumbnail {
+            width: calc(var(--thumbWidth) * 0.75);
+            height: calc(var(--thumbHeight) * 0.75);
+        }
+
+        .gallery-layout-left .thumbnail:hover,
+        .gallery-layout-right .thumbnail:hover {
+            transform: translateY(-2px);
+        }
+    }
+</style>
+
+<script is:inline define:vars={{ id, slideCount: resolvedImages.length, thumbnailPosition }}>
+    document.addEventListener("DOMContentLoaded", () => {
+        try {
+            console.log(`Inicializando galería con ${slideCount} imágenes`);
+
+            const gallery = document.getElementById(id);
+            if (!gallery) return;
+
+            const slides = gallery.querySelectorAll(".gallery-slide");
+            if (!slides.length) return;
+
+            const prevBtn = document.getElementById(`${id}-prev`);
+            const nextBtn = document.getElementById(`${id}-next`);
+            const indicators = gallery.querySelectorAll(".indicator");
+            const thumbnails = gallery.querySelectorAll(".thumbnail");
+
+            let currentIndex = 0;
+
+            function showSlide(index) {
+                if (index < 0 || index >= slides.length) return;
+                if (currentIndex === index) return;
+
+                // Ocultar slide actual
+                slides[currentIndex].classList.remove("active");
+
+                // Mostrar nuevo slide
+                slides[index].classList.add("active");
+
+                // Actualizar indicadores
+                if (indicators.length) {
+                    indicators[currentIndex].classList.remove("active");
+                    indicators[index].classList.add("active");
+                }
+
+                // Actualizar miniaturas
+                if (thumbnails.length) {
+                    thumbnails[currentIndex].classList.remove("active");
+                    thumbnails[index].classList.add("active");
+
+                    // Hacer scroll para mostrar la miniatura activa
+                    const thumbnailsContainer = document.getElementById(`${id}-thumbnails`);
+                    if (thumbnailsContainer) {
+                        const activeThumb = thumbnails[index];
+                        const containerRect = thumbnailsContainer.getBoundingClientRect();
+                        const activeThumbRect = activeThumb.getBoundingClientRect();
+
+                        // Verificar si la disposición es horizontal o vertical
+                        const isVertical = thumbnailPosition === "left" || thumbnailPosition === "right";
+
+                        if (isVertical && window.innerWidth > 640) {
+                            // Scroll vertical
+                            const isOutsideTop = activeThumbRect.top < containerRect.top;
+                            const isOutsideBottom = activeThumbRect.bottom > containerRect.bottom;
+
+                            if (isOutsideTop) {
+                                thumbnailsContainer.scrollTop += activeThumbRect.top - containerRect.top - 10;
+                            } else if (isOutsideBottom) {
+                                thumbnailsContainer.scrollTop += activeThumbRect.bottom - containerRect.bottom + 10;
+                            }
+                        } else {
+                            // Scroll horizontal
+                            const isOutsideLeft = activeThumbRect.left < containerRect.left;
+                            const isOutsideRight = activeThumbRect.right > containerRect.right;
+
+                            if (isOutsideLeft) {
+                                thumbnailsContainer.scrollLeft += activeThumbRect.left - containerRect.left - 10;
+                            } else if (isOutsideRight) {
+                                thumbnailsContainer.scrollLeft += activeThumbRect.right - containerRect.right + 10;
+                            }
+                        }
+                    }
+                }
+
+                currentIndex = index;
+            }
+
+            function nextSlide() {
+                const next = (currentIndex + 1) % slides.length;
+                showSlide(next);
+            }
+
+            function prevSlide() {
+                const prev = (currentIndex - 1 + slides.length) % slides.length;
+                showSlide(prev);
+            }
+
+            // Configurar indicadores
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener("click", () => showSlide(index));
+            });
+
+            // Configurar miniaturas
+            thumbnails.forEach((thumbnail, index) => {
+                thumbnail.addEventListener("click", () => showSlide(index));
+                thumbnail.addEventListener("keydown", (e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        showSlide(index);
+                    }
+                });
+            });
+
+            // Configurar botones
+            if (prevBtn) prevBtn.addEventListener("click", prevSlide);
+            if (nextBtn) nextBtn.addEventListener("click", nextSlide);
+
+            // Configurar gestos táctiles
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            gallery.addEventListener("touchstart", (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            gallery.addEventListener("touchend", (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                const diff = touchStartX - touchEndX;
+
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) {
+                        nextSlide();
+                    } else {
+                        prevSlide();
+                    }
+                }
+            }, { passive: true });
+
+            // Función para ajustar la altura en función del ancho
+            function adjustGalleryHeight() {
+                const galleryWrapper = gallery.querySelector('.gallery-wrapper');
+                if (galleryWrapper) {
+                    const windowWidth = window.innerWidth;
+                    const galleryWidth = galleryWrapper.offsetWidth;
+
+                    // Calcular altura basada en relación de aspecto 16:9
+                    // Pero limitar a la altura máxima definida en CSS
+                    const aspectRatioHeight = galleryWidth * (9/16);
+
+                    // Aplicar altura máxima como % del viewport height si es menor que la altura calculada
+                    const maxViewportHeight = window.innerHeight * 0.75; // 75vh
+                    const effectiveHeight = Math.min(aspectRatioHeight, maxViewportHeight);
+
+                    galleryWrapper.style.height = `${effectiveHeight}px`;
+                }
+            }
+
+            // Ajustar altura inicialmente y al cambiar el tamaño
+            adjustGalleryHeight();
+            window.addEventListener('resize', adjustGalleryHeight);
+        } catch (error) {
+            console.error(`Error en la galería ${id}:`, error);
+        }
+    });
+</script>

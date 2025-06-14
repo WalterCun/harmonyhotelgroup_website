@@ -23,7 +23,7 @@ interface Props {
 
 const {
   images,
-  id = `image-gallery-${Math.floor(Math.random() * 10000)}`,
+  id = "image-gallery",
   className = "",
   aspectRatio = "16/9",
   navigation = true,
@@ -32,48 +32,31 @@ const {
   loop = true,
   autoplay = false,
   autoplayDelay = 3000,
-  thumbnails = false,
+  thumbnails = true,
   lazy = true,
   quality = 80,
-  fullscreen = true,
+  fullscreen = false,
 } = Astro.props;
-
-// Verificar que hay imágenes para mostrar
-const hasImages = images && images.length > 0;
-
-// Preparar las opciones para el script
-const glideOptions = JSON.stringify({
-  id,
-  navigation,
-  pagination,
-  effect,
-  loop,
-  autoplay,
-  autoplayDelay,
-  thumbnails,
-  fullscreen,
-});
 ---
 
-{hasImages ? (
 <div class={`image-gallery-container ${className}`}>
     <div class="glide" id={id} style={`aspect-ratio: ${aspectRatio}`}>
         <div class="glide__track" data-glide-el="track">
             <ul class="glide__slides">
                 {images.map((image, index) => (
-                        <li class="glide__slide">
-                            <div class="image-wrapper">
-                                <Image
-                                        src={resolveImage(image)}
-                                        alt={`Gallery image ${index + 1}`}
-                                        width={2000}
-                                        height={1000}
-                                        loading={lazy ? "lazy" : "eager"}
-                                        format="webp"
-                                        quality={quality}
-                                />
-                            </div>
-                        </li>
+                    <li class="glide__slide">
+                        <div class="image-wrapper">
+                            <Image
+                                src={resolveImage(image)}
+                                alt={`Gallery image ${index + 1}`}
+                                width={2000}
+                                height={1000}
+                                loading={lazy ? "lazy" : "eager"}
+                                format="webp"
+                                quality={quality}
+                            />
+                        </div>
+                    </li>
                 ))}
             </ul>
         </div>
@@ -106,8 +89,8 @@ const glideOptions = JSON.stringify({
             <div class="thumbnails-container" id={`${id}-thumbs`}>
                 <div class="thumbnails-track">
                     {images.map((image, index) => (
-                            <div class="thumbnail-item" data-index={index}>
-                                <div class="thumb-wrapper">
+                        <div class="thumbnail-item cursor-pointer" data-index={index}>
+                            <div class="thumb-wrapper">
                                     <Image
                                             src={resolveImage(image)}
                                             alt={`Miniatura ${index + 1}`}
@@ -117,8 +100,8 @@ const glideOptions = JSON.stringify({
                                             format="webp"
                                             quality={90}
                                     />
-                                </div>
                             </div>
+                        </div>
                     ))}
                 </div>
             </div>
@@ -181,18 +164,6 @@ const glideOptions = JSON.stringify({
         </div>
     </div>
 </div>
-    ) : (
-<div class={`image-gallery-placeholder ${className}`} style={`aspect-ratio: ${aspectRatio}`}>
-    <div class="placeholder-content">
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-            <circle cx="8.5" cy="8.5" r="1.5"></circle>
-            <polyline points="21 15 16 10 5 21"></polyline>
-        </svg>
-        <p>No hay imágenes disponibles</p>
-    </div>
-</div>
-    )}
 
 <style>
     .image-gallery-container {
@@ -236,11 +207,11 @@ const glideOptions = JSON.stringify({
         flex: 0 0 auto;
         width: 100px;
         cursor: pointer;
+        opacity: 0.6;
     }
 
     .thumb-wrapper {
         height: 100%;
-        opacity: 0.6;
         transition: opacity 0.3s;
         border: 2px solid transparent;
         border-radius: 0.25rem;
@@ -459,199 +430,23 @@ const glideOptions = JSON.stringify({
     }
 </style>
 
-<script define:vars={{ glideOptions }}>
+<script>
     import Glide from '@glidejs/glide';
 
-    // Función para limpiar event listeners
-    const cleanupListeners = (id) => {
-        const fullscreenButton = document.getElementById(`${id}-fullscreen`);
-        const closeButton = document.getElementById(`${id}-close`);
+    const carrousel = new Glide("#image-gallery").mount();
+    const thums = document.querySelectorAll(".thumbnail-item") as NodeListOf<HTMLElement>;
 
-        if (fullscreenButton) {
-            const newButton = fullscreenButton.cloneNode(true);
-            fullscreenButton.parentNode.replaceChild(newButton, fullscreenButton);
-        }
-
-        if (closeButton) {
-            const newCloseButton = closeButton.cloneNode(true);
-            closeButton.parentNode.replaceChild(newCloseButton, closeButton);
-        }
-
-        // Limpiar listener de tecla escape
-        document.removeEventListener('keydown', escKeyHandler);
-    };
-
-    // Manejador para la tecla Escape
-    function escKeyHandler(event) {
-        if (event.key === 'Escape') {
-            const options = JSON.parse(glideOptions);
-            const overlay = document.getElementById(`${options.id}-overlay`);
-            if (overlay && !overlay.classList.contains('hidden')) {
-                const closeButton = document.getElementById(`${options.id}-close`);
-                closeButton?.click();
-            }
-        }
-    }
-
-    function initializeGallery() {
-        try {
-            const options = JSON.parse(glideOptions);
-            let mainGlide;
-            let fullscreenGlide;
-
-            // Limpiar event listeners anteriores
-            cleanupListeners(options.id);
-
-            // Configuración para Glide
-            const glideConfig = {
-                type: 'carousel',
-                perView: 1,
-                gap: 0,
-                keyboard: true,
-                animationDuration: 400,
-                rewind: options.loop,
-                hoverpause: true
-            };
-
-            // Añadir autoplay si está activado
-            if (options.autoplay) {
-                glideConfig.autoplay = options.autoplayDelay;
-            }
-
-            // Aplicar el efecto si está especificado
-            if (options.effect === 'fade') {
-                glideConfig.animationTimingFunc = 'ease-out';
-                // Aquí se podrían añadir más configuraciones específicas para el efecto fade
-            }
-
-            // Inicializar el slider principal
-            const glideElement = document.getElementById(options.id);
-            if (glideElement) {
-                mainGlide = new Glide(`#${options.id}`, glideConfig);
-                mainGlide.mount();
-
-                // Marcar los bullets activos correctamente
-                mainGlide.on('run', () => {
-                    const bullets = document.querySelectorAll(`#${options.id} .glide__bullet`);
-                    bullets.forEach((bullet, index) => {
-                        if (index === mainGlide.index) {
-                            bullet.classList.add('glide__bullet--active');
-                        } else {
-                            bullet.classList.remove('glide__bullet--active');
-                        }
-                    });
-                });
-            }
-
-            // Gestionar miniaturas si están habilitadas
-            if (options.thumbnails) {
-                const thumbnailItems = document.querySelectorAll(`#${options.id}-thumbs .thumbnail-item`);
-
-                // Marcar la primera miniatura como activa
-                if (thumbnailItems.length > 0) {
-                    thumbnailItems[0].classList.add('active');
-                }
-
-                // Añadir event listeners a las miniaturas
-                thumbnailItems.forEach((item) => {
-                    item.addEventListener('click', () => {
-                        const index = parseInt(item.dataset.index, 10);
-                        if (mainGlide) {
-                            mainGlide.go(`=${index}`);
-                        }
-
-                        // Actualizar clase activa
-                        thumbnailItems.forEach(thumb => thumb.classList.remove('active'));
-                        item.classList.add('active');
-                    });
-                });
-
-                // Actualizar miniaturas cuando cambie el slide
-                if (mainGlide) {
-                    mainGlide.on('run', () => {
-                        const index = mainGlide.index;
-                        thumbnailItems.forEach(thumb => thumb.classList.remove('active'));
-                        if (thumbnailItems[index]) {
-                            thumbnailItems[index].classList.add('active');
-                        }
-                    });
-                }
-            }
-
-            // Gestión de vista completa si está habilitada
-            if (options.fullscreen) {
-                const fullscreenButton = document.getElementById(`${options.id}-fullscreen`);
-                const fullscreenOverlay = document.getElementById(`${options.id}-overlay`);
-                const closeButton = document.getElementById(`${options.id}-close`);
-
-                fullscreenButton?.addEventListener('click', function() {
-                    if (fullscreenOverlay) {
-                        fullscreenOverlay.classList.remove('hidden');
-                        document.body.style.overflow = 'hidden';
-
-                        // Inicializar Glide en pantalla completa
-                        fullscreenGlide = new Glide(`#${options.id}-fullscreen-glide`, {
-                            ...glideConfig,
-                            startAt: mainGlide ? mainGlide.index : 0
-                        });
-                        fullscreenGlide.mount();
-
-                        // Añadir listener para la tecla Escape
-                        document.addEventListener('keydown', escKeyHandler);
-                    }
-                });
-
-                closeButton?.addEventListener('click', function() {
-                    if (fullscreenOverlay) {
-                        fullscreenOverlay.classList.add('hidden');
-                        document.body.style.overflow = '';
-
-                        // Actualizar el índice del Glide principal
-                        if (fullscreenGlide && mainGlide) {
-                            mainGlide.go(`=${fullscreenGlide.index}`);
-                        }
-
-                        // Destruir el Glide en pantalla completa
-                        if (fullscreenGlide) {
-                            fullscreenGlide.destroy();
-                            fullscreenGlide = null;
-                        }
-
-                        // Eliminar listener de tecla Escape
-                        document.removeEventListener('keydown', escKeyHandler);
-                    }
-                });
-            }
-
-            return () => {
-                // Función de limpieza
-                if (mainGlide) {
-                    mainGlide.destroy();
-                }
-                if (fullscreenGlide) {
-                    fullscreenGlide.destroy();
-                }
-                cleanupListeners(options.id);
-            };
-        } catch (error) {
-            console.error('Error al inicializar la galería:', error);
-        }
-    }
-
-    // Inicializar al cargar la página
-    let cleanup;
-    document.addEventListener('DOMContentLoaded', () => {
-        cleanup = initializeGallery();
-    });
-
-    // Re-inicializar cuando ocurra una navegación en Astro
-    document.addEventListener('astro:page-load', () => {
-        if (cleanup) cleanup();
-        cleanup = initializeGallery();
-    });
-
-    // Limpiar cuando se desmonte la página
-    document.addEventListener('astro:before-swap', () => {
-        if (cleanup) cleanup();
-    });
+    thums.forEach((item, index) => {
+        item.addEventListener('click', () => {
+            carrousel.go(`=${index}`);
+            thums.forEach(t => {
+                t.style.opacity = '0.6';
+                t.style.border = 'none';
+                t.style.borderColor = 'transparent';
+            });
+            item.style.opacity = '1';
+            item.style.border = '2px solid';
+            item.style.borderColor = '#007aff';
+        })
+    })
 </script>
