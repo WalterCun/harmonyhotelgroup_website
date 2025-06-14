@@ -1,9 +1,7 @@
 ---
 import { Image } from "astro:assets";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/effect-fade";
+import "@glidejs/glide/dist/css/glide.core.min.css";
+import "@glidejs/glide/dist/css/glide.theme.min.css";
 import { resolveImage } from "../../../utils";
 
 interface Props {
@@ -13,7 +11,7 @@ interface Props {
   aspectRatio?: string;
   navigation?: boolean;
   pagination?: boolean;
-  effect?: "slide" | "fade" | "cube" | "coverflow" | "flip";
+  effect?: "slide" | "fade";
   loop?: boolean;
   autoplay?: boolean;
   autoplayDelay?: number;
@@ -43,8 +41,8 @@ const {
 // Verificar que hay imágenes para mostrar
 const hasImages = images && images.length > 0;
 
-// Prepara las opciones de Swiper como JSON para pasarlas al script del cliente
-const swiperOptions = JSON.stringify({
+// Preparar las opciones para el script
+const glideOptions = JSON.stringify({
   id,
   navigation,
   pagination,
@@ -59,90 +57,127 @@ const swiperOptions = JSON.stringify({
 
 {hasImages ? (
 <div class={`image-gallery-container ${className}`}>
-    <div class="swiper-main" id={id} style={`aspect-ratio: ${aspectRatio}`}>
-        <div class="swiper-wrapper">
-            {images.map((image, index) => (
-                <div class="swiper-slide">
-                    <div class="image-wrapper">
-                        <Image
-                            src={resolveImage(image)}
-                            alt="Gallery Hotel"
-                            width={2000}
-                            height={1000}
-                            loading={lazy ? "lazy" : "eager"}
-                            format="webp"
-                            quality={quality}
-                        />
-                    </div>
-                </div>
-            ))}
+    <div class="glide" id={id} style={`aspect-ratio: ${aspectRatio}`}>
+        <div class="glide__track" data-glide-el="track">
+            <ul class="glide__slides">
+                {images.map((image, index) => (
+                        <li class="glide__slide">
+                            <div class="image-wrapper">
+                                <Image
+                                        src={resolveImage(image)}
+                                        alt={`Gallery image ${index + 1}`}
+                                        width={2000}
+                                        height={1000}
+                                        loading={lazy ? "lazy" : "eager"}
+                                        format="webp"
+                                        quality={quality}
+                                />
+                            </div>
+                        </li>
+                ))}
+            </ul>
         </div>
         {navigation && (
-            <>
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
-            </>
+                <div class="glide__arrows" data-glide-el="controls">
+                    <button class="glide__arrow glide__arrow--left" data-glide-dir="<">
+                        <span class="sr-only">Anterior</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M15 18l-6-6 6-6" />
+                        </svg>
+                    </button>
+                    <button class="glide__arrow glide__arrow--right" data-glide-dir=">">
+                        <span class="sr-only">Siguiente</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 18l6-6-6-6" />
+                        </svg>
+                    </button>
+                </div>
         )}
-        {pagination && <div class="swiper-pagination"></div>}
+        {pagination && (
+                <div class="glide__bullets" data-glide-el="controls[nav]">
+                    {images.map((_, index) => (
+                            <button class="glide__bullet" data-glide-dir={`=${index}`} aria-label={`Ir a diapositiva ${index + 1}`}></button>
+                    ))}
+                </div>
+        )}
     </div>
+
     {thumbnails && (
-        <div class="swiper-thumbs" id={`${id}-thumbs`}>
-            <div class="swiper-wrapper">
-                {images.map((image, index) => (
-                    <div class="swiper-slide">
-                        <div class="thumb-wrapper">
-                            <Image
-                                src={resolveImage(image)}
-                                alt={`Thumbnail ${index + 1}`}
-                                width={100}
-                                height={75}
-                                loading="lazy"
-                                format="webp"
-                                quality={90}
-                            />
-                        </div>
-                    </div>
-                ))}
+            <div class="thumbnails-container" id={`${id}-thumbs`}>
+                <div class="thumbnails-track">
+                    {images.map((image, index) => (
+                            <div class="thumbnail-item" data-index={index}>
+                                <div class="thumb-wrapper">
+                                    <Image
+                                            src={resolveImage(image)}
+                                            alt={`Miniatura ${index + 1}`}
+                                            width={100}
+                                            height={75}
+                                            loading="lazy"
+                                            format="webp"
+                                            quality={90}
+                                    />
+                                </div>
+                            </div>
+                    ))}
+                </div>
             </div>
-        </div>
     )}
 
     {fullscreen && (
-        <div class="fullscreen-button" id={`${id}-fullscreen`}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
-            </svg>
-        </div>
+            <button class="fullscreen-button" id={`${id}-fullscreen`} aria-label="Ver en pantalla completa">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                </svg>
+            </button>
     )}
 
     <div class="fullscreen-overlay hidden" id={`${id}-overlay`}>
-        <div class="fullscreen-close" id={`${id}-close`}>
+        <button class="fullscreen-close" id={`${id}-close`} aria-label="Cerrar pantalla completa">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
-        </div>
-        <div class="fullscreen-swiper" id={`${id}-fullscreen-swiper`}>
-            <div class="swiper-wrapper">
-                {images.map((image, index) => (
-                    <div class="swiper-slide">
-                        <div class="image-wrapper">
-                            <Image
-                                src={resolveImage(image)}
-                                alt={image}
-                                width={1200}
-                                height={900}
-                                loading="lazy"
-                                format="webp"
-                                quality={90}
-                            />
-                        </div>
-                    </div>
+        </button>
+        <div class="fullscreen-glide" id={`${id}-fullscreen-glide`}>
+            <div class="glide__track" data-glide-el="track">
+                <ul class="glide__slides">
+                    {images.map((image, index) => (
+                            <li class="glide__slide">
+                                <div class="image-wrapper">
+                                    <Image
+                                            src={resolveImage(image)}
+                                            alt={`Imagen ${index + 1}`}
+                                            width={1200}
+                                            height={900}
+                                            loading="lazy"
+                                            format="webp"
+                                            quality={90}
+                                    />
+                                </div>
+                            </li>
+                    ))}
+                </ul>
+            </div>
+            <div class="glide__arrows" data-glide-el="controls">
+                <button class="glide__arrow glide__arrow--left" data-glide-dir="<">
+                    <span class="sr-only">Anterior</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                </button>
+                <button class="glide__arrow glide__arrow--right" data-glide-dir=">">
+                    <span class="sr-only">Siguiente</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6" />
+                    </svg>
+                </button>
+            </div>
+            <div class="glide__bullets" data-glide-el="controls[nav]">
+                {images.map((_, index) => (
+                        <button class="glide__bullet" data-glide-dir={`=${index}`} aria-label={`Ir a diapositiva ${index + 1}`}></button>
                 ))}
             </div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-pagination"></div>
         </div>
     </div>
 </div>
@@ -159,7 +194,6 @@ const swiperOptions = JSON.stringify({
 </div>
     )}
 
-<!-- Estilos para el componente -->
 <style>
     .image-gallery-container {
         position: relative;
@@ -168,12 +202,6 @@ const swiperOptions = JSON.stringify({
         overflow: hidden;
         border-radius: 0.5rem;
         background-color: rgba(0, 0, 0, 0.03);
-    }
-
-    .swiper-main {
-        width: 100%;
-        overflow: hidden;
-        position: relative;
     }
 
     .image-wrapper {
@@ -191,15 +219,28 @@ const swiperOptions = JSON.stringify({
         display: block;
     }
 
-    .swiper-thumbs {
+    /* Estilos para miniaturas */
+    .thumbnails-container {
         margin-top: 0.75rem;
         height: 80px;
+        overflow: hidden;
+    }
+
+    .thumbnails-track {
+        display: flex;
+        gap: 10px;
+        height: 100%;
+    }
+
+    .thumbnail-item {
+        flex: 0 0 auto;
+        width: 100px;
+        cursor: pointer;
     }
 
     .thumb-wrapper {
         height: 100%;
         opacity: 0.6;
-        cursor: pointer;
         transition: opacity 0.3s;
         border: 2px solid transparent;
         border-radius: 0.25rem;
@@ -212,17 +253,19 @@ const swiperOptions = JSON.stringify({
         object-fit: cover;
     }
 
-    .swiper-slide-thumb-active .thumb-wrapper {
+    .thumbnail-item.active .thumb-wrapper {
         opacity: 1;
-        border-color: var(--swiper-theme-color, #007aff);
+        border-color: var(--gallery-theme-color, #007aff);
     }
 
+    /* Botón de pantalla completa */
     .fullscreen-button {
         position: absolute;
         top: 0.75rem;
         right: 0.75rem;
         background: rgba(0, 0, 0, 0.5);
         color: white;
+        border: none;
         border-radius: 50%;
         width: 2.5rem;
         height: 2.5rem;
@@ -238,6 +281,7 @@ const swiperOptions = JSON.stringify({
         background: rgba(0, 0, 0, 0.7);
     }
 
+    /* Overlay de pantalla completa */
     .fullscreen-overlay {
         position: fixed;
         top: 0;
@@ -260,6 +304,7 @@ const swiperOptions = JSON.stringify({
         top: 1.5rem;
         right: 1.5rem;
         background: rgba(255, 255, 255, 0.2);
+        border: none;
         color: white;
         border-radius: 50%;
         width: 3rem;
@@ -276,17 +321,17 @@ const swiperOptions = JSON.stringify({
         background: rgba(255, 255, 255, 0.3);
     }
 
-    .fullscreen-swiper {
+    .fullscreen-glide {
         width: 90%;
         max-width: 1200px;
         height: 80vh;
     }
 
-    .fullscreen-swiper .image-wrapper {
+    .fullscreen-glide .image-wrapper {
         height: 100%;
     }
 
-    .fullscreen-swiper .image-wrapper img {
+    .fullscreen-glide .image-wrapper img {
         max-height: 100%;
         max-width: 100%;
         width: auto;
@@ -294,6 +339,7 @@ const swiperOptions = JSON.stringify({
         object-fit: contain;
     }
 
+    /* Estilos para el placeholder */
     .image-gallery-placeholder {
         width: 100%;
         background-color: rgba(0, 0, 0, 0.05);
@@ -318,34 +364,9 @@ const swiperOptions = JSON.stringify({
         font-size: 0.875rem;
     }
 
+    /* Variables de tema */
     :root {
-        --swiper-theme-color: #0077cc;
-        --swiper-navigation-size: 24px;
-    }
-
-    /* Personalización de los controles de Swiper */
-    .swiper-button-next,
-    .swiper-button-prev {
-        background-color: rgba(255, 255, 255, 0.6);
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        color: #333;
-    }
-
-    .swiper-button-next:hover,
-    .swiper-button-prev:hover {
-        background-color: rgba(255, 255, 255, 0.9);
-    }
-
-    .swiper-pagination-bullet {
-        width: 10px;
-        height: 10px;
-        background: rgba(255, 255, 255, 0.7);
-    }
-
-    .swiper-pagination-bullet-active {
-        background: var(--swiper-theme-color);
+        --gallery-theme-color: #0077cc;
     }
 
     /* Personalización para modo oscuro */
@@ -357,160 +378,280 @@ const swiperOptions = JSON.stringify({
         .placeholder-content {
             color: rgba(255, 255, 255, 0.5);
         }
+    }
 
-        .swiper-button-next,
-        .swiper-button-prev {
-            background-color: rgba(0, 0, 0, 0.6);
-            color: #fff;
-        }
+    /* Estilos para flechas de Glide */
+    .glide__arrows {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
 
-        .swiper-button-next:hover,
-        .swiper-button-prev:hover {
-            background-color: rgba(0, 0, 0, 0.8);
-        }
+    .glide__arrow {
+        position: absolute;
+        background-color: rgba(255, 255, 255, 0.6);
+        color: #333;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translateY(-50%);
+        pointer-events: auto;
+        padding: 0;
+        z-index: 2;
+    }
+
+    .glide__arrow--left {
+        left: 15px;
+    }
+
+    .glide__arrow--right {
+        right: 15px;
+    }
+
+    .glide__arrow:hover {
+        background-color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* Puntos de navegación */
+    .glide__bullets {
+        position: absolute;
+        bottom: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        justify-content: center;
+        z-index: 2;
+    }
+
+    .glide__bullet {
+        background: rgba(255, 255, 255, 0.7);
+        width: 10px;
+        height: 10px;
+        border: none;
+        border-radius: 50%;
+        margin: 0 4px;
+        cursor: pointer;
+        padding: 0;
+    }
+
+    .glide__bullet--active {
+        background: var(--gallery-theme-color, #0077cc);
+    }
+
+    /* Para esconder texto solo visible para lectores de pantalla */
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
     }
 </style>
 
-<!-- Script del cliente para inicializar Swiper -->
-<script define:vars={{ swiperOptions }}>
-    // Importa Swiper al cliente
-    import Swiper from 'swiper/bundle';
+<script define:vars={{ glideOptions }}>
+    import Glide from '@glidejs/glide';
 
-    // Función para inicializar el Swiper
-    function initializeGallery() {
-        const options = JSON.parse(swiperOptions);
+    // Función para limpiar event listeners
+    const cleanupListeners = (id) => {
+        const fullscreenButton = document.getElementById(`${id}-fullscreen`);
+        const closeButton = document.getElementById(`${id}-close`);
 
-        // Configuración principal del Swiper
-        let mainSwiperConfig = {
-            slidesPerView: 1,
-            spaceBetween: 0,
-            effect: options.effect,
-            loop: options.loop,
-            watchSlidesProgress: options.thumbnails,
-            keyboard: {
-                enabled: true,
+        if (fullscreenButton) {
+            const newButton = fullscreenButton.cloneNode(true);
+            fullscreenButton.parentNode.replaceChild(newButton, fullscreenButton);
+        }
+
+        if (closeButton) {
+            const newCloseButton = closeButton.cloneNode(true);
+            closeButton.parentNode.replaceChild(newCloseButton, closeButton);
+        }
+
+        // Limpiar listener de tecla escape
+        document.removeEventListener('keydown', escKeyHandler);
+    };
+
+    // Manejador para la tecla Escape
+    function escKeyHandler(event) {
+        if (event.key === 'Escape') {
+            const options = JSON.parse(glideOptions);
+            const overlay = document.getElementById(`${options.id}-overlay`);
+            if (overlay && !overlay.classList.contains('hidden')) {
+                const closeButton = document.getElementById(`${options.id}-close`);
+                closeButton?.click();
             }
-        };
-
-        // Agrega navegación si está habilitada
-        if (options.navigation) {
-            mainSwiperConfig.navigation = {
-                nextEl: `#${options.id} .swiper-button-next`,
-                prevEl: `#${options.id} .swiper-button-prev`,
-            };
-        }
-
-        // Agrega paginación si está habilitada
-        if (options.pagination) {
-            mainSwiperConfig.pagination = {
-                el: `#${options.id} .swiper-pagination`,
-                clickable: true,
-            };
-        }
-
-        // Agrega autoplay si está habilitado
-        if (options.autoplay) {
-            mainSwiperConfig.autoplay = {
-                delay: options.autoplayDelay,
-                disableOnInteraction: false,
-            };
-        }
-
-        // Inicializa el Swiper principal
-        let mainSwiper = new Swiper(`#${options.id}`, mainSwiperConfig);
-
-        // Si hay miniaturas, inicializa el Swiper de miniaturas
-        if (options.thumbnails) {
-            const thumbsSwiper = new Swiper(`#${options.id}-thumbs`, {
-                slidesPerView: 'auto',
-                spaceBetween: 10,
-                threshold: 10,
-                watchSlidesProgress: true,
-                slideToClickedSlide: true,
-                breakpoints: {
-                    320: {
-                        slidesPerView: 3,
-                    },
-                    640: {
-                        slidesPerView: 4,
-                    },
-                    768: {
-                        slidesPerView: 5,
-                    },
-                    1024: {
-                        slidesPerView: 6,
-                    },
-                },
-            });
-
-            // Conecta ambos Swipers
-            mainSwiper.thumbs = { swiper: thumbsSwiper };
-
-            // Sincroniza la navegación entre ambos Swipers
-            mainSwiper.on('slideChange', function() {
-                thumbsSwiper.slideTo(mainSwiper.activeIndex);
-            });
-
-            thumbsSwiper.on('slideChange', function() {
-                mainSwiper.slideTo(thumbsSwiper.activeIndex);
-            });
-        }
-
-        // Gestión de vista completa si está habilitada
-        if (options.fullscreen) {
-            const fullscreenButton = document.getElementById(`${options.id}-fullscreen`);
-            const fullscreenOverlay = document.getElementById(`${options.id}-overlay`);
-            const closeButton = document.getElementById(`${options.id}-close`);
-            let fullscreenSwiper;
-
-            fullscreenButton?.addEventListener('click', function() {
-                fullscreenOverlay?.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
-
-                // Inicializa el Swiper en pantalla completa
-                fullscreenSwiper = new Swiper(`#${options.id}-fullscreen-swiper`, {
-                    slidesPerView: 1,
-                    spaceBetween: 0,
-                    initialSlide: mainSwiper.activeIndex,
-                    navigation: {
-                        nextEl: `#${options.id}-fullscreen-swiper .swiper-button-next`,
-                        prevEl: `#${options.id}-fullscreen-swiper .swiper-button-prev`,
-                    },
-                    pagination: {
-                        el: `#${options.id}-fullscreen-swiper .swiper-pagination`,
-                        clickable: true,
-                    },
-                    keyboard: {
-                        enabled: true,
-                    },
-                });
-            });
-
-            closeButton?.addEventListener('click', function() {
-                fullscreenOverlay?.classList.add('hidden');
-                document.body.style.overflow = '';
-
-                // Actualiza el índice del Swiper principal
-                if (fullscreenSwiper) {
-                    mainSwiper.slideTo(fullscreenSwiper.activeIndex);
-                    // Destruye el Swiper en pantalla completa para liberar memoria
-                    fullscreenSwiper.destroy();
-                    fullscreenSwiper = undefined;
-                }
-            });
-
-            // Cierra la vista completa al presionar Escape
-            document.addEventListener('keydown', function(event) {
-                if (event.key === 'Escape' && !fullscreenOverlay?.classList.contains('hidden')) {
-                    closeButton?.click();
-                }
-            });
         }
     }
 
-    // Inicializa al cargar la página
-    document.addEventListener('DOMContentLoaded', initializeGallery);
+    function initializeGallery() {
+        try {
+            const options = JSON.parse(glideOptions);
+            let mainGlide;
+            let fullscreenGlide;
 
-    // Re-inicializa cuando ocurra una navegación en Astro
-    document.addEventListener('astro:page-load', initializeGallery);
+            // Limpiar event listeners anteriores
+            cleanupListeners(options.id);
+
+            // Configuración para Glide
+            const glideConfig = {
+                type: 'carousel',
+                perView: 1,
+                gap: 0,
+                keyboard: true,
+                animationDuration: 400,
+                rewind: options.loop,
+                hoverpause: true
+            };
+
+            // Añadir autoplay si está activado
+            if (options.autoplay) {
+                glideConfig.autoplay = options.autoplayDelay;
+            }
+
+            // Aplicar el efecto si está especificado
+            if (options.effect === 'fade') {
+                glideConfig.animationTimingFunc = 'ease-out';
+                // Aquí se podrían añadir más configuraciones específicas para el efecto fade
+            }
+
+            // Inicializar el slider principal
+            const glideElement = document.getElementById(options.id);
+            if (glideElement) {
+                mainGlide = new Glide(`#${options.id}`, glideConfig);
+                mainGlide.mount();
+
+                // Marcar los bullets activos correctamente
+                mainGlide.on('run', () => {
+                    const bullets = document.querySelectorAll(`#${options.id} .glide__bullet`);
+                    bullets.forEach((bullet, index) => {
+                        if (index === mainGlide.index) {
+                            bullet.classList.add('glide__bullet--active');
+                        } else {
+                            bullet.classList.remove('glide__bullet--active');
+                        }
+                    });
+                });
+            }
+
+            // Gestionar miniaturas si están habilitadas
+            if (options.thumbnails) {
+                const thumbnailItems = document.querySelectorAll(`#${options.id}-thumbs .thumbnail-item`);
+
+                // Marcar la primera miniatura como activa
+                if (thumbnailItems.length > 0) {
+                    thumbnailItems[0].classList.add('active');
+                }
+
+                // Añadir event listeners a las miniaturas
+                thumbnailItems.forEach((item) => {
+                    item.addEventListener('click', () => {
+                        const index = parseInt(item.dataset.index, 10);
+                        if (mainGlide) {
+                            mainGlide.go(`=${index}`);
+                        }
+
+                        // Actualizar clase activa
+                        thumbnailItems.forEach(thumb => thumb.classList.remove('active'));
+                        item.classList.add('active');
+                    });
+                });
+
+                // Actualizar miniaturas cuando cambie el slide
+                if (mainGlide) {
+                    mainGlide.on('run', () => {
+                        const index = mainGlide.index;
+                        thumbnailItems.forEach(thumb => thumb.classList.remove('active'));
+                        if (thumbnailItems[index]) {
+                            thumbnailItems[index].classList.add('active');
+                        }
+                    });
+                }
+            }
+
+            // Gestión de vista completa si está habilitada
+            if (options.fullscreen) {
+                const fullscreenButton = document.getElementById(`${options.id}-fullscreen`);
+                const fullscreenOverlay = document.getElementById(`${options.id}-overlay`);
+                const closeButton = document.getElementById(`${options.id}-close`);
+
+                fullscreenButton?.addEventListener('click', function() {
+                    if (fullscreenOverlay) {
+                        fullscreenOverlay.classList.remove('hidden');
+                        document.body.style.overflow = 'hidden';
+
+                        // Inicializar Glide en pantalla completa
+                        fullscreenGlide = new Glide(`#${options.id}-fullscreen-glide`, {
+                            ...glideConfig,
+                            startAt: mainGlide ? mainGlide.index : 0
+                        });
+                        fullscreenGlide.mount();
+
+                        // Añadir listener para la tecla Escape
+                        document.addEventListener('keydown', escKeyHandler);
+                    }
+                });
+
+                closeButton?.addEventListener('click', function() {
+                    if (fullscreenOverlay) {
+                        fullscreenOverlay.classList.add('hidden');
+                        document.body.style.overflow = '';
+
+                        // Actualizar el índice del Glide principal
+                        if (fullscreenGlide && mainGlide) {
+                            mainGlide.go(`=${fullscreenGlide.index}`);
+                        }
+
+                        // Destruir el Glide en pantalla completa
+                        if (fullscreenGlide) {
+                            fullscreenGlide.destroy();
+                            fullscreenGlide = null;
+                        }
+
+                        // Eliminar listener de tecla Escape
+                        document.removeEventListener('keydown', escKeyHandler);
+                    }
+                });
+            }
+
+            return () => {
+                // Función de limpieza
+                if (mainGlide) {
+                    mainGlide.destroy();
+                }
+                if (fullscreenGlide) {
+                    fullscreenGlide.destroy();
+                }
+                cleanupListeners(options.id);
+            };
+        } catch (error) {
+            console.error('Error al inicializar la galería:', error);
+        }
+    }
+
+    // Inicializar al cargar la página
+    let cleanup;
+    document.addEventListener('DOMContentLoaded', () => {
+        cleanup = initializeGallery();
+    });
+
+    // Re-inicializar cuando ocurra una navegación en Astro
+    document.addEventListener('astro:page-load', () => {
+        if (cleanup) cleanup();
+        cleanup = initializeGallery();
+    });
+
+    // Limpiar cuando se desmonte la página
+    document.addEventListener('astro:before-swap', () => {
+        if (cleanup) cleanup();
+    });
 </script>

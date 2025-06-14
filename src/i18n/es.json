@@ -223,6 +223,13 @@
       }
     }
   },
+  "hotels": {
+    "index": {
+      "page_title": "Nuestros hoteles",
+      "title": "Nuestros hoteles",
+      "subtitle": "Descubra nuestra colección de hoteles en los destinos más deseados del Ecuador."
+    }
+  },
   "layouts": {
     "layout": {
       "meta": {
