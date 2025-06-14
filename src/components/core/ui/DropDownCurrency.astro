@@ -11,7 +11,7 @@ const { lang } = Astro.props;
 ---
 
 <div class="relative">
-    <button id="currency-toggle" class="flex items-center text-neutral-700 hover:text-primary-500">
+    <button id="currency-toggle" class="flex items-center text-white hover:text-primary transition-colors duration-200 cursor-pointer">
         <span id="current-currency">USD</span>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 ml-1">
             <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
@@ -23,7 +23,7 @@ const { lang } = Astro.props;
                 <button
                         data-currency-code={currency.code}
                         data-currency-symbol={currency.symbol}
-                        class="w-full text-left px-4 py-2 text-neutral-700 hover:bg-neutral-100"
+                        class="w-full text-left px-4 py-2 text-neutral-700 hover:bg-primary hover:text-white transition-colors duration-200"
                 >
                     <span class="mr-2">{currency.symbol}</span>{currency.label}
                 </button>
@@ -38,24 +38,24 @@ const { lang } = Astro.props;
         const currentCurrency = document.getElementById('current-currency');
         const currencyButtons = document.querySelectorAll('[data-currency-code]');
 
-        // Toggle dropdown
         currencyToggle?.addEventListener('click', (e) => {
             e.stopPropagation();
             currencyDropdown?.classList.toggle('hidden');
         });
 
-        // Handle currency selection
+        // Add mouseleave event listener to hide dropdown when cursor leaves
+        currencyDropdown?.addEventListener('mouseleave', () => {
+            currencyDropdown.classList.add('hidden');
+        });
+
         currencyButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const currencyCode = button.getAttribute('data-currency-code');
 
-                // Update display
                 if (currentCurrency && currencyCode) {
                     currentCurrency.textContent = currencyCode;
                 }
 
-                // In a real implementation, this would update prices throughout the site
-                // could dispatch a custom event that components listen for
                 const event = new CustomEvent('currencychange', {
                     detail: {
                         code: currencyCode,
@@ -64,12 +64,10 @@ const { lang } = Astro.props;
                 });
                 document.dispatchEvent(event);
 
-                // Close dropdown
                 currencyDropdown?.classList.add('hidden');
             });
         });
 
-        // Close dropdown when clicking outside
         document.addEventListener('click', () => {
             currencyDropdown?.classList.add('hidden');
         });

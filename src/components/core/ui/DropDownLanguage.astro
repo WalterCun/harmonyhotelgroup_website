@@ -4,7 +4,7 @@ import { createLogger } from "~/utils";
 import { LANGUAGES, structUrl, trans } from "~/utils/translations";
 
 interface Props {
-  lang: string;
+    lang: string;
 }
 
 const logger = createLogger(true, "dropdown-language");
@@ -14,108 +14,93 @@ const currentLanguage = LANGUAGES[lang] || LANGUAGES.es;
 ---
 
 <div class="relative">
-    <button id="language-toggle" aria-label="Cambiar idioma" aria-haspopup="true" aria-expanded="false"
-            class="flex items-center gap-2 px-3 py-1.5 rounded-md text-neutral-700 hover:text-primary-500 transition-colors">
-        {currentLanguage.flag && (
-                <Image src={currentLanguage.flag} alt="" width="20" height="20" class="shrink-0 object-cover"/>)}
+    <button
+        id="language-toggle"
+        aria-label="Cambiar idioma"
+        aria-haspopup="true"
+        aria-expanded="false"
+        class="flex items-center gap-2 px-3 py-1.5 rounded-md text-white hover:text-primary transition-colors cursor-pointer"
+    >
+        {
+            currentLanguage.flag && (
+                <Image
+                    src={currentLanguage.flag}
+                    alt=""
+                    width="20"
+                    height="20"
+                    class="shrink-0 object-cover"
+                />
+            )
+        }
         <span id="current-language" class="text-sm font-medium">
-        {currentLanguage.name || trans(lang, 'components.ui.dropdown.languagedropdown')}
-    </span>
+            {
+                currentLanguage.name ||
+                    trans(lang, "components.ui.dropdown.languagedropdown")
+            }
+        </span>
         <svg
-                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 shrink-0"
-                aria-hidden="true">
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            class="w-4 h-4 shrink-0"
+            aria-hidden="true"
+        >
             <path
-                    fill-rule="evenodd"
-                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                    clip-rule="evenodd"
-            />
+                fill-rule="evenodd"
+                d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                clip-rule="evenodd"></path>
         </svg>
     </button>
 
-    <div id="language-dropdown"
-         class="absolute top-full right-0 mt-0 w-max bg-white shadow-lg rounded-md py-1 z-10 hidden">
-        {Object.entries(LANGUAGES).map(lang => {
-            const [code, value] = lang;
-            return (
+    <div
+        id="language-dropdown"
+        class="absolute top-full right-0 mt-0 w-max bg-white shadow-lg rounded-md py-1 z-10 hidden"
+    >
+        {
+            Object.entries(LANGUAGES).map((lang) => {
+                const [code, value] = lang;
+                return (
                     <div class="flex items-center">
-                        <a href={structUrl(Astro.url, code)} data-lang-code={code}
-                           class="flex items-center w-full text-left px-4 py-2 text-neutral-700  hover:bg-neutral-100">
+                        <a
+                            href={structUrl(Astro.url, code)}
+                            data-lang-code={code}
+                            class="flex items-center w-full text-left px-4 py-2 text-neutral-700  hover:bg-primary hover:text-white transition-colors duration-200"
+                        >
                             <div class="shrink-0">
-                                <Image src={value.flag} alt="" width="20"></Image>
+                                <Image src={value.flag} alt="" width="20" />
                             </div>
                             <span class="ml-2">{value.name}</span>
                         </a>
-                    </div>)
-        })}
+                    </div>
+                );
+            })
+        }
     </div>
 </div>
 
 <script>
-    import {setLanguage} from "~/utils/translations";
+    import { setLanguage } from "~/utils/translations";
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const languageToggle = document.getElementById('language-toggle');
-        const languageDropdown = document.getElementById('language-dropdown');
-        const languageButtons = document.querySelectorAll('[data-lang-code]');
+    document.addEventListener("DOMContentLoaded", () => {
+        const languageToggle = document.getElementById("language-toggle");
+        const languageDropdown = document.getElementById("language-dropdown");
+        const languageButtons = document.querySelectorAll("[data-lang-code]");
 
-        // Obtener el idioma actual desde localStorage o usar el predeterminado
-        function getCurrentLanguageFromStorage() {
-            try {
-                console.log('language', localStorage.getItem('language'));
-                return localStorage.getItem('language') || 'es';
-            } catch (error) {
-                console.error('Error al leer el idioma desde localStorage:', error);
-                return 'es';
-            }
-        }
-
-        // Resaltar el botón del idioma actual en el menú desplegable
-        function highlightCurrentLanguage() {
-            const currentLang = getCurrentLanguageFromStorage();
-            // Quitar resaltado de todos los botones
-            languageButtons.forEach(button => {
-                button.classList.remove('bg-neutral-100', 'dark:bg-neutral-700', 'font-medium');
-            });
-
-            // Añadir resaltado al botón del idioma actual
-            const currentButton = Array.from(languageButtons).find(
-                button => button.getAttribute('data-lang-code') === currentLang
-            );
-
-            if (currentButton) {
-                currentButton.classList.add('bg-neutral-100', 'dark:bg-neutral-700', 'font-medium');
-            }
-        }
-
-        // Ejecutar al cargar la página
-        highlightCurrentLanguage();
-
-        // Toggle dropdown
-        languageToggle?.addEventListener('click', (e) => {
+        languageToggle?.addEventListener("click", (e) => {
             e.stopPropagation();
-            languageDropdown?.classList.toggle('hidden');
+            languageDropdown?.classList.toggle("hidden");
 
-            // Actualizar resaltado cada vez que se abre el menú desplegable
-            if (!languageDropdown?.classList.contains('hidden')) {
-                highlightCurrentLanguage();
+            if (!languageDropdown?.classList.contains("hidden")) {
             }
         });
 
-        // Handle language selection
-        languageButtons.forEach(button => {
-            button.addEventListener('click', async () => {
-                const langCode = button.getAttribute('data-lang-code');
-                if (langCode) {
-                    setLanguage(langCode);
-                    // Actualizar resaltado después de seleccionar un nuevo idioma
-                    highlightCurrentLanguage();
-                }
-            });
+        // Add mouseleave event listener to hide dropdown when cursor leaves
+        languageDropdown?.addEventListener("mouseleave", () => {
+            languageDropdown.classList.add("hidden");
         });
 
-        // Close dropdown when clicking outside
-        document.addEventListener('click', () => {
-            languageDropdown?.classList.add('hidden');
+        document.addEventListener("click", () => {
+            languageDropdown?.classList.add("hidden");
         });
     });
 </script>
