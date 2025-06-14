@@ -1,7 +1,11 @@
 import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import icon from "astro-icon";
-import vercel from "@astrojs/vercel";
+import vercel from "@astrojs/vercel/serverless";
+// Para desarrollo local, usa node
+import node from "@astrojs/node";
+
+const isDevEnvironment = false;
 
 // https://astro.build/config
 export default defineConfig({
@@ -32,8 +36,13 @@ export default defineConfig({
       ],
     }),
   ],
-  adapter: vercel({
-    webAnalytics: { enabled: true },
-  }),
+  // Usa el adaptador adecuado según el entorno
+  adapter: isDevEnvironment
+    ? node({
+        mode: "standalone",
+      })
+    : vercel({
+        webAnalytics: { enabled: true },
+      }),
   output: "server",
 });

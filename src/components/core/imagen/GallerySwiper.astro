@@ -1,0 +1,516 @@
+---
+import { Image } from "astro:assets";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/effect-fade";
+import { resolveImage } from "../../../utils";
+
+interface Props {
+  images: string[];
+  id?: string;
+  className?: string;
+  aspectRatio?: string;
+  navigation?: boolean;
+  pagination?: boolean;
+  effect?: "slide" | "fade" | "cube" | "coverflow" | "flip";
+  loop?: boolean;
+  autoplay?: boolean;
+  autoplayDelay?: number;
+  thumbnails?: boolean;
+  lazy?: boolean;
+  quality?: number;
+  fullscreen?: boolean;
+}
+
+const {
+  images,
+  id = `image-gallery-${Math.floor(Math.random() * 10000)}`,
+  className = "",
+  aspectRatio = "16/9",
+  navigation = true,
+  pagination = true,
+  effect = "slide",
+  loop = true,
+  autoplay = false,
+  autoplayDelay = 3000,
+  thumbnails = false,
+  lazy = true,
+  quality = 80,
+  fullscreen = true,
+} = Astro.props;
+
+// Verificar que hay imágenes para mostrar
+const hasImages = images && images.length > 0;
+
+// Prepara las opciones de Swiper como JSON para pasarlas al script del cliente
+const swiperOptions = JSON.stringify({
+  id,
+  navigation,
+  pagination,
+  effect,
+  loop,
+  autoplay,
+  autoplayDelay,
+  thumbnails,
+  fullscreen,
+});
+---
+
+{hasImages ? (
+<div class={`image-gallery-container ${className}`}>
+    <div class="swiper-main" id={id} style={`aspect-ratio: ${aspectRatio}`}>
+        <div class="swiper-wrapper">
+            {images.map((image, index) => (
+                <div class="swiper-slide">
+                    <div class="image-wrapper">
+                        <Image
+                            src={resolveImage(image)}
+                            alt="Gallery Hotel"
+                            width={2000}
+                            height={1000}
+                            loading={lazy ? "lazy" : "eager"}
+                            format="webp"
+                            quality={quality}
+                        />
+                    </div>
+                </div>
+            ))}
+        </div>
+        {navigation && (
+            <>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </>
+        )}
+        {pagination && <div class="swiper-pagination"></div>}
+    </div>
+    {thumbnails && (
+        <div class="swiper-thumbs" id={`${id}-thumbs`}>
+            <div class="swiper-wrapper">
+                {images.map((image, index) => (
+                    <div class="swiper-slide">
+                        <div class="thumb-wrapper">
+                            <Image
+                                src={resolveImage(image)}
+                                alt={`Thumbnail ${index + 1}`}
+                                width={100}
+                                height={75}
+                                loading="lazy"
+                                format="webp"
+                                quality={90}
+                            />
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    )}
+
+    {fullscreen && (
+        <div class="fullscreen-button" id={`${id}-fullscreen`}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+            </svg>
+        </div>
+    )}
+
+    <div class="fullscreen-overlay hidden" id={`${id}-overlay`}>
+        <div class="fullscreen-close" id={`${id}-close`}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </div>
+        <div class="fullscreen-swiper" id={`${id}-fullscreen-swiper`}>
+            <div class="swiper-wrapper">
+                {images.map((image, index) => (
+                    <div class="swiper-slide">
+                        <div class="image-wrapper">
+                            <Image
+                                src={resolveImage(image)}
+                                alt={image}
+                                width={1200}
+                                height={900}
+                                loading="lazy"
+                                format="webp"
+                                quality={90}
+                            />
+                        </div>
+                    </div>
+                ))}
+            </div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</div>
+    ) : (
+<div class={`image-gallery-placeholder ${className}`} style={`aspect-ratio: ${aspectRatio}`}>
+    <div class="placeholder-content">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+            <polyline points="21 15 16 10 5 21"></polyline>
+        </svg>
+        <p>No hay imágenes disponibles</p>
+    </div>
+</div>
+    )}
+
+<!-- Estilos para el componente -->
+<style>
+    .image-gallery-container {
+        position: relative;
+        width: 100%;
+        margin: 0 auto;
+        overflow: hidden;
+        border-radius: 0.5rem;
+        background-color: rgba(0, 0, 0, 0.03);
+    }
+
+    .swiper-main {
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .image-wrapper {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .swiper-thumbs {
+        margin-top: 0.75rem;
+        height: 80px;
+    }
+
+    .thumb-wrapper {
+        height: 100%;
+        opacity: 0.6;
+        cursor: pointer;
+        transition: opacity 0.3s;
+        border: 2px solid transparent;
+        border-radius: 0.25rem;
+        overflow: hidden;
+    }
+
+    .thumb-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .swiper-slide-thumb-active .thumb-wrapper {
+        opacity: 1;
+        border-color: var(--swiper-theme-color, #007aff);
+    }
+
+    .fullscreen-button {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        border-radius: 50%;
+        width: 2.5rem;
+        height: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: background-color 0.3s;
+    }
+
+    .fullscreen-button:hover {
+        background: rgba(0, 0, 0, 0.7);
+    }
+
+    .fullscreen-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .fullscreen-overlay.hidden {
+        display: none;
+    }
+
+    .fullscreen-close {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border-radius: 50%;
+        width: 3rem;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: background-color 0.3s;
+    }
+
+    .fullscreen-close:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    .fullscreen-swiper {
+        width: 90%;
+        max-width: 1200px;
+        height: 80vh;
+    }
+
+    .fullscreen-swiper .image-wrapper {
+        height: 100%;
+    }
+
+    .fullscreen-swiper .image-wrapper img {
+        max-height: 100%;
+        max-width: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+    }
+
+    .image-gallery-placeholder {
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.5rem;
+    }
+
+    .placeholder-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: rgba(0, 0, 0, 0.5);
+    }
+
+    .placeholder-content svg {
+        margin-bottom: 1rem;
+    }
+
+    .placeholder-content p {
+        font-size: 0.875rem;
+    }
+
+    :root {
+        --swiper-theme-color: #0077cc;
+        --swiper-navigation-size: 24px;
+    }
+
+    /* Personalización de los controles de Swiper */
+    .swiper-button-next,
+    .swiper-button-prev {
+        background-color: rgba(255, 255, 255, 0.6);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        color: #333;
+    }
+
+    .swiper-button-next:hover,
+    .swiper-button-prev:hover {
+        background-color: rgba(255, 255, 255, 0.9);
+    }
+
+    .swiper-pagination-bullet {
+        width: 10px;
+        height: 10px;
+        background: rgba(255, 255, 255, 0.7);
+    }
+
+    .swiper-pagination-bullet-active {
+        background: var(--swiper-theme-color);
+    }
+
+    /* Personalización para modo oscuro */
+    @media (prefers-color-scheme: dark) {
+        .image-gallery-placeholder {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .placeholder-content {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #fff;
+        }
+
+        .swiper-button-next:hover,
+        .swiper-button-prev:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+    }
+</style>
+
+<!-- Script del cliente para inicializar Swiper -->
+<script define:vars={{ swiperOptions }}>
+    // Importa Swiper al cliente
+    import Swiper from 'swiper/bundle';
+
+    // Función para inicializar el Swiper
+    function initializeGallery() {
+        const options = JSON.parse(swiperOptions);
+
+        // Configuración principal del Swiper
+        let mainSwiperConfig = {
+            slidesPerView: 1,
+            spaceBetween: 0,
+            effect: options.effect,
+            loop: options.loop,
+            watchSlidesProgress: options.thumbnails,
+            keyboard: {
+                enabled: true,
+            }
+        };
+
+        // Agrega navegación si está habilitada
+        if (options.navigation) {
+            mainSwiperConfig.navigation = {
+                nextEl: `#${options.id} .swiper-button-next`,
+                prevEl: `#${options.id} .swiper-button-prev`,
+            };
+        }
+
+        // Agrega paginación si está habilitada
+        if (options.pagination) {
+            mainSwiperConfig.pagination = {
+                el: `#${options.id} .swiper-pagination`,
+                clickable: true,
+            };
+        }
+
+        // Agrega autoplay si está habilitado
+        if (options.autoplay) {
+            mainSwiperConfig.autoplay = {
+                delay: options.autoplayDelay,
+                disableOnInteraction: false,
+            };
+        }
+
+        // Inicializa el Swiper principal
+        let mainSwiper = new Swiper(`#${options.id}`, mainSwiperConfig);
+
+        // Si hay miniaturas, inicializa el Swiper de miniaturas
+        if (options.thumbnails) {
+            const thumbsSwiper = new Swiper(`#${options.id}-thumbs`, {
+                slidesPerView: 'auto',
+                spaceBetween: 10,
+                threshold: 10,
+                watchSlidesProgress: true,
+                slideToClickedSlide: true,
+                breakpoints: {
+                    320: {
+                        slidesPerView: 3,
+                    },
+                    640: {
+                        slidesPerView: 4,
+                    },
+                    768: {
+                        slidesPerView: 5,
+                    },
+                    1024: {
+                        slidesPerView: 6,
+                    },
+                },
+            });
+
+            // Conecta ambos Swipers
+            mainSwiper.thumbs = { swiper: thumbsSwiper };
+
+            // Sincroniza la navegación entre ambos Swipers
+            mainSwiper.on('slideChange', function() {
+                thumbsSwiper.slideTo(mainSwiper.activeIndex);
+            });
+
+            thumbsSwiper.on('slideChange', function() {
+                mainSwiper.slideTo(thumbsSwiper.activeIndex);
+            });
+        }
+
+        // Gestión de vista completa si está habilitada
+        if (options.fullscreen) {
+            const fullscreenButton = document.getElementById(`${options.id}-fullscreen`);
+            const fullscreenOverlay = document.getElementById(`${options.id}-overlay`);
+            const closeButton = document.getElementById(`${options.id}-close`);
+            let fullscreenSwiper;
+
+            fullscreenButton?.addEventListener('click', function() {
+                fullscreenOverlay?.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+
+                // Inicializa el Swiper en pantalla completa
+                fullscreenSwiper = new Swiper(`#${options.id}-fullscreen-swiper`, {
+                    slidesPerView: 1,
+                    spaceBetween: 0,
+                    initialSlide: mainSwiper.activeIndex,
+                    navigation: {
+                        nextEl: `#${options.id}-fullscreen-swiper .swiper-button-next`,
+                        prevEl: `#${options.id}-fullscreen-swiper .swiper-button-prev`,
+                    },
+                    pagination: {
+                        el: `#${options.id}-fullscreen-swiper .swiper-pagination`,
+                        clickable: true,
+                    },
+                    keyboard: {
+                        enabled: true,
+                    },
+                });
+            });
+
+            closeButton?.addEventListener('click', function() {
+                fullscreenOverlay?.classList.add('hidden');
+                document.body.style.overflow = '';
+
+                // Actualiza el índice del Swiper principal
+                if (fullscreenSwiper) {
+                    mainSwiper.slideTo(fullscreenSwiper.activeIndex);
+                    // Destruye el Swiper en pantalla completa para liberar memoria
+                    fullscreenSwiper.destroy();
+                    fullscreenSwiper = undefined;
+                }
+            });
+
+            // Cierra la vista completa al presionar Escape
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && !fullscreenOverlay?.classList.contains('hidden')) {
+                    closeButton?.click();
+                }
+            });
+        }
+    }
+
+    // Inicializa al cargar la página
+    document.addEventListener('DOMContentLoaded', initializeGallery);
+
+    // Re-inicializa cuando ocurra una navegación en Astro
+    document.addEventListener('astro:page-load', initializeGallery);
+</script>
