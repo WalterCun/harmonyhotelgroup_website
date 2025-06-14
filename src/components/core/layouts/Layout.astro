@@ -12,8 +12,10 @@ interface Props {
 }
 
 const { lang, title = "" } = Astro.props;
-const conTitle = `${trans(lang, "layouts.layout.meta.title")}`;
-const finalTitle = title !== "" ? `${conTitle} | ${title}` : `${conTitle}`;
+
+const staticTitle = `${trans(lang, "layouts.layout.meta.title")}`;
+const dynamicTitle =
+  title !== "" ? `${staticTitle} | ${title}` : `${staticTitle}`;
 ---
 
 <html lang={lang}>
@@ -23,7 +25,7 @@ const finalTitle = title !== "" ? `${conTitle} | ${title}` : `${conTitle}`;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
     <meta name="generator" content={Astro.generator}/>
     <meta name="description" content={trans(lang, "layouts.layout.meta.description")}/>
-    <title>{finalTitle}</title>
+    <title>{dynamicTitle}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
