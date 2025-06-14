@@ -1,0 +1,39 @@
+---
+interface Props {
+  class?: string;
+  padding?: 'none' | 'sm' | 'md' | 'lg';
+  background?: 'none' | 'light' | 'dark';
+  fullWidth?: boolean;
+}
+
+const {
+  class: className = "",
+  padding = 'md',
+  background = 'none',
+  fullWidth = false
+} = Astro.props;
+
+const paddingClasses = {
+  'none': '',
+  'sm': 'py-4 sm:py-6',
+  'md': 'py-8 sm:py-12',
+  'lg': 'py-12 sm:py-16 lg:py-20'
+};
+
+const backgroundClasses = {
+  'none': '',
+  'light': 'bg-gray-50',
+  'dark': 'bg-gray-900 text-white'
+};
+
+const widthClass = fullWidth ? 'w-full' : '';
+---
+
+<section class:list={[
+  paddingClasses[padding],
+  backgroundClasses[background],
+  widthClass,
+  className
+]}>
+  <slot />
+</section> 
