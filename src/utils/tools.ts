@@ -2,6 +2,7 @@ import type { ImageMetadata } from "astro";
 import { createLogger } from "utils/logger.ts";
 // @ts-ignore
 import Default from "../assets/img/default.png";
+import { uploadImages } from "lib/constants";
 
 const logger = createLogger(false, "tools.ts");
 
@@ -73,16 +74,16 @@ export const resolveImage = async (
   const fullImagePath = `${ASSETS_BASE_PATH}${decodedPath}`;
 
   // Cargar todas las imágenes disponibles
-  const availableImages = import.meta.glob<{ default: ImageMetadata }>(
-    "/src/assets/upload/**/*.{jpeg,jpg,png,gif,webp}",
-  );
+  // const availableImages = import.meta.glob<{ default: ImageMetadata }>(
+  //   "/src/assets/upload/**/*.{jpeg,jpg,png,gif,webp}",
+  // );
 
   // Verificar si la imagen solicitada existe
-  const imageExists = fullImagePath in availableImages;
+  const imageExists = fullImagePath in uploadImages;
 
   if (imageExists) {
     // Caso 1: La imagen existe, cargarla y devolverla
-    return availableImages[fullImagePath]();
+    return uploadImages[fullImagePath]();
     // biome-ignore lint/style/noUselessElse: <explanation>
   } else if (fallbackToDefault) {
     // Caso 2: La imagen no existe pero se permite usar la predeterminada
