@@ -1,59 +1,33 @@
 ---
 import { Image } from "astro:assets";
-import ReservationForm from "templates/forms/ReservationForm.astro";
+// import ReservationForm from "templates/forms/ReservationForm.astro";
 import { trans } from "~/utils/translations";
 
 interface Props {
   lang: string;
 }
 const { lang } = Astro.props;
+const logger = createLogger(false, "components.templates.home.hero");
 
 // Importar la imagen directamente
-import heroImage1 from "../../../assets/upload/hero-backgrounds/bg-cuenca1.webp";
-import heroImage2 from "../../../assets/upload/hero-backgrounds/bg-cuenca2.webp";
-import heroImage3 from "../../../assets/upload/hero-backgrounds/bg-cuenca3.webp";
-import heroImage4 from "../../../assets/upload/hero-backgrounds/bg-cuenca4.webp";
-import heroImage5 from "../../../assets/upload/hero-backgrounds/bg-cuenca5.webp";
-import heroImage6 from "../../../assets/upload/hero-backgrounds/bg-cuenca6.webp";
-import heroImage7 from "../../../assets/upload/hero-backgrounds/bg-cuenca7.webp";
-import heroImage8 from "../../../assets/upload/hero-backgrounds/bg-cuenca8.webp";
-import heroImage9 from "../../../assets/upload/hero-backgrounds/bg-cuenca9.webp";
-import heroImage10 from "../../../assets/upload/hero-backgrounds/bg-cuenca10.webp";
-import heroImage11 from "../../../assets/upload/hero-backgrounds/bg-cuenca11.webp";
-import heroImage12 from "../../../assets/upload/hero-backgrounds/bg-cuenca12.webp";
-import heroImage13 from "../../../assets/upload/hero-backgrounds/bg-cuenca13.webp";
-import heroImage14 from "../../../assets/upload/hero-backgrounds/bg-cuenca14.webp";
-import heroImage15 from "../../../assets/upload/hero-backgrounds/bg-cuenca15.webp";
-
-const heroImages = [
-  heroImage1,
-  heroImage2,
-  heroImage3,
-  heroImage4,
-  heroImage5,
-  heroImage6,
-  heroImage7,
-  heroImage8,
-  heroImage9,
-  heroImage10,
-  heroImage11,
-  heroImage12,
-  heroImage13,
-  heroImage14,
-  heroImage15,
-];
+import { createLogger, resolveImage } from "../../../utils";
+import { backgroundImagesHero } from "../../../lib/constants";
 
 // Seleccionar una imagen aleatoria
-const heroImage = heroImages[Math.floor(Math.random() * heroImages.length)];
+const imagesArray = Object.values(backgroundImagesHero);
+logger.info("imagesArray", imagesArray);
+const randomIndex = Math.floor(Math.random() * imagesArray.length);
+logger.info("randomIndex", randomIndex);
+const heroImage = imagesArray[randomIndex];
+logger.info("heroImage", heroImage);
 ---
 
 <div
-  class="relative flex flex-col items-center justify-start h-screen w-screen"
->
+    class="relative flex flex-col columns-1 items-center justify-start h-[55vh] sm:h-[60vh] md:h-[80vh] lg:h-[90vh] xl:h-[100vh] w-screen">
   <div class="absolute inset-0">
     <Image
       alt="Hero Image"
-      src={heroImage}
+      src={heroImage()}
       data-ai-hint="tropical resort pool"
       width={1280}
       height={720}
