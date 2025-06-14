@@ -41,30 +41,58 @@ const {
 
 
 <Layout lang={lang_es} title={`${name}`}>
+    <div class="relative flex flex-col items-center py-8">
+        <div class="container max-w-6xl mx-auto py-15">
+            {gallery && gallery.length > 0 ? (
+                    <GallerySwiper
+                            images={gallery}
+                    />
+            ) : (
+                    <div class="bg-gray-100 p-8 rounded-lg text-center">
+                        <p>No hay imágenes disponibles para este hotel</p>
+                    </div>
+            )}
+        </div>
 
-        <!-- Hero Section -->
-    <div class="relative ">
-        {
-            <GallerySwiper
-                    images={gallery}
-                    thumbnails={true}
-                    autoplay={true}
-            />
-        }
-        <div class="absolute inset-0 bg-linear-to-t from-black/70 to-transparent"></div>
-        <div class="absolute bottom-0 left-0 right-0 p-8 text-white">
-            <div class="container">
-                <h1 class="mb-4">{hotel?.name}</h1>
-                <p class="text-xl mb-6">{hotel?.description_hotel}</p>
-                <div class="flex items-center text-lg">
-          <span class="flex items-center text-bold">
-            <Icon name="location" class="text-primary"></Icon>
-              {location}
-          </span>
-                </div>
+        <div class="container bg-transparent">
+            <h1 class="text-3xl font-bold mb-4">{name}</h1>
+            <p class="text-lg mb-6">{description_hotel.map(item=> {
+                if(item.lang_hotel == lang_es) {
+                    return item.content_hotel
+                }
+                return "no Text"
+            })}</p>
+            <div class="flex items-center text-lg">
+                <span class="flex items-center">
+                    <Icon name="location" class="text-primary mr-2"></Icon>
+                    {location}
+                </span>
             </div>
         </div>
     </div>
+
+    <!-- Hero Section -->
+    <!--<div class="relative flex flex-col items-center py-20">-->
+    <!--    <div class="container w-[50rem]" >-->
+    <!--        {-->
+    <!--            -->
+    <!--        }-->
+    <!--    </div>-->
+
+    <!--    <div class="absolute inset-0 bg-linear-to-t from-black/70 to-transparent"></div>-->
+    <!--    <div class="absolute bottom-0 left-0 right-0 p-8 text-white">-->
+    <!--        <div class="container">-->
+    <!--            <h1 class="mb-4">{hotel?.name}</h1>-->
+    <!--            <p class="text-xl mb-6">{hotel?.description_hotel}</p>-->
+    <!--            <div class="flex items-center text-lg">-->
+    <!--      <span class="flex items-center text-bold">-->
+    <!--        <Icon name="location" class="text-primary"></Icon>-->
+    <!--          {location}-->
+    <!--      </span>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--</div>-->
 
     <!-- Booking Form Section -->
     <!--<div class="bg-primary-500/10 dark:bg-primary-500/5 py-8">-->
