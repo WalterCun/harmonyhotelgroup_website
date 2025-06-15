@@ -4,6 +4,7 @@ import LanguageSwitcher from "../core/ui/DropDownLanguage.astro";
 import MenuIcon from "../core/ui/MenuIcon.astro";
 import LogoHGG from "../globals/svg/logos/LogoHGG.astro";
 import Navigation from "./Navigation.astro";
+import HeaderStaticNav from "./HeaderStaticNav.astro";
 
 interface Props {
     lang: string;
@@ -14,8 +15,13 @@ const { lang } = Astro.props;
 
 <nav class="w-full bg-trarensparent absolute top-0 left-0 z-10">
     <ContainerStaticNav>
+        <HeaderStaticNav />
+    </ContainerStaticNav>
+    <!-- Divider -->
+    <div class="w-full h-px bg-gray-500/30"></div>
+    <ContainerStaticNav>
         <div class="flex justify-between items-center">
-            <a href="/" class="block size-32">
+            <a href="/" class="block size-20">
                 <LogoHGG />
             </a>
 
