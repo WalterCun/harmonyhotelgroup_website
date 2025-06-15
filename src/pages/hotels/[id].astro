@@ -2,9 +2,9 @@
 import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 import { lang_es } from "lib/constants";
-import Layout from "core/layouts/Layout.astro";
+import Layout from "globals/body/BodyLayout.astro";
 import { getCollection } from "astro:content";
-import { createLogger, imageUrl, resolveImage } from "../../utils";
+import { createLogger, imageUrl, resolveImage } from "~/utils";
 import GallerySwiper from "core/imagen/GallerySwiper.astro";
 
 interface Props {
