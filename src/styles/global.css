@@ -2,16 +2,10 @@
 
 @plugin 'tailwindcss-animate';
 
-@plugin "daisyui" {
-  themes: false;
-}
+/* Añadir DaisyUI con la nueva sintaxis */
+@plugin "daisyui";
 
-@plugin "daisyui/theme" {
-  name: "harmony_theme";
-  default: true;
-  prefersdark: false;
-  color-scheme: light;
-
+:root {
   --color-base-100: oklch(1 0 none);
   --color-base-200: oklch(1 0 none);
   --color-base-300: oklch(1 0 none);
