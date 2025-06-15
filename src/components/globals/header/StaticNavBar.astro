@@ -1,13 +1,13 @@
 ---
-import ContainerStaticNav from "../core/layouts/ContainerStaticNav.astro";
-import LanguageSwitcher from "../core/ui/DropDownLanguage.astro";
-import MenuIcon from "../core/ui/MenuIcon.astro";
-import LogoHGG from "../globals/svg/logos/LogoHGG.astro";
+import LanguageSwitcher from "core/ui/DropDownLanguage.astro";
 import Navigation from "./Navigation.astro";
-import HeaderStaticNav from "./HeaderStaticNav.astro";
+import HeaderStaticNav from "globals/HeaderStaticNav.astro";
+import ContainerStaticNav from "../../core/layouts/ContainerStaticNav.astro";
+import LogoHGG from "../svg/logos/LogoHGG.astro";
+import MenuIcon from "../../core/ui/MenuIcon.astro";
 
 interface Props {
-    lang: string;
+  lang: string;
 }
 
 const { lang } = Astro.props;
