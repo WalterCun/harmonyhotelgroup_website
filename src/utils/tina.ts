@@ -3,224 +3,52 @@ import { getCollection } from "astro:content";
 
 const logger = createLogger(false, "tina.ts");
 
-/**
- * Lee todos los archivos JSON de una carpeta y devuelve sus contenidos.
- * @returns {Promise<any[]>} - Un array con los contenidos parseados de los archivos JSON.
- * @param model
- */
+class PowerCollection<T extends Record<string, any>> {
+  private collection: T[] = [];
+  private history: T[][] = [];
 
-// export class Api {
-//
-//   async init() {
-//     if (!this.hotelsCollection) {
-//       this.hotelsCollection = await getCollection("hotels");
-//     }
-//
-//     if (!this.destinationsCollection) {
-//       this.destinationsCollection = await getCollection("destinations");
-//     }
-//
-//     if (!this.offersCollection) {
-//       this.offersCollection = await getCollection("offers");
-//     }
-//   }
-//
-//   async hotels(
-//     _id?: string,
-//     location?: string,
-//     order = "asc",
-//     destacado = false,
-//     limit = -1,
-//   ) {
-//     await this.init();
-//
-//     try {
-//       if (this.hotelsCollection.length === 0) {
-//         logger.warn("⚠️ No se encontraron archivos en ../data/hotels");
-//         return [];
-//       }
-//
-//       if (_id) {
-//         this.hotelsCollection = this.hotelsCollection.filter((hotel) => {
-//           return hotel.data.id === _id;
-//         });
-//       }
-//
-//       // // Aplicar filtro por ubicación si se proporciona
-//       if (location) {
-//         this.hotelsCollection = this.hotelsCollection.filter((hotel) => {
-//           return hotel.data.location
-//             .toLowerCase()
-//             .includes(location.toLowerCase());
-//         });
-//       }
-//
-//       // Filtrar solo hoteles destacados si this.destacado es true
-//       if (destacado) {
-//         this.hotelsCollection = this.hotelsCollection.filter((hotel) => {
-//           return hotel.data.highlight;
-//         });
-//       }
-//
-//       // Aplicar límite si es necesario
-//       if (limit > 0) {
-//         this.hotelsCollection = this.hotelsCollection.slice(0, limit);
-//       }
-//
-//       if (order === "asc") {
-//         this.hotelsCollection = this.hotelsCollection.sort((a, b) =>
-//           a.data.name.localeCompare(b.data.name),
-//         );
-//       }
-//       if (order === "desc") {
-//         this.hotelsCollection = this.hotelsCollection.sort((a, b) =>
-//           b.data.name.localeCompare(a.data.name),
-//         );
-//       }
-//
-//       // logger.info('hoteles', hoteles)
-//       return this.hotelsCollection;
-//     } catch (error) {
-//       logger.error("❌ Error general obteniendo hoteles:", error);
-//       return [];
-//     }
-//   }
-//
-//   // ----------------------------------------------------------------------------------------------------------------
-//
-//   // async destinations(filterLocation?: string): Promise<any[]> {
-//   //   try {
-//   //     // @ts-ignore
-//   //     const destinationsFiles: Record<string, any> = import.meta.glob(
-//   //       "../data/destinations/*.json",
-//   //       { eager: true },
-//   //     );
-//   //
-//   //     if (Object.keys(destinationsFiles).length === 0) {
-//   //       logger.warn("⚠️ No se encontraron archivos en ../data/destinations");
-//   //       return [];
-//   //     }
-//   //
-//   //     let destinations = Object.entries(destinationsFiles)
-//   //       .map(([filePath, fileContent]) => {
-//   //         // Extraer el nombre del archivo (sin extensión) del path
-//   //         const fileName = filePath.split("/").pop()?.replace(".json", "");
-//   //         // Obtener los datos del hotel
-//   //         // Si no hay datos, retornar null (se filtrará después)
-//   //         if (!fileContent) return null;
-//   //
-//   //         // Crear una copia para no mutar el objeto original
-//   //         const hotelData = { ...fileContent };
-//   //
-//   //         // Retornar objeto con metadatos añadidos
-//   //         return {
-//   //           _filename: fileName,
-//   //           _path: filePath,
-//   //           ...hotelData,
-//   //         };
-//   //       })
-//   //       .filter(Boolean); // Eliminamos valores nulos o undefined
-//   //
-//   //     // Aplicar filtro por ubicación si se proporciona
-//   //     if (filterLocation) {
-//   //       destinations = destinations.filter((destination) => {
-//   //         if (
-//   //           // biome-ignore lint/complexity/useOptionalChain: <explanation>
-//   //           destination?.location &&
-//   //           destination?.location
-//   //             .toLowerCase()
-//   //             .includes(filterLocation.toLowerCase())
-//   //         ) {
-//   //           return true;
-//   //         }
-//   //       });
-//   //     }
-//   //
-//   //     // Filtrar solo hoteles destacados si this.destacado es true
-//   //     if (this.destacado) {
-//   //       destinations = destinations.filter(
-//   //         (destinacion) => destinacion?.highlight === true,
-//   //       );
-//   //     }
-//   //
-//   //     // Aplicar límite si es necesario
-//   //     if (this.limit > 0) {
-//   //       destinations = destinations.slice(0, this.limit);
-//   //     }
-//   //
-//   //     return destinations;
-//   //   } catch (error: any) {
-//   //     logger.error("❌ Error general obteniendo hoteles:", error);
-//   //     return [];
-//   //   }
-//   // }
-//
-//   // ----------------------------------------------------------------------------------------------------------------
-//
-//   // async offers(filterLocation?: string): Promise<any[]> {
-//   //   try {
-//   //     // Obtenemos la lista de archivos dinámicamente
-//   //     const offersFiles: Record<string, any> = import.meta.glob(
-//   //       "../data/offers/**/*.json",
-//   //       { eager: true },
-//   //     );
-//   //
-//   //     if (Object.keys(offersFiles).length === 0) {
-//   //       logger.warn("⚠️ No se encontraron archivos en ../data/offers");
-//   //       return [];
-//   //     }
-//   //
-//   //     let offers: any = Object.entries(offersFiles)
-//   //       .map(([filePath, fileContent]) => {
-//   //         // Extraer el nombre del archivo (sin extensión) del path
-//   //         const fileName = filePath.split("/").pop()?.replace(".json", "");
-//   //         // Obtener los datos del hotel
-//   //         // Si no hay datos, retornar null (se filtrará después)
-//   //         if (!fileContent) return null;
-//   //
-//   //         // Crear una copia para no mutar el objeto original
-//   //         const offersData = { ...fileContent };
-//   //
-//   //         // Retornar objeto con metadatos añadidos
-//   //         return {
-//   //           _filename: fileName,
-//   //           _path: filePath,
-//   //           ...offersData,
-//   //         };
-//   //       })
-//   //       .filter(Boolean); // Eliminamos valores nulos o undefined
-//   //
-//   //     // Aplicar filtro por ubicación si se proporciona
-//   //     if (filterLocation) {
-//   //       offers = offers.filter((offer: any) => {
-//   //         if (
-//   //           // biome-ignore lint/complexity/useOptionalChain: <explanation>
-//   //           offer.location &&
-//   //           offer.location.toLowerCase().includes(filterLocation.toLowerCase())
-//   //         ) {
-//   //           return true;
-//   //         }
-//   //       });
-//   //     }
-//   //
-//   //     offers = offers.filter(
-//   //       (offer: any) =>
-//   //         offer.expiration_date !== null &&
-//   //         new Date(offer.expiration_date) >= new Date(),
-//   //     );
-//   //
-//   //     // Aplicar límite si es necesario
-//   //     if (this.limit > 0) {
-//   //       offers = offers.slice(0, this.limit);
-//   //     }
-//   //
-//   //     return offers;
-//   //   } catch (error) {
-//   //     logger.error("❌ Error general leyendo Archivo:", error);
-//   //     return [];
-//   //   }
-//   // }
-// }
+  constructor(items: T[]) {
+    this.collection = [...items];
+    this.saveState();
+  }
+
+  private saveState(): void {
+    this.history.push([...this.collection]);
+  }
+
+  public sortAlphabetically(key: keyof T): T[] {
+    this.collection.sort((a, b) => {
+      if (typeof a[key] === "string" && typeof b[key] === "string") {
+        return (a[key] as string).localeCompare(b[key] as string);
+      }
+      return 0;
+    });
+    this.saveState();
+    return this.collection;
+  }
+
+  public filterByBoolean(key: keyof T): T[] {
+    this.collection = this.collection.filter((item) => Boolean(item[key]));
+    this.saveState();
+    return this.collection;
+  }
+
+  public undo(): T[] {
+    if (this.history.length > 1) {
+      this.history.pop(); // Remove current state
+      this.collection = [...this.history[this.history.length - 1]];
+    }
+    return this.collection;
+  }
+
+  public getCurrentState(): T[] {
+    return [...this.collection];
+  }
+
+  public getHistoryStates(): T[][] {
+    return [...this.history];
+  }
+}
 
 // --------------------------------------------------------------------------------------------------------------------
 

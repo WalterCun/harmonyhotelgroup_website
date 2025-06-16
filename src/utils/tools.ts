@@ -1,6 +1,5 @@
 import type { ImageMetadata } from "astro";
 import { createLogger } from "utils/logger.ts";
-// @ts-ignore
 import Default from "../assets/img/default.png";
 import { uploadImages } from "lib/constants";
 
