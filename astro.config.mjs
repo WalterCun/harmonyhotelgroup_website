@@ -5,7 +5,7 @@ import vercel from "@astrojs/vercel/serverless";
 // Para desarrollo local, usa node
 import node from "@astrojs/node";
 
-const isDevEnvironment = false;
+const isDevEnvironment = process.env.NODE_ENV === "development";
 
 // https://astro.build/config
 export default defineConfig({

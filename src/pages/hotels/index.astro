@@ -1,20 +1,31 @@
 ---
 import { lang_es } from "lib/constants";
-import Layout from "core/layouts/Layout.astro";
+import Layout from "globals/layout/Layout.astro";
 import { getCollection } from "astro:content";
 import { createLogger, trans } from "../../utils";
+import { type CityOption } from "../../lib/constants";
 
 const logger = createLogger(false, "hotels.index.ts");
 
+let uniqueCities: CityOption[] = [];
+let uniqueAmeneties = [];
+
 try {
-  const hotels: any = await getCollection("hotels");
-  console.log("All hotels loaded successfully:", hotels.length);
+  const hotels = (await getCollection("hotels")).sort((a, b) =>
+    a.data.name.localeCompare(b.data.name),
+  );
+
+  uniqueCities = [...new Set(hotels.map((hotel) => hotel.data.location))];
+
+  uniqueAmeneties = [...new Set(hotels.map((hotel) => hotel.data.amenities))];
+
+  logger.log("All hotels loaded successfully:", hotels.length);
 } catch (error) {
-  console.error("Error loading hotels:", error);
+  logger.error("Error loading hotels:", error);
 }
 ---
 
-<Layout lang={lang_es} title={trans(lang_es,"hotels.index.page_title")}>
+<Layout lang={lang_es} title={trans(lang_es,"hotels.index.page_title")} className="pt-25">
     <div class="relative flex flex-col-1 justify-center w-full bg-primary-500/10 py-10">
         <div class="container">
             <h1 class="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl drop-shadow-md text-primary text-center mb-6">
@@ -27,6 +38,7 @@ try {
     </div>
 
     <div class="relative flex flex-col-1 justify-center w-full bg-primary-500/10 dark:bg-neutral-800 py-10">
+        texto
         <div class="container">
                 <div class="bg-white dark:bg-neutral-800 shadow-md rounded-lg p-6 mb-8">
                     <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -34,11 +46,12 @@ try {
                             <label for="destination"
                                    class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">Destination</label>
                             <select id="destination" class="select">
-                                <option value="">All Destinations</option>
-                                <option value="us">United States</option>
-                                <option value="asia">Asia</option>
-                                <option value="europe">Europe</option>
-                                <option value="middle-east">Middle East</option>
+                                <option value="">All</option>
+                                {
+                                    uniqueCities.map(item => {
+                                        return (<option value={item}>{item}</option>)
+                                    })
+                                }
                             </select>
                         </div>
 
@@ -59,7 +72,7 @@ try {
                             <label for="amenities"
                                    class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">Amenities</label>
                             <select id="amenities" class="select">
-                                <option value="">All Amenities</option>
+                                <option value="">All</option>
                                 <option value="pool">Pool</option>
                                 <option value="spa">Spa</option>
                                 <option value="beach">Beachfront</option>

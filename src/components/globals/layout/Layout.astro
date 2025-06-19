@@ -6,13 +6,15 @@ import SizeIndicator from "~/components/globals/SizeIndicator.astro";
 import StaticNavBar from "globals/header/StaticNavBar.astro";
 import "~/styles/global.css";
 import { trans } from "~/utils/translations";
+import { cn } from "../../../utils";
 
 interface Props {
   lang: string;
   title?: string;
+  className?: string;
 }
 
-const { lang, title = "" } = Astro.props;
+const { lang, title = "", className } = Astro.props;
 
 const staticTitle = `${trans(lang, "layouts.layout.meta.title")}`;
 const dynamicTitle =
@@ -41,7 +43,7 @@ const dynamicTitle =
         />
     </head>
     <body
-        class="min-h-screen flex flex-col bg-neutral-50 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-100 transition-colors duration-300"
+        class={cn("min-h-screen flex flex-col bg-neutral-50 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-100 transition-colors duration-300", className)}
     >
         <StaticNavBar lang={lang} />
         <main class="grow">
