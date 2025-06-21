@@ -3,16 +3,11 @@ import { cn } from "~/utils";
 
 interface Props {
   lang?: string;
-  class?: string;
-  backgroundColor?: "white" | "neutral";
+  className?: string;
+  backgroundColor?: "white" | "neutral" | "gray";
 }
 
-const {
-  lang,
-  class: className,
-  backgroundColor = "white",
-  ...rest
-} = Astro.props;
+const { lang, className, backgroundColor = "white", ...rest } = Astro.props;
 
 const baseClasses =
   "card bg-base-100 w-auto shadow-sm hover:shadow-xl transition-all duration-300";
@@ -20,9 +15,10 @@ const baseClasses =
 const bgColorClasses = {
   white: "bg-white",
   neutral: "bg-neutral-50",
+  gray: "bg-gray-50",
 };
 
-const classes = cn(className, baseClasses, bgColorClasses[backgroundColor]);
+const classes = cn(baseClasses, bgColorClasses[backgroundColor], className);
 ---
 
 <div class={classes} {...rest}>
