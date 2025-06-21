@@ -1,39 +1,32 @@
 ---
+import { cn } from "../../../utils";
 interface Props {
-  class?: string;
-  padding?: 'none' | 'sm' | 'md' | 'lg';
-  background?: 'none' | 'light' | 'dark';
+  className?: string;
+  padding?: "default";
+  background?: "default" | "gray";
   fullWidth?: boolean;
 }
 
 const {
-  class: className = "",
-  padding = 'md',
-  background = 'none',
-  fullWidth = false
+  className = "",
+  padding = "default",
+  background = "default",
 } = Astro.props;
 
-const paddingClasses = {
-  'none': '',
-  'sm': 'py-4 sm:py-6',
-  'md': 'py-8 sm:py-12',
-  'lg': 'py-12 sm:py-16 lg:py-20'
+const paddingClass = {
+  default: "",
 };
 
-const backgroundClasses = {
-  'none': '',
-  'light': 'bg-gray-50',
-  'dark': 'bg-gray-900 text-white'
+const bgClass = {
+  default: "bg-white",
+  gray: "bg-gray-200",
 };
-
-const widthClass = fullWidth ? 'w-full' : '';
 ---
 
-<section class:list={[
-  paddingClasses[padding],
-  backgroundClasses[background],
-  widthClass,
-  className
-]}>
+<section class={cn(
+    paddingClass[padding],
+    bgClass[background],
+    className
+)}>
   <slot />
 </section> 
