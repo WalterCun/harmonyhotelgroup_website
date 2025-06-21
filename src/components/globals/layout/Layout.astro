@@ -1,6 +1,8 @@
 ---
+import { AstroFont } from "astro-font";
 // import Analytics from "@vercel/analytics/astro";
 // import SpeedInsights from "@vercel/speed-insights/astro";
+
 import Footer from "globals/footer/Footer.astro";
 import SizeIndicator from "~/components/globals/SizeIndicator.astro";
 import StaticNavBar from "globals/header/StaticNavBar.astro";
@@ -23,6 +25,32 @@ const dynamicTitle =
 
 <html lang={lang} data-theme="harmony_theme">
     <head>
+        <AstroFont
+        config={[
+            // Primera fuente
+      {
+                name: "Playfair Display",
+                src: [],
+                googleFontsURL:
+                    "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap",
+                preload: true,
+                display: "swap",
+                selector: "h1, h2, h3, .playfair",
+                fallback: "serif",
+            },
+            // Segunda fuente
+      {
+                name: "Source Sans Pro",
+                src: [],
+                googleFontsURL:
+                    "https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap",
+                preload: true,
+                display: "swap",
+                selector: "body, span, p",
+                fallback: "sans-serif",
+            },
+        ]}
+        />
         <meta charset="UTF-8" />
         <meta
             name="viewport"
@@ -43,7 +71,7 @@ const dynamicTitle =
         />
     </head>
     <body
-        class={cn("min-h-screen flex flex-col bg-neutral-50 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-100 transition-colors duration-300", className)}
+        class={cn("min-h-screen flex flex-col bg-white text-black transition-colors duration-300", className)}
     >
         <StaticNavBar lang={lang} />
         <main class="grow">
