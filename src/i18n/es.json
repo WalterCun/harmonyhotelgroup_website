@@ -100,6 +100,7 @@
           "title": "Hoteles destacados",
           "description": "Descubra nuestras propiedades más populares, conocidas por su servicio excepcional, sus impresionantes ubicaciones y sus servicios de primera clase.",
           "night": "la noche",
+          "night-extra": "* Precio promedio",
           "btn-details": "Mas Detalles",
           "btn-all-hotels": "Ver todos los hoteles",
           "partner": "Socio Estrategico",
@@ -114,7 +115,7 @@
               "bathroom": "Baño privado",
               "air_conditioning": "Aire acondicionado",
               "heating": "Calefacción",
-              "dressing_table": "Tocador / Coqueta"
+              "dressing_table": "Tocador"
             },
             "general_services": {
               "parking": "Estacionamiento",
@@ -137,13 +138,13 @@
               "currency_exchange": "Cambio de divisas"
             },
             "premium_services": {
-              "express_checkin": "Check-in y check-out express o VIP / Express or VIP check-in and check-out",
-              "jacuzzi_rooms": "Habitaciones con jacuzzi / Rooms with jacuzzi",
-              "gift_shop": "Tienda de regalos / Gift shop",
-              "executive_lounge": "Club lounge o área ejecutiva / Club lounge or executive area",
-              "rooftop_terrace": "Terraza con vistas / Terrace with views",
-              "custom_spa_services": "Servicios de spa personalizados / Custom spa services",
-              "private_chef": "Chef privado o cocina gourmet / Private chef or gourmet cuisine"
+              "express_checkin": "Check-in y check-out express o VIP",
+              "jacuzzi_rooms": "Habitaciones con jacuzzi",
+              "gift_shop": "Tienda de regalos",
+              "executive_lounge": "Club lounge o área ejecutiva",
+              "rooftop_terrace": "Terraza con vistas",
+              "custom_spa_services": "Servicios de spa personalizados",
+              "private_chef": "Chef privado o cocina gourmet"
             }
           }
         },
