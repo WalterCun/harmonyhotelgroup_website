@@ -16,7 +16,7 @@ module.exports = {
           "accent-content": "oklch(98% 0.01 160)",
           neutral: "oklch(50% 0.05 240)",
           "neutral-content": "oklch(98% 0.01 240)",
-          "base-100": "oklch(1 0 none)",
+          "base-100": "oklch(0.98 0.01 240)",
           "base-200": "oklch(1 0 none)",
           "base-300": "oklch(1 0 none)",
           "base-content": "oklch(20% 0.05 240)",
