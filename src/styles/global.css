@@ -4,6 +4,9 @@
 
 /* Añadir DaisyUI con la nueva sintaxis */
 @plugin "daisyui";
+::-webkit-scrollbar {
+  width: 0;
+}
 
 :root {
   --color-base-100: oklch(1 0 none);
@@ -42,7 +45,6 @@
   /* effects */
   --depth: 1;
   --noise: 0;
-
 }
 
 @theme {
