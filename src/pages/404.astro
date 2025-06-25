@@ -8,50 +8,57 @@ interface Props {
   lang: string;
 }
 
-// const quickLinks = [
-//     {label: trans(lang, "components.common.navigation.url.about-us"), href: "/about"},
-//     {label: trans(lang, "components.common.navigation.url.hotel"), href: "/hotels"},
-//     {label: trans(lang, "components.common.navigation.url.destinations"), href: "/destinations"},
-//     {label: trans(lang, "components.common.navigation.url.offers"), href: "/offers"},
-//     {label: trans(lang, "components.common.navigation.url.blog"), href: "/blog"},
-//     {label: trans(lang, "components.common.navigation.url.contact"), href: "/contact"},
-//     {label: trans(lang, "components.common.navigation.url.privacy-policy"), href: "/privacy"},
-//     {label: trans(lang, "components.common.navigation.url.terms-of-service"), href: "/terms"},
-// ];
-
 const { lang = lang_es } = Astro.props;
 
-import search from "../assets/gifs/search.gif";
 ---
 
 <Layout lang={lang} title={trans(lang, "404.title-page")}>
-    <div class="min-h-screen flex flex-col items-center pt-16 pb-28 bg-neutral-50">
-        <div class="w-full max-w-2xl text-center">
-            <h1 class="text-7xl font-serif font-bold text-primary-500 mb-4 animate-fade-in">{trans(lang, "404.title")}</h1>
-            <h2 class="text-3xl font-serif text-secondary-500 mb-6 animate-fade-in">{trans(lang, "404.subtitle")}</h2>
-
-            <div class="flex justify-center items-center my-8">
-                <img
-                        src={search.src}
-                        alt="Gif Busqueda"
-                        class="w-[300px] h-[300px] object-cover mx-auto"
-                >
-            </div>
-
-            <p class="text-neutral-600 mb-8 max-w-lg mx-auto animate-slide-up">
-                {trans(lang, "404.description")}
-            </p>
-
-            <div class="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up">
-                <a href="/"
-                   class="px-6 py-3 bg-primary-500 text-white rounded-md hover:bg-primary-600 transition-colors">
-                    {trans(lang, "404.btn-home")}
-                </a>
-                <a href="/contact"
-                   class="px-6 py-3 bg-secondary-500 text-white rounded-md hover:bg-secondary-600 transition-colors">
-                    {trans(lang, 'btn-contact')}
-                </a>
-            </div>
+  <section class="page_404 flex flex-col items-center justify-center min-h-screen bg-white">
+    <div class="container mx-auto flex flex-col items-center justify-center mt-20">
+      <div class="w-full max-w-4xl text-center">
+          <h1 class="text-9xl font-serif font-bold text-primary-500 mb-2">{trans(lang, "404.title")}</h1>
+        <div class="four_zero_four_bg flex items-center justify-center mb-8">
+          <img src="https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif" alt="Búsqueda no encontrada" class="mx-auto w-96 h-96 md:w-[500px] md:h-[500px] object-contain" />
         </div>
+        <p class="text-gray-600  max-w-md mx-auto">{trans(lang, "404.description")}</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/" class="px-6 py-3 bg-primary-500 text-white rounded-md hover:bg-primary-600 transition-colors font-semibold shadow">
+            {trans(lang, "404.btn-home")}
+          </a>
+          <a href="/contact" class="px-6 py-3 bg-secondary-500 text-white rounded-md hover:bg-secondary-600 transition-colors font-semibold shadow">
+            {trans(lang, 'btn-contact')}
+          </a>
+        </div>
+      </div>
     </div>
+  </section>
 </Layout>
+
+<style>
+.page_404 {
+  padding: 40px 0;
+  font-family: 'Arvo', serif;
+}
+.four_zero_four_bg img {
+  width: 100%;
+  max-width: 750px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+.text-primary-500 {
+  color: #3b82f6;
+}
+.bg-primary-500 {
+  background-color: #3b82f6;
+}
+.bg-primary-600 {
+  background-color: #2563eb;
+}
+.bg-secondary-500 {
+  background-color: #f59e42;
+}
+.bg-secondary-600 {
+  background-color: #d97706;
+}
+</style>
