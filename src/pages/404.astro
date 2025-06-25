@@ -20,13 +20,13 @@ const { lang = lang_es } = Astro.props;
         <div class="four_zero_four_bg flex items-center justify-center mb-8">
           <img src="https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif" alt="Búsqueda no encontrada" class="mx-auto w-96 h-96 md:w-[500px] md:h-[500px] object-contain" />
         </div>
-        <p class="text-gray-600  max-w-md mx-auto">{trans(lang, "404.description")}</p>
+        <p class="text-gray-800  max-w-md mx-auto mb-10">{trans(lang, "404.description")}</p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <a href="/" class="px-6 py-3 bg-primary-500 text-white rounded-md hover:bg-primary-600 transition-colors font-semibold shadow">
             {trans(lang, "404.btn-home")}
           </a>
           <a href="/contact" class="px-6 py-3 bg-secondary-500 text-white rounded-md hover:bg-secondary-600 transition-colors font-semibold shadow">
-            {trans(lang, 'btn-contact')}
+            {trans(lang, '404.btn-contact')}
           </a>
         </div>
       </div>
