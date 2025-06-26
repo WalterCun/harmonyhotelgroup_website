@@ -1,0 +1,61 @@
+---
+import MenuOpen from "~/components/globals/svg/menus/MenuOpen.astro";
+import MenuClose from "~/components/globals/svg/menus/MenuClose.astro";
+import LogoHGG from "~/components/globals/svg/logos/LogoHGG.astro";
+---
+
+<div class="drawer drawer-end size-6">
+    <input id="menu-nav-drawer" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-content">
+        <label
+            id="menu-icon"
+            for="menu-nav-drawer"
+            class="hover:text-primary transition-colors duration-200 cursor-pointer relative size-6 drawer-button"
+        >
+            <i
+                id="menu-open"
+                class="absolute inset-0 transform transition-all duration-300 ease-in-out scale-100 opacity-100 size-6 text-white hover:text-primary"
+            >
+                <MenuOpen />
+            </i>
+            <i
+                id="menu-close"
+                class="absolute inset-0 transform transition-all duration-300 ease-in-out scale-95 opacity-0 size-6 text-white hover:text-primary"
+            >
+                <MenuClose />
+            </i>
+        </label>
+    </div>
+    <div class="drawer-side">
+        <label
+            for="menu-nav-drawer"
+            aria-label="close sidebar"
+            class="drawer-overlay"></label>
+        <div class="menu bg-base-200 text-base-content min-h-full w-96 p-4">
+            <!-- Sidebar content here -->
+            <LogoHGG />
+        </div>
+    </div>
+</div>
+
+<script>
+    const menuOpen = document.getElementById("menu-open");
+    const menuClose = document.getElementById("menu-close");
+    const menuIcon = document.getElementById("menu-icon");
+
+    if (menuOpen && menuClose && menuIcon) {
+        menuIcon.addEventListener("mouseenter", () => {
+            menuOpen.classList.add("scale-95", "opacity-0");
+            menuOpen.classList.remove("scale-100", "opacity-100");
+            menuClose.classList.remove("scale-95", "opacity-0");
+            menuClose.classList.add("scale-100", "opacity-100");
+        });
+
+        menuIcon.addEventListener("mouseleave", () => {
+            menuOpen.classList.remove("scale-95", "opacity-0");
+            menuOpen.classList.add("scale-100", "opacity-100");
+            menuClose.classList.remove("scale-100", "opacity-100");
+            menuClose.classList.add("scale-95", "opacity-0");
+        });
+    }
+</script>

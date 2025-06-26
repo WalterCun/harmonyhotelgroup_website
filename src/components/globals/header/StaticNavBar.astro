@@ -4,7 +4,7 @@ import Navigation from "./Navigation.astro";
 import HeaderStaticNav from "globals/header/HeaderStaticNav.astro";
 import ContainerStaticNav from "../../core/layouts/ContainerStaticNav.astro";
 import LogoHGG from "../svg/logos/LogoHGG.astro";
-import MenuIcon from "../../core/ui/MenuIcon.astro";
+import DrawerMenuNav from "../../core/ui/DrawerMenuNav.astro";
 
 interface Props {
     lang: string;
@@ -28,7 +28,7 @@ const { lang } = Astro.props;
 
                 <div class="shrink-0 flex items-center gap-2">
                     <LanguageSwitcher lang={lang} />
-                    <MenuIcon />
+                    <DrawerMenuNav />
                 </div>
             </div>
         </div>
