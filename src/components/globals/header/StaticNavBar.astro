@@ -17,8 +17,6 @@ const { lang } = Astro.props;
     <ContainerStaticNav>
         <HeaderStaticNav />
     </ContainerStaticNav>
-    <!-- Divider -->
-    <div class="w-full h-px bg-gray-500/30"></div>
     <ContainerStaticNav>
         <div class="flex justify-between items-center">
             <a href="/" class="block size-20">
@@ -28,7 +26,7 @@ const { lang } = Astro.props;
             <div class="flex items-center gap-4">
                 <Navigation lang={lang} />
 
-                <div class="shrink-0 flex items-center space-x-1 md:space-x-2">
+                <div class="shrink-0 flex items-center gap-2">
                     <LanguageSwitcher lang={lang} />
                     <MenuIcon />
                 </div>
