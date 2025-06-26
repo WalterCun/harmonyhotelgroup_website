@@ -4,10 +4,10 @@ import Navigation from "./Navigation.astro";
 import HeaderStaticNav from "globals/header/HeaderStaticNav.astro";
 import ContainerStaticNav from "../../core/layouts/ContainerStaticNav.astro";
 import LogoHGG from "../svg/logos/LogoHGG.astro";
-import MenuIcon from "../../core/ui/MenuIcon.astro";
+import DrawerMenuNav from "../../core/ui/DrawerMenuNav.astro";
 
 interface Props {
-  lang: string;
+    lang: string;
 }
 
 const { lang } = Astro.props;
@@ -17,8 +17,6 @@ const { lang } = Astro.props;
     <ContainerStaticNav>
         <HeaderStaticNav />
     </ContainerStaticNav>
-    <!-- Divider -->
-    <div class="w-full h-px bg-gray-500/30"></div>
     <ContainerStaticNav>
         <div class="flex justify-between items-center">
             <a href="/" class="block size-20">
@@ -28,55 +26,11 @@ const { lang } = Astro.props;
             <div class="flex items-center gap-4">
                 <Navigation lang={lang} />
 
-                <div class="shrink-0 flex items-center space-x-1 md:space-x-2">
+                <div class="shrink-0 flex items-center gap-2">
                     <LanguageSwitcher lang={lang} />
-                    <MenuIcon />
+                    <DrawerMenuNav />
                 </div>
             </div>
         </div>
     </ContainerStaticNav>
 </nav>
-
-<style>
-    .main-navigation :global(svg) {
-        width: 120px;
-        height: auto;
-    }
-
-    .animated-text {
-        font-size: 1.5rem;
-        position: relative;
-        overflow: hidden;
-        background: linear-gradient(
-            90deg,
-            rgba(212, 175, 55, 1) 0%,
-            rgba(255, 215, 0, 1) 25%,
-            rgba(212, 175, 55, 1) 50%,
-            rgba(255, 215, 0, 1) 75%,
-            rgba(212, 175, 55, 1) 100%
-        );
-        background-size: 200% auto;
-        background-clip: text;
-        -webkit-background-clip: text;
-        animation: gradient 3s linear infinite;
-    }
-
-    .animated-text span.text-primary-500 {
-        position: relative;
-        z-index: 1;
-    }
-
-    @keyframes gradient {
-        0% {
-            background-position: 0 center;
-        }
-        100% {
-            background-position: 200% center;
-        }
-    }
-
-    /* Modo oscuro */
-    :global(.dark) .animated-text span.text-neutral-800 {
-        color: rgba(248, 249, 250, 1);
-    }
-</style>
