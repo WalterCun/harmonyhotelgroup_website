@@ -10,7 +10,8 @@ const logger = createLogger(false, "hotels.astro");
 
 let hotels: any[] = [];
 let uniqueCities: CityOption[] = [];
-let uniqueAmenities: string[] = [];
+let uniqueAmenities: { key: string; label: string }[] = [];
+let priceRanges: { value: string; label: string; min: number; max: number }[] = [];
 
 try {
   hotels = (await getCollection("hotels"))
@@ -22,7 +23,7 @@ try {
     ...new Set(hotels.map((hotel) => hotel.data.location)),
   ] as CityOption[];
 
-  // Extract amenities from all hotels - con manejo seguro
+  // Extract amenities from all hotels - con manejo seguro y traducción
   const allAmenities = hotels.flatMap((hotel) => {
     // Verificar que el hotel tiene la estructura esperada
     if (!hotel.data.amenities?.[0]) {
@@ -30,22 +31,100 @@ try {
     }
 
     const amenitiesObj = hotel.data.amenities[0];
-    return [
-      ...(amenitiesObj.basic_services || []),
-      ...(amenitiesObj.general_services || []),
-      ...(amenitiesObj.extra_services || []),
-      ...(amenitiesObj.premium_services || []),
+    const amenitiesWithCategory = [
+      ...(amenitiesObj.basic_services || []).map((key: string) => ({ key, category: 'basic_services' })),
+      ...(amenitiesObj.general_services || []).map((key: string) => ({ key, category: 'general_services' })),
+      ...(amenitiesObj.extra_services || []).map((key: string) => ({ key, category: 'extra_services' })),
+      ...(amenitiesObj.premium_services || []).map((key: string) => ({ key, category: 'premium_services' })),
     ];
+    
+    return amenitiesWithCategory;
   });
-  uniqueAmenities = [...new Set(allAmenities)];
+  
+  console.log("allAmenities", allAmenities);
+  
+  // Crear array de servicios únicos con traducciones
+  const uniqueAmenityKeys = [...new Set(allAmenities.map(item => `${item.category}.${item.key}`))];
+  uniqueAmenities = uniqueAmenityKeys.map(fullKey => {
+    const [category, key] = fullKey.split('.');
+    return {
+      key: fullKey,
+      label: trans(lang_es, `components.sections.home.featured-hotels.tags.${category}.${key}`) || key
+    };
+  });
+
+  // Generar rangos de precios dinámicamente
+  const prices = hotels
+    .map((hotel) => Number.parseFloat(hotel.data.roomPrice))
+    .filter((price) => !Number.isNaN(price) && price > 0)
+    .sort((a, b) => a - b);
+
+  if (prices.length > 0) {
+    const minPrice = Math.floor(prices[0]);
+    const maxPrice = Math.ceil(prices[prices.length - 1]);
+    
+    // Calcular cuartiles para crear rangos más equilibrados
+    const q1 = Math.floor(prices[Math.floor(prices.length * 0.25)]);
+    const q2 = Math.floor(prices[Math.floor(prices.length * 0.5)]);
+    const q3 = Math.floor(prices[Math.floor(prices.length * 0.75)]);
+
+    priceRanges = [
+      {
+        value: `budget-${minPrice}-${q1}`,
+        label: `Menos de $${q1}`,
+        min: minPrice,
+        max: q1 - 1
+      },
+      {
+        value: `mid-${q1}-${q2}`,
+        label: `$${q1} - $${q2}`,
+        min: q1,
+        max: q2
+      },
+      {
+        value: `luxury-${q2}-${q3}`,
+        label: `$${q2 + 1} - $${q3}`,
+        min: q2 + 1,
+        max: q3
+      },
+      {
+        value: `ultra-${q3}-${maxPrice}`,
+        label: `Más de $${q3}`,
+        min: q3 + 1,
+        max: maxPrice
+      }
+    ];
+
+    // Si hay muy pocos hoteles o rangos muy pequeños, usar rangos más simples
+    if (maxPrice - minPrice < 100) {
+      const midPoint = Math.floor((minPrice + maxPrice) / 2);
+      priceRanges = [
+        {
+          value: `budget-${minPrice}-${midPoint}`,
+          label: `Menos de $${midPoint}`,
+          min: minPrice,
+          max: midPoint - 1
+        },
+        {
+          value: `luxury-${midPoint}-${maxPrice}`,
+          label: `$${midPoint} o más`,
+          min: midPoint,
+          max: maxPrice
+        }
+      ];
+    }
+  }
 
   logger.log("All hotels loaded successfully:", hotels.length);
+  logger.log("Price ranges generated:", priceRanges);
+  logger.log("Amenities with translations:", uniqueAmenities);
 } catch (error) {
   logger.error("Error loading hotels:", error);
 }
 
 const { lang = lang_es } = Astro.props;
 ---
+
 <Layout lang={lang} title={trans(lang,"hotels.index.page_title")} className="pt-35">
     <div class="flex justify-center w-full bg-white py-10">
         <div class="container">
@@ -55,134 +134,356 @@ const { lang = lang_es } = Astro.props;
             <p class="text-center text-lg text-neutral-700 dark:text-neutral-300 max-w-3xl mx-auto">
                 {trans(lang,"hotels.index.subtitle")}
             </p>
-                <div class="bg-white dark:bg-neutral-800 shadow-md rounded-lg p-6 mb-8">
-                    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            
+            <!-- Filtros -->
+            <div class="bg-gradient-to-t from-gray-400 to-slate-100  border border-gray-200 shadow-lg rounded-lg mb-8">
+                <!-- Header del acordeón -->
+                <button id="filterToggle" class="w-full p-4 text-left flex justify-between items-center hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors duration-200">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                        </svg>
+                        <span class="text-base font-semibold text-gray-700 dark:text-gray-200">Filtros de Búsqueda</span>
+                    </div>
+                    <svg id="filterIcon" class="w-4 h-4 text-gray-600 dark:text-gray-300 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+
+                <!-- Contenido del acordeón -->
+                <div id="filterContent" class="hidden px-4 pb-4">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        <!-- Destino -->
                         <div>
-                            <label for="destination"
-                                   class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">Destination</label>
-                            <select id="destination" class="select">
-                                <option value="">All</option>
+                            <label for="destination" class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">
+                                Destino
+                            </label>
+                            <select id="destination" class="select w-full bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-500 text-gray-700 dark:text-gray-200 focus:border-gray-500 focus:ring-gray-500">
+                                <option value="">Todos los destinos</option>
                                 {
-                                    uniqueCities.map(item => {
-                                        return (<option value={item}>{item}</option>)
-                                    })
+                                    uniqueCities.map(item => (
+                                        <option value={item}>{item}</option>
+                                    ))
                                 }
                             </select>
                         </div>
 
+                        <!-- Rango de Precio con Slider -->
                         <div>
-                            <label for="price"
-                                   class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">Price
-                                Range</label>
-                            <select id="price" class="select">
-                                <option value="">Any Price</option>
-                                <option value="budget">Under $200</option>
-                                <option value="mid">$200 - $350</option>
-                                <option value="luxury">$350 - $500</option>
-                                <option value="ultra">$500+</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label for="amenities"
-                                   class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">Amenities</label>
-                            <select id="amenities" class="select">
-                                <option value="">All</option>
-                                {
-                                    uniqueAmenities.map(item => {
-                                        return (<option value={item}>{item}</option>)
-                                    })
-                                }
-                            </select>
-                        </div>
-
-                        <div class="flex items-end">
-                            <button class="btn btn-primary w-full">
-                                Apply Filters
-                            </button>
+                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">
+                                Rango de Precio: <span id="priceRangeDisplay" class="text-amber-600 font-medium">Cualquier precio</span>
+                            </label>
+                            <div class="space-y-2">
+                                <input 
+                                    type="range" 
+                                    id="priceRange" 
+                                    min="0" 
+                                    max="1000" 
+                                    step="10" 
+                                    value="1000"
+                                    class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                                />
+                                <div class="flex justify-between text-xs text-gray-500">
+                                    <span>$0</span>
+                                    <span id="priceValue">$1000</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Servicios en Grid -->
+                    <div class="mt-4">
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+                            Servicios
+                        </label>
+                        <div id="amenitiesGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 max-h-40 overflow-y-auto">
+                            {
+                                uniqueAmenities.map(item => (
+                                    <label class="flex items-center p-2 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
+                                        <input 
+                                            type="checkbox" 
+                                            value={item.key} 
+                                            class="amenity-checkbox mr-2 w-3 h-3 text-amber-600 bg-gray-100 border-gray-300 rounded focus:ring-amber-500 focus:ring-2"
+                                        />
+                                        <span class="text-xs text-gray-700 dark:text-gray-200">{item.label}</span>
+                                    </label>
+                                ))
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Botones de acción -->
+                    <div class="flex gap-3 mt-4">
+                        <button id="clearFilters" class="btn bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white border-0 shadow-md hover:shadow-lg transition-all duration-300 font-semibold text-sm px-4 py-2">
+                            Limpiar Filtros
+                        </button>
+                    </div>
                 </div>
+            </div>
+
+            <!-- Contenedor de hoteles -->
+            <div id="hotelsContainer">
                 {hotels.length > 0 ? (
-                  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                      {
-                          hotels.map((hotel) => {
-                              const {
-                                  coverImage,
-                                  roomPrice,
-                                  partner,
-                                  name,
-                                  amenities,
-                                  stars,
-                                  location,
-                              } = hotel.data;
-                              return (
-                                      <HotelCard
-                                              id={hotel.id}
-                                              coverImage={coverImage}
-                                              location={location}
-                                              name={name}
-                                              stars={stars}
-                                              amenities={amenities}
-                                              roomPrice={roomPrice}
-                                              partner={partner}
-                                              lang={lang}
-                                      />
-                              );
-                          })
-                      }
-                    <!--        <div class="card group hover:shadow-xl transition-all duration-300">-->
-                    <!--            <div class="relative h-64 overflow-hidden">-->
-                    <!--                <img-->
-                    <!--                        src={hotel.data.coverImage}-->
-                    <!--                        alt={hotel.data.name}-->
-                    <!--                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"-->
-                    <!--                />-->
-                    <!--                <div class="absolute top-4 right-4 bg-white dark:bg-neutral-800 rounded-full py-1 px-3 text-sm font-semibold text-primary-500">-->
-                    <!--                    {hotel.data.stars}/5-->
-                    <!--                </div>-->
-                    <!--            </div>-->
-                    <!--            <div class="p-6">-->
-                    <!--                <h3 class="text-xl font-semibold mb-2">{hotel.data.name}</h3>-->
-                    <!--                <p class="text-neutral-600 dark:text-neutral-400 mb-3">-->
-                    <!--<span class="inline-flex items-center">-->
-                    <!--  <Icon name="location" class="btn-primary"/>-->
-                    <!--    {hotel.data.location}-->
-                    <!--</span>-->
-                    <!--                </p>-->
-
-                    <!--  <div class="flex flex-wrap gap-2 mb-4">-->
-                    <!--    {hotel.data.amenities?.[0]?.basic_services?.slice(0, 3).map(amenity => (-->
-                    <!--      <span class="inline-flex items-center text-xs bg-neutral-100 dark:bg-neutral-700 px-2 py-1 rounded-full">-->
-                    <!--        {amenity}-->
-                    <!--      </span>-->
-                    <!--    ))}-->
-                    <!--    {hotel.data.amenities?.[0]?.basic_services?.length > 3 && (-->
-                    <!--      <span class="inline-flex items-center text-xs bg-neutral-100 dark:bg-neutral-700 px-2 py-1 rounded-full">-->
-                    <!--        +{hotel.data.amenities[0].basic_services.length - 3} more-->
-                    <!--      </span>-->
-                    <!--    )}-->
-                    <!--  </div>-->
-
-                    <!--                <div class="flex justify-between items-center">-->
-                    <!--                    <div>-->
-                    <!--                        <span class="text-xl font-bold">${hotel.data.roomPrice}</span>-->
-                    <!--                        <span class="text-neutral-600 dark:text-neutral-400"> / night</span>-->
-                    <!--                    </div>-->
-                    <!--                    <a href={`/hotels/${hotel.id}`} class="btn btn-primary py-2 px-4">-->
-                    <!--                        View Details-->
-                    <!--                    </a>-->
-                    <!--                </div>-->
-                    <!--            </div>-->
-                    <!--        </div>-->
-                  </div>
+                    <div id="hotelsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {
+                            hotels.map((hotel) => {
+                                const {
+                                    coverImage,
+                                    roomPrice,
+                                    partner,
+                                    name,
+                                    amenities,
+                                    stars,
+                                    location,
+                                } = hotel.data;
+                                
+                                // Preparar datos para el filtro
+                                const hotelData = {
+                                    id: hotel.id,
+                                    location: location,
+                                    price: roomPrice,
+                                    amenities: amenities?.[0] ? [
+                                        ...(amenities[0].basic_services || []).map((key: string) => `basic_services.${key}`),
+                                        ...(amenities[0].general_services || []).map((key: string) => `general_services.${key}`),
+                                        ...(amenities[0].extra_services || []).map((key: string) => `extra_services.${key}`),
+                                        ...(amenities[0].premium_services || []).map((key: string) => `premium_services.${key}`)
+                                    ] : []
+                                };
+                                
+                                return (
+                                    <div class="hotel-card" data-hotel={JSON.stringify(hotelData)}>
+                                        <HotelCard
+                                            id={hotel.id}
+                                            coverImage={coverImage}
+                                            location={location}
+                                            name={name}
+                                            stars={stars}
+                                            amenities={amenities}
+                                            roomPrice={roomPrice}
+                                            partner={partner}
+                                            lang={lang}
+                                        />
+                                    </div>
+                                );
+                            })
+                        }
+                    </div>
                 ) : (
-                  <div class="text-center py-12">
-                    <p class="text-xl text-neutral-600 dark:text-neutral-400">
-                      {trans(lang_es, "hotels.index.no_hotels_found")}
-                    </p>
-                  </div>
+                    <div class="text-center py-12">
+                        <p class="text-xl text-neutral-600 dark:text-neutral-400">
+                            No se encontraron hoteles
+                        </p>
+                    </div>
                 )}
+            </div>
+
+            <!-- Mensaje cuando no hay resultados -->
+            <div id="noResults" class="text-center py-12 hidden">
+                <p class="text-xl text-neutral-600 dark:text-neutral-400">
+                    No se encontraron hoteles con los filtros seleccionados
+                </p>
+                <button id="resetFilters" class="btn bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white border-0 shadow-md hover:shadow-lg transition-all duration-300 font-semibold mt-4">
+                    Limpiar filtros
+                </button>
+            </div>
         </div>
     </div>
 </Layout>
+
+<script define:vars={{ priceRanges, uniqueAmenities }}>
+    // Funcionalidad de filtrado
+    document.addEventListener('DOMContentLoaded', function() {
+        // Elementos del acordeón
+        const filterToggle = document.getElementById('filterToggle');
+        const filterContent = document.getElementById('filterContent');
+        const filterIcon = document.getElementById('filterIcon');
+        
+        // Elementos de filtro
+        const destinationSelect = document.getElementById('destination');
+        const priceRange = document.getElementById('priceRange');
+        const priceValue = document.getElementById('priceValue');
+        const priceRangeDisplay = document.getElementById('priceRangeDisplay');
+        const amenityCheckboxes = document.querySelectorAll('.amenity-checkbox');
+        
+        // Botones
+        const clearFiltersBtn = document.getElementById('clearFilters');
+        const resetFiltersBtn = document.getElementById('resetFilters');
+        
+        // Contenedores
+        const hotelsGrid = document.getElementById('hotelsGrid');
+        const noResults = document.getElementById('noResults');
+        const hotelCards = document.querySelectorAll('.hotel-card');
+
+        // Variables de estado
+        let selectedAmenities = [];
+        let maxPrice = 1000;
+
+        // Configurar el slider de precios
+        if (priceRanges.length > 0) {
+            maxPrice = Math.max(...priceRanges.map(range => range.max));
+            priceRange.max = maxPrice;
+            priceRange.value = maxPrice;
+            priceValue.textContent = `$${maxPrice}`;
+            priceRangeDisplay.textContent = `Hasta $${maxPrice}`;
+        }
+
+        // Toggle del acordeón
+        filterToggle.addEventListener('click', function() {
+            const isHidden = filterContent.classList.contains('hidden');
+            
+            if (isHidden) {
+                filterContent.classList.remove('hidden');
+                filterIcon.classList.add('rotate-180');
+            } else {
+                filterContent.classList.add('hidden');
+                filterIcon.classList.remove('rotate-180');
+            }
+        });
+
+        // Actualizar valor del slider de precios
+        priceRange.addEventListener('input', function() {
+            const value = this.value;
+            priceValue.textContent = `$${value}`;
+            priceRangeDisplay.textContent = value == maxPrice ? 'Cualquier precio' : `Hasta $${value}`;
+            // Ejecutar filtro automáticamente
+            filterHotels();
+        });
+
+        // Manejar checkboxes de servicios
+        amenityCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    selectedAmenities.push(this.value);
+                } else {
+                    selectedAmenities = selectedAmenities.filter(item => item !== this.value);
+                }
+                // Ejecutar filtro automáticamente
+                filterHotels();
+            });
+        });
+
+        function filterHotels() {
+            const selectedDestination = destinationSelect.value;
+            const selectedPrice = Number.parseInt(priceRange.value);
+            const selectedAmenitiesList = selectedAmenities;
+
+            let visibleCount = 0;
+
+            hotelCards.forEach((card) => {
+                const hotelData = JSON.parse(card.getAttribute('data-hotel') || '{}');
+                let shouldShow = true;
+
+                // Filtro por destino
+                if (selectedDestination && hotelData.location !== selectedDestination) {
+                    shouldShow = false;
+                }
+
+                // Filtro por precio con slider
+                if (selectedPrice < maxPrice && hotelData.price) {
+                    const price = Number.parseFloat(hotelData.price);
+                    if (price > selectedPrice) {
+                        shouldShow = false;
+                    }
+                }
+
+                // Filtro por servicios múltiples
+                if (selectedAmenitiesList.length > 0 && hotelData.amenities) {
+                    const hasAllSelectedAmenities = selectedAmenitiesList.every(amenity => 
+                        hotelData.amenities.includes(amenity)
+                    );
+                    if (!hasAllSelectedAmenities) {
+                        shouldShow = false;
+                    }
+                }
+
+                // Mostrar/ocultar tarjeta
+                if (shouldShow) {
+                    card.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            // Mostrar mensaje si no hay resultados
+            if (visibleCount === 0) {
+                hotelsGrid.classList.add('hidden');
+                noResults.classList.remove('hidden');
+            } else {
+                hotelsGrid.classList.remove('hidden');
+                noResults.classList.add('hidden');
+            }
+        }
+
+        function clearAllFilters() {
+            destinationSelect.value = '';
+            priceRange.value = maxPrice;
+            priceValue.textContent = `$${maxPrice}`;
+            priceRangeDisplay.textContent = 'Cualquier precio';
+            selectedAmenities = [];
+            
+            // Desmarcar todos los checkboxes
+            amenityCheckboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            
+            filterHotels();
+        }
+
+        // Event listeners
+        destinationSelect.addEventListener('change', filterHotels);
+        clearFiltersBtn.addEventListener('click', clearAllFilters);
+        resetFiltersBtn.addEventListener('click', clearAllFilters);
+    });
+</script>
+
+<style>
+    /* Estilos personalizados para el slider */
+    .slider {
+        -webkit-appearance: none;
+        appearance: none;
+        background: #e5e7eb;
+        outline: none;
+        border-radius: 8px;
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: linear-gradient(to right, #f59e0b, #eab308);
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .slider::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: linear-gradient(to right, #f59e0b, #eab308);
+        cursor: pointer;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    /* Estilos para el scroll del grid de servicios */
+    #amenitiesGrid::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    #amenitiesGrid::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 3px;
+    }
+
+    #amenitiesGrid::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 3px;
+    }
+
+    #amenitiesGrid::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+    }
+</style>
