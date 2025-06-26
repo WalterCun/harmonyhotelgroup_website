@@ -1,14 +1,7 @@
 ---
-import { socialLinks } from "~/lib/constants/social";
+import { Icon } from "astro-icon/components";
 
-const address = {
-    location: "Global Headquarters",
-    address: "123 Harmony Plaza, New York, NY 10001, USA",
-    addressLink: "https://www.google.com/maps/place/123+Harmony+Plaza,+New+York,+NY+10001,+USA/@40.7127755,-74.0059728,15z/data=!4m5!3m4!1s0x89c2585ff9df2f6d:0xf876c67b1d0153d4!8m2!3d40.7127755!4d-74.0059728",
-    phone: "+1 (212) 555-1234",
-    email: "info@harmonyhotelgroup.com",
-    hours: "Monday - Friday: 9:00 AM - 6:00 PM EST",
-};
+import { socialLinks, infoAddress } from "~/lib/constants";
 ---
 
 <div class="flex justify-between items-center py-5">
@@ -19,7 +12,7 @@ const address = {
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="cursor-pointer hover:text-primary transition-colors duration-200"
+                    class="cursor-pointer text-primary hover:text-gray-200 transition-colors duration-200"
                 >
                     <link.icon />
                 </a>
@@ -28,28 +21,18 @@ const address = {
     </div>
     <div class="flex items-center gap-4">
         <div class="">
-            <a href={address.addressLink} target="_blank" rel="noopener noreferrer" class="flex items-start">
+            <a href={infoAddress.addressLink} target="_blank" rel="noopener noreferrer" class="flex items-start">
                 <i class="text-primary shrink-0">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        class="w-5 h-5 mr-3 text-primary-500 shrink-0"
-                    >
-                        <path
-                            fill-rule="evenodd"
-                            d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z"
-                            clip-rule="evenodd"></path>
-                    </svg>
+                    <Icon name="location" width={25} height={25}/>
                 </i>
                 <span class="text-neutral-700 dark:text-neutral-300">
-                    {address.address}
+                    {infoAddress.address}
                 </span>
             </a>
         </div>
 
         <div class="">
-            <a href={`tel:${address.phone}`} class="flex items-start">
+            <a href={`tel:${infoAddress.phone}`} class="flex items-start">
                 <i class="text-primary shrink-0">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +47,7 @@ const address = {
                     </svg>
                 </i>
                 <span class="text-neutral-700 dark:text-neutral-300">
-                    {address.phone}
+                    {infoAddress.phone}
                 </span>
             </a>
         </div>

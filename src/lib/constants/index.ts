@@ -7,6 +7,7 @@ export * from "./whatsapp";
 // Reservation Form
 export * from "./reservation-form";
 // Social Media
+export * from "./social"
 export * from "./social-media";
 // Contact Media
 export * from "./contact";
