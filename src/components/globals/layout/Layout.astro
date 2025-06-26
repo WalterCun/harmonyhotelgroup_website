@@ -11,45 +11,43 @@ import { trans } from "~/utils/translations";
 import { cn } from "../../../utils";
 
 interface Props {
-  lang: string;
-  title?: string;
-  className?: string;
+    lang: string;
+    title?: string;
+    className?: string;
 }
 
 const { lang, title = "", className } = Astro.props;
 
 const staticTitle = `${trans(lang, "layouts.layout.meta.title")}`;
 const dynamicTitle =
-  title !== "" ? `${staticTitle} | ${title}` : `${staticTitle}`;
+    title !== "" ? `${staticTitle} | ${title}` : `${staticTitle}`;
 ---
 
 <html lang={lang} data-theme="harmony_theme">
     <head>
         <AstroFont
-        config={[
-            // Primera fuente
-      {
-                name: "Playfair Display",
-                src: [],
-                googleFontsURL:
-                    "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap",
-                preload: true,
-                display: "swap",
-                selector: "h1, h2, h3, .playfair",
-                fallback: "serif",
-            },
-            // Segunda fuente
-      {
-                name: "Source Sans Pro",
-                src: [],
-                googleFontsURL:
-                    "https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap",
-                preload: true,
-                display: "swap",
-                selector: "body, span, p",
-                fallback: "sans-serif",
-            },
-        ]}
+            config={[
+                {
+                    name: "Playfair Display",
+                    src: [],
+                    googleFontsURL:
+                        "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap",
+                    preload: true,
+                    display: "swap",
+                    selector: "h1, h2, h3, .playfair",
+                    fallback: "serif",
+                },
+                {
+                    name: "Source Sans Pro",
+                    src: [],
+                    googleFontsURL:
+                        "https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap",
+                    preload: true,
+                    display: "swap",
+                    selector: "body, span, p",
+                    fallback: "sans-serif",
+                },
+            ]}
         />
         <meta charset="UTF-8" />
         <meta
@@ -71,7 +69,10 @@ const dynamicTitle =
         />
     </head>
     <body
-        class={cn("min-h-screen flex flex-col bg-white text-black transition-colors duration-300", className)}
+        class={cn(
+            "min-h-screen flex flex-col bg-white text-black transition-colors duration-300",
+            className,
+        )}
     >
         <StaticNavBar lang={lang} />
         <main class="grow">
@@ -81,23 +82,29 @@ const dynamicTitle =
         <SizeIndicator />
         <!-- <SpeedInsights /> -->
         <!--<Analytics/>-->
-    </body>
-<!-- Script to handle theme toggle -->
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const savedTheme = localStorage.getItem('theme') || 'harmony_theme';
-        document.documentElement.setAttribute('data-theme', savedTheme);
+    </body><!-- Script to handle theme toggle -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const savedTheme = localStorage.getItem("theme") || "harmony_theme";
+            document.documentElement.setAttribute("data-theme", savedTheme);
 
-        const themeToggle = document.getElementById('theme-toggle');
-        if (themeToggle) {
-            themeToggle.addEventListener('click', () => {
-                const currentTheme = document.documentElement.getAttribute('data-theme');
-                const newTheme = currentTheme === 'harmony_theme' ? 'dark' : 'harmony_theme';
+            const themeToggle = document.getElementById("theme-toggle");
+            if (themeToggle) {
+                themeToggle.addEventListener("click", () => {
+                    const currentTheme =
+                        document.documentElement.getAttribute("data-theme");
+                    const newTheme =
+                        currentTheme === "harmony_theme"
+                            ? "dark"
+                            : "harmony_theme";
 
-                document.documentElement.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-            });
-        }
-    });
-</script>
+                    document.documentElement.setAttribute(
+                        "data-theme",
+                        newTheme,
+                    );
+                    localStorage.setItem("theme", newTheme);
+                });
+            }
+        });
+    </script>
 </html>
