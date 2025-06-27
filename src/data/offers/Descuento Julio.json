@@ -1,0 +1,10 @@
+{
+  "title": "Descuento Grupal",
+  "coverImage": "/upload/hotels/HotelMajestic2/52.webp",
+  "startDate": "2025-07-01T05:00:00.000Z",
+  "expirationDate": "2025-07-31T05:00:00.000Z",
+  "active": true,
+  "discount": "25%",
+  "price_adult": 20,
+  "price_child": 15
+}

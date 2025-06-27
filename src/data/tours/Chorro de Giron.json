@@ -1,0 +1,13 @@
+{
+  "name": "Chorro de Giron",
+  "description_tour": [
+    {
+      "lang_tour": "es",
+      "content_tour": "Descripcion en Español"
+    }
+  ],
+  "coverImage": "/upload/hotels/HotelEnsuenos/balcon.webp",
+  "duration": "4 horas",
+  "price_adult": 35,
+  "price_child": 30
+}
