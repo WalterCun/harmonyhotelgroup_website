@@ -2,14 +2,22 @@
   "partner": true,
   "name": "Hotel Ipanema by HHG",
   "stars": 3,
-  "location": "Salinas, Ecuador",
+  "rating": 0,
+  "location": "src/data/locations/Ecuador,SantaElena,Salinas.json",
   "mainStreet": "Jose Maria Velaszo Ibarra",
   "secondaryStreet": "Reinaldo Chavez",
   "roomPrice": 20,
+  "count": 15,
   "coverImage": "/upload/hotels/Ipanema/frontal.webp",
   "gallery": [
     "/upload/hotels/Ipanema/picina.webp",
     "/upload/hotels/Ipanema/parqueadero.webp"
+  ],
+  "description_hotel": [
+    {
+      "lang_hotel": "es",
+      "content_hotel": "descripcion de informacion del contenido del hotel en idioma español"
+    }
   ],
   "amenities": [
     {
@@ -19,5 +27,7 @@
       "premium_services": ["express_checkin"]
     }
   ],
-  "highlight": true
+  "highlight": true,
+  "tours": [],
+  "destinations": []
 }

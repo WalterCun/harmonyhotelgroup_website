@@ -1,11 +1,12 @@
 {
-  "name": "Hotel Ensueños by HHG",
-  "stars": 3,
-  "location": "Cuenca, Ecuador",
-  "mainStreet": "Gran Colombia",
-  "addressNumber": "182",
-  "secondaryStreet": "Manuel Vega",
-  "contact": [
+    "name": "Hotel Ensueños by HHG",
+    "stars": 3,
+    "rating": 0,
+    "location": "src/data/locations/Ecuador,Azuay,Cuenca.json",
+    "mainStreet": "Gran Colombia",
+    "addressNumber": "182",
+    "secondaryStreet": "Manuel Vega",
+    "contact": [
     {
       "type": "Cellphone",
       "value": "+593996146471",
@@ -22,7 +23,7 @@
       "tag": "Reservaciones"
     }
   ],
-  "socialMedia": [
+    "socialMedia": [
     {
       "name": "Tiktok",
       "url": "https://www.tiktok.com/@hotelensuenoscuenca"
@@ -36,7 +37,7 @@
       "url": "https://www.facebook.com/hotelensuenoscuenca"
     }
   ],
-  "rooms": [
+    "rooms": [
     {
       "name": "Individual",
       "size": 12,
@@ -46,16 +47,17 @@
       }
     }
   ],
-  "roomPrice": 25,
-  "coverImage": "/upload/hotels/HotelEnsuenos/portada2.webp",
-  "gallery": ["/upload/hotels/HotelEnsuenos/portada.webp"],
-  "description_hotel": [
+    "roomPrice": 25,
+    "count": 30,
+    "coverImage": "/upload/hotels/HotelEnsuenos/portada2.webp",
+    "gallery": ["/upload/hotels/HotelEnsuenos/portada.webp"],
+    "description_hotel": [
     {
       "lang_hotel": "es",
       "content_hotel": "descripcion de informacion del contenido del hotel en idioma español"
     }
   ],
-  "amenities": [
+    "amenities": [
     {
       "basic_services": ["dressing_table"],
       "general_services": ["parking"],
@@ -63,5 +65,9 @@
       "premium_services": ["express_checkin"]
     }
   ],
-  "highlight": true
-}
+    "tours": [],
+    "destination": [],
+    "highlight": true,
+    "destinations": []
+  }
+  
