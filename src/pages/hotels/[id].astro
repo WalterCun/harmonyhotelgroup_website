@@ -1,11 +1,14 @@
 ---
-import { Image } from "astro:assets";
-import { Icon } from "astro-icon/components";
-import { lang_es } from "lib/constants";
-import Layout from "globals/layout/Layout.astro";
 import { getCollection } from "astro:content";
-import { createLogger, imageUrl, resolveImage } from "~/utils";
+import { Icon } from "astro-icon/components";
+import fs from "node:fs";
+import path from "node:path";
+
+import { lang_es } from "lib/constants";
+import { createLogger} from "~/utils";
+import Layout from "globals/layout/Layout.astro";
 import GallerySwiper from "core/imagen/GallerySwiper.astro";
+import  Container  from "atoms/layout/Container.astro";
 
 interface Props {
   lang: string;
@@ -22,7 +25,7 @@ let hotel: any = (await getCollection("hotels")).filter(
 
 const {
   name,
-  start,
+  stars,
   location,
   mainStreet,
   adressNumber,
@@ -37,39 +40,193 @@ const {
   amenities,
   highlight,
 } = hotel[0].data;
+
+function iconExists(iconName: string) {
+  try {
+    return fs.existsSync(path.resolve("src/icons", `${iconName}.svg`));
+  } catch {
+    return false;
+  }
+}
 ---
 
 
-<Layout lang={lang_es} title={`${name}`}>
-    <div class="relative flex flex-col items-center py-8">
-        <div class="container max-w-6xl mx-auto py-15">
-            {gallery && gallery.length > 0 ? (
-                    <GallerySwiper
-                            images={gallery}
-                    />
-            ) : (
-                    <div class="bg-gray-100 p-8 rounded-lg text-center">
-                        <p>No hay imágenes disponibles para este hotel</p>
-                    </div>
-            )}
-        </div>
-
-        <div class="container bg-transparent">
-            <h1 class="text-3xl font-bold mb-4">{name}</h1>
-            <p class="text-lg mb-6">{description_hotel.map(item=> {
-                if(item.lang_hotel == lang_es) {
-                    return item.content_hotel
-                }
-                return "no Text"
-            })}</p>
-            <div class="flex items-center text-lg">
-                <span class="flex items-center">
-                    <Icon name="location" class="text-primary mr-2"></Icon>
-                    {location}
-                </span>
+<Layout lang={lang_es} title={`${name}`} className="pt-25">
+    <Container>
+      <div class="relative flex flex-col items-center py-8">
+        <div class="container max-w-6xl mx-auto py-8">
+          <!-- Encabezado del hotel: Título, ubicación y estrellas -->
+          <div class="mb-6">
+            <h1 class="text-4xl md:text-5xl font-bold text-primary mb-2">{name}</h1>
+            <div class="flex items-center gap-3 text-lg text-gray-600">
+              <span class="flex items-center gap-1">
+                <Icon name="location" class="text-primary" size="20" />
+                {location}
+              </span>
+              <span class="mx-2">·</span>
+              <span class="flex items-center gap-1">
+                <div class="rating p-0 m-0 mt-2">
+                  {
+                    stars &&
+                      Array.from({ length: 5 }, (_, index) =>
+                        index == stars - 1 ? (
+                          <div
+                            class="mask mask-star size-5 text-primary bg-primary"
+                            aria-label={`${index + 1} star`}
+                            aria-current="true"
+                          />
+                        ) : (
+                          <div
+                            class="mask mask-star size-5 text-primary bg-primary"
+                            aria-label={`${index + 1} star`}
+                          />
+                        )
+                      )
+                  }
+                </div>
+                <span class="ml-2 text-gray-500">{stars?.toFixed(1) ?? '0.0'} Valoración</span>
+              </span>
             </div>
+          </div>
+          <!-- Galería de fotos -->
+          <div>
+            {gallery && gallery.length > 0 ? (
+              <GallerySwiper images={gallery} />
+            ) : (
+              <div class="bg-gray-100 p-8 rounded-lg text-center">
+                <p>No hay imágenes disponibles para este hotel</p>
+              </div>
+            )}
+          </div>
+
+          <!-- Cards de Descripción y Reserva -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+            <!-- Card Descripción -->
+            <div class="md:col-span-2">
+              <div class="bg-white rounded-xl shadow p-6 h-full">
+                <h2 class="text-xl font-semibold text-primary mb-2">Descripción</h2>
+                <p class="text-gray-700">
+                  {description_hotel.map((item: { lang_hotel: string, content_hotel: string }) =>
+                    item.lang_hotel == lang_es ? item.content_hotel : null
+                  )}
+                </p>
+              </div>
+            </div>
+            <!-- Card Reserva -->
+            <div>
+              <div class="bg-white rounded-xl shadow p-6 h-full flex flex-col justify-between">
+                <h2 class="text-xl font-semibold text-primary mb-4">Reserve su Estancia</h2>
+                <div>
+                  <div class="text-3xl font-bold text-gray-900 mb-1">${roomPrice ?? '---'}</div>
+                  <div class="text-sm text-gray-500 mb-4">/por noche</div>
+                  <button class="w-full bg-primary hover:bg-primary-600 text-white font-semibold py-2 rounded mb-2 transition">Reservar por WhatsApp</button>
+                  <button class="w-full border border-primary text-primary font-semibold py-2 rounded transition hover:bg-primary-50">Visitar Sitio Oficial</button>
+                </div>
+                <p class="text-xs text-gray-500 mt-4">Contáctanos por WhatsApp para el mejor precio y disponibilidad.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card de Servicios -->
+          <div class="bg-white rounded-xl shadow p-6 mt-8">
+            <h2 class="text-xl font-semibold text-primary mb-4">Servicios</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+              {amenities && amenities[0] && [
+                ...(amenities[0].basic_services || []),
+                ...(amenities[0].general_services || []),
+                ...(amenities[0].extra_services || []),
+                ...(amenities[0].premium_services || [])
+              ].map((service) => (
+                <div class="flex items-center gap-2 text-primary">
+                  <Icon name={iconExists(service) ? service : "bed"} class="w-5 h-5" />
+                  <span class="text-sm text-primary">{service}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Card Lugares Cercanos -->
+          <div class="bg-white rounded-xl shadow p-6 mt-8">
+            <h2 class="text-xl font-semibold text-primary mb-4">Lugares Cercanos</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Aquí puedes reemplazar los datos mock por datos reales si los tienes */}
+              {[{
+                name: "Coral Gardens",
+                type: "Snorkeling Spot",
+                icon: "bed", // Cambiar Icono
+                description: "Boat trip",
+                image: "https://placehold.co/400x250?text=Coral+1",
+                location: location
+              }, {
+                name: "The Lagoon Restaurant",
+                type: "Restaurant",
+                icon: "bed", // Cambiar Icono
+                description: "On-site",
+                image: "https://placehold.co/400x250?text=Lagoon+Rest+1",
+                location: location
+              }].map((place) => (
+                <div class="rounded-lg border border-gray-200 bg-white shadow p-3 flex flex-col">
+                  <img src={place.image} alt={place.name} class="rounded-md mb-3 w-full h-48 object-cover bg-gray-100" />
+                  <div class="flex items-center gap-2 mb-1">
+                    <Icon name={place.icon} class="w-5 h-5 text-primary" />
+                    <span class="font-semibold text-primary">{place.name}</span>
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="ml-1 text-xs text-primary underline">↗</a>
+                  </div>
+                  <div class="text-sm text-gray-700">{place.type}</div>
+                  <div class="text-xs text-gray-400">({place.description})</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Card Tours Disponibles -->
+          <div class="bg-white rounded-xl shadow p-6 mt-8">
+            <h2 class="text-xl font-semibold text-primary mb-4">Tours Disponibles</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[{
+                name: "Dolphin Watching Excursion",
+                icon: "bed", // Cambiar Icono
+                description: "Witness playful dolphins in their natural habitat.",
+                details: "Morning or Afternoon",
+                image: "https://placehold.co/400x250?text=Tour+Dolphin"
+              }, {
+                name: "Sunset Fishing Trip",
+                icon: "bed", // Cambiar Icono
+                description: "Try your hand at traditional Maldivian fishing as the sun sets.",
+                details: "Includes equipment",
+                image: "https://placehold.co/400x250?text=Tour+Fishing"
+              }].map((tour) => (
+                <div class="rounded-lg border border-gray-200 bg-white shadow p-3 flex flex-col">
+                  <img src={tour.image} alt={tour.name} class="rounded-md mb-3 w-full h-48 object-cover bg-gray-100" />
+                  <div class="flex items-center gap-2 mb-1">
+                    <Icon name={tour.icon} class="w-5 h-5 text-primary" />
+                    <span class="font-semibold text-primary">{tour.name}</span>
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="ml-1 text-xs text-primary underline">↗</a>
+                  </div>
+                  <div class="text-sm text-gray-700">{tour.description}</div>
+                  <div class="text-xs text-gray-400">{tour.details}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Card de Mapa de Ubicación -->
+          <div class="bg-white rounded-xl shadow p-6 mt-8">
+            <h2 class="text-xl font-semibold text-primary mb-4">Mapa de Ubicación</h2>
+            <div class="w-full rounded-lg overflow-hidden bg-gray-200 flex flex-col items-center justify-center" style="min-height: 320px;">
+              <div class="relative w-full h-full flex flex-col items-center justify-center">
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                  <Icon name="location" class="w-10 h-10 text-primary mb-2" />
+                  <span class="text-xl font-bold text-white drop-shadow">Location of {location}</span>
+                  <button class="mt-4 px-4 py-1 rounded bg-white text-primary text-sm font-semibold shadow">View on Interactive Map (Coming Soon)</button>
+                </div>
+                <img src="https://placehold.co/800x450?text=800x450" alt="Mapa de {location}" class="w-full h-[320px] object-cover opacity-60" />
+              </div>
+            </div>
+          </div>
         </div>
-    </div>
+      </div>
+    </Container>
 
     <!-- Hero Section -->
     <!--<div class="relative flex flex-col items-center py-20">-->

@@ -7,20 +7,73 @@ import { type CityOption } from "../../lib/constants";
 import HotelCard from "../../components/core/cards/HotelCard.astro";
 
 const logger = createLogger(false, "hotels.astro");
+const { lang = lang_es } = Astro.props;
 
 let hotels: any[] = [];
+let locations: any[] = [];
+let destinations: any[] = [];
 let uniqueCities: CityOption[] = [];
 let uniqueAmenities: { key: string; label: string }[] = [];
 let priceRanges: { value: string; label: string; min: number; max: number }[] = [];
 
 try {
-  hotels = (await getCollection("hotels"))
+  // Obtener todas las colecciones
+  const [hotelsCollection, locationsCollection, destinationsCollection] = await Promise.all([
+    getCollection("hotels"),
+    getCollection("locations"),
+    getCollection("destinations")
+  ]);
+
+  // Crear mapas para acceso rápido
+  const locationsMap = new Map();
+  for (const location of locationsCollection) {
+    locationsMap.set(location.id, location.data);
+  }
+
+  const destinationsMap = new Map();
+  for (const destination of destinationsCollection) {
+    destinationsMap.set(destination.id, destination.data);
+  }
+
+  // Procesar hoteles con referencias resueltas
+  hotels = hotelsCollection
+    .map(hotel => {
+      const hotelData = hotel.data;
+      
+      // Resolver referencia de location
+      let locationData = null;
+      if (hotelData.location) {
+        // Extraer el ID de la referencia (asumiendo formato: "src/data/locations/Ecuador,Azuay,Cuenca.json")
+        const locationId = hotelData.location.replace('src/data/locations/', '').replace('.json', '');
+        locationData = locationsMap.get(locationId);
+      }
+
+      // Resolver referencia de destination
+      let destinationData = null;
+      if (hotelData.destination) {
+        const destinationId = hotelData.destination.replace('src/data/destinations/', '').replace('.json', '');
+        destinationData = destinationsMap.get(destinationId);
+      }
+
+      return {
+        ...hotel,
+        data: {
+          ...hotelData,
+          locationData, // Datos completos de location
+          destinationData, // Datos completos de destination
+          // Crear location string formateado
+          locationFormatted: locationData ? 
+            `${locationData.city}, ${locationData.province}, ${locationData.country}` : 
+            hotelData.location || 'Ubicación no disponible'
+        }
+      };
+    })
     .sort((a, b) => a.data.name.localeCompare(b.data.name))
     .sort((a, b) => (b.data.partner === true ? -1 : 1));
 
-  // Cast explícito para mantener el tipo CityOption
+  // Generar ciudades únicas desde las referencias resueltas
   uniqueCities = [
-    ...new Set(hotels.map((hotel) => hotel.data.location)),
+    ...new Set(hotels.map((hotel) => hotel.data.locationFormatted)),
   ] as CityOption[];
 
   // Extract amenities from all hotels - con manejo seguro y traducción
@@ -49,7 +102,7 @@ try {
     const [category, key] = fullKey.split('.');
     return {
       key: fullKey,
-      label: trans(lang_es, `components.sections.home.featured-hotels.tags.${category}.${key}`) || key
+      label: trans(lang, `components.sections.home.featured-hotels.tags.${category}.${key}`) || key
     };
   });
 
@@ -116,13 +169,13 @@ try {
   }
 
   logger.log("All hotels loaded successfully:", hotels.length);
+  logger.log("Locations loaded:", locationsCollection.length);
+  logger.log("Destinations loaded:", destinationsCollection.length);
   logger.log("Price ranges generated:", priceRanges);
   logger.log("Amenities with translations:", uniqueAmenities);
 } catch (error) {
   logger.error("Error loading hotels:", error);
 }
-
-const { lang = lang_es } = Astro.props;
 ---
 
 <Layout lang={lang} title={trans(lang,"hotels.index.page_title")} className="pt-35">
@@ -131,21 +184,21 @@ const { lang = lang_es } = Astro.props;
             <h1 class="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl drop-shadow-md text-primary text-center mb-6">
                 {trans(lang,"hotels.index.title")}
             </h1>
-            <p class="text-center text-lg text-neutral-700 dark:text-neutral-300 max-w-3xl mx-auto">
+            <p class="text-center text-lg text-neutral-700 max-w-3xl mx-auto">
                 {trans(lang,"hotels.index.subtitle")}
             </p>
             
             <!-- Filtros -->
-            <div class="bg-gradient-to-t from-gray-400 to-slate-100  border border-gray-200 shadow-lg rounded-lg mb-8">
+            <div class="bg-gray-300 border border-gray-200 shadow-lg rounded-lg mb-8">
                 <!-- Header del acordeón -->
-                <button id="filterToggle" class="w-full p-4 text-left flex justify-between items-center hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors duration-200">
+                <button id="filterToggle" class="w-full p-4 text-left flex justify-between items-center bg-gray-300">
                     <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
                         </svg>
-                        <span class="text-base font-semibold text-gray-700 dark:text-gray-200">Filtros de Búsqueda</span>
+                        <span class="text-base font-semibold text-black">Filtros de Búsqueda</span>
                     </div>
-                    <svg id="filterIcon" class="w-4 h-4 text-gray-600 dark:text-gray-300 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg id="filterIcon" class="w-4 h-4 text-black transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </button>
@@ -155,10 +208,10 @@ const { lang = lang_es } = Astro.props;
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                         <!-- Destino -->
                         <div>
-                            <label for="destination" class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">
+                            <label for="destination" class="block text-sm font-semibold text-black mb-1">
                                 Destino
                             </label>
-                            <select id="destination" class="select w-full bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-500 text-gray-700 dark:text-gray-200 focus:border-gray-500 focus:ring-gray-500">
+                            <select id="destination" class="select w-full bg-white border-gray-300 text-black focus:border-gray-500 focus:ring-gray-500">
                                 <option value="">Todos los destinos</option>
                                 {
                                     uniqueCities.map(item => (
@@ -170,7 +223,7 @@ const { lang = lang_es } = Astro.props;
 
                         <!-- Rango de Precio con Slider -->
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">
+                            <label class="block text-sm font-semibold text-black mb-1">
                                 Rango de Precio: <span id="priceRangeDisplay" class="text-amber-600 font-medium">Cualquier precio</span>
                             </label>
                             <div class="space-y-2">
@@ -183,7 +236,7 @@ const { lang = lang_es } = Astro.props;
                                     value="1000"
                                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
                                 />
-                                <div class="flex justify-between text-xs text-gray-500">
+                                <div class="flex justify-between text-xs text-black">
                                     <span>$0</span>
                                     <span id="priceValue">$1000</span>
                                 </div>
@@ -193,19 +246,19 @@ const { lang = lang_es } = Astro.props;
 
                     <!-- Servicios en Grid -->
                     <div class="mt-4">
-                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+                        <label class="block text-sm font-semibold text-black mb-2">
                             Servicios
                         </label>
                         <div id="amenitiesGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 max-h-40 overflow-y-auto">
                             {
                                 uniqueAmenities.map(item => (
-                                    <label class="flex items-center p-2 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
+                                    <label class="flex items-center p-2 bg-white border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
                                         <input 
                                             type="checkbox" 
                                             value={item.key} 
                                             class="amenity-checkbox mr-2 w-3 h-3 text-amber-600 bg-gray-100 border-gray-300 rounded focus:ring-amber-500 focus:ring-2"
                                         />
-                                        <span class="text-xs text-gray-700 dark:text-gray-200">{item.label}</span>
+                                        <span class="text-xs text-black">{item.label}</span>
                                     </label>
                                 ))
                             }
@@ -214,7 +267,7 @@ const { lang = lang_es } = Astro.props;
 
                     <!-- Botones de acción -->
                     <div class="flex gap-3 mt-4">
-                        <button id="clearFilters" class="btn bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white border-0 shadow-md hover:shadow-lg transition-all duration-300 font-semibold text-sm px-4 py-2">
+                        <button id="clearFilters" class="btn bg-primary text-black border-0 shadow-md hover:shadow-lg transition-all duration-300 font-semibold text-sm px-4 py-2">
                             Limpiar Filtros
                         </button>
                     </div>
@@ -234,13 +287,15 @@ const { lang = lang_es } = Astro.props;
                                     name,
                                     amenities,
                                     stars,
-                                    location,
+                                    locationFormatted,
+                                    locationData,
+                                    destinationData,
                                 } = hotel.data;
                                 
                                 // Preparar datos para el filtro
                                 const hotelData = {
                                     id: hotel.id,
-                                    location: location,
+                                    location: locationFormatted,
                                     price: roomPrice,
                                     amenities: amenities?.[0] ? [
                                         ...(amenities[0].basic_services || []).map((key: string) => `basic_services.${key}`),
@@ -255,7 +310,7 @@ const { lang = lang_es } = Astro.props;
                                         <HotelCard
                                             id={hotel.id}
                                             coverImage={coverImage}
-                                            location={location}
+                                            location={locationFormatted}
                                             name={name}
                                             stars={stars}
                                             amenities={amenities}
