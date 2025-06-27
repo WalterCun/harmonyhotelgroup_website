@@ -1,0 +1,48 @@
+---
+export interface Props {
+  name: string;
+  location: string;
+  coverImage?: string;
+  tags?: string[];
+  hotels?: number;
+  description: string;
+  onClick?: () => void;
+}
+const { name, location, coverImage, tags = [], hotels, description } = Astro.props;
+---
+<div class="bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300 flex flex-col overflow-hidden">
+  <div class="relative h-60 bg-gray-200 flex items-center justify-center">
+    {coverImage ? (
+      <img src={coverImage} alt={name} class="w-full h-full object-cover" />
+    ) : (
+      <span class="text-3xl text-gray-400">600 × 400</span>
+    )}
+  </div>
+  <div class="p-5 flex flex-col flex-1">
+    {tags && tags.length > 0 && (
+      <div class="mb-2">
+        <span class="inline-block bg-gray-100 text-gray-700 text-xs font-semibold rounded px-2 py-1 mb-1">
+          {tags[0]}
+        </span>
+      </div>
+    )}
+    <h3 class="text-xl font-bold mb-1 text-primary">{name}</h3>
+    <div class="flex items-center text-sm text-gray-600 mb-1">
+      <svg class="w-4 h-4 mr-1 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      {location}
+    </div>
+    {hotels !== undefined && hotels !== null && (
+      <div class="flex items-center text-sm text-gray-600 mb-1">
+        <svg class="w-4 h-4 mr-1 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 17v-1a4 4 0 014-4h0a4 4 0 014 4v1"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 11a4 4 0 100-8 4 4 0 000 8z"/></svg>
+        {hotels} hoteles cercanos
+      </div>
+    )}
+    <p class="text-neutral-600 mb-3 line-clamp-3 flex-1">
+      {description}
+    </p>
+    <button class="mt-auto w-full bg-primary text-white font-semibold py-2 rounded transition hover:bg-primary-600 flex items-center justify-center gap-2">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16l4-4-4-4m8 8V8"/></svg>
+      Explorar Destino
+    </button>
+  </div>
+</div> 
