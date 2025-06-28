@@ -39,14 +39,14 @@ const { lang } = Astro.props;
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
                     {offers.map(offer => {
-                        const {title,coverImage,description_offers,expiration_date,discount,discount_label,price_adult,price_child} = offer.data
+                        const {title,coverImage,description_offers,expirationDate,discount,discount_label,price_adult,price_child} = offer.data
 
                         return (<OfferCard
                                 id={offer.id}
                                 title={title}
                                 coverImage={coverImage}
                                 description_offers={description_offers}
-                                expiration_date={expiration_date}
+                                expirationDate={expirationDate}
                                 discount={discount}
                                 discount_label={discount_label}
                                 price_adult={price_adult}
