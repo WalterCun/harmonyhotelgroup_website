@@ -15,7 +15,7 @@ interface Props {
     lang_offer: string;
     content_offer: string;
   }>;
-  expiration_date: string;
+  expirationDate: string;
   discount: string;
   discount_label?: Array<{
     lang_discount: string;
@@ -31,7 +31,7 @@ const {
   title,
   coverImage,
   description_offers,
-  expiration_date,
+  expirationDate,
   discount,
   discount_label,
   price_adult,
@@ -78,7 +78,7 @@ const {
             <span class="font-medium">{trans(lang, "components.sections.home.special-offer.expired")}</span>
           </p>
           <p class="text-sm">
-            {expiration_date.split('T')[0]}
+            {expirationDate.split('T')[0]}
           </p>
         </div>
         <a href={`/offers/${id}`}
