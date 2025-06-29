@@ -3,51 +3,64 @@ import { getCollection } from "astro:content";
 
 const logger = createLogger(false, "tina.ts");
 
-class PowerCollection<T extends Record<string, any>> {
+type HotelItem = {
+  data: {
+    location?: string;
+    [key: string]: any;
+  };
+  name?: string;
+  title?: string;
+  [key: string]: any;
+};
+
+type LocationItem = {
+  filePath: string;
+  data: any;
+};
+
+export class ExtendHotelCollection<T extends HotelItem> {
   private collection: T[] = [];
-  private history: T[][] = [];
 
   constructor(items: T[]) {
     this.collection = [...items];
-    this.saveState();
   }
 
-  private saveState(): void {
-    this.history.push([...this.collection]);
-  }
+  public async resolve(): Promise<T[]> {
+    try {
+      const locationsCollection = await getCollection('locations');
+      const destinationsCollection = await getCollection('destinations');
 
-  public sortAlphabetically(key: keyof T): T[] {
-    this.collection.sort((a, b) => {
-      if (typeof a[key] === "string" && typeof b[key] === "string") {
-        return (a[key] as string).localeCompare(b[key] as string);
-      }
-      return 0;
-    });
-    this.saveState();
-    return this.collection;
-  }
 
-  public filterByBoolean(key: keyof T): T[] {
-    this.collection = this.collection.filter((item) => Boolean(item[key]));
-    this.saveState();
-    return this.collection;
-  }
+      this.collection = this.collection.map((hotel) => {
+        const locationId = hotel.data.location;
+        if (!locationId) return { ...hotel };
 
-  public undo(): T[] {
-    if (this.history.length > 1) {
-      this.history.pop(); // Remove current state
-      this.collection = [...this.history[this.history.length - 1]];
+        const locationData = locationsCollection.find(loc => loc.filePath === locationId);
+        const destinationData = hotel.data.destinations.map((path:string) => {
+          return destinationsCollection.find(item => item.filePath === path)?.data
+        }
+        )
+        
+        return {
+          ...hotel,
+          data: {
+            ...hotel.data,
+            location: locationData?.data ?? '',
+            destinations: destinationData ?? []
+            //destinations: destinationData?.data ?? ['']
+          },
+        };
+      });
+
+      return this.collection
+
+    } catch (error) {
+      logger.error('Error loading locations collection:', error);
     }
+
     return this.collection;
   }
 
-  public getCurrentState(): T[] {
-    return [...this.collection];
-  }
-
-  public getHistoryStates(): T[][] {
-    return [...this.history];
-  }
 }
 
 // --------------------------------------------------------------------------------------------------------------------

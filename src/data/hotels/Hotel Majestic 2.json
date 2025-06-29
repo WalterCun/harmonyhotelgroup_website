@@ -1,8 +1,12 @@
 {
+  "destination": [],
   "name": "Hotel Majestic 2 by HHG",
   "stars": 3,
   "rating": 0,
   "location": "src/data/locations/Ecuador,Azuay,Cuenca.json",
+  "destinations": [
+    "src/data/destinations/Chorro_Giron.json"
+  ],
   "mainStreet": "Gran Colombia",
   "addressNumber": "207",
   "secondaryStreet": "Manuel Vega",
@@ -82,10 +86,12 @@
         "tourist_activities",
         "pet_friendly"
       ],
-      "premium_services": ["express_checkin", "rooftop_terrace"]
+      "premium_services": [
+        "express_checkin",
+        "rooftop_terrace"
+      ]
     }
   ],
   "tours": [],
-  "destination": [],
   "highlight": true
 }

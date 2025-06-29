@@ -1,16 +1,87 @@
 ---
+import LogoHGG from "../globals/svg/logos/LogoHGG.astro";
+
 interface Props {
-  lang: string;
+  class?: string;
+  showText?: boolean;
+  showImage?: boolean;
+  showIsologo?: boolean;
 }
 
-const { lang } = Astro.props;
+const { 
+  class: className = "", 
+  showText = true, 
+  showImage = true, 
+  showIsologo = true 
+} = Astro.props;
 ---
 
-<a href="/" className="flex flex-col items-start group">
-    <span className="text-3xl font-bold text-primary group-hover:text-accent transition-colors">
-    Harmony
-    </span>
-    <span className="text-xs font-medium text-foreground/70 -mt-1 tracking-wider uppercase group-hover:text-accent/80 transition-colors">
-    Hotel Group
-    </span>
-</a>
+<div class={`logo-container ${className}`}>
+  <!-- Logo completo (imagen + texto) - visible en pantallas grandes -->
+  <div class="hidden lg:flex items-center gap-2">
+    {showImage && (
+      <div class="logo-image">
+        <LogoHGG />
+      </div>
+    )}
+    {showText && (
+      <div class="logo-text">
+        <span class="text-xl font-bold text-primary">Harmony</span>
+        <span class="text-lg font-medium text-secondary">Hotel Group</span>
+      </div>
+    )}
+  </div>
+
+  <!-- Isologotipo (solo imagen) - visible en pantallas medianas -->
+  <div class="hidden md:flex lg:hidden items-center">
+    {showIsologo && (
+      <div class="logo-isologo">
+        <LogoHGG />
+      </div>
+    )}
+  </div>
+
+  <!-- Solo imagen pequeña - visible en pantallas pequeñas -->
+  <div class="flex md:hidden items-center">
+    {showImage && (
+      <div class="logo-image-small">
+        <LogoHGG />
+      </div>
+    )}
+  </div>
+</div>
+
+<style>
+  .logo-container {
+    transition: all 0.3s ease;
+  }
+
+  .logo-image {
+    width: 60px;
+    height: 60px;
+  }
+
+  .logo-image-small {
+    width: 40px;
+    height: 40px;
+  }
+
+  .logo-isologo {
+    width: 50px;
+    height: 50px;
+  }
+
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+  }
+
+  /* Asegurar que el SVG se ajuste al contenedor */
+  .logo-image :global(svg),
+  .logo-image-small :global(svg),
+  .logo-isologo :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+</style>
