@@ -15,7 +15,8 @@ type HotelItem = {
   [key: string]: any;
 };
 
-export class ExtendHotelCollection<T extends HotelItem> {
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export class ExtendHotelCollection<T extends Record<string,any>> {
   private collection: T[] = [];
 
   constructor(items: T[]) {
@@ -47,7 +48,6 @@ export class ExtendHotelCollection<T extends HotelItem> {
               .filter(Boolean)
               .join(', ') ?? '',
             destinations: destinationData ?? [],
-            //destinations: destinationData?.data ?? ['']
           },
         };
       });
