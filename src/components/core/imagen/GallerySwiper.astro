@@ -5,37 +5,37 @@ import "@glidejs/glide/dist/css/glide.theme.min.css";
 import { resolveImage } from "../../../utils";
 
 interface Props {
-  images: string[];
-  id?: string;
-  className?: string;
-  aspectRatio?: string;
-  navigation?: boolean;
-  pagination?: boolean;
-  effect?: "slide" | "fade";
-  loop?: boolean;
-  autoplay?: boolean;
-  autoplayDelay?: number;
-  thumbnails?: boolean;
-  lazy?: boolean;
-  quality?: number;
-  fullscreen?: boolean;
+	images: string[];
+	id?: string;
+	className?: string;
+	aspectRatio?: string;
+	navigation?: boolean;
+	pagination?: boolean;
+	effect?: "slide" | "fade";
+	loop?: boolean;
+	autoplay?: boolean;
+	autoplayDelay?: number;
+	thumbnails?: boolean;
+	lazy?: boolean;
+	quality?: number;
+	fullscreen?: boolean;
 }
 
 const {
-  images,
-  id = "image-gallery",
-  className = "",
-  aspectRatio = "16/9",
-  navigation = true,
-  pagination = true,
-  effect = "slide",
-  loop = true,
-  autoplay = false,
-  autoplayDelay = 3000,
-  thumbnails = true,
-  lazy = true,
-  quality = 80,
-  fullscreen = false,
+	images,
+	id = "image-gallery",
+	className = "",
+	aspectRatio = "16/9",
+	navigation = true,
+	pagination = true,
+	effect = "slide",
+	loop = true,
+	autoplay = false,
+	autoplayDelay = 3000,
+	thumbnails = true,
+	lazy = true,
+	quality = 80,
+	fullscreen = false,
 } = Astro.props;
 ---
 

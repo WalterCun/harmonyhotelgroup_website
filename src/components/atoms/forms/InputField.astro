@@ -3,23 +3,23 @@ import { Icon } from "astro-icon/components";
 import { trans } from "~/utils/translations";
 
 interface Props {
-  _id: string;
-  iconName: string;
-  lang: string;
-  keyTitle: string;
-  placeholder?: string;
-  min?: number;
-  value?: number;
+	_id: string;
+	iconName: string;
+	lang: string;
+	keyTitle: string;
+	placeholder?: string;
+	min?: number;
+	value?: number;
 }
 
 const {
-  lang,
-  _id,
-  iconName,
-  keyTitle,
-  placeholder,
-  min = 0,
-  value = 0,
+	lang,
+	_id,
+	iconName,
+	keyTitle,
+	placeholder,
+	min = 0,
+	value = 0,
 } = Astro.props;
 ---
 

@@ -10,128 +10,128 @@ const token = process.env.TINA_TOKEN || "";
 const isLocalMode = !clientId || !token;
 
 const branch =
-  // @ts-ignore
-  process.env.GITHUB_BRANCH ||
-  // @ts-ignore
-  process.env.VERCEL_GIT_COMMIT_REF ||
-  // @ts-ignore
-  process.env.HEAD ||
-  "main";
+	// @ts-ignore
+	process.env.GITHUB_BRANCH ||
+	// @ts-ignore
+	process.env.VERCEL_GIT_COMMIT_REF ||
+	// @ts-ignore
+	process.env.HEAD ||
+	"main";
 
 console.info(`Using branch: ${branch}`);
 console.info(`Running in ${isLocalMode ? "local" : "production"} mode`);
 
 export default defineConfig({
-  branch,
+	branch,
 
-  // Configuration for API o modo local
-  clientId,
-  token,
+	// Configuration for API o modo local
+	clientId,
+	token,
 
-  build: {
-    publicFolder: "public",
-    outputFolder: "admin",
-  },
+	build: {
+		publicFolder: "public",
+		outputFolder: "admin",
+	},
 
-  media: {
-    tina: {
-      publicFolder: "src/assets",
-      mediaRoot: "upload",
-    },
-  },
+	media: {
+		tina: {
+			publicFolder: "src/assets",
+			mediaRoot: "upload",
+		},
+	},
 
-  // See docs on content modeling for more info on how to setup new content models: https://tina.io/docs/schema/
-  schema: {
-    collections: [
-      // COLECCION DE UBICACIONES
-      {
-        name: "locations",
-        label: "Locations",
-        path: "src/data/locations",
-        format: "json",
-        fields: [
-          {
-            type: "string",
-            name: "country",
-            label: "País*",
-            required: true,
-          },
-          {
-            type: "string",
-            name: "province",
-            label: "Provincia*",
-            required: true,
-          },
-          {
-            type: "string",
-            name: "city",
-            label: "Ciudad*",
-            required: true,
-          },
-        ],
-      },
-      // COLECCION DE DESTINOS
-      {
-        name: "destinations",
-        label: "Destinations",
-        path: "src/data/destinations",
-        format: "json",
-        fields: [
-          {
-            type: "boolean",
-            name: "partner",
-            label: "Patrocinador",
-          },
-          {
-            type: "string",
-            name: "name",
-            label: "Name*",
-            required: true,
-          },
-          {
-            type: "reference",
-            name: "location",
-            label: "Ubicación*",
-            collections: ["locations"],
-            required: true,
-          },
-          {
-            type: "object",
-            name: "description_destination",
-            label: "Descripción del Destino",
-            list: true,
-            ui: {
-              itemProps: (item) => {
-                const lang = item?.lang_destination || "Idioma";
-                return {
-                  label: `${lang} - ${item.content_destination}`,
-                };
-              },
-            },
-            fields: [
-              {
-                type: "string",
-                name: "lang_destination",
-                label: "Language",
-                options: ["es", "en"],
-              },
-              {
-                type: "string",
-                name: "content_destination",
-                label: "Description",
-              },
-            ],
-          },
-          {
-            type: "object",
-            name: "tags",
-            label: "Etiquetas (Key Translation)",
-            list: true,
-            ui: {
-              itemProps: (item) => {
-                // Accedemos de forma segura, con un valor por defecto
-                return {
-                  label: `${item?.experience ? "> Tag Experiencia" : ""}
+	// See docs on content modeling for more info on how to setup new content models: https://tina.io/docs/schema/
+	schema: {
+		collections: [
+			// COLECCION DE UBICACIONES
+			{
+				name: "locations",
+				label: "Locations",
+				path: "src/data/locations",
+				format: "json",
+				fields: [
+					{
+						type: "string",
+						name: "country",
+						label: "País*",
+						required: true,
+					},
+					{
+						type: "string",
+						name: "province",
+						label: "Provincia*",
+						required: true,
+					},
+					{
+						type: "string",
+						name: "city",
+						label: "Ciudad*",
+						required: true,
+					},
+				],
+			},
+			// COLECCION DE DESTINOS
+			{
+				name: "destinations",
+				label: "Destinations",
+				path: "src/data/destinations",
+				format: "json",
+				fields: [
+					{
+						type: "boolean",
+						name: "partner",
+						label: "Patrocinador",
+					},
+					{
+						type: "string",
+						name: "name",
+						label: "Name*",
+						required: true,
+					},
+					{
+						type: "reference",
+						name: "location",
+						label: "Ubicación*",
+						collections: ["locations"],
+						required: true,
+					},
+					{
+						type: "object",
+						name: "description_destination",
+						label: "Descripción del Destino",
+						list: true,
+						ui: {
+							itemProps: (item) => {
+								const lang = item?.lang_destination || "Idioma";
+								return {
+									label: `${lang} - ${item.content_destination}`,
+								};
+							},
+						},
+						fields: [
+							{
+								type: "string",
+								name: "lang_destination",
+								label: "Language",
+								options: ["es", "en"],
+							},
+							{
+								type: "string",
+								name: "content_destination",
+								label: "Description",
+							},
+						],
+					},
+					{
+						type: "object",
+						name: "tags",
+						label: "Etiquetas (Key Translation)",
+						list: true,
+						ui: {
+							itemProps: (item) => {
+								// Accedemos de forma segura, con un valor por defecto
+								return {
+									label: `${item?.experience ? "> Tag Experiencia" : ""}
                                 ${item?.activities ? "> Tag Actividades" : ""}
                                 ${item?.geographics ? "> Tag Geografia" : ""}
                                 ${item?.culture ? "> Tag Cultura" : ""}
@@ -139,1047 +139,1047 @@ export default defineConfig({
                                 ${item?.temporality ? "> Tag Temporada" : ""}
                                 ${item?.popular ? "> Tag Popular" : ""}
                                 `,
-                };
-              },
-            },
-            fields: [
-              {
-                type: "string",
-                name: "experience",
-                label: "Opciones por tipo de experiencia",
-                list: true,
-                options: [
-                  {
-                    label: "Aventura al aire libre",
-                    value: "outdoor_adventure",
-                  },
-                  {
-                    label: "Patrimonio Cultural",
-                    value: "cultural_heritage",
-                  },
-                  {
-                    label: "Experiencia gastronómica",
-                    value: "culinary_experience",
-                  },
-                  {
-                    label: "Artesanía local",
-                    value: "local_crafts",
-                  },
-                ],
-              },
-              {
-                type: "string",
-                name: "activities",
-                label: "Opciones por actividades",
-                list: true,
-                options: [
-                  {
-                    label: "Juegos Extremos",
-                    value: "extreme_games",
-                  },
-                  { label: "Senderismo", value: "hiking" },
-                  { label: "Ciclismo", value: "cycling" },
-                  {
-                    label: "Observación de aves",
-                    value: "birdwatching",
-                  },
-                  {
-                    label: "Aguas termales",
-                    value: "hot_springs",
-                  },
-                  {
-                    label: "Compras de artesanías",
-                    value: "craft_shopping",
-                  },
-                ],
-              },
-              {
-                type: "string",
-                name: "geographics",
-                label: "Opciones por características geográficas",
-                list: true,
-                options: [
-                  {
-                    label: "Ubicado dentro del Azuay",
-                    value: "in_azuay",
-                  },
-                  {
-                    label: "Centro Histórico",
-                    value: "historic_center",
-                  },
-                  {
-                    label: "Fuera del Centro",
-                    value: "outside_historic_center",
-                  },
-                  {
-                    label: "Zona montañosa",
-                    value: "mountains",
-                  },
-                  {
-                    label: "Ríos y cascadas",
-                    value: "rivers_waterfalls",
-                  },
-                  {
-                    label: "Parque nacional",
-                    value: "national_park",
-                  },
-                  {
-                    label: "Mirador panorámico",
-                    value: "scenic_viewpoint",
-                  },
-                ],
-              },
-              {
-                type: "string",
-                name: "culture",
-                label: "Aspectos culturales",
-                list: true,
-                options: [
-                  {
-                    label: "Museo o galería",
-                    value: "museum_gallery",
-                  },
-                  {
-                    label: "Arquitectura colonial",
-                    value: "colonial_architecture",
-                  },
-                  {
-                    label: "Festivales tradicionales",
-                    value: "traditional_festivals",
-                  },
-                  {
-                    label: "Sitio arqueológico",
-                    value: "archaeological_site",
-                  },
-                ],
-              },
-              {
-                type: "string",
-                name: "accessibility",
-                label: "Accesibilidad y comodidades",
-                list: true,
-                options: [
-                  {
-                    label: "Accesible para discapacitados",
-                    value: "wheelchair_accessible",
-                  },
-                  {
-                    label: "Apto para familias",
-                    value: "family_friendly",
-                  },
-                  {
-                    label: "Transporte público cercano",
-                    value: "public_transport",
-                  },
-                ],
-              },
-              {
-                type: "string",
-                name: "temporality",
-                label: "Temporalidad",
-                list: true,
-                options: [
-                  {
-                    label: "Mejor en verano",
-                    value: "best_summer",
-                  },
-                  {
-                    label: "Atractivo todo el año",
-                    value: "year_round",
-                  },
-                ],
-              },
-              {
-                type: "string",
-                name: "popular",
-                label: "Popularidad",
-                list: true,
-                options: [
-                  {
-                    label: "Destino poco conocido",
-                    value: "hidden_gem",
-                  },
-                  {
-                    label: "Atracción principal",
-                    value: "main_attraction",
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            type: "image",
-            name: "coverImage",
-            label: "Image",
-            required: true,
-          },
-          {
-            type: "boolean",
-            name: "highlight",
-            label: "Destacar",
-          },
-          {
-            type: "string",
-            name: "bestTimeToVisit",
-            label: "Mejor temporada para visitar",
-          },
-          {
-            type: "string",
-            name: "transportInfo",
-            label: "Información de transporte",
-          },
-          {
-            type: "object",
-            name: "activities",
-            label: "Actividades",
-            list: true,
-            fields: [
-              { type: "string", name: "name", label: "Nombre" },
-              { type: "string", name: "description", label: "Descripción" },
-              { type: "image", name: "image", label: "Imagen" },
-              { type: "string", name: "tags", label: "Etiquetas", list: true },
-            ],
-          },
-          {
-            type: "object",
-            name: "gastronomy",
-            label: "Gastronomía",
-            list: true,
-            fields: [
-              { type: "string", name: "name", label: "Nombre" },
-              { type: "string", name: "description", label: "Descripción" },
-              { type: "image", name: "image", label: "Imagen" },
-              {
-                type: "object",
-                name: "menu",
-                label: "Menú",
-                list: true,
-                fields: [
-                  { type: "string", name: "name", label: "Nombre del plato" },
-                  { type: "string", name: "description", label: "Descripción" },
-                  { type: "string", name: "price", label: "Precio" },
-                ],
-              },
-            ],
-          },
-          {
-            type: "object",
-            name: "attractions",
-            label: "Atracciones",
-            list: true,
-            fields: [
-              { type: "string", name: "name", label: "Nombre" },
-              { type: "string", name: "description", label: "Descripción" },
-              { type: "image", name: "image", label: "Imagen" },
-              { type: "string", name: "tags", label: "Etiquetas", list: true },
-            ],
-          }
-        ],
-      },
-      // COLECCION DE TOURS
-      {
-        name: "tours",
-        label: "Tours",
-        path: "src/data/tours",
-        format: "json",
-        fields: [
-          {
-            type: "string",
-            name: "name",
-            label: "Nombre del Tour*",
-            required: true,
-          },
-          {
-            type: "object",
-            name: "description_tour",
-            label: "Descripción del Tour",
-            list: true,
-            ui: {
-              itemProps: (item) => {
-                const lang = item?.lang_tour || "Idioma";
-                return { label: `${lang}` };
-              },
-            },
-            fields: [
-              {
-                type: "string",
-                name: "lang_tour",
-                label: "Idioma",
-                options: ["es", "en"],
-              },
-              {
-                type: "string",
-                name: "content_tour",
-                label: "Descripción",
-              },
-            ],
-          },
-          {
-            type: "image",
-            name: "coverImage",
-            label: "Imagen Portada*",
-            required: true,
-          },
-          {
-            type: "image",
-            name: "gallery",
-            label: "Galería de Imágenes",
-            list: true,
-          },
-          {
-            type: "object",
-            name: "itinerary",
-            label: "Itinerario",
-            list: true,
-            ui: {
-              itemProps: (item) => {
-                const title = item?.title || "Actividad";
-                return { label: `${title}` };
-              },
-            },
-            fields: [
-              {
-                type: "string",
-                name: "title",
-                label: "Título de la Actividad",
-                required: true,
-              },
-              {
-                type: "string",
-                name: "description",
-                label: "Descripción de la Actividad",
-              },
-              {
-                type: "string",
-                name: "hour",
-                label: "Hora (opcional)",
-              },
-            ],
-          },
-          {
-            type: "string",
-            name: "duration",
-            label: "Duración (ej: 3 horas, 2 días)",
-            required: true,
-          },
-          {
-            type: "number",
-            name: "price_adult",
-            label: "Precio por Adulto*",
-            required: true,
-          },
-          {
-            type: "number",
-            name: "price_child",
-            label: "Precio por Niño*",
-            required: true,
-          },
-          {
-            type: "string",
-            name: "tags",
-            label: "Etiquetas",
-            list: true,
-          }
-        ],
-      },
-      // COLECCION DE HOTELES
-      {
-        name: "hotels",
-        label: "Hotels",
-        path: "src/data/hotels",
-        format: "json",
-        fields: [
-          {
-            type: "boolean",
-            name: "partner",
-            label: "Socio Estrategico",
-            required: false,
-          },
-          {
-            type: "string",
-            name: "name",
-            label: "Name*",
-            required: true,
-          },          
-          {
-            type: "number",
-            name: "stars",
-            label: "Estrellas*",
-            required: true,
-          },
-          {
-            type: "number",
-            name: "rating",
-            label: "Valoracion*",
-            required: true,
-          },
-          
-          {
-            type: "reference",
-            name: "location",
-            label: "Ubicación*",
-            collections: ["locations"],
-            required: true,
-          },
-          {
-            type: "string",
-            name: "destinations",
-            label: "Destinos",
-            list: true
-          },
-          {
-            type: "string",
-            name: "mainStreet",
-            label: "Calle Principal",
-          },
-          {
-            type: "string",
-            name: "addressNumber",
-            label: "Número",
-          },
-          {
-            type: "string",
-            name: "secondaryStreet",
-            label: "Calle Secundaria",
-          },
-          {
-            type: "object",
-            name: "contact",
-            label: "Medios de Contacto",
-            list: true,
-            ui: {
-              itemProps: (item) => {
-                const type = item?.type || "Contacto";
-                const value = item?.value || "";
-                const tag = item?.tag || "";
-                return {
-                  label: `${tag ? `${tag} > ` : ""}${value} > ${type}`,
-                };
-              },
-            },
-            fields: [
-              {
-                type: "string",
-                name: "type",
-                label: "Tipo de Contacto*",
-                required: true,
-                options: ["Email", "Cellphone", "Telephone", "Others"],
-              },
-              {
-                type: "string",
-                name: "value",
-                label: "Contacto*",
-                required: true,
-              },
-              {
-                type: "string",
-                name: "tag",
-                label: "Etiqueta (ej. Reservaciones, Información)",
-                options: [
-                  "Recepción",
-                  "Reservaciones",
-                  "Información",
-                  "Gerencia",
-                  "Emergencias",
-                  "Otro",
-                ],
-              },
-            ],
-          },
-          {
-            type: "object",
-            name: "socialMedia",
-            label: "Redes Sociales",
-            list: true,
-            ui: {
-              itemProps: (item) => {
-                const name = item?.name || "Red Social";
-                const url = item?.url || "";
-                return {
-                  label: `${name}: ${url}`,
-                };
-              },
-            },
-            fields: [
-              {
-                type: "string",
-                name: "name",
-                label: "Red Social",
-                options: [
-                  "Facebook",
-                  "Instagram",
-                  "Tiktok",
-                  "Linkedin",
-                  "X",
-                  "Whatsapp",
-                  "Telegram",
-                ],
-              },
-              {
-                type: "string",
-                name: "url",
-                label: "URL",
-              },
-            ],
-          },
-          {
-            type: "object",
-            name: "rooms",
-            label: "Habitaciones del Hotel",
-            list: true,
-            ui: {
-              itemProps: (item) => {
-                const name = item?.name || "Habitación";
-                return {
-                  label: `${name}`,
-                };
-              },
-            },
-            fields: [
-              {
-                type: "string",
-                name: "name",
-                label: "Tipo de Habitación:",
-                options: [
-                  "Individual",
-                  "Matrimonial",
-                  "Doble Individual",
-                  "Triple",
-                  "Quadruple",
-                  "Quintuple",
-                  "Sextuple",
-                  "Deluxe",
-                  "Suite Matrimonial",
-                  "Suite Familiar",
-                ],
-              },
-              {
-                type: "object",
-                name: "description_room",
-                label: "Descripción de Habitacion",
-                list: true,
-                ui: {
-                  itemProps: (item) => {
-                    const lang = item?.lang_room || "Idioma";
-                    return { label: `${lang}` };
-                  },
-                },
-                fields: [
-                  {
-                    type: "string",
-                    name: "lang_room",
-                    label: "Language",
-                    options: ["es", "en"],
-                  },
-                  {
-                    type: "string",
-                    name: "content_destination",
-                    label: "Description",
-                  },
-                ],
-              },
-              {
-                type: "number",
-                name: "size",
-                label: "Tamaño de habitacion (m2)",
-              },
-              {
-                type: "object",
-                name: "occupancy",
-                label: "Ocupación Min/Max",
-                fields: [
-                  {
-                    type: "number",
-                    name: "min",
-                    label: "Min",
-                  },
-                  {
-                    type: "number",
-                    name: "max",
-                    label: "Max",
-                  },
-                ],
-              },
-              {
-                type: "image",
-                name: "images",
-                label: "Imagenes (La primera Imagen sera la portada)",
-                list: true,
-              },
-              {
-                type: "string",
-                name: "room_services",
-                label: "Servicios de la Habitacion",
-                list: true,
-                options: [
-                  "Servicio a la habitación",
-                  "Minibar",
-                  "Caja fuerte",
-                  "Secador de pelo",
-                  "Plancha y tabla de planchar",
-                  "Almohadas adicionales",
-                  "Escritorio de trabajo",
-                ],
-              },
-            ],
-          },
-          {
-            type: "number",
-            name: "roomPrice",
-            label: "Precio Promedio*",
-            required: true,
-          },
-          {
-            type: "number",
-            name: "count",
-            label: "Cantidad de habitaciones*",
-            required: true,
-          },
-          {
-            type: "image",
-            name: "coverImage",
-            label: "Fotografía Portada Hotel*",
-            required: true,
-          },
-          {
-            type: "image",
-            name: "gallery",
-            label: "Galería de Imágenes del Hotel",
-            list: true,
-          },
-          {
-            type: "object",
-            name: "description_hotel",
-            label: "Description Hotel",
-            list: true,
-            ui: {
-              itemProps: (item) => {
-                const lang = item?.lang_hotel || "Idioma";
-                return { label: `${lang}` };
-              },
-            },
-            fields: [
-              {
-                type: "string",
-                name: "lang_hotel",
-                label: "Language",
-                options: ["es", "en"],
-              },
-              {
-                type: "string",
-                name: "content_hotel",
-                label: "Description",
-              },
-            ],
-          },
-          {
-            type: "object",
-            name: "amenities",
-            label: "Servicios del Hotel",
-            list: true,
-            ui: {
-              itemProps: (item) => {
-                // Accedemos de forma segura, con un valor por defecto
-                return {
-                  label: `${item?.basic_services ? "> Servicio Basico" : "."}
+								};
+							},
+						},
+						fields: [
+							{
+								type: "string",
+								name: "experience",
+								label: "Opciones por tipo de experiencia",
+								list: true,
+								options: [
+									{
+										label: "Aventura al aire libre",
+										value: "outdoor_adventure",
+									},
+									{
+										label: "Patrimonio Cultural",
+										value: "cultural_heritage",
+									},
+									{
+										label: "Experiencia gastronómica",
+										value: "culinary_experience",
+									},
+									{
+										label: "Artesanía local",
+										value: "local_crafts",
+									},
+								],
+							},
+							{
+								type: "string",
+								name: "activities",
+								label: "Opciones por actividades",
+								list: true,
+								options: [
+									{
+										label: "Juegos Extremos",
+										value: "extreme_games",
+									},
+									{ label: "Senderismo", value: "hiking" },
+									{ label: "Ciclismo", value: "cycling" },
+									{
+										label: "Observación de aves",
+										value: "birdwatching",
+									},
+									{
+										label: "Aguas termales",
+										value: "hot_springs",
+									},
+									{
+										label: "Compras de artesanías",
+										value: "craft_shopping",
+									},
+								],
+							},
+							{
+								type: "string",
+								name: "geographics",
+								label: "Opciones por características geográficas",
+								list: true,
+								options: [
+									{
+										label: "Ubicado dentro del Azuay",
+										value: "in_azuay",
+									},
+									{
+										label: "Centro Histórico",
+										value: "historic_center",
+									},
+									{
+										label: "Fuera del Centro",
+										value: "outside_historic_center",
+									},
+									{
+										label: "Zona montañosa",
+										value: "mountains",
+									},
+									{
+										label: "Ríos y cascadas",
+										value: "rivers_waterfalls",
+									},
+									{
+										label: "Parque nacional",
+										value: "national_park",
+									},
+									{
+										label: "Mirador panorámico",
+										value: "scenic_viewpoint",
+									},
+								],
+							},
+							{
+								type: "string",
+								name: "culture",
+								label: "Aspectos culturales",
+								list: true,
+								options: [
+									{
+										label: "Museo o galería",
+										value: "museum_gallery",
+									},
+									{
+										label: "Arquitectura colonial",
+										value: "colonial_architecture",
+									},
+									{
+										label: "Festivales tradicionales",
+										value: "traditional_festivals",
+									},
+									{
+										label: "Sitio arqueológico",
+										value: "archaeological_site",
+									},
+								],
+							},
+							{
+								type: "string",
+								name: "accessibility",
+								label: "Accesibilidad y comodidades",
+								list: true,
+								options: [
+									{
+										label: "Accesible para discapacitados",
+										value: "wheelchair_accessible",
+									},
+									{
+										label: "Apto para familias",
+										value: "family_friendly",
+									},
+									{
+										label: "Transporte público cercano",
+										value: "public_transport",
+									},
+								],
+							},
+							{
+								type: "string",
+								name: "temporality",
+								label: "Temporalidad",
+								list: true,
+								options: [
+									{
+										label: "Mejor en verano",
+										value: "best_summer",
+									},
+									{
+										label: "Atractivo todo el año",
+										value: "year_round",
+									},
+								],
+							},
+							{
+								type: "string",
+								name: "popular",
+								label: "Popularidad",
+								list: true,
+								options: [
+									{
+										label: "Destino poco conocido",
+										value: "hidden_gem",
+									},
+									{
+										label: "Atracción principal",
+										value: "main_attraction",
+									},
+								],
+							},
+						],
+					},
+					{
+						type: "image",
+						name: "coverImage",
+						label: "Image",
+						required: true,
+					},
+					{
+						type: "boolean",
+						name: "highlight",
+						label: "Destacar",
+					},
+					{
+						type: "string",
+						name: "bestTimeToVisit",
+						label: "Mejor temporada para visitar",
+					},
+					{
+						type: "string",
+						name: "transportInfo",
+						label: "Información de transporte",
+					},
+					{
+						type: "object",
+						name: "activities",
+						label: "Actividades",
+						list: true,
+						fields: [
+							{ type: "string", name: "name", label: "Nombre" },
+							{ type: "string", name: "description", label: "Descripción" },
+							{ type: "image", name: "image", label: "Imagen" },
+							{ type: "string", name: "tags", label: "Etiquetas", list: true },
+						],
+					},
+					{
+						type: "object",
+						name: "gastronomy",
+						label: "Gastronomía",
+						list: true,
+						fields: [
+							{ type: "string", name: "name", label: "Nombre" },
+							{ type: "string", name: "description", label: "Descripción" },
+							{ type: "image", name: "image", label: "Imagen" },
+							{
+								type: "object",
+								name: "menu",
+								label: "Menú",
+								list: true,
+								fields: [
+									{ type: "string", name: "name", label: "Nombre del plato" },
+									{ type: "string", name: "description", label: "Descripción" },
+									{ type: "string", name: "price", label: "Precio" },
+								],
+							},
+						],
+					},
+					{
+						type: "object",
+						name: "attractions",
+						label: "Atracciones",
+						list: true,
+						fields: [
+							{ type: "string", name: "name", label: "Nombre" },
+							{ type: "string", name: "description", label: "Descripción" },
+							{ type: "image", name: "image", label: "Imagen" },
+							{ type: "string", name: "tags", label: "Etiquetas", list: true },
+						],
+					},
+				],
+			},
+			// COLECCION DE TOURS
+			{
+				name: "tours",
+				label: "Tours",
+				path: "src/data/tours",
+				format: "json",
+				fields: [
+					{
+						type: "string",
+						name: "name",
+						label: "Nombre del Tour*",
+						required: true,
+					},
+					{
+						type: "object",
+						name: "description_tour",
+						label: "Descripción del Tour",
+						list: true,
+						ui: {
+							itemProps: (item) => {
+								const lang = item?.lang_tour || "Idioma";
+								return { label: `${lang}` };
+							},
+						},
+						fields: [
+							{
+								type: "string",
+								name: "lang_tour",
+								label: "Idioma",
+								options: ["es", "en"],
+							},
+							{
+								type: "string",
+								name: "content_tour",
+								label: "Descripción",
+							},
+						],
+					},
+					{
+						type: "image",
+						name: "coverImage",
+						label: "Imagen Portada*",
+						required: true,
+					},
+					{
+						type: "image",
+						name: "gallery",
+						label: "Galería de Imágenes",
+						list: true,
+					},
+					{
+						type: "object",
+						name: "itinerary",
+						label: "Itinerario",
+						list: true,
+						ui: {
+							itemProps: (item) => {
+								const title = item?.title || "Actividad";
+								return { label: `${title}` };
+							},
+						},
+						fields: [
+							{
+								type: "string",
+								name: "title",
+								label: "Título de la Actividad",
+								required: true,
+							},
+							{
+								type: "string",
+								name: "description",
+								label: "Descripción de la Actividad",
+							},
+							{
+								type: "string",
+								name: "hour",
+								label: "Hora (opcional)",
+							},
+						],
+					},
+					{
+						type: "string",
+						name: "duration",
+						label: "Duración (ej: 3 horas, 2 días)",
+						required: true,
+					},
+					{
+						type: "number",
+						name: "price_adult",
+						label: "Precio por Adulto*",
+						required: true,
+					},
+					{
+						type: "number",
+						name: "price_child",
+						label: "Precio por Niño*",
+						required: true,
+					},
+					{
+						type: "string",
+						name: "tags",
+						label: "Etiquetas",
+						list: true,
+					},
+				],
+			},
+			// COLECCION DE HOTELES
+			{
+				name: "hotels",
+				label: "Hotels",
+				path: "src/data/hotels",
+				format: "json",
+				fields: [
+					{
+						type: "boolean",
+						name: "partner",
+						label: "Socio Estrategico",
+						required: false,
+					},
+					{
+						type: "string",
+						name: "name",
+						label: "Name*",
+						required: true,
+					},
+					{
+						type: "number",
+						name: "stars",
+						label: "Estrellas*",
+						required: true,
+					},
+					{
+						type: "number",
+						name: "rating",
+						label: "Valoracion*",
+						required: true,
+					},
+
+					{
+						type: "reference",
+						name: "location",
+						label: "Ubicación*",
+						collections: ["locations"],
+						required: true,
+					},
+					{
+						type: "string",
+						name: "destinations",
+						label: "Destinos",
+						list: true,
+					},
+					{
+						type: "string",
+						name: "mainStreet",
+						label: "Calle Principal",
+					},
+					{
+						type: "string",
+						name: "addressNumber",
+						label: "Número",
+					},
+					{
+						type: "string",
+						name: "secondaryStreet",
+						label: "Calle Secundaria",
+					},
+					{
+						type: "object",
+						name: "contact",
+						label: "Medios de Contacto",
+						list: true,
+						ui: {
+							itemProps: (item) => {
+								const type = item?.type || "Contacto";
+								const value = item?.value || "";
+								const tag = item?.tag || "";
+								return {
+									label: `${tag ? `${tag} > ` : ""}${value} > ${type}`,
+								};
+							},
+						},
+						fields: [
+							{
+								type: "string",
+								name: "type",
+								label: "Tipo de Contacto*",
+								required: true,
+								options: ["Email", "Cellphone", "Telephone", "Others"],
+							},
+							{
+								type: "string",
+								name: "value",
+								label: "Contacto*",
+								required: true,
+							},
+							{
+								type: "string",
+								name: "tag",
+								label: "Etiqueta (ej. Reservaciones, Información)",
+								options: [
+									"Recepción",
+									"Reservaciones",
+									"Información",
+									"Gerencia",
+									"Emergencias",
+									"Otro",
+								],
+							},
+						],
+					},
+					{
+						type: "object",
+						name: "socialMedia",
+						label: "Redes Sociales",
+						list: true,
+						ui: {
+							itemProps: (item) => {
+								const name = item?.name || "Red Social";
+								const url = item?.url || "";
+								return {
+									label: `${name}: ${url}`,
+								};
+							},
+						},
+						fields: [
+							{
+								type: "string",
+								name: "name",
+								label: "Red Social",
+								options: [
+									"Facebook",
+									"Instagram",
+									"Tiktok",
+									"Linkedin",
+									"X",
+									"Whatsapp",
+									"Telegram",
+								],
+							},
+							{
+								type: "string",
+								name: "url",
+								label: "URL",
+							},
+						],
+					},
+					{
+						type: "object",
+						name: "rooms",
+						label: "Habitaciones del Hotel",
+						list: true,
+						ui: {
+							itemProps: (item) => {
+								const name = item?.name || "Habitación";
+								return {
+									label: `${name}`,
+								};
+							},
+						},
+						fields: [
+							{
+								type: "string",
+								name: "name",
+								label: "Tipo de Habitación:",
+								options: [
+									"Individual",
+									"Matrimonial",
+									"Doble Individual",
+									"Triple",
+									"Quadruple",
+									"Quintuple",
+									"Sextuple",
+									"Deluxe",
+									"Suite Matrimonial",
+									"Suite Familiar",
+								],
+							},
+							{
+								type: "object",
+								name: "description_room",
+								label: "Descripción de Habitacion",
+								list: true,
+								ui: {
+									itemProps: (item) => {
+										const lang = item?.lang_room || "Idioma";
+										return { label: `${lang}` };
+									},
+								},
+								fields: [
+									{
+										type: "string",
+										name: "lang_room",
+										label: "Language",
+										options: ["es", "en"],
+									},
+									{
+										type: "string",
+										name: "content_destination",
+										label: "Description",
+									},
+								],
+							},
+							{
+								type: "number",
+								name: "size",
+								label: "Tamaño de habitacion (m2)",
+							},
+							{
+								type: "object",
+								name: "occupancy",
+								label: "Ocupación Min/Max",
+								fields: [
+									{
+										type: "number",
+										name: "min",
+										label: "Min",
+									},
+									{
+										type: "number",
+										name: "max",
+										label: "Max",
+									},
+								],
+							},
+							{
+								type: "image",
+								name: "images",
+								label: "Imagenes (La primera Imagen sera la portada)",
+								list: true,
+							},
+							{
+								type: "string",
+								name: "room_services",
+								label: "Servicios de la Habitacion",
+								list: true,
+								options: [
+									"Servicio a la habitación",
+									"Minibar",
+									"Caja fuerte",
+									"Secador de pelo",
+									"Plancha y tabla de planchar",
+									"Almohadas adicionales",
+									"Escritorio de trabajo",
+								],
+							},
+						],
+					},
+					{
+						type: "number",
+						name: "roomPrice",
+						label: "Precio Promedio*",
+						required: true,
+					},
+					{
+						type: "number",
+						name: "count",
+						label: "Cantidad de habitaciones*",
+						required: true,
+					},
+					{
+						type: "image",
+						name: "coverImage",
+						label: "Fotografía Portada Hotel*",
+						required: true,
+					},
+					{
+						type: "image",
+						name: "gallery",
+						label: "Galería de Imágenes del Hotel",
+						list: true,
+					},
+					{
+						type: "object",
+						name: "description_hotel",
+						label: "Description Hotel",
+						list: true,
+						ui: {
+							itemProps: (item) => {
+								const lang = item?.lang_hotel || "Idioma";
+								return { label: `${lang}` };
+							},
+						},
+						fields: [
+							{
+								type: "string",
+								name: "lang_hotel",
+								label: "Language",
+								options: ["es", "en"],
+							},
+							{
+								type: "string",
+								name: "content_hotel",
+								label: "Description",
+							},
+						],
+					},
+					{
+						type: "object",
+						name: "amenities",
+						label: "Servicios del Hotel",
+						list: true,
+						ui: {
+							itemProps: (item) => {
+								// Accedemos de forma segura, con un valor por defecto
+								return {
+									label: `${item?.basic_services ? "> Servicio Basico" : "."}
                                 ${item?.general_services ? "> Servicio General" : "."}
                                 ${item?.extra_services ? "> Servicio Extra" : "."}
                                 ${item?.premium_services ? "> Servicio Premium" : ".    "}
                                 `,
-                };
-              },
-            },
-            fields: [
-              {
-                type: "string",
-                name: "basic_services",
-                label: "Servicios Basicos",
-                list: true,
-                options: [
-                  {
-                    label: "Recepción 24 horas",
-                    value: "24h_reception",
-                  },
-                  {
-                    label: "Wifi gratuito",
-                    value: "free_wifi",
-                  },
-                  {
-                    label: "Desayuno incluido",
-                    value: "breakfast_included",
-                  },
-                  {
-                    label: "Limpieza diaria",
-                    value: "daily_cleaning",
-                  },
-                  {
-                    label: "Televisión por cable",
-                    value: "cable_tv",
-                  },
-                  {
-                    label: "Televisión Streaming",
-                    value: "streaming_tv",
-                  },
-                  {
-                    label: "Baño privado",
-                    value: "bathroom",
-                  },
-                  {
-                    label: "Aire acondicionado",
-                    value: "air_conditioning",
-                  },
-                  { label: "Calefacción", value: "heating" },
-                  {
-                    label: "Tocador / Coqueta",
-                    value: "dressing_table",
-                  },
-                ],
-              },
-              {
-                type: "string",
-                name: "general_services",
-                label: "Servicios Generales",
-                list: true,
-                options: [
-                  {
-                    label: "Estacionamiento",
-                    value: "parking",
-                  },
-                  {
-                    label: "Restaurante",
-                    value: "restaurant",
-                  },
-                  {
-                    label: "Bar o cafetería",
-                    value: "cafe_bar",
-                  },
-                  { label: "Gimnasio", value: "gym" },
-                  { label: "Piscina", value: "pool" },
-                  {
-                    label: "Spa o centro de bienestar",
-                    value: "spa_wellness",
-                  },
-                  {
-                    label: "Salas de reuniones o conferencias",
-                    value: "meeting_rooms",
-                  },
-                  { label: "Ascensor", value: "elevator" },
-                ],
-              },
-              {
-                type: "string",
-                name: "extra_services",
-                label: "Servicios Extra",
-                list: true,
-                options: [
-                  {
-                    label: "Transporte al aeropuerto",
-                    value: "airport_shuttle",
-                  },
-                  {
-                    label: "Alquiler de autos",
-                    value: "car_rental",
-                  },
-                  {
-                    label: "Lavandería y tintorería",
-                    value: "laundry_service",
-                  },
-                  {
-                    label: "Servicio de conserjería",
-                    value: "concierge_service",
-                  },
-                  {
-                    label: "Actividades turísticas o excursiones",
-                    value: "tourist_activities",
-                  },
-                  {
-                    label: "Guardería o niñera",
-                    value: "childcare",
-                  },
-                  {
-                    label: "Admisión de mascotas",
-                    value: "pet_friendly",
-                  },
-                  {
-                    label: "Cambio de divisas",
-                    value: "currency_exchange",
-                  },
-                ],
-              },
-              {
-                type: "string",
-                name: "premium_services",
-                label: "Servicios Premium",
-                list: true,
-                options: [
-                  {
-                    label:
-                      "Check-in y check-out express o VIP / Express or VIP check-in and check-out",
-                    value: "express_checkin",
-                  },
-                  {
-                    label: "Habitaciones con jacuzzi / Rooms with jacuzzi",
-                    value: "jacuzzi_rooms",
-                  },
-                  {
-                    label: "Tienda de regalos / Gift shop",
-                    value: "gift_shop",
-                  },
-                  {
-                    label:
-                      "Club lounge o área ejecutiva / Club lounge or executive area",
-                    value: "executive_lounge",
-                  },
-                  {
-                    label: "Terraza con vistas / Terrace with views",
-                    value: "rooftop_terrace",
-                  },
-                  {
-                    label:
-                      "Servicios de spa personalizados / Custom spa services",
-                    value: "custom_spa_services",
-                  },
-                  {
-                    label:
-                      "Chef privado o cocina gourmet / Private chef or gourmet cuisine",
-                    value: "private_chef",
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            type: "string",
-            name: "tours",
-            label: "Tours asociado",
-            list:true,
-            required: false,
-          },
-          {
-            type: "boolean",
-            name: "highlight",
-            label: "Destacar",
-          },
-        ],
-      },
-      // COLECCION DE OFERTAS
-      {
-        name: "offers",
-        label: "Offers",
-        path: "src/data/offers",
-        format: "json",
-        fields: [
-          {
-            type: "string",
-            name: "title",
-            label: "Title*",
-            required: true,
-          },
-          {
-            type: "image",
-            name: "coverImage",
-            label: "Cover Image*",
-            required: true,
-          },
-          {
-            type: "object",
-            name: "description_offers",
-            label: "Description Offers",
-            list: true,
-            ui: {
-              itemProps: (item) => {
-                const lang = item?.lang_offer || "Idioma";
-                return { label: `${lang}` };
-              },
-            },
-            fields: [
-              {
-                type: "string",
-                name: "lang_offer",
-                label: "Language",
-                options: ["es", "en"],
-              },
-              {
-                type: "string",
-                name: "content_offer",
-                label: "Content",
-              },
-            ],
-          },
-          {
-            type: "datetime",
-            name: "startDate",
-            label: "Fecha de Inicio*",
-            required: true,
-          },
-          {
-            type: "datetime",
-            name: "expirationDate",
-            label: "Fecha de Expiración*",
-            required: true,
-          },
-          {
-            type: "boolean",
-            name: "active",
-            label: "Oferta Activa",
-          },
-          {
-            type: "string",
-            name: "discount",
-            label: "Discount",
-            required: true,
-          },
-          {
-            type: "object",
-            name: "discount_label",
-            label: "Descripcion del Descuento",
-            required: true,
-            list: true,
-            fields: [
-              {
-                type: "string",
-                name: "lang_discount",
-                label: "Language",
-                options: ["es", "en"],
-              },
-              {
-                type: "string",
-                name: "content_discount",
-                label: "Content",
-              },
-            ],
-          },
-          {
-            type: "number",
-            name: "price_adult",
-            label: "Precio Adulto desde:",
-            required: true,
-          },
-          {
-            type: "number",
-            name: "price_child",
-            label: "Precio Niños desde:",
-            required: true,
-          },
-          {
-            type: "string",
-            name: "hotel",
-            label: "Hotel aplicable",
-            list:true,
-            required: false,
-          },
-          {
-            type: "string",
-            name: "destination",
-            label: "Destino aplicable",
-            list:true,
-            required: false,
-          },
-        ],
-      },
-      // COLECCION DE POSTS
-      {
-        name: "blogs",
-        label: "Blog Posts",
-        path: "src/data/blogs",
-        format: "json",
-        fields: [
-          {
-            type: "string",
-            name: "type",
-            label: "Tipo de Post*",
-            required: true,
-            options: [
-              { label: "Local", value: "local" },
-              { label: "Social", value: "social" }
-            ],
-          },
-          {
-            type: "string",
-            name: "source",
-            label: "Fuente (para posts sociales)",
-            options: [
-              "Instagram",
-              "Facebook",
-              "TikTok",
-              "Twitter",
-              "YouTube",
-              "LinkedIn"
-            ],
-          },
-          {
-            type: "string",
-            name: "socialPostUrl",
-            label: "URL del Post Social",
-          },
-          {
-            type: "string",
-            name: "title",
-            label: "Título*",
-            required: true,
-          },
-          {
-            type: "string",
-            name: "contentSnippet",
-            label: "Resumen (para vistas de tarjeta)*",
-            required: true,
-          },
-          {
-            type: "string",
-            name: "fullContent",
-            label: "Contenido Completo (Markdown/HTML)*",
-            required: true,
-            ui: {
-              component: "textarea",
-            },
-          },
-          {
-            type: "image",
-            name: "imageUrl",
-            label: "Imagen del Post*",
-            required: true,
-          },
-          {
-            type: "datetime",
-            name: "date",
-            label: "Fecha de Publicación*",
-            required: true,
-          },
-          {
-            type: "string",
-            name: "author",
-            label: "Autor",
-          },
-          {
-            type: "string",
-            name: "tags",
-            label: "Etiquetas",
-            list: true,
-          },
-          {
-            type: "object",
-            name: "popularityMetrics",
-            label: "Métricas de Popularidad",
-            fields: [
-              {
-                type: "number",
-                name: "reactions",
-                label: "Reacciones",
-              },
-              {
-                type: "number",
-                name: "comments",
-                label: "Comentarios",
-              },
-              {
-                type: "number",
-                name: "shares",
-                label: "Compartidos",
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
+								};
+							},
+						},
+						fields: [
+							{
+								type: "string",
+								name: "basic_services",
+								label: "Servicios Basicos",
+								list: true,
+								options: [
+									{
+										label: "Recepción 24 horas",
+										value: "24h_reception",
+									},
+									{
+										label: "Wifi gratuito",
+										value: "free_wifi",
+									},
+									{
+										label: "Desayuno incluido",
+										value: "breakfast_included",
+									},
+									{
+										label: "Limpieza diaria",
+										value: "daily_cleaning",
+									},
+									{
+										label: "Televisión por cable",
+										value: "cable_tv",
+									},
+									{
+										label: "Televisión Streaming",
+										value: "streaming_tv",
+									},
+									{
+										label: "Baño privado",
+										value: "bathroom",
+									},
+									{
+										label: "Aire acondicionado",
+										value: "air_conditioning",
+									},
+									{ label: "Calefacción", value: "heating" },
+									{
+										label: "Tocador / Coqueta",
+										value: "dressing_table",
+									},
+								],
+							},
+							{
+								type: "string",
+								name: "general_services",
+								label: "Servicios Generales",
+								list: true,
+								options: [
+									{
+										label: "Estacionamiento",
+										value: "parking",
+									},
+									{
+										label: "Restaurante",
+										value: "restaurant",
+									},
+									{
+										label: "Bar o cafetería",
+										value: "cafe_bar",
+									},
+									{ label: "Gimnasio", value: "gym" },
+									{ label: "Piscina", value: "pool" },
+									{
+										label: "Spa o centro de bienestar",
+										value: "spa_wellness",
+									},
+									{
+										label: "Salas de reuniones o conferencias",
+										value: "meeting_rooms",
+									},
+									{ label: "Ascensor", value: "elevator" },
+								],
+							},
+							{
+								type: "string",
+								name: "extra_services",
+								label: "Servicios Extra",
+								list: true,
+								options: [
+									{
+										label: "Transporte al aeropuerto",
+										value: "airport_shuttle",
+									},
+									{
+										label: "Alquiler de autos",
+										value: "car_rental",
+									},
+									{
+										label: "Lavandería y tintorería",
+										value: "laundry_service",
+									},
+									{
+										label: "Servicio de conserjería",
+										value: "concierge_service",
+									},
+									{
+										label: "Actividades turísticas o excursiones",
+										value: "tourist_activities",
+									},
+									{
+										label: "Guardería o niñera",
+										value: "childcare",
+									},
+									{
+										label: "Admisión de mascotas",
+										value: "pet_friendly",
+									},
+									{
+										label: "Cambio de divisas",
+										value: "currency_exchange",
+									},
+								],
+							},
+							{
+								type: "string",
+								name: "premium_services",
+								label: "Servicios Premium",
+								list: true,
+								options: [
+									{
+										label:
+											"Check-in y check-out express o VIP / Express or VIP check-in and check-out",
+										value: "express_checkin",
+									},
+									{
+										label: "Habitaciones con jacuzzi / Rooms with jacuzzi",
+										value: "jacuzzi_rooms",
+									},
+									{
+										label: "Tienda de regalos / Gift shop",
+										value: "gift_shop",
+									},
+									{
+										label:
+											"Club lounge o área ejecutiva / Club lounge or executive area",
+										value: "executive_lounge",
+									},
+									{
+										label: "Terraza con vistas / Terrace with views",
+										value: "rooftop_terrace",
+									},
+									{
+										label:
+											"Servicios de spa personalizados / Custom spa services",
+										value: "custom_spa_services",
+									},
+									{
+										label:
+											"Chef privado o cocina gourmet / Private chef or gourmet cuisine",
+										value: "private_chef",
+									},
+								],
+							},
+						],
+					},
+					{
+						type: "string",
+						name: "tours",
+						label: "Tours asociado",
+						list: true,
+						required: false,
+					},
+					{
+						type: "boolean",
+						name: "highlight",
+						label: "Destacar",
+					},
+				],
+			},
+			// COLECCION DE OFERTAS
+			{
+				name: "offers",
+				label: "Offers",
+				path: "src/data/offers",
+				format: "json",
+				fields: [
+					{
+						type: "string",
+						name: "title",
+						label: "Title*",
+						required: true,
+					},
+					{
+						type: "image",
+						name: "coverImage",
+						label: "Cover Image*",
+						required: true,
+					},
+					{
+						type: "object",
+						name: "description_offers",
+						label: "Description Offers",
+						list: true,
+						ui: {
+							itemProps: (item) => {
+								const lang = item?.lang_offer || "Idioma";
+								return { label: `${lang}` };
+							},
+						},
+						fields: [
+							{
+								type: "string",
+								name: "lang_offer",
+								label: "Language",
+								options: ["es", "en"],
+							},
+							{
+								type: "string",
+								name: "content_offer",
+								label: "Content",
+							},
+						],
+					},
+					{
+						type: "datetime",
+						name: "startDate",
+						label: "Fecha de Inicio*",
+						required: true,
+					},
+					{
+						type: "datetime",
+						name: "expirationDate",
+						label: "Fecha de Expiración*",
+						required: true,
+					},
+					{
+						type: "boolean",
+						name: "active",
+						label: "Oferta Activa",
+					},
+					{
+						type: "string",
+						name: "discount",
+						label: "Discount",
+						required: true,
+					},
+					{
+						type: "object",
+						name: "discount_label",
+						label: "Descripcion del Descuento",
+						required: true,
+						list: true,
+						fields: [
+							{
+								type: "string",
+								name: "lang_discount",
+								label: "Language",
+								options: ["es", "en"],
+							},
+							{
+								type: "string",
+								name: "content_discount",
+								label: "Content",
+							},
+						],
+					},
+					{
+						type: "number",
+						name: "price_adult",
+						label: "Precio Adulto desde:",
+						required: true,
+					},
+					{
+						type: "number",
+						name: "price_child",
+						label: "Precio Niños desde:",
+						required: true,
+					},
+					{
+						type: "string",
+						name: "hotel",
+						label: "Hotel aplicable",
+						list: true,
+						required: false,
+					},
+					{
+						type: "string",
+						name: "destination",
+						label: "Destino aplicable",
+						list: true,
+						required: false,
+					},
+				],
+			},
+			// COLECCION DE POSTS
+			{
+				name: "blogs",
+				label: "Blog Posts",
+				path: "src/data/blogs",
+				format: "json",
+				fields: [
+					{
+						type: "string",
+						name: "type",
+						label: "Tipo de Post*",
+						required: true,
+						options: [
+							{ label: "Local", value: "local" },
+							{ label: "Social", value: "social" },
+						],
+					},
+					{
+						type: "string",
+						name: "source",
+						label: "Fuente (para posts sociales)",
+						options: [
+							"Instagram",
+							"Facebook",
+							"TikTok",
+							"Twitter",
+							"YouTube",
+							"LinkedIn",
+						],
+					},
+					{
+						type: "string",
+						name: "socialPostUrl",
+						label: "URL del Post Social",
+					},
+					{
+						type: "string",
+						name: "title",
+						label: "Título*",
+						required: true,
+					},
+					{
+						type: "string",
+						name: "contentSnippet",
+						label: "Resumen (para vistas de tarjeta)*",
+						required: true,
+					},
+					{
+						type: "string",
+						name: "fullContent",
+						label: "Contenido Completo (Markdown/HTML)*",
+						required: true,
+						ui: {
+							component: "textarea",
+						},
+					},
+					{
+						type: "image",
+						name: "imageUrl",
+						label: "Imagen del Post*",
+						required: true,
+					},
+					{
+						type: "datetime",
+						name: "date",
+						label: "Fecha de Publicación*",
+						required: true,
+					},
+					{
+						type: "string",
+						name: "author",
+						label: "Autor",
+					},
+					{
+						type: "string",
+						name: "tags",
+						label: "Etiquetas",
+						list: true,
+					},
+					{
+						type: "object",
+						name: "popularityMetrics",
+						label: "Métricas de Popularidad",
+						fields: [
+							{
+								type: "number",
+								name: "reactions",
+								label: "Reacciones",
+							},
+							{
+								type: "number",
+								name: "comments",
+								label: "Comentarios",
+							},
+							{
+								type: "number",
+								name: "shares",
+								label: "Compartidos",
+							},
+						],
+					},
+				],
+			},
+		],
+	},
 });

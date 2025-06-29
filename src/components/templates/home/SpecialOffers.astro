@@ -1,28 +1,28 @@
 ---
 import { Icon } from "astro-icon/components";
 
-import { createLogger } from "utils/logger";
-import { trans } from "~/utils";
 import { getCollection } from "astro:content";
-import OfferCard from "../../core/cards/OfferCard.astro";
+import { createLogger } from "utils/logger";
 import Container from "~/components/core/layouts/Container.astro";
+import { trans } from "~/utils";
+import OfferCard from "../../core/cards/OfferCard.astro";
 
 const logger = createLogger(true, "special.offers");
 
 let offers = await getCollection("offers");
 
 try {
-  offers = offers
-    .sort((a, b) => a.data.title.localeCompare(b.data.title))
-    .slice(0, 4);
+	offers = offers
+		.sort((a, b) => a.data.title.localeCompare(b.data.title))
+		.slice(0, 4);
 
-  logger.log("Special offers loaded successfully:", offers.length);
+	logger.log("Special offers loaded successfully:", offers.length);
 } catch (error) {
-  logger.error("Error loading offers:", error);
+	logger.error("Error loading offers:", error);
 }
 
 interface Props {
-  lang: string;
+	lang: string;
 }
 const { lang } = Astro.props;
 ---

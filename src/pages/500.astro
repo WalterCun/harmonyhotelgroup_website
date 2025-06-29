@@ -1,11 +1,11 @@
 ---
-import { lang_es } from "lib/constants";
 import Layout from "globals/layout/Layout.astro";
+import { lang_es } from "lib/constants";
 import { trans } from "../utils";
 
 interface Props {
-  error: unknown;
-  lang: string;
+	error: unknown;
+	lang: string;
 }
 
 const { error, lang = lang_es } = Astro.props;

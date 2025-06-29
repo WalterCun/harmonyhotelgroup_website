@@ -1,17 +1,17 @@
 ---
-import { getCollection } from "astro:content";
-import { Icon } from "astro-icon/components";
 import fs from "node:fs";
 import path from "node:path";
+import { getCollection } from "astro:content";
+import { Icon } from "astro-icon/components";
 
-import { lang_es } from "lib/constants";
-import { createLogger} from "~/utils";
-import Layout from "globals/layout/Layout.astro";
+import Container from "atoms/layout/Container.astro";
 import GallerySwiper from "core/imagen/GallerySwiper.astro";
-import  Container  from "atoms/layout/Container.astro";
+import Layout from "globals/layout/Layout.astro";
+import { lang_es } from "lib/constants";
+import { createLogger } from "~/utils";
 
 interface Props {
-  lang: string;
+	lang: string;
 }
 
 const logger = createLogger(false, "tools.ts");
@@ -20,33 +20,33 @@ const { id } = Astro.params;
 logger.info("ID", id);
 
 let hotel: any = (await getCollection("hotels")).filter(
-  (hotel) => hotel.id === id,
+	(hotel) => hotel.id === id,
 );
 
 const {
-  name,
-  stars,
-  location,
-  mainStreet,
-  adressNumber,
-  secondaryStreet,
-  contact,
-  socialMedia,
-  rooms,
-  roomPrice,
-  coverImage,
-  gallery,
-  description_hotel,
-  amenities,
-  highlight,
+	name,
+	stars,
+	location,
+	mainStreet,
+	adressNumber,
+	secondaryStreet,
+	contact,
+	socialMedia,
+	rooms,
+	roomPrice,
+	coverImage,
+	gallery,
+	description_hotel,
+	amenities,
+	highlight,
 } = hotel[0].data;
 
 function iconExists(iconName: string) {
-  try {
-    return fs.existsSync(path.resolve("src/icons", `${iconName}.svg`));
-  } catch {
-    return false;
-  }
+	try {
+		return fs.existsSync(path.resolve("src/icons", `${iconName}.svg`));
+	} catch {
+		return false;
+	}
 }
 ---
 

@@ -4,23 +4,23 @@ import { AstroFont } from "astro-font";
 // import SpeedInsights from "@vercel/speed-insights/astro";
 
 import Footer from "globals/footer/Footer.astro";
-import SizeIndicator from "~/components/globals/SizeIndicator.astro";
 import StaticNavBar from "globals/header/StaticNavBar.astro";
+import SizeIndicator from "~/components/globals/SizeIndicator.astro";
 import "~/styles/global.css";
 import { trans } from "~/utils/translations";
 import { cn } from "../../../utils";
 
 interface Props {
-    lang: string;
-    title?: string;
-    className?: string;
+	lang: string;
+	title?: string;
+	className?: string;
 }
 
 const { lang, title = "", className } = Astro.props;
 
 const staticTitle = `${trans(lang, "layouts.layout.meta.title")}`;
 const dynamicTitle =
-    title !== "" ? `${staticTitle} | ${title}` : `${staticTitle}`;
+	title !== "" ? `${staticTitle} | ${title}` : `${staticTitle}`;
 ---
 
 <html lang={lang} data-theme="harmony_theme">
@@ -80,31 +80,5 @@ const dynamicTitle =
         </main>
         <Footer lang={lang} />
         <SizeIndicator />
-        <!-- <SpeedInsights /> -->
-        <!--<Analytics/>-->
-    </body><!-- Script to handle theme toggle -->
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const savedTheme = localStorage.getItem("theme") || "harmony_theme";
-            document.documentElement.setAttribute("data-theme", savedTheme);
-
-            const themeToggle = document.getElementById("theme-toggle");
-            if (themeToggle) {
-                themeToggle.addEventListener("click", () => {
-                    const currentTheme =
-                        document.documentElement.getAttribute("data-theme");
-                    const newTheme =
-                        currentTheme === "harmony_theme"
-                            ? "dark"
-                            : "harmony_theme";
-
-                    document.documentElement.setAttribute(
-                        "data-theme",
-                        newTheme,
-                    );
-                    localStorage.setItem("theme", newTheme);
-                });
-            }
-        });
-    </script>
+    </body>
 </html>

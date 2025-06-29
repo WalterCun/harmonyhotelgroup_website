@@ -1,42 +1,42 @@
 ---
-import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
 
 import { trans } from "~/utils/translations";
-import Card from "../../atoms/card/Card.astro";
 import { resolveImage } from "../../../utils";
+import Card from "../../atoms/card/Card.astro";
 import TruncatedText from "../../core/text/TruncatedText.astro";
 
 interface Props {
-  id: string;
-  title: string;
-  coverImage: string;
-  description_offers?: Array<{
-    lang_offer: string;
-    content_offer: string;
-  }>;
-  expirationDate: string;
-  discount: string;
-  discount_label?: Array<{
-    lang_discount: string;
-    content_discount: string;
-  }>;
-  price_adult: number;
-  price_child: number;
-  lang: string;
+	id: string;
+	title: string;
+	coverImage: string;
+	description_offers?: Array<{
+		lang_offer: string;
+		content_offer: string;
+	}>;
+	expirationDate: string;
+	discount: string;
+	discount_label?: Array<{
+		lang_discount: string;
+		content_discount: string;
+	}>;
+	price_adult: number;
+	price_child: number;
+	lang: string;
 }
 
 const {
-  id,
-  title,
-  coverImage,
-  description_offers,
-  expirationDate,
-  discount,
-  discount_label,
-  price_adult,
-  price_child,
-  lang,
+	id,
+	title,
+	coverImage,
+	description_offers,
+	expirationDate,
+	discount,
+	discount_label,
+	price_adult,
+	price_child,
+	lang,
 } = Astro.props as Props;
 ---
 

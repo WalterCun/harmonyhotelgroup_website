@@ -1,23 +1,26 @@
 ---
-import { lang_es } from "lib/constants";
-import Layout from "globals/layout/Layout.astro";
 import { getCollection } from "astro:content";
+import Layout from "globals/layout/Layout.astro";
+import { lang_es } from "lib/constants";
 
 const { lang = lang_es } = Astro.props;
 
 // Obtener destinos reales
-const destinations = (await getCollection("destinations"))
-  .map((item) => {
-    const data = item.data;
-    return {
-      id: item.id,
-      name: data.name,
-      location: data.location,
-      description: data.description_destination?.find((d) => d.lang_destination === lang)?.content_destination || data.description_destination?.[0]?.content_destination || '',
-      coverImage: data.coverImage,
-      tags: data.tags || [],
-    };
-  });
+const destinations = (await getCollection("destinations")).map((item) => {
+	const data = item.data;
+	return {
+		id: item.id,
+		name: data.name,
+		location: data.location,
+		description:
+			data.description_destination?.find((d) => d.lang_destination === lang)
+				?.content_destination ||
+			data.description_destination?.[0]?.content_destination ||
+			"",
+		coverImage: data.coverImage,
+		tags: data.tags || [],
+	};
+});
 ---
 
 <Layout lang={lang} title="Destinos">

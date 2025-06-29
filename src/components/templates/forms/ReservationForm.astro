@@ -1,4 +1,5 @@
 ---
+import { getCollection } from "astro:content";
 import { Icon } from "astro-icon/components";
 import CheckField from "atoms/forms/CheckField.astro";
 import DateRangeField from "atoms/forms/DateRangeField.astro";
@@ -6,28 +7,25 @@ import DropDownField from "atoms/forms/DropDownField.astro";
 import InputField from "atoms/forms/InputField.astro";
 import GridLayout from "core/layouts/GridLayout.astro";
 import {
-  type CityOption,
-  adultOptions,
-  childrenOptions,
-  groupRoomTypeOptions,
-  roomOptions,
-  vehicleTypeOptions,
+	type CityOption,
+	adultOptions,
+	childrenOptions,
+	groupRoomTypeOptions,
+	roomOptions,
+	vehicleTypeOptions,
 } from "lib/constants";
 import { trans } from "~/utils/translations";
-import { getCollection } from "astro:content";
-
 
 const hotels = await getCollection("hotels");
 const uniqueCities: CityOption[] = [
-  ...new Set(hotels.map((hotel) => hotel.data.location)),
+	...new Set(hotels.map((hotel) => hotel.data.location)),
 ];
 
 // ---------------------------------------------------------------------------------------------------------
 
 export interface Fields {
-  city: string[]
+	city: string[];
 }
-
 
 const { lang } = Astro.props;
 ---

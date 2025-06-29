@@ -1,37 +1,24 @@
 {
-  "partner": true,
-  "name": "Chorro de Giron",
-  "location": "Giron, Azuay, Ecuador",
-  "description_destination": [
-    {
-      "lang_destination": "es",
-      "content_destination": "Esto es una prueba de contexto de un destino para poder refinar todo el texto que puede conllevar Esto es una prueba de contexto de un destino para poder refinar todo el texto que puede conllevar Esto es una prueba de contexto de un destino para poder refinar todo el texto que puede conllevar"
-    }
-  ],
-  "tags": [
-    {
-      "experience": [
-        "outdoor_adventure"
-      ],
-      "activities": [
-        "extreme_games",
-        "hiking"
-      ],
-      "geographics": [
-        "in_azuay",
-        "rivers_waterfalls",
-        "scenic_viewpoint"
-      ],
-      "temporality": [
-        "year_round"
-      ],
-      "popular": [
-        "main_attraction"
-      ]
-    }
-  ],
-  "coverImage": "/upload/destinations/chorroGiron/cascadaGiron1.webp",
-  "highlight": true,
-  "bestTimeToVisit": "Verano (abril - agosto)",
-  "transportInfo": "Cualquier Vehiculo"
+	"partner": true,
+	"name": "Chorro de Giron",
+	"location": "Giron, Azuay, Ecuador",
+	"description_destination": [
+		{
+			"lang_destination": "es",
+			"content_destination": "Esto es una prueba de contexto de un destino para poder refinar todo el texto que puede conllevar Esto es una prueba de contexto de un destino para poder refinar todo el texto que puede conllevar Esto es una prueba de contexto de un destino para poder refinar todo el texto que puede conllevar"
+		}
+	],
+	"tags": [
+		{
+			"experience": ["outdoor_adventure"],
+			"activities": ["extreme_games", "hiking"],
+			"geographics": ["in_azuay", "rivers_waterfalls", "scenic_viewpoint"],
+			"temporality": ["year_round"],
+			"popular": ["main_attraction"]
+		}
+	],
+	"coverImage": "/upload/destinations/chorroGiron/cascadaGiron1.webp",
+	"highlight": true,
+	"bestTimeToVisit": "Verano (abril - agosto)",
+	"transportInfo": "Cualquier Vehiculo"
 }

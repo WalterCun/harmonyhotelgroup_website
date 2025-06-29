@@ -1,27 +1,27 @@
 ---
-import { Icon } from "astro-icon/components";
 import { getCollection } from "astro:content";
+import { Icon } from "astro-icon/components";
 
+import Container from "~/components/core/layouts/Container.astro";
 import { trans } from "~/utils";
 import { createLogger } from "../../../utils";
 import DestinationCard from "../../core/cards/DestinationCard.astro";
-import Container from "~/components/core/layouts/Container.astro";
 
 const logger = createLogger(false, "popular.destinations");
 
 let destinations = await getCollection("destinations");
 
 try {
-  destinations = destinations
-    .sort((a, b) => a.data.name.localeCompare(b.data.name))
-    .slice(0, 4);
-  logger.log("Popular destinations loaded successfully:", destinations.length);
+	destinations = destinations
+		.sort((a, b) => a.data.name.localeCompare(b.data.name))
+		.slice(0, 4);
+	logger.log("Popular destinations loaded successfully:", destinations.length);
 } catch (error) {
-  logger.error("Error loading destinations:", error);
+	logger.error("Error loading destinations:", error);
 }
 
 interface Props {
-  lang: string;
+	lang: string;
 }
 
 const { lang } = Astro.props;

@@ -6,20 +6,19 @@ import { trans } from "~/utils/translations";
 import { getCollection } from "astro:content";
 import HotelCard from "~/components/core/cards/HotelCard.astro";
 
-
-import { ExtendHotelCollection } from "~/utils";
 import Container from "~/components/core/layouts/Container.astro";
+import { ExtendHotelCollection } from "~/utils";
 
 let ExteroidesHotels = new ExtendHotelCollection(await getCollection("hotels"));
 const hotels = await ExteroidesHotels.resolve();
 
 const orderedHotels = hotels
-  .sort((a, b) => a.data.name.localeCompare(b.data.name))
-  .sort((a, b) => (b.data.partner === true ? -1 : 1))
-  .slice(0, 4);
+	.sort((a, b) => a.data.name.localeCompare(b.data.name))
+	.sort((a, b) => (b.data.partner === true ? -1 : 1))
+	.slice(0, 4);
 
 interface Props {
-  lang: string;
+	lang: string;
 }
 
 const { lang } = Astro.props;

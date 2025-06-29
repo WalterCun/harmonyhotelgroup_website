@@ -1,10 +1,10 @@
 ---
-import { lang_es } from "lib/constants";
-import Layout from "globals/layout/Layout.astro";
 import { getCollection } from "astro:content";
-import { createLogger, trans } from "../../utils";
-import { type CityOption } from "../../lib/constants";
+import Layout from "globals/layout/Layout.astro";
+import { lang_es } from "lib/constants";
 import HotelCard from "../../components/core/cards/HotelCard.astro";
+import { type CityOption } from "../../lib/constants";
+import { createLogger, trans } from "../../utils";
 
 const logger = createLogger(false, "hotels.astro");
 const { lang = lang_es } = Astro.props;
@@ -14,167 +14,191 @@ let locations: any[] = [];
 let destinations: any[] = [];
 let uniqueCities: CityOption[] = [];
 let uniqueAmenities: { key: string; label: string }[] = [];
-let priceRanges: { value: string; label: string; min: number; max: number }[] = [];
+let priceRanges: { value: string; label: string; min: number; max: number }[] =
+	[];
 
 try {
-  // Obtener todas las colecciones
-  const [hotelsCollection, locationsCollection, destinationsCollection] = await Promise.all([
-    getCollection("hotels"),
-    getCollection("locations"),
-    getCollection("destinations")
-  ]);
+	// Obtener todas las colecciones
+	const [hotelsCollection, locationsCollection, destinationsCollection] =
+		await Promise.all([
+			getCollection("hotels"),
+			getCollection("locations"),
+			getCollection("destinations"),
+		]);
 
-  // Crear mapas para acceso rápido
-  const locationsMap = new Map();
-  for (const location of locationsCollection) {
-    locationsMap.set(location.id, location.data);
-  }
+	// Crear mapas para acceso rápido
+	const locationsMap = new Map();
+	for (const location of locationsCollection) {
+		locationsMap.set(location.id, location.data);
+	}
 
-  const destinationsMap = new Map();
-  for (const destination of destinationsCollection) {
-    destinationsMap.set(destination.id, destination.data);
-  }
+	const destinationsMap = new Map();
+	for (const destination of destinationsCollection) {
+		destinationsMap.set(destination.id, destination.data);
+	}
 
-  // Procesar hoteles con referencias resueltas
-  hotels = hotelsCollection
-    .map(hotel => {
-      const hotelData = hotel.data;
-      
-      // Resolver referencia de location
-      let locationData = null;
-      if (hotelData.location) {
-        // Extraer el ID de la referencia (asumiendo formato: "src/data/locations/Ecuador,Azuay,Cuenca.json")
-        const locationId = hotelData.location.replace('src/data/locations/', '').replace('.json', '');
-        locationData = locationsMap.get(locationId);
-      }
+	// Procesar hoteles con referencias resueltas
+	hotels = hotelsCollection
+		.map((hotel) => {
+			const hotelData = hotel.data;
 
-      // Resolver referencia de destination
-      let destinationData = null;
-      if (hotelData.destination) {
-        const destinationId = hotelData.destination.replace('src/data/destinations/', '').replace('.json', '');
-        destinationData = destinationsMap.get(destinationId);
-      }
+			// Resolver referencia de location
+			let locationData = null;
+			if (hotelData.location) {
+				// Extraer el ID de la referencia (asumiendo formato: "src/data/locations/Ecuador,Azuay,Cuenca.json")
+				const locationId = hotelData.location
+					.replace("src/data/locations/", "")
+					.replace(".json", "");
+				locationData = locationsMap.get(locationId);
+			}
 
-      return {
-        ...hotel,
-        data: {
-          ...hotelData,
-          locationData, // Datos completos de location
-          destinationData, // Datos completos de destination
-          // Crear location string formateado
-          locationFormatted: locationData ? 
-            `${locationData.city}, ${locationData.province}, ${locationData.country}` : 
-            hotelData.location || 'Ubicación no disponible'
-        }
-      };
-    })
-    .sort((a, b) => a.data.name.localeCompare(b.data.name))
-    .sort((a, b) => (b.data.partner === true ? -1 : 1));
+			// Resolver referencia de destination
+			let destinationData = null;
+			if (hotelData.destination) {
+				const destinationId = hotelData.destination
+					.replace("src/data/destinations/", "")
+					.replace(".json", "");
+				destinationData = destinationsMap.get(destinationId);
+			}
 
-  // Generar ciudades únicas desde las referencias resueltas
-  uniqueCities = [
-    ...new Set(hotels.map((hotel) => hotel.data.locationFormatted)),
-  ] as CityOption[];
+			return {
+				...hotel,
+				data: {
+					...hotelData,
+					locationData, // Datos completos de location
+					destinationData, // Datos completos de destination
+					// Crear location string formateado
+					locationFormatted: locationData
+						? `${locationData.city}, ${locationData.province}, ${locationData.country}`
+						: hotelData.location || "Ubicación no disponible",
+				},
+			};
+		})
+		.sort((a, b) => a.data.name.localeCompare(b.data.name))
+		.sort((a, b) => (b.data.partner === true ? -1 : 1));
 
-  // Extract amenities from all hotels - con manejo seguro y traducción
-  const allAmenities = hotels.flatMap((hotel) => {
-    // Verificar que el hotel tiene la estructura esperada
-    if (!hotel.data.amenities?.[0]) {
-      return [];
-    }
+	// Generar ciudades únicas desde las referencias resueltas
+	uniqueCities = [
+		...new Set(hotels.map((hotel) => hotel.data.locationFormatted)),
+	] as CityOption[];
 
-    const amenitiesObj = hotel.data.amenities[0];
-    const amenitiesWithCategory = [
-      ...(amenitiesObj.basic_services || []).map((key: string) => ({ key, category: 'basic_services' })),
-      ...(amenitiesObj.general_services || []).map((key: string) => ({ key, category: 'general_services' })),
-      ...(amenitiesObj.extra_services || []).map((key: string) => ({ key, category: 'extra_services' })),
-      ...(amenitiesObj.premium_services || []).map((key: string) => ({ key, category: 'premium_services' })),
-    ];
-    
-    return amenitiesWithCategory;
-  });
-  
-  console.log("allAmenities", allAmenities);
-  
-  // Crear array de servicios únicos con traducciones
-  const uniqueAmenityKeys = [...new Set(allAmenities.map(item => `${item.category}.${item.key}`))];
-  uniqueAmenities = uniqueAmenityKeys.map(fullKey => {
-    const [category, key] = fullKey.split('.');
-    return {
-      key: fullKey,
-      label: trans(lang, `components.sections.home.featured-hotels.tags.${category}.${key}`) || key
-    };
-  });
+	// Extract amenities from all hotels - con manejo seguro y traducción
+	const allAmenities = hotels.flatMap((hotel) => {
+		// Verificar que el hotel tiene la estructura esperada
+		if (!hotel.data.amenities?.[0]) {
+			return [];
+		}
 
-  // Generar rangos de precios dinámicamente
-  const prices = hotels
-    .map((hotel) => Number.parseFloat(hotel.data.roomPrice))
-    .filter((price) => !Number.isNaN(price) && price > 0)
-    .sort((a, b) => a - b);
+		const amenitiesObj = hotel.data.amenities[0];
+		const amenitiesWithCategory = [
+			...(amenitiesObj.basic_services || []).map((key: string) => ({
+				key,
+				category: "basic_services",
+			})),
+			...(amenitiesObj.general_services || []).map((key: string) => ({
+				key,
+				category: "general_services",
+			})),
+			...(amenitiesObj.extra_services || []).map((key: string) => ({
+				key,
+				category: "extra_services",
+			})),
+			...(amenitiesObj.premium_services || []).map((key: string) => ({
+				key,
+				category: "premium_services",
+			})),
+		];
 
-  if (prices.length > 0) {
-    const minPrice = Math.floor(prices[0]);
-    const maxPrice = Math.ceil(prices[prices.length - 1]);
-    
-    // Calcular cuartiles para crear rangos más equilibrados
-    const q1 = Math.floor(prices[Math.floor(prices.length * 0.25)]);
-    const q2 = Math.floor(prices[Math.floor(prices.length * 0.5)]);
-    const q3 = Math.floor(prices[Math.floor(prices.length * 0.75)]);
+		return amenitiesWithCategory;
+	});
 
-    priceRanges = [
-      {
-        value: `budget-${minPrice}-${q1}`,
-        label: `Menos de $${q1}`,
-        min: minPrice,
-        max: q1 - 1
-      },
-      {
-        value: `mid-${q1}-${q2}`,
-        label: `$${q1} - $${q2}`,
-        min: q1,
-        max: q2
-      },
-      {
-        value: `luxury-${q2}-${q3}`,
-        label: `$${q2 + 1} - $${q3}`,
-        min: q2 + 1,
-        max: q3
-      },
-      {
-        value: `ultra-${q3}-${maxPrice}`,
-        label: `Más de $${q3}`,
-        min: q3 + 1,
-        max: maxPrice
-      }
-    ];
+	console.log("allAmenities", allAmenities);
 
-    // Si hay muy pocos hoteles o rangos muy pequeños, usar rangos más simples
-    if (maxPrice - minPrice < 100) {
-      const midPoint = Math.floor((minPrice + maxPrice) / 2);
-      priceRanges = [
-        {
-          value: `budget-${minPrice}-${midPoint}`,
-          label: `Menos de $${midPoint}`,
-          min: minPrice,
-          max: midPoint - 1
-        },
-        {
-          value: `luxury-${midPoint}-${maxPrice}`,
-          label: `$${midPoint} o más`,
-          min: midPoint,
-          max: maxPrice
-        }
-      ];
-    }
-  }
+	// Crear array de servicios únicos con traducciones
+	const uniqueAmenityKeys = [
+		...new Set(allAmenities.map((item) => `${item.category}.${item.key}`)),
+	];
+	uniqueAmenities = uniqueAmenityKeys.map((fullKey) => {
+		const [category, key] = fullKey.split(".");
+		return {
+			key: fullKey,
+			label:
+				trans(
+					lang,
+					`components.sections.home.featured-hotels.tags.${category}.${key}`,
+				) || key,
+		};
+	});
 
-  logger.log("All hotels loaded successfully:", hotels.length);
-  logger.log("Locations loaded:", locationsCollection.length);
-  logger.log("Destinations loaded:", destinationsCollection.length);
-  logger.log("Price ranges generated:", priceRanges);
-  logger.log("Amenities with translations:", uniqueAmenities);
+	// Generar rangos de precios dinámicamente
+	const prices = hotels
+		.map((hotel) => Number.parseFloat(hotel.data.roomPrice))
+		.filter((price) => !Number.isNaN(price) && price > 0)
+		.sort((a, b) => a - b);
+
+	if (prices.length > 0) {
+		const minPrice = Math.floor(prices[0]);
+		const maxPrice = Math.ceil(prices[prices.length - 1]);
+
+		// Calcular cuartiles para crear rangos más equilibrados
+		const q1 = Math.floor(prices[Math.floor(prices.length * 0.25)]);
+		const q2 = Math.floor(prices[Math.floor(prices.length * 0.5)]);
+		const q3 = Math.floor(prices[Math.floor(prices.length * 0.75)]);
+
+		priceRanges = [
+			{
+				value: `budget-${minPrice}-${q1}`,
+				label: `Menos de $${q1}`,
+				min: minPrice,
+				max: q1 - 1,
+			},
+			{
+				value: `mid-${q1}-${q2}`,
+				label: `$${q1} - $${q2}`,
+				min: q1,
+				max: q2,
+			},
+			{
+				value: `luxury-${q2}-${q3}`,
+				label: `$${q2 + 1} - $${q3}`,
+				min: q2 + 1,
+				max: q3,
+			},
+			{
+				value: `ultra-${q3}-${maxPrice}`,
+				label: `Más de $${q3}`,
+				min: q3 + 1,
+				max: maxPrice,
+			},
+		];
+
+		// Si hay muy pocos hoteles o rangos muy pequeños, usar rangos más simples
+		if (maxPrice - minPrice < 100) {
+			const midPoint = Math.floor((minPrice + maxPrice) / 2);
+			priceRanges = [
+				{
+					value: `budget-${minPrice}-${midPoint}`,
+					label: `Menos de $${midPoint}`,
+					min: minPrice,
+					max: midPoint - 1,
+				},
+				{
+					value: `luxury-${midPoint}-${maxPrice}`,
+					label: `$${midPoint} o más`,
+					min: midPoint,
+					max: maxPrice,
+				},
+			];
+		}
+	}
+
+	logger.log("All hotels loaded successfully:", hotels.length);
+	logger.log("Locations loaded:", locationsCollection.length);
+	logger.log("Destinations loaded:", destinationsCollection.length);
+	logger.log("Price ranges generated:", priceRanges);
+	logger.log("Amenities with translations:", uniqueAmenities);
 } catch (error) {
-  logger.error("Error loading hotels:", error);
+	logger.error("Error loading hotels:", error);
 }
 ---
 
