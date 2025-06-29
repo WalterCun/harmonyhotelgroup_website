@@ -9,7 +9,7 @@ import { resolveImage } from "../../../utils";
 interface Props {
   coverImage: string;
   name: string;
-  location: string;
+  location: { country: string, province: string, city: string };
   stars: number;
   amenities: Array<{
     basic_services: string[];
@@ -34,6 +34,7 @@ const {
   lang,
   partner,
 } = Astro.props as Props;
+
 ---
 
 <Card>
@@ -60,7 +61,9 @@ const {
       <p class="text-neutral-600">
         <span class="inline-flex items-center">
           <Icon name="location" class="w-4 h-4 mr-1 text-primary" />
-          {location}
+          {[location.country, location.province, location.city]
+            .filter(Boolean)
+            .join(', ')}
         </span>
       </p>
       <div class="rating p-0 m-0 mt-2">
