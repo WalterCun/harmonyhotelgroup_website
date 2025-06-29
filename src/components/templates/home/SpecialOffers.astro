@@ -5,8 +5,7 @@ import { createLogger } from "utils/logger";
 import { trans } from "~/utils";
 import { getCollection } from "astro:content";
 import OfferCard from "../../core/cards/OfferCard.astro";
-import Section from "../../atoms/layout/Section.astro";
-import Container from "../../atoms/layout/Container.astro";
+import Container from "~/components/core/layouts/Container.astro";
 
 const logger = createLogger(true, "special.offers");
 
@@ -28,7 +27,6 @@ interface Props {
 const { lang } = Astro.props;
 ---
 
-<Section className="pt-10 pb-10">
     <Container>
         {offers.length > 0 ? (
                 <div class="text-center mb-12">
@@ -83,4 +81,3 @@ const { lang } = Astro.props;
                 </div>
         )}
     </Container>
-</Section>

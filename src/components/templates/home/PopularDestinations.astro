@@ -5,8 +5,7 @@ import { getCollection } from "astro:content";
 import { trans } from "~/utils";
 import { createLogger } from "../../../utils";
 import DestinationCard from "../../core/cards/DestinationCard.astro";
-import Section from "../../atoms/layout/Section.astro";
-import Container from "../../atoms/layout/Container.astro";
+import Container from "~/components/core/layouts/Container.astro";
 
 const logger = createLogger(false, "popular.destinations");
 
@@ -28,46 +27,50 @@ interface Props {
 const { lang } = Astro.props;
 ---
 
-<Section background="gray" className="pt-10 pb-10">
-    <Container>
-        <div class="text-center mb-12">
-            <h2 class="mb-4 text-center text-2xl font-bold text-primary">
-                {trans(lang, "components.sections.home.popular-destination.title")}</h2>
-            <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
-                {trans(lang, "components.sections.home.popular-destination.subtitle")}
-            </p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
-            {destinations.map(destination => {
-
-                const {
-                    partner,
-                    name,
-                    location,
-                    description_destination,
-                    tags,
-                    coverImage,
-                } = destination.data;
-                return (
-                        <DestinationCard
-                        id={destination.id}
-                        partner={partner}
-                        name={name}
-                        location={location}
-                        description_destination={description_destination}
-                        tags={tags}
-                        coverImage={coverImage}
-                        lang={lang}
-                        />
-                )
-            })}
-        </div>
-        <div class="text-center mt-12">
-            <a href="/destinations" class="btn btn-outline btn-primary">
-                <Icon name="destination-line"></Icon>
-                {trans(lang, "components.sections.home.popular-destination.btn-all-destination")}
-            </a>
-        </div>
-    </Container>
-</Section>
-
+<Container>
+  <div class="text-center mb-12">
+    <h2 class="mb-4 text-center text-2xl font-bold text-primary">
+      {trans(lang, "components.sections.home.popular-destination.title")}
+    </h2>
+    <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
+      {trans(lang, "components.sections.home.popular-destination.subtitle")}
+    </p>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
+    {
+      destinations.map((destination) => {
+        const {
+          partner,
+          name,
+          location,
+          description_destination,
+          tags,
+          coverImage,
+        } = destination.data;
+        return (
+          <DestinationCard
+            id={destination.id}
+            partner={partner}
+            name={name}
+            location={location}
+            description_destination={description_destination}
+            tags={tags}
+            coverImage={coverImage}
+            lang={lang}
+          />
+        );
+      })
+    }
+  </div>
+  <div class="text-center mt-12">
+    <a href="/destinations" class="btn btn-outline btn-primary">
+      <Icon name="destination-line" />
+      {
+        trans(
+          lang,
+          "components.sections.home.popular-destination.btn-all-destination"
+        )
+      }
+    </a>
+  </div>
+</Container>
