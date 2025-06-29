@@ -12,7 +12,7 @@ const { lang } = Astro.props;
 
 <nav
   id="scroll-nav"
-  class="w-full fixed top-0 left-0 z-10 bg-white transform md:-translate-y-full md:transition-transform duration-300 ease-in-out"
+  class="w-full fixed top-0 left-0 z-10 bg-white transform translate-y-0 md:-translate-y-full transition-transform duration-300 ease-in-out"
 >
   <Container>
     <div class="flex justify-between items-center">
@@ -52,13 +52,13 @@ const { lang } = Astro.props;
         window.pageYOffset || document.documentElement.scrollTop;
 
       if (scrollTop <= scrollThreshold) {
-        scrollNav.classList.add("-translate-y-full");
+        scrollNav.classList.add("md:-translate-y-full");
         return;
       }
 
       if (scrollTop > lastScrollTop) {
         // Scrolling down
-        scrollNav.classList.remove("-translate-y-full");
+        scrollNav.classList.remove("md:-translate-y-full");
       }
 
       lastScrollTop = scrollTop;

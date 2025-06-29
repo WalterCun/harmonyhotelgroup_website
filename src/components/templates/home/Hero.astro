@@ -15,15 +15,12 @@ import { createLogger, resolveImage } from "../../../utils";
 
 // Seleccionar una imagen aleatoria
 const imagesArray = Object.values(backgroundImagesHero);
-logger.info("imagesArray", imagesArray);
 const randomIndex = Math.floor(Math.random() * imagesArray.length);
-logger.info("randomIndex", randomIndex);
 const heroImage = imagesArray[randomIndex];
-logger.info("heroImage", heroImage);
 ---
 
 <div
-    class="relative flex flex-col columns-1 items-center justify-start h-[55vh] sm:h-[60vh] md:h-[80vh] lg:h-[90vh] xl:h-[100vh] w-full">
+    class="relative flex flex-col columns-1 items-center justify-start h-[55vh] sm:h-[75vh] md:h-[80vh] lg:h-[90vh] xl:h-[100vh] w-full">
   <div class="absolute inset-0">
     <Image
       alt="Hero Image"
