@@ -1,61 +1,175 @@
 ---
 import MenuOpen from "~/components/globals/svg/menus/MenuOpen.astro";
 import MenuClose from "~/components/globals/svg/menus/MenuClose.astro";
-import LogoHGG from "~/components/globals/svg/logos/LogoHGG.astro";
+import CloseIcon from "~/components/globals/svg/menus/CloseIcon.astro";
+
+import { Icon } from "astro-icon/components";
+import { socialLinks, infoAddress } from "~/lib/constants";
 ---
 
 <div class="drawer drawer-end size-6">
-    <input id="menu-nav-drawer" type="checkbox" class="drawer-toggle" />
-    <div class="drawer-content">
+  <input id="menu-nav-drawer" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content">
+    <label
+      id="menu-icon"
+      for="menu-nav-drawer"
+      class="hover:text-primary transition-colors duration-200 cursor-pointer relative size-6 drawer-button"
+    >
+      <i
+        id="menu-open"
+        class="absolute inset-0 transform transition-all duration-300 ease-in-out scale-100 opacity-100 size-6 text-white hover:text-primary"
+      >
+        <MenuOpen />
+      </i>
+      <i
+        id="menu-close"
+        class="absolute inset-0 transform transition-all duration-300 ease-in-out scale-95 opacity-0 size-6 text-white hover:text-primary"
+      >
+        <MenuClose />
+      </i>
+    </label>
+  </div>
+  <div class="drawer-side">
+    <label
+      for="menu-nav-drawer"
+      aria-label="close sidebar"
+      class="drawer-overlay"></label>
+    <div class="bg-base-200 text-base-content min-h-full w-96 p-4">
+      <div class="flex justify-end">
         <label
-            id="menu-icon"
-            for="menu-nav-drawer"
-            class="hover:text-primary transition-colors duration-200 cursor-pointer relative size-6 drawer-button"
+          for="menu-nav-drawer"
+          aria-label="close sidebar"
+          class="btn btn-primary btn-circle text-black shadow-none bg-gray-300 border-gray-300 hover:bg-primary hover:border-primary hover:text-white"
         >
-            <i
-                id="menu-open"
-                class="absolute inset-0 transform transition-all duration-300 ease-in-out scale-100 opacity-100 size-6 text-white hover:text-primary"
-            >
-                <MenuOpen />
-            </i>
-            <i
-                id="menu-close"
-                class="absolute inset-0 transform transition-all duration-300 ease-in-out scale-95 opacity-0 size-6 text-white hover:text-primary"
-            >
-                <MenuClose />
-            </i>
+          <CloseIcon />
         </label>
-    </div>
-    <div class="drawer-side">
-        <label
-            for="menu-nav-drawer"
-            aria-label="close sidebar"
-            class="drawer-overlay"></label>
-        <div class="menu bg-base-200 text-base-content min-h-full w-96 p-4">
-            <!-- Sidebar content here -->
-            <LogoHGG />
+      </div>
+      <div class="px-10">
+        <img src="/logo/logo.png" alt="Logo HGG" class="w-full h-auto" />
+        <h3 class="text-3xl font-bold">Sobre Nosotros</h3>
+        <div class="border-b border-gray-300 my-5"></div>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt magna aliqua aptent facilisi.
+        </p>
+        <a href="#" class="btn btn-primary mt-5 btn-lg w-52 uppercase">
+          Cotizar
+        </a>
+      </div>
+      <div class="px-10 pt-10">
+        <h3 class="text-3xl font-bold">Contactanos</h3>
+        <div class="border-b border-gray-300 my-5"></div>
+        <div class="flex flex-col gap-4 pb-10">
+          <a
+            href={infoAddress.addressLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-start group"
+          >
+            <i class="text-primary shrink-0 mr-2">
+              <Icon name="location" width={25} height={25} />
+            </i>
+            <span
+              class="group-hover:text-neutral-700 transition-colors duration-200"
+            >
+              {infoAddress.address}
+            </span>
+          </a>
+
+          <a href={`tel:${infoAddress.phone}`} class="flex items-start group">
+            <i class="text-primary shrink-0">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-5 h-5 mr-2 text-primary-500 shrink-0"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z"
+                  clip-rule="evenodd"></path>
+              </svg>
+            </i>
+            <span
+              class="group-hover:text-neutral-700 transition-colors duration-200"
+            >
+              {infoAddress.phone}
+            </span>
+          </a>
+          <a
+            href={infoAddress.addressLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-start group"
+          >
+            <i class="text-primary shrink-0 mr-2">
+              <Icon name="location" width={25} height={25} />
+            </i>
+            <span
+              class="group-hover:text-neutral-700 transition-colors duration-200"
+            >
+              {infoAddress.address}
+            </span>
+          </a>
+
+          <a href={`tel:${infoAddress.phone}`} class="flex items-start group">
+            <i class="text-primary shrink-0">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-5 h-5 mr-2 text-primary-500 shrink-0"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z"
+                  clip-rule="evenodd"></path>
+              </svg>
+            </i>
+            <span
+              class="group-hover:text-neutral-700 transition-colors duration-200"
+            >
+              {infoAddress.phone}
+            </span>
+          </a>
         </div>
+        <div class="flex items-center gap-4">
+          {
+            socialLinks.map((link) => (
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="bg-primary text-white cursor-pointer hover:bg-black rounded-full transition-colors duration-200 p-2"
+              >
+                <link.icon />
+              </a>
+            ))
+          }
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <script>
-    const menuOpen = document.getElementById("menu-open");
-    const menuClose = document.getElementById("menu-close");
-    const menuIcon = document.getElementById("menu-icon");
+  const menuOpen = document.getElementById("menu-open");
+  const menuClose = document.getElementById("menu-close");
+  const menuIcon = document.getElementById("menu-icon");
 
-    if (menuOpen && menuClose && menuIcon) {
-        menuIcon.addEventListener("mouseenter", () => {
-            menuOpen.classList.add("scale-95", "opacity-0");
-            menuOpen.classList.remove("scale-100", "opacity-100");
-            menuClose.classList.remove("scale-95", "opacity-0");
-            menuClose.classList.add("scale-100", "opacity-100");
-        });
+  if (menuOpen && menuClose && menuIcon) {
+    menuIcon.addEventListener("mouseenter", () => {
+      menuOpen.classList.add("scale-95", "opacity-0");
+      menuOpen.classList.remove("scale-100", "opacity-100");
+      menuClose.classList.remove("scale-95", "opacity-0");
+      menuClose.classList.add("scale-100", "opacity-100");
+    });
 
-        menuIcon.addEventListener("mouseleave", () => {
-            menuOpen.classList.remove("scale-95", "opacity-0");
-            menuOpen.classList.add("scale-100", "opacity-100");
-            menuClose.classList.remove("scale-100", "opacity-100");
-            menuClose.classList.add("scale-95", "opacity-0");
-        });
-    }
+    menuIcon.addEventListener("mouseleave", () => {
+      menuOpen.classList.remove("scale-95", "opacity-0");
+      menuOpen.classList.add("scale-100", "opacity-100");
+      menuClose.classList.remove("scale-100", "opacity-100");
+      menuClose.classList.add("scale-95", "opacity-0");
+    });
+  }
 </script>
