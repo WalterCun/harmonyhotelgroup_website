@@ -1,14 +1,21 @@
 ---
 export interface Props {
-  name: string;
-  location: string;
-  coverImage?: string;
-  tags?: string[];
-  hotels?: number;
-  description: string;
-  onClick?: () => void;
+	name: string;
+	location: string;
+	coverImage?: string;
+	tags?: string[];
+	hotels?: number;
+	description: string;
+	onClick?: () => void;
 }
-const { name, location, coverImage, tags = [], hotels, description } = Astro.props;
+const {
+	name,
+	location,
+	coverImage,
+	tags = [],
+	hotels,
+	description,
+} = Astro.props;
 ---
 <div class="bg-white rounded-xl shadow hover:shadow-lg transition-all duration-300 flex flex-col overflow-hidden">
   <div class="relative h-60 bg-gray-200 flex items-center justify-center">

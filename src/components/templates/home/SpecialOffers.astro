@@ -1,83 +1,83 @@
 ---
 import { Icon } from "astro-icon/components";
 
-import { createLogger } from "utils/logger";
-import { trans } from "~/utils";
 import { getCollection } from "astro:content";
-import OfferCard from "../../core/cards/OfferCard.astro";
+import { createLogger } from "utils/logger";
 import Container from "~/components/core/layouts/Container.astro";
+import { trans } from "~/utils";
+import OfferCard from "../../core/cards/OfferCard.astro";
 
 const logger = createLogger(true, "special.offers");
 
 let offers = await getCollection("offers");
 
 try {
-  offers = offers
-    .sort((a, b) => a.data.title.localeCompare(b.data.title))
-    .slice(0, 4);
+	offers = offers
+		.sort((a, b) => a.data.title.localeCompare(b.data.title))
+		.slice(0, 4);
 
-  logger.log("Special offers loaded successfully:", offers.length);
+	logger.log("Special offers loaded successfully:", offers.length);
 } catch (error) {
-  logger.error("Error loading offers:", error);
+	logger.error("Error loading offers:", error);
 }
 
 interface Props {
-  lang: string;
+	lang: string;
 }
 const { lang } = Astro.props;
 ---
 
-    <Container>
-        {offers.length > 0 ? (
-                <div class="text-center mb-12">
-                    <h2 class="mb-4 text-center text-2xl font-bold text-primary">{trans(lang, "components.sections.home.special-offer.title")}</h2>
-                    <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
-                        {trans(lang, "components.sections.home.special-offer.subtitle")}
-                    </p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                    {offers.map(offer => {
-                        const {title,coverImage,description_offers,expirationDate,discount,discount_label,price_adult,price_child} = offer.data
+<Container className="py-14">
+    {offers.length > 0 ? (
+            <div class="text-center mb-12">
+                <h2 class="mb-4 text-center text-2xl font-bold text-primary">{trans(lang, "components.sections.home.special-offer.title")}</h2>
+                <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
+                    {trans(lang, "components.sections.home.special-offer.subtitle")}
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                {offers.map(offer => {
+                    const {title,coverImage,description_offers,expirationDate,discount,discount_label,price_adult,price_child} = offer.data
 
-                        return (<OfferCard
-                                id={offer.id}
-                                title={title}
-                                coverImage={coverImage}
-                                description_offers={description_offers}
-                                expirationDate={expirationDate}
-                                discount={discount}
-                                discount_label={discount_label}
-                                price_adult={price_adult}
-                                price_child={price_child}
-                                lang={lang}
-                        />)
-                    }
-                    )}
-                </div>
-                <div class="text-center mt-12">
-                    <a href="/offers" class="btn btn-outline btn-primary hover:text-primary-600 transition-colors">
-                        <Icon name="offers"></Icon>
-                        {trans(lang, "components.sections.home.special-offer.btn-all-offers")}
+                    return (<OfferCard
+                            id={offer.id}
+                            title={title}
+                            coverImage={coverImage}
+                            description_offers={description_offers}
+                            expirationDate={expirationDate}
+                            discount={discount}
+                            discount_label={discount_label}
+                            price_adult={price_adult}
+                            price_child={price_child}
+                            lang={lang}
+                    />)
+                }
+                )}
+            </div>
+            <div class="text-center mt-12">
+                <a href="/offers" class="btn btn-outline btn-primary hover:text-primary-600 transition-colors">
+                    <Icon name="offers"></Icon>
+                    {trans(lang, "components.sections.home.special-offer.btn-all-offers")}
+                </a>
+            </div>
+    ) : (
+            <div class="py-16 text-center">
+                <div class="bg-neutral-100 dark:bg-neutral-800 rounded-lg p-8 max-w-2xl mx-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-neutral-400 mx-auto mb-4"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <h3 class="text-xl font-medium mb-4">
+                        {trans(lang, "components.sections.home.special-offer.no-offers")}
+                    </h3>
+                    <p class="text-neutral-600 dark:text-neutral-400 mb-6">
+                        {trans(lang, "components.sections.home.special-offer.btn-suscription")}
+                    </p>
+                    <a href="/newsletter" class="btn btn-primary">
+                        {trans(lang, "components.sections.home.special-offer.suscription")}
                     </a>
                 </div>
-        ) : (
-                <div class="py-16 text-center">
-                    <div class="bg-neutral-100 dark:bg-neutral-800 rounded-lg p-8 max-w-2xl mx-auto">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-neutral-400 mx-auto mb-4"
-                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        <h3 class="text-xl font-medium mb-4">
-                            {trans(lang, "components.sections.home.special-offer.no-offers")}
-                        </h3>
-                        <p class="text-neutral-600 dark:text-neutral-400 mb-6">
-                            {trans(lang, "components.sections.home.special-offer.btn-suscription")}
-                        </p>
-                        <a href="/newsletter" class="btn btn-primary">
-                            {trans(lang, "components.sections.home.special-offer.suscription")}
-                        </a>
-                    </div>
-                </div>
-        )}
-    </Container>
+            </div>
+    )}
+</Container>

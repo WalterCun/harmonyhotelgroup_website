@@ -1,26 +1,26 @@
 ---
 interface Props {
-  text: string;
-  maxLines?: number;
-  readMoreText?: string;
-  className?: string;
+	text: string;
+	maxLines?: number;
+	readMoreText?: string;
+	className?: string;
 }
 
 const {
-  text,
-  maxLines = 4,
-  readMoreText = "Leer más",
-  className = "",
+	text,
+	maxLines = 4,
+	readMoreText = "Leer más",
+	className = "",
 } = Astro.props;
 
 // Creamos un objeto con clases para los diferentes números de líneas
 const lineClampClasses: Record<number, string> = {
-  1: "line-clamp-1",
-  2: "line-clamp-2",
-  3: "line-clamp-3",
-  4: "line-clamp-4",
-  5: "line-clamp-5",
-  6: "line-clamp-6",
+	1: "line-clamp-1",
+	2: "line-clamp-2",
+	3: "line-clamp-3",
+	4: "line-clamp-4",
+	5: "line-clamp-5",
+	6: "line-clamp-6",
 };
 
 // Seleccionamos la clase adecuada según maxLines, con fallback a line-clamp-4

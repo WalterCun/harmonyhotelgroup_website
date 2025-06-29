@@ -1,40 +1,39 @@
 ---
-import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
 
 import { processTagElements, trans } from "~/utils/translations";
-import Card from "../../atoms/card/Card.astro";
 import { resolveImage } from "../../../utils";
+import Card from "../../atoms/card/Card.astro";
 
 interface Props {
-  coverImage: string;
-  name: string;
-  location: { country: string, province: string, city: string };
-  stars: number;
-  amenities: Array<{
-    basic_services: string[];
-    general_services: string[];
-    extra_services: string[];
-    premium_services: string[];
-  }>;
-  roomPrice: number;
-  id: string;
-  partner: boolean | undefined;
-  lang: string;
+	coverImage: string;
+	name: string;
+	location: { country: string; province: string; city: string };
+	stars: number;
+	amenities: Array<{
+		basic_services: string[];
+		general_services: string[];
+		extra_services: string[];
+		premium_services: string[];
+	}>;
+	roomPrice: number;
+	id: string;
+	partner: boolean | undefined;
+	lang: string;
 }
 
 const {
-  coverImage,
-  name,
-  location,
-  stars,
-  amenities,
-  roomPrice,
-  id,
-  lang,
-  partner,
+	coverImage,
+	name,
+	location,
+	stars,
+	amenities,
+	roomPrice,
+	id,
+	lang,
+	partner,
 } = Astro.props as Props;
-
 ---
 
 <Card>

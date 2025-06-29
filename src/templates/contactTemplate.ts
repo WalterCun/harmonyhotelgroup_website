@@ -1,8 +1,8 @@
 export const contactTemplate = ({
-  email,
-  message,
+	email,
+	message,
 }: { email: string; message: string }) => {
-  return `
+	return `
     <!DOCTYPE html>
 <html lang="en">
 <head>

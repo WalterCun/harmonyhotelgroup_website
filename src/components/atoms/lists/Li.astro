@@ -3,9 +3,9 @@ import type { HTMLAttributes } from "astro/types";
 import { cn } from "~/utils";
 
 export interface Props extends HTMLAttributes<"li"> {
-  href: string;
-  label: string;
-  class?: string;
+	href: string;
+	label: string;
+	class?: string;
 }
 
 const { href, label, class: className = "", ...rest } = Astro.props;

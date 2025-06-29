@@ -1,33 +1,33 @@
 {
-  "partner": true,
-  "name": "Hotel Ipanema by HHG",
-  "stars": 3,
-  "rating": 0,
-  "location": "src/data/locations/Ecuador,SantaElena,Salinas.json",
-  "mainStreet": "Jose Maria Velaszo Ibarra",
-  "secondaryStreet": "Reinaldo Chavez",
-  "roomPrice": 20,
-  "count": 15,
-  "coverImage": "/upload/hotels/Ipanema/frontal.webp",
-  "gallery": [
-    "/upload/hotels/Ipanema/picina.webp",
-    "/upload/hotels/Ipanema/parqueadero.webp"
-  ],
-  "description_hotel": [
-    {
-      "lang_hotel": "es",
-      "content_hotel": "descripcion de informacion del contenido del hotel en idioma español"
-    }
-  ],
-  "amenities": [
-    {
-      "basic_services": ["dressing_table"],
-      "general_services": ["parking"],
-      "extra_services": ["airport_shuttle"],
-      "premium_services": ["express_checkin"]
-    }
-  ],
-  "highlight": true,
-  "tours": [],
-  "destinations": []
+	"partner": true,
+	"name": "Hotel Ipanema by HHG",
+	"stars": 3,
+	"rating": 0,
+	"location": "src/data/locations/Ecuador,SantaElena,Salinas.json",
+	"mainStreet": "Jose Maria Velaszo Ibarra",
+	"secondaryStreet": "Reinaldo Chavez",
+	"roomPrice": 20,
+	"count": 15,
+	"coverImage": "/upload/hotels/Ipanema/frontal.webp",
+	"gallery": [
+		"/upload/hotels/Ipanema/picina.webp",
+		"/upload/hotels/Ipanema/parqueadero.webp"
+	],
+	"description_hotel": [
+		{
+			"lang_hotel": "es",
+			"content_hotel": "descripcion de informacion del contenido del hotel en idioma español"
+		}
+	],
+	"amenities": [
+		{
+			"basic_services": ["dressing_table"],
+			"general_services": ["parking"],
+			"extra_services": ["airport_shuttle"],
+			"premium_services": ["express_checkin"]
+		}
+	],
+	"highlight": true,
+	"tours": [],
+	"destinations": []
 }

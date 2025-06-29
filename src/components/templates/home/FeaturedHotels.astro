@@ -6,26 +6,25 @@ import { trans } from "~/utils/translations";
 import { getCollection } from "astro:content";
 import HotelCard from "~/components/core/cards/HotelCard.astro";
 
-
-import { ExtendHotelCollection } from "~/utils";
 import Container from "~/components/core/layouts/Container.astro";
+import { ExtendHotelCollection } from "~/utils";
 
 let ExteroidesHotels = new ExtendHotelCollection(await getCollection("hotels"));
 const hotels = await ExteroidesHotels.resolve();
 
 const orderedHotels = hotels
-  .sort((a, b) => a.data.name.localeCompare(b.data.name))
-  .sort((a, b) => (b.data.partner === true ? -1 : 1))
-  .slice(0, 4);
+	.sort((a, b) => a.data.name.localeCompare(b.data.name))
+	.sort((a, b) => (b.data.partner === true ? -1 : 1))
+	.slice(0, 4);
 
 interface Props {
-  lang: string;
+	lang: string;
 }
 
 const { lang } = Astro.props;
 ---
 
-<Container>
+<Container className="py-14">
   <div class="text-center mb-12">
     <h2 class="mb-4 text-center text-2xl font-bold text-primary">
       {trans(lang, "components.sections.home.featured-hotels.title")}

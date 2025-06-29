@@ -1,97 +1,92 @@
 {
-  "destination": [],
-  "name": "Hotel Majestic 2 by HHG",
-  "stars": 3,
-  "rating": 0,
-  "location": "src/data/locations/Ecuador,Azuay,Cuenca.json",
-  "destinations": [
-    "src/data/destinations/Chorro_Giron.json"
-  ],
-  "mainStreet": "Gran Colombia",
-  "addressNumber": "207",
-  "secondaryStreet": "Manuel Vega",
-  "contact": [
-    {
-      "type": "Cellphone",
-      "value": "+593996146471",
-      "tag": "Gerencia"
-    },
-    {
-      "type": "Cellphone",
-      "value": "+593996146471",
-      "tag": "Recepción"
-    },
-    {
-      "type": "Email",
-      "value": "reservas@hotelmajestic2.com",
-      "tag": "Reservaciones"
-    }
-  ],
-  "socialMedia": [
-    {
-      "name": "Tiktok",
-      "url": "https://www.tiktok.com/@hotelmajestic2cuenca"
-    },
-    {
-      "name": "Instagram",
-      "url": "https://www.instagram.com/hotelmajestic2cuenca/"
-    },
-    {
-      "name": "Facebook",
-      "url": "https://www.facebook.com/hotelmajestic2cuenca"
-    }
-  ],
-  "rooms": [
-    {
-      "name": "Individual",
-      "occupancy": {
-        "min": 1,
-        "max": 2
-      },
-      "room_services": [
-        "Servicio a la habitación",
-        "Secador de pelo",
-        "Plancha y tabla de planchar"
-      ]
-    }
-  ],
-  "roomPrice": 30,
-  "count": 15,
-  "coverImage": "/upload/hotels/HotelMajestic2/portada.webp",
-  "gallery": [
-    "/upload/hotels/HotelMajestic2/lobby1.webp",
-    "/upload/hotels/HotelMajestic2/lobby1-2.webp",
-    "/upload/hotels/HotelMajestic2/lobby2.webp"
-  ],
-  "description_hotel": [
-    {
-      "lang_hotel": "es",
-      "content_hotel": "Descripcion en Español"
-    }
-  ],
-  "amenities": [
-    {
-      "basic_services": [
-        "24h_reception",
-        "free_wifi",
-        "daily_cleaning",
-        "cable_tv",
-        "bathroom",
-        "dressing_table"
-      ],
-      "extra_services": [
-        "airport_shuttle",
-        "laundry_service",
-        "concierge_service",
-        "tourist_activities",
-        "pet_friendly"
-      ],
-      "premium_services": [
-        "express_checkin",
-        "rooftop_terrace"
-      ]
-    }
-  ],
-  "tours": [],
-  "highlight": true
+	"destination": [],
+	"name": "Hotel Majestic 2 by HHG",
+	"stars": 3,
+	"rating": 0,
+	"location": "src/data/locations/Ecuador,Azuay,Cuenca.json",
+	"destinations": ["src/data/destinations/Chorro_Giron.json"],
+	"mainStreet": "Gran Colombia",
+	"addressNumber": "207",
+	"secondaryStreet": "Manuel Vega",
+	"contact": [
+		{
+			"type": "Cellphone",
+			"value": "+593996146471",
+			"tag": "Gerencia"
+		},
+		{
+			"type": "Cellphone",
+			"value": "+593996146471",
+			"tag": "Recepción"
+		},
+		{
+			"type": "Email",
+			"value": "reservas@hotelmajestic2.com",
+			"tag": "Reservaciones"
+		}
+	],
+	"socialMedia": [
+		{
+			"name": "Tiktok",
+			"url": "https://www.tiktok.com/@hotelmajestic2cuenca"
+		},
+		{
+			"name": "Instagram",
+			"url": "https://www.instagram.com/hotelmajestic2cuenca/"
+		},
+		{
+			"name": "Facebook",
+			"url": "https://www.facebook.com/hotelmajestic2cuenca"
+		}
+	],
+	"rooms": [
+		{
+			"name": "Individual",
+			"occupancy": {
+				"min": 1,
+				"max": 2
+			},
+			"room_services": [
+				"Servicio a la habitación",
+				"Secador de pelo",
+				"Plancha y tabla de planchar"
+			]
+		}
+	],
+	"roomPrice": 30,
+	"count": 15,
+	"coverImage": "/upload/hotels/HotelMajestic2/portada.webp",
+	"gallery": [
+		"/upload/hotels/HotelMajestic2/lobby1.webp",
+		"/upload/hotels/HotelMajestic2/lobby1-2.webp",
+		"/upload/hotels/HotelMajestic2/lobby2.webp"
+	],
+	"description_hotel": [
+		{
+			"lang_hotel": "es",
+			"content_hotel": "Descripcion en Español"
+		}
+	],
+	"amenities": [
+		{
+			"basic_services": [
+				"24h_reception",
+				"free_wifi",
+				"daily_cleaning",
+				"cable_tv",
+				"bathroom",
+				"dressing_table"
+			],
+			"extra_services": [
+				"airport_shuttle",
+				"laundry_service",
+				"concierge_service",
+				"tourist_activities",
+				"pet_friendly"
+			],
+			"premium_services": ["express_checkin", "rooftop_terrace"]
+		}
+	],
+	"tours": [],
+	"highlight": true
 }

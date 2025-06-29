@@ -1,24 +1,24 @@
 ---
 import { Image } from "astro:assets";
-import { resolveImage, createLogger } from "~/utils";
 import type { ImageMetadata } from "astro";
+import { createLogger, resolveImage } from "~/utils";
 
 interface Props {
-  images: string[];
-  id?: string;
-  maxHeight?: string;
-  thumbnailPosition?: "bottom" | "top" | "left" | "right";
-  thumbnailSize?: number;
+	images: string[];
+	id?: string;
+	maxHeight?: string;
+	thumbnailPosition?: "bottom" | "top" | "left" | "right";
+	thumbnailSize?: number;
 }
 
 const logger = createLogger(false, "GallerySwiper2");
 
 const {
-  images,
-  id = "gallery-swiper",
-  maxHeight = "75vh", // Altura máxima por defecto
-  thumbnailPosition = "bottom", // Posición por defecto
-  thumbnailSize = 80, // Tamaño de las miniaturas por defecto
+	images,
+	id = "gallery-swiper",
+	maxHeight = "75vh", // Altura máxima por defecto
+	thumbnailPosition = "bottom", // Posición por defecto
+	thumbnailSize = 80, // Tamaño de las miniaturas por defecto
 } = Astro.props;
 
 const hasImages = images && images.length > 0;
@@ -27,27 +27,27 @@ logger.info(`Número de imágenes: ${images?.length || 0}`);
 // Resolver todas las imágenes de forma asíncrona
 let resolvedImages: ({ default: ImageMetadata } | null)[] = [];
 if (hasImages) {
-  try {
-    resolvedImages = await Promise.all(
-      images.map(async (img) => {
-        try {
-          return await resolveImage(img);
-        } catch (err) {
-          logger.error(`Error al resolver imagen ${img}:`, err);
-          return null;
-        }
-      }),
-    );
-    resolvedImages = resolvedImages.filter((img) => img !== null);
-    logger.info(`Imágenes resueltas: ${resolvedImages.length}`);
-  } catch (error) {
-    logger.error("Error al resolver imágenes:", error);
-  }
+	try {
+		resolvedImages = await Promise.all(
+			images.map(async (img) => {
+				try {
+					return await resolveImage(img);
+				} catch (err) {
+					logger.error(`Error al resolver imagen ${img}:`, err);
+					return null;
+				}
+			}),
+		);
+		resolvedImages = resolvedImages.filter((img) => img !== null);
+		logger.info(`Imágenes resueltas: ${resolvedImages.length}`);
+	} catch (error) {
+		logger.error("Error al resolver imágenes:", error);
+	}
 }
 
 // Calcular las dimensiones de las miniaturas basadas en la posición
 const isVertical =
-  thumbnailPosition === "left" || thumbnailPosition === "right";
+	thumbnailPosition === "left" || thumbnailPosition === "right";
 const thumbWidth = isVertical ? thumbnailSize : thumbnailSize * 1.33; // Relación 4:3
 const thumbHeight = isVertical ? thumbnailSize * 0.75 : thumbnailSize * 0.75; // Relación 4:3
 

@@ -4,14 +4,14 @@ import { Image } from "astro:assets";
 import { trans } from "~/utils/translations";
 
 interface Props {
-  lang: string;
+	lang: string;
 }
 const { lang } = Astro.props;
 const logger = createLogger(false, "components.templates.home.hero");
 
+import { backgroundImagesHero } from "../../../lib/constants";
 // Importar la imagen directamente
 import { createLogger, resolveImage } from "../../../utils";
-import { backgroundImagesHero } from "../../../lib/constants";
 
 // Seleccionar una imagen aleatoria
 const imagesArray = Object.values(backgroundImagesHero);

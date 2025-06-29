@@ -4,7 +4,7 @@ import type { ImageMetadata } from "astro";
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 export const uploadImages = import.meta.glob<{
-  default: ImageMetadata;
+	default: ImageMetadata;
 }>(["/src/assets/upload/**/*", "/src/assets/img/default.png"]);
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -12,7 +12,7 @@ export const uploadImages = import.meta.glob<{
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 export const defaultImage = import.meta.glob<{
-  default: ImageMetadata;
+	default: ImageMetadata;
 }>("/src/assets/img/default.png");
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -20,10 +20,10 @@ export const defaultImage = import.meta.glob<{
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 export const backgroundImagesHero = import.meta.glob<{
-  default: ImageMetadata;
+	default: ImageMetadata;
 }>([
-  "/src/assets/upload/hero-backgrounds/*.{webp,}",
-  "/src/assets/img/default.png",
+	"/src/assets/upload/hero-backgrounds/*.{webp,}",
+	"/src/assets/img/default.png",
 ]);
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -31,7 +31,7 @@ export const backgroundImagesHero = import.meta.glob<{
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 export const hotelImages = import.meta.glob<{
-  default: ImageMetadata;
+	default: ImageMetadata;
 }>(["/src/assets/upload/hotels/**/*.{webp,}", "/src/assets/img/default.png"]);
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
