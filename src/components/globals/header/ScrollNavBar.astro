@@ -1,0 +1,69 @@
+---
+import Container from "~/components/core/layouts/Container.astro";
+import Navigation from "./Navigation.astro";
+import Logo from "~/components/core/Logo.astro";
+
+interface Props {
+  lang: string;
+}
+
+const { lang } = Astro.props;
+---
+
+<nav
+  id="scroll-nav"
+  class="w-full fixed top-0 left-0 z-10 bg-white transform md:-translate-y-full md:transition-transform duration-300 ease-in-out"
+>
+  <Container>
+    <div class="flex justify-between items-center">
+      <Logo />
+      <Navigation lang={lang} className="text-black hidden md:block" />
+      <div class="md:hidden">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          ><path
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M2.75 12.25h10.5m-10.5-4h10.5m-10.5-4h10.5"></path></svg
+        >
+      </div>
+    </div>
+  </Container>
+</nav>
+
+<script>
+  function setScrollBehavior() {
+    const scrollNav = document.getElementById("scroll-nav");
+    if (!scrollNav) return;
+
+    if (window.innerWidth < 768) return;
+
+    let lastScrollTop = 0;
+    const scrollThreshold = 100;
+
+    window.addEventListener("scroll", () => {
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
+
+      if (scrollTop <= scrollThreshold) {
+        scrollNav.classList.add("-translate-y-full");
+        return;
+      }
+
+      if (scrollTop > lastScrollTop) {
+        // Scrolling down
+        scrollNav.classList.remove("-translate-y-full");
+      }
+
+      lastScrollTop = scrollTop;
+    });
+  }
+
+  setScrollBehavior();
+</script>

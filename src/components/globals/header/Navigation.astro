@@ -4,6 +4,7 @@ import { trans } from "~/utils/translations";
 
 interface Props {
 	lang: string;
+	className?: string;
 }
 
 const { lang } = Astro.props;
@@ -30,16 +31,18 @@ const navItems = [
 		href: "/contact",
 	},
 ];
+
+const { className } = Astro.props;
 ---
 
-<nav class="">
+<nav class={className}>
     <ul class="flex gap-7">
         {
             navItems.map((item) => (
                 <li>
                     <a
                         href={getRelativeLocaleUrl(lang, item.href)}
-                        class="text-white hover:text-primary transition-colors duration-200 font-bold uppercase"
+                        class="hover:text-primary transition-colors duration-200 font-light uppercase"
                     >
                         {item.label}
                     </a>

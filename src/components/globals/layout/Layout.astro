@@ -9,6 +9,7 @@ import SizeIndicator from "~/components/globals/SizeIndicator.astro";
 import "~/styles/global.css";
 import { trans } from "~/utils/translations";
 import { cn } from "../../../utils";
+import ScrollNavBar from "../header/ScrollNavBar.astro";
 
 interface Props {
 	lang: string;
@@ -75,6 +76,7 @@ const dynamicTitle =
         )}
     >
         <StaticNavBar lang={lang} />
+        <ScrollNavBar lang={lang} />
         <main class="grow">
             <slot />
         </main>
