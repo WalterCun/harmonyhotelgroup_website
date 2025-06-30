@@ -60,9 +60,7 @@ const {
       <p class="text-neutral-600">
         <span class="inline-flex items-center">
           <Icon name="location" class="w-4 h-4 mr-1 text-primary" />
-          {[location.country, location.province, location.city]
-            .filter(Boolean)
-            .join(', ')}
+          {location}
         </span>
       </p>
       <div class="rating p-0 m-0 mt-2">

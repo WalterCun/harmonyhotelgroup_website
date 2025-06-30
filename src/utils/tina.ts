@@ -39,14 +39,15 @@ export class ExtendHotelCollection<T extends Record<string,any>> {
           return destinationsCollection.find((item) => item.filePath === path)
             ?.data;
         });
-
+      
         return {
           ...hotel,
           data: {
             ...hotel.data,
             location: [locationData?.data.country, locationData?.data.province, locationData?.data.city]
               .filter(Boolean)
-              .join(', ') ?? '',
+              .join(', ') ?? 'Indefinida',
+
             destinations: destinationData ?? [],
           },
         };
