@@ -51,7 +51,17 @@ const { lang } = Astro.props;
             location={location}
             name={name}
             stars={stars}
-            amenities={amenities}
+            amenities={amenities?.map(amenity => ({
+              basic_services: amenity.basic_services ?? [],
+              general_services: amenity.general_services ?? [],
+              extra_services: amenity.extra_services ?? [],
+              premium_services: amenity.premium_services ?? []
+            })) ?? [{
+              basic_services: [],
+              general_services: [],
+              extra_services: [],
+              premium_services: []
+            }]}
             roomPrice={roomPrice}
             partner={partner}
             lang={lang}

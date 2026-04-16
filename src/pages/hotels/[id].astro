@@ -4,11 +4,11 @@ import path from "node:path";
 import { getCollection } from "astro:content";
 import { Icon } from "astro-icon/components";
 
-import Container from "atoms/layout/Container.astro";
-import GallerySwiper from "core/imagen/GallerySwiper.astro";
-import Layout from "globals/layout/Layout.astro";
+import Container from "~/components/core/layouts/Container.astro";
+import GallerySwiper from "~/components/core/imagen/GallerySwiper.astro";
+import Layout from "~/components/globals/layout/Layout.astro";
 import { lang_es } from "lib/constants";
-import { createLogger } from "~/utils";
+import { ExtendHotelCollection, createLogger } from "~/utils";
 
 interface Props {
 	lang: string;
@@ -19,8 +19,10 @@ const logger = createLogger(false, "tools.ts");
 const { id } = Astro.params;
 logger.info("ID", id);
 
-let hotel: any = (await getCollection("hotels")).filter(
-	(hotel) => hotel.id === id,
+const ExteroidesHotels = new ExtendHotelCollection(await getCollection("hotels"));
+const hotels = await ExteroidesHotels.resolve();
+const hotel = hotels.filter(
+	(h) => h.id === id,
 );
 
 const {
@@ -28,7 +30,7 @@ const {
 	stars,
 	location,
 	mainStreet,
-	adressNumber,
+	addressNumber,
 	secondaryStreet,
 	contact,
 	socialMedia,
@@ -40,6 +42,43 @@ const {
 	amenities,
 	highlight,
 } = hotel[0].data;
+
+/**
+ * Extrae los destinos y tours que coinciden con la ciudad del hotel.
+ * Retorna un objeto con dos arrays: destinations y tours.
+ */
+async function getRelatedDestinationsAndTours(city: string) {
+	// Obtener todas las colecciones necesarias
+	const destinationsCollection = await getCollection("destinations");
+	const toursCollection = await getCollection("tours");
+
+	// Filtrar destinos por ubicación (location contiene la ciudad)
+	const relatedDestinations = destinationsCollection.filter(dest => {
+		return dest.data?.location?.toLowerCase().includes(city?.toLowerCase());
+	});
+
+	// Filtrar tours por ubicación (si existe) o por otros criterios
+	const relatedTours = toursCollection.filter(tour => {
+		// Por ahora, retornamos todos los tours ya que no tienen location
+		// En el futuro, se puede implementar lógica más específica
+		return true;
+	});
+
+	return {
+		destinations: relatedDestinations,
+		tours: relatedTours,
+	};
+}
+
+// Extraer la ciudad de la ubicación del hotel
+// Suponiendo que location es un string tipo "País, Provincia, Ciudad"
+const hotelCity = location?.split(",").pop()?.trim() ?? "";
+
+// Obtener destinos y tours relacionados
+const { destinations: relatedDestinations, tours: relatedTours } = await getRelatedDestinationsAndTours(hotelCity);
+
+console.log("Related destinations:", relatedDestinations);
+console.log("Related tours:", relatedTours);
 
 function iconExists(iconName: string) {
 	try {
@@ -149,26 +188,11 @@ function iconExists(iconName: string) {
           <div class="bg-white rounded-xl shadow p-6 mt-8">
             <h2 class="text-xl font-semibold text-primary mb-4">Lugares Cercanos</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Aquí puedes reemplazar los datos mock por datos reales si los tienes */}
-              {[{
-                name: "Coral Gardens",
-                type: "Snorkeling Spot",
-                icon: "bed", // Cambiar Icono
-                description: "Boat trip",
-                image: "https://placehold.co/400x250?text=Coral+1",
-                location: location
-              }, {
-                name: "The Lagoon Restaurant",
-                type: "Restaurant",
-                icon: "bed", // Cambiar Icono
-                description: "On-site",
-                image: "https://placehold.co/400x250?text=Lagoon+Rest+1",
-                location: location
-              }].map((place) => (
+              {relatedDestinations.map((place) => (
                 <div class="rounded-lg border border-gray-200 bg-white shadow p-3 flex flex-col">
                   <img src={place.image} alt={place.name} class="rounded-md mb-3 w-full h-48 object-cover bg-gray-100" />
                   <div class="flex items-center gap-2 mb-1">
-                    <Icon name={place.icon} class="w-5 h-5 text-primary" />
+                    {/*<Icon name={place.icon} class="w-5 h-5 text-primary" />*/}
                     <span class="font-semibold text-primary">{place.name}</span>
                     <a href="#" target="_blank" rel="noopener noreferrer" class="ml-1 text-xs text-primary underline">↗</a>
                   </div>
@@ -183,23 +207,11 @@ function iconExists(iconName: string) {
           <div class="bg-white rounded-xl shadow p-6 mt-8">
             <h2 class="text-xl font-semibold text-primary mb-4">Tours Disponibles</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[{
-                name: "Dolphin Watching Excursion",
-                icon: "bed", // Cambiar Icono
-                description: "Witness playful dolphins in their natural habitat.",
-                details: "Morning or Afternoon",
-                image: "https://placehold.co/400x250?text=Tour+Dolphin"
-              }, {
-                name: "Sunset Fishing Trip",
-                icon: "bed", // Cambiar Icono
-                description: "Try your hand at traditional Maldivian fishing as the sun sets.",
-                details: "Includes equipment",
-                image: "https://placehold.co/400x250?text=Tour+Fishing"
-              }].map((tour) => (
+              {relatedTours.map((tour) => (
                 <div class="rounded-lg border border-gray-200 bg-white shadow p-3 flex flex-col">
                   <img src={tour.image} alt={tour.name} class="rounded-md mb-3 w-full h-48 object-cover bg-gray-100" />
                   <div class="flex items-center gap-2 mb-1">
-                    <Icon name={tour.icon} class="w-5 h-5 text-primary" />
+                    {/*<Icon name={tour.icon} class="w-5 h-5 text-primary" /> */}
                     <span class="font-semibold text-primary">{tour.name}</span>
                     <a href="#" target="_blank" rel="noopener noreferrer" class="ml-1 text-xs text-primary underline">↗</a>
                   </div>
